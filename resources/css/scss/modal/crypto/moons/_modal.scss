@@ -1,0 +1,178 @@
+.crypto-moon-modal {
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    grid-row-gap: 2rem;
+    grid-column-gap: 1rem;
+    align-items: center;
+    justify-items: end;
+    color: $cl-dark;
+    font-size: $fz-compact;
+    background: rgba($cl-white, .75);
+    border: 2px solid rgba($cl-white, .75);
+    border-radius: 1rem;
+
+    .modal-header {
+        grid-row: 1 / 2;
+        grid-column: 1 / 3;
+        align-self: center;
+        justify-self: start;
+        padding: 1rem;
+    }
+
+    .modal-close {
+        grid-row: 1 / 2;
+        grid-column: 7 / 9;
+        align-self: center;
+        justify-self: end;
+        cursor: pointer;
+        padding: 1rem;
+    }
+
+    .modal-id-label {
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
+        align-self: center;
+        justify-self: start;
+    }
+
+    .modal-id {
+        grid-row: 2 / 3;
+        grid-column: 3 / 7;
+        align-self: center;
+        justify-self: center;
+    }
+
+    .modal-id-error {
+        grid-row: 2 / 3;
+        grid-column: 7 / 9;
+        align-self: center;
+        justify-self: start;
+        font-size: $fz-mini;
+    }
+
+    .modal-name-label {
+        grid-row: 3 / 4;
+        grid-column: 2 / 3;
+        align-self: center;
+        justify-self: start;
+    }
+
+    .modal-name {
+        grid-row: 3 / 4;
+        grid-column: 3 / 7;
+        align-self: center;
+        justify-self: center;
+    }
+
+    .modal-name-error {
+        grid-row: 3 / 4;
+        grid-column: 7 / 9;
+        align-self: center;
+        justify-self: start;
+        font-size: $fz-mini;
+    }
+
+    .modal-coin-label {
+        grid-row: 4 / 5;
+        grid-column: 2 / 3;
+        align-self: center;
+        justify-self: start;
+    }
+
+    .modal-coin {
+        grid-row: 4 / 5;
+        grid-column: 3 / 7;
+        align-self: center;
+        justify-self: center;
+    }
+
+    .modal-coin-error {
+        grid-row: 4 / 5;
+        grid-column: 7 / 9;
+        align-self: center;
+        justify-self: start;
+        font-size: $fz-mini;
+    }
+
+    .modal-description-label {
+        grid-row: 5 / 7;
+        grid-column: 2 / 3;
+        align-self: center;
+        justify-self: start;
+    }
+
+    .modal-description {
+        grid-row: 5 / 7;
+        grid-column: 3 / 7;
+        align-self: center;
+        justify-self: center;
+        width: 100%;
+    }
+
+    .modal-description-error {
+        grid-row: 5 / 7;
+        grid-column: 7 / 9;
+        align-self: center;
+        justify-self: start;
+        font-size: $fz-mini;
+    }
+
+    .modal-zone-label {
+        grid-row: 7 / 8;
+        grid-column: 2 / 3;
+        align-self: center;
+        justify-self: start;
+    }
+
+    .modal-zone {
+        grid-row: 7 / 8;
+        grid-column: 3 / 7;
+        align-self: center;
+        justify-self: center;
+    }
+
+    .modal-zone-error {
+        grid-row: 7 / 8;
+        grid-column: 7 / 9;
+        align-self: center;
+        justify-self: start;
+        font-size: $fz-mini;
+    }
+
+    .modal-website-label {
+        grid-row: 8 / 9;
+        grid-column: 2 / 3;
+        align-self: center;
+        justify-self: start;
+    }
+
+    .modal-website {
+        grid-row: 8 / 9;
+        grid-column: 3 / 7;
+        align-self: center;
+        justify-self: center;
+    }
+
+    .modal-website-error {
+        grid-row: 8 / 9;
+        grid-column: 7 / 9;
+        align-self: center;
+        justify-self: start;
+        font-size: $fz-mini;
+    }
+
+    .modal-cancel {
+        grid-row: 9 / 10;
+        grid-column: 5 / 6;
+        align-self: center;
+        justify-self: end;
+    }
+
+    .modal-submit {
+        grid-row: 9 / 10;
+        grid-column: 6 / 7;
+        align-self: center;
+        justify-self: center;
+    }
+}

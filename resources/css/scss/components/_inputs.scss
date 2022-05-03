@@ -1,0 +1,11 @@
+input[type=text], input[type=email], input[type=password], input[type=number], input[type=url], textarea {
+    border-radius: 1rem;
+    padding: 1rem;
+    width: 100%;
+    border: 1px solid rgba($cl-dark, .50);
+    color: $cl-gray;
+}
+input:focus, input:active {
+    outline: none;
+    color: $cl-dark;
+}

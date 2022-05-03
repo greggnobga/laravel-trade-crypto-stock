@@ -1,0 +1,12 @@
+#wrapper {
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(min-content, max-content);
+    align-content: start;
+    min-height: 100%;
+    margin-bottom: -5rem;
+
+    .push {
+        height: 5rem;
+    }
+}

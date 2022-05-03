@@ -1,0 +1,36 @@
+.card {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    border: 1px solid rgba($cl-gray, .15);
+    margin-bottom: 2rem;
+
+    .header {
+        .meta {
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 2fr 1fr;
+            border-bottom: 1px solid rgba($cl-gray, .15);
+
+            .left {
+                align-self: center;
+                justify-self: start;
+
+                h2 {
+                    padding: 1rem;
+                }
+            }
+
+            .right {
+                align-self: center;
+                justify-self: end;
+                padding: 1rem;
+
+                .btn {
+                    width: 10rem;
+                    padding: .45rem;
+                }
+            }
+        }
+    }
+}

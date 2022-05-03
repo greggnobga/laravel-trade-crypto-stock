@@ -1,0 +1,15 @@
+.backdrop {
+    position: fixed;
+    z-index: 1;
+    padding: 5rem;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba($cl-black, .50);
+}
+
+.modal {
+    display: none;
+}

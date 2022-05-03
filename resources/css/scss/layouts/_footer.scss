@@ -1,0 +1,22 @@
+#footer {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+
+    .information {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .disclaimer {
+        align-self: end;
+        justify-self: center;
+    }
+
+    .modal {
+        display: none;
+    }
+}

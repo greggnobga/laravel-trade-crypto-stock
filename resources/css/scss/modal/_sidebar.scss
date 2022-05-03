@@ -1,0 +1,23 @@
+.sidebar {
+    width: 10rem;
+
+    .items {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5, 1fr);
+        border: 1px solid rgba($cl-gray, .15);
+
+        .item {
+            border-bottom: 1px solid rgba($cl-gray, .15);
+            padding: 1rem 1rem;
+
+            &:last-child{
+                border: 0;
+            }
+        }
+
+        .item:hover {
+            background: $cl-light;
+        }
+    }
+}

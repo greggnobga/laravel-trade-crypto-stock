@@ -1,0 +1,92 @@
+/** Buttons */
+.btn {
+    display: block;
+    padding: 1rem 1rem;
+    border: 1px solid rgba($cl-dark, .50);
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+    color: $cl-gray;
+    border-radius: .25rem;
+    width: 7.5rem;
+
+    &:hover {
+        color: $cl-dark;
+        background: $cl-light;
+        border: 1px solid $cl-dark;
+    }
+}
+
+.btn-primary {
+    color: $cl-white;
+    background: $cl-green;
+    border: 1px solid rgba($cl-lime, .25);
+
+    &:hover {
+        color: $cl-white;
+        background: $cl-lime;
+        border: 1px solid rgba($cl-green, .25);
+    }
+}
+
+.btn-danger {
+    color: $cl-gray;
+    background: $cl-gold;
+    border: 1px solid rgba($cl-green, .25);
+
+    &:hover {
+        color: $cl-white;
+        background: $cl-green;
+        border: 1px solid rgba($cl-green, .25);
+    }
+}
+
+.btn-warning {
+    color: $cl-white;
+    background: $cl-red;
+    border: 1px solid rgba($cl-lime, .25);
+
+    &:hover {
+        color: $cl-white;
+        background: $cl-green;
+        border: 1px solid rgba($cl-lime, .25);
+    }
+}
+
+.btn-crypto:hover {
+    color: $cl-white;
+    background: $cl-lime;
+    border: 1px solid rgba($cl-green, .25);
+
+    &:hover {
+        color: $cl-white;
+        background: $cl-red;
+        border: 1px solid rgba($cl-gold, .25);
+    }
+}
+
+.update {
+    color: $cl-white;
+    cursor: pointer;
+    padding: .50rem 1rem;
+    border-radius: .25rem;
+    background: rgba($cl-blue, .75);
+    margin-right: .25rem;
+
+    &:hover {
+        background: rgba($cl-gray, .35);
+    }
+}
+
+.destroy {
+    color: $cl-white;
+    cursor: pointer;
+    padding: .50rem 1rem;
+    border-radius: .25rem;
+    background: rgba($cl-red, .75);
+    margin-left: .25rem;
+
+    &:hover {
+        background: rgba($cl-gray, .35);
+    }
+}

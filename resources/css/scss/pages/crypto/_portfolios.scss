@@ -1,0 +1,36 @@
+.crypto-hold > .items {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid rgba($cl-gray, .15);
+    padding: 1rem;
+    vertical-align: top;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.crypto-fund > .items {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    border-bottom: 1px solid rgba($cl-gray, .15);
+    padding: 1rem;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.crypto-order > .items {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 3rem repeat(8, 1fr);
+    border-bottom: 1px solid rgba($cl-gray, .15);
+    padding: 1rem;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}

@@ -390,22 +390,7 @@
   background: #F0F0F0;
 }
 
-.crypto-game-destroy-wrapper {
-  display: none;
-}
-
-.crypto-game-insert-wrapper {
-  display: none;
-}
-
-.crypto-game-update-wrapper {
-  display: none;
-}
-
-.crypto-game-wrapper {
-  display: none;
-}
-.crypto-game-wrapper .crypto-modal {
+.crypto-modal {
   color: #383838;
   font-size: 1.75rem;
   background: rgba(245, 245, 245, 0.75);
@@ -413,35 +398,39 @@
   border-radius: 1rem;
   padding: 2rem;
 }
-.crypto-game-wrapper .crypto-modal .modal-group {
+.crypto-modal .modal-group {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 2fr 8fr;
   grid-row-gap: 2rem;
 }
-.crypto-game-wrapper .crypto-modal .modal-group .modal-header {
+.crypto-modal .modal-group .modal-header {
   justify-self: start;
   align-self: center;
   margin-bottom: 3rem;
 }
-.crypto-game-wrapper .crypto-modal .modal-group .modal-dismiss {
+.crypto-modal .modal-group .modal-dismiss {
   justify-self: end;
   align-self: center;
   margin-bottom: 3rem;
   cursor: pointer;
 }
-.crypto-game-wrapper .crypto-modal .modal-group .modal-button {
+.crypto-modal .modal-group .modal-button {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: repeat(10, 1fr);
 }
-.crypto-game-wrapper .crypto-modal .modal-group .modal-button .button-dismiss {
+.crypto-modal .modal-group .modal-button .button-dismiss {
   grid-row: 1/2;
   grid-column: 9/10;
 }
-.crypto-game-wrapper .crypto-modal .modal-group .modal-button .button-submit {
+.crypto-modal .modal-group .modal-button .button-submit {
   grid-row: 1/2;
   grid-column: 10/11;
+}
+
+.crypto-game-wrapper {
+  display: none;
 }
 
 .crypto-moon-destroy-wrapper {
@@ -1248,7 +1237,7 @@ select {
 .crypto-games > .items {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 3rem repeat(10, 1fr);
+  grid-template-columns: 3rem repeat(9, 1fr);
   padding: 1rem;
 }
 .crypto-games > .items:last-child {

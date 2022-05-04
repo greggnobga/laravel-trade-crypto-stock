@@ -12,32 +12,50 @@
         </div>
 
         <div class="modal-group">
-            <label class="modal-label" for="name">Name</label>
-            <input id="name" class="modal-name" name="name" type="text" placeholder="Bitcoin" required/>
+            <label class="modal-label" for="title">Title</label>
+            <input id="title" class="modal-title" name="title" type="text" placeholder="Yo Hero" required/>
             <span class="modal-error"></span>
         </div>
 
         <div class="modal-group">
-            <label class="modal-label" for="coin">Coin</label>
-            <input id="coin" class="modal-coin" name="coin" type="text" placeholder="BTC" required/>
+            <label class="modal-label" for="genre">Genre</label>
+            <input id="genre" class="modal-genre" name="genre" type="text" placeholder="Strategy" required/>
             <span class="modal-error"></span>
         </div>
 
         <div class="modal-group">
-            <label class="modal-label" for="description">Description</label>
-            <textarea id="description" class="modal-description" name="description" rows="3" cols="3" maxlength='250'></textarea>
+            <label class="modal-label" for="platform">Platform</label>
+            <input id="platform" class="modal-platform" name="platform" type="text" placeholder="PC" required/>
             <span class="modal-error"></span>
         </div>
 
         <div class="modal-group">
-            <label class="modal-label" for="chain">Chain</label>
-            <input id="chain" class="modal-chain" name="chain" type="text" placeholder="Core" required/>
+            <label class="modal-label" for="blockchain">Blockchain</label>
+            <input id="blockchain" class="modal-blockchain" name="blockchain" type="text" placeholder="Binance Smart Chain" required/>
             <span class="modal-error"></span>
         </div>
 
         <div class="modal-group">
-            <label class="modal-label" for="website">Website</label>
-            <input id="website" class="modal-website" name="website" type="url" placeholder="trade.poseidon.local" required/>
+            <label class="modal-label" for="status">Status</label>
+            <input id="status" class="modal-status" name="status" type="url" placeholder="Live" required/>
+            <span class="modal-error"></span>
+        </div>
+
+        <div class="modal-group">
+            <label class="modal-label" for="earn">Earn</label>
+            <input id="earn" class="modal-earn" name="earn" type="url" placeholder="NFT" required/>
+            <span class="modal-error"></span>
+        </div>
+
+        <div class="modal-group">
+            <label class="modal-label" for="free">Free</label>
+            <input id="free" class="modal-free" name="free" type="url" placeholder="No" required/>
+            <span class="modal-error"></span>
+        </div>
+
+        <div class="modal-group">
+            <label class="modal-label" for="rating">Rating</label>
+            <input id="rating" class="modal-rating" name="rating" type="url" placeholder="*****" required/>
             <span class="modal-error"></span>
         </div>
 

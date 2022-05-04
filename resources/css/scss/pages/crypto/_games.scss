@@ -1,7 +1,7 @@
 .crypto-games > .items {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 3rem repeat(10, 1fr);
+    grid-template-columns: 3rem repeat(9, 1fr);
     padding: 1rem;
 
     &:last-child {

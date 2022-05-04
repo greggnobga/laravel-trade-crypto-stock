@@ -13,8 +13,7 @@
     <div class="crypto-games">
         <div class="items">
             <div class="id">ID</div>
-            <div class="name">Name</div>
-            <div class="coin">Coin</div>
+            <div class="name">Title</div>
             <div class="genre">Genre</div>
             <div class="platform">Platform</div>
             <div class="blockchain">Blockchain</div>

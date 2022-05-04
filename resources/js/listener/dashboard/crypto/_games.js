@@ -11,27 +11,66 @@ class games {
             if (e.target.dataset.sidebar === 'games') {
                 console.log(e.target.dataset.sidebar);
                 let content = this.template.content.cloneNode(true);
-                /** clear content*/
+                /** clear element before appending. */
                 this.element.innerHTML = '';
+                /** append template content. */
                 this.element.appendChild(content);
-<<<<<<< HEAD
-=======
-
-                let modal = document.querySelector(`.crypto-game-wrapper`);
-                console.log(modal);
-
->>>>>>> 3a254d8 (Git rebase)
+                /** insert modal code block. */
+                let record = document.querySelector('.click-game-record');
+                if (record) {
+                    record.addEventListener("click", (e) => {
+                        /** show insert modal. */
+                        if (e.target.dataset.modal === 'insert') {
+                            this.backdrop({mode:'show', action:'insert'});
+                        }
+                    });
+                }
             }
-            this.request();
+            this.request({method: 'GET'});
         });
     }
+    backdrop(config) {
+        if (config['mode'] === 'show') {
+            /** show modal and add backdrop. */
+            let modal = document.querySelector(`.crypto-game-wrapper`);
+            modal.classList.add('backdrop');
+            modal.style.display = 'block';
 
-    request() {
-       axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.get('/api/crypto-game-retrieve').then(response => {
-                console.log(response.data);
+            if(config['action'] === 'insert') {
+                let header = document.querySelector('.modal-header');
+                header.textContent = 'Add Game';
+
+                let dismiss = document.querySelectorAll(`.modal-dismiss`);
+                for (let i=0; i<dismiss.length; i++) {
+                    dismiss[i].addEventListener('click', ()=> {
+                        modal.classList.remove('backdrop');
+                        modal.style.display = 'none';
+                        console.log('Hiding modal...')
+                    });
+                }
+
+                let submit = document.querySelector(`.modal-submit`);
+                submit.addEventListener('click', () => {
+                        this.request({method: 'POST', table:'game', statement:config['action'], input:''})
+                });
+            }
+        }
+    }
+    request(config) {
+        if (config['method'] === 'GET') {
+            axios.get('/sanctum/csrf-cookie').then(response => {
+                axios.get('/api/crypto-game-retrieve').then(response => {
+                    console.log(response.data);
+                });
             });
-        });
+        }
+
+        if (config['method'] === 'POST') {
+            if (config['statement'] === 'insert') {
+                console.log('Run insert post query...')
+            }
+        }
+
     }
 }
 

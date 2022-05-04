@@ -2536,25 +2536,90 @@ var games = /*#__PURE__*/function () {
           console.log(e.target.dataset.sidebar);
 
           var content = _this.template.content.cloneNode(true);
-          /** clear content*/
+          /** clear element before appending. */
 
 
           _this.element.innerHTML = '';
+          /** append template content. */
 
           _this.element.appendChild(content);
+          /** insert modal code block. */
+
+
+          var record = document.querySelector('.click-game-record');
+
+          if (record) {
+            record.addEventListener("click", function (e) {
+              /** show insert modal. */
+              if (e.target.dataset.modal === 'insert') {
+                _this.backdrop({
+                  mode: 'show',
+                  action: 'insert'
+                });
+              }
+            });
+          }
         }
 
-        _this.request();
+        _this.request({
+          method: 'GET'
+        });
       });
     }
   }, {
+    key: "backdrop",
+    value: function backdrop(config) {
+      var _this2 = this;
+
+      if (config['mode'] === 'show') {
+        (function () {
+          /** show modal and add backdrop. */
+          var modal = document.querySelector(".crypto-game-wrapper");
+          modal.classList.add('backdrop');
+          modal.style.display = 'block';
+
+          if (config['action'] === 'insert') {
+            var header = document.querySelector('.modal-header');
+            header.textContent = 'Add Game';
+            var dismiss = document.querySelectorAll(".modal-dismiss");
+
+            for (var i = 0; i < dismiss.length; i++) {
+              dismiss[i].addEventListener('click', function () {
+                modal.classList.remove('backdrop');
+                modal.style.display = 'none';
+                console.log('Hiding modal...');
+              });
+            }
+
+            var submit = document.querySelector(".modal-submit");
+            submit.addEventListener('click', function () {
+              _this2.request({
+                method: 'POST',
+                table: 'game',
+                statement: config['action'],
+                input: ''
+              });
+            });
+          }
+        })();
+      }
+    }
+  }, {
     key: "request",
-    value: function request() {
-      axios.get('/sanctum/csrf-cookie').then(function (response) {
-        axios.get('/api/crypto-game-retrieve').then(function (response) {
-          console.log(response.data);
+    value: function request(config) {
+      if (config['method'] === 'GET') {
+        axios.get('/sanctum/csrf-cookie').then(function (response) {
+          axios.get('/api/crypto-game-retrieve').then(function (response) {
+            console.log(response.data);
+          });
         });
-      });
+      }
+
+      if (config['method'] === 'POST') {
+        if (config['statement'] === 'insert') {
+          console.log('Run insert post query...');
+        }
+      }
     }
   }]);
 
@@ -3181,7 +3246,7 @@ var portfolio = /*#__PURE__*/function () {
           var check = document.querySelector('.crypto-order');
 
           if (check === null || check === undefined) {
-            /** clear element before appending new content. */
+            /** clear element before appending. */
             _this.element.innerHTML = '';
             /** append template content. */
 

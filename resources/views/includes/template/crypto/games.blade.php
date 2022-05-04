@@ -6,7 +6,7 @@
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <button class="btn btn-primary click-moon-record" data-action="crypto">Add Game</button>
+                <button class="btn btn-primary click-game-record" data-modal="insert">Add Game</button>
             </div>
         </div>
     </div>
@@ -22,6 +22,7 @@
             <div class="earn">Earn</div>
             <div class="free">Free</div>
             <div class="rating">Rating</div>
+            <div class="action">Action</div>
         </div>
     </div>
 </div>

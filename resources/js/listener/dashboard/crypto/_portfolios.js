@@ -22,7 +22,7 @@ class portfolio {
                 /** query document and do conditional statement base on the result. */
                 let check = document.querySelector('.crypto-order');
                 if (check === null || check === undefined) {
-                    /** clear element before appending new content. */
+                    /** clear element before appending. */
                     this.element.innerHTML = '';
                     /** append template content. */
                     this.element.appendChild(content);

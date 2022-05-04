@@ -14,6 +14,13 @@ class games {
                 /** clear content*/
                 this.element.innerHTML = '';
                 this.element.appendChild(content);
+<<<<<<< HEAD
+=======
+
+                let modal = document.querySelector(`.crypto-game-wrapper`);
+                console.log(modal);
+
+>>>>>>> 3a254d8 (Git rebase)
             }
             this.request();
         });

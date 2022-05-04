@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="crypto-game-insert-wrapper">
     <div class="crypto-game-insert">
         <div class="crypto-game-modal">
@@ -103,5 +104,42 @@
             <button class="btn btn-danger modal-cancel destroy-cancel" type="submit" data-section="destroy">Cancel</button>
             <button class="btn btn-primary modal-submit destroy-submit" type="submit" data-section="destroy">Destroy</button>
         </div>
+=======
+<div class="crypto-wrapper">
+    <div class="crypto-modal">
+        <div class="modal-group">
+            <h2 class="modal-header">Add Game</h2>
+            <span class="modal-close" data-section="close">X</span>
+        </div>
+
+        <div class="modal-group">
+            <label class="modal-label" for="id">ID</label>
+            <input id="id" class="modal-id" name="id" type="number" value="0" placeholder="ID" disabled/>
+            <span class="modal-error"></span>
+        </div>
+
+        <label class="modal-label" for="name">Name</label>
+        <input id="name" class="modal-name" name="name" type="text" placeholder="Bitcoin" required/>
+        <span class="modal-error"></span>
+
+        <label class="modal-label" for="coin">Coin</label>
+        <input id="coin" class="modal-coin" name="coin" type="text" placeholder="BTC" required/>
+        <span class="modal-error"></span>
+
+        <label class="modal-label" for="description">Description</label>
+        <textarea id="description" class="modal-description" name="description" rows="3" cols="3" maxlength='250'></textarea>
+        <span class="modal-error"></span>
+
+        <label class="modal-label" for="chain">Chain</label>
+        <input id="chain" class="modal-chain" name="chain" type="text" placeholder="Core" required/>
+        <span class="modal-error"></span>
+
+        <label class="modal-label" for="website">Website</label>
+        <input id="website" class="modal-website" name="website" type="url" placeholder="trade.poseidon.local" required/>
+        <span class="modal-error"></span>
+
+        <button class="btn btn-danger modal-cancel insert-cancel" type="submit" data-section="insert">Cancel</button>
+        <button class="btn btn-primary modal-submit insert-submit" type="submit" data-section="insert">Add</button>
+>>>>>>> 3a254d8 (Git rebase)
     </div>
 </div>

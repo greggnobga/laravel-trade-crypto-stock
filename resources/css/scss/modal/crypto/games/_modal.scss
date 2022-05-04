@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .crypto-game-modal {
     display: grid;
     grid-template-rows: repeat(10, 1fr);
@@ -174,5 +175,15 @@
         grid-column: 6 / 7;
         align-self: center;
         justify-self: center;
+=======
+.crypto-game-wrapper {
+    display: none;
+
+    .crypt-modal {
+
+        .modal-group {
+
+        }
+>>>>>>> 3a254d8 (Git rebase)
     }
 }

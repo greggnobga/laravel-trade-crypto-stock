@@ -152,17 +152,17 @@ class portfolio {
         if (config['mode'] === 'show') {
             /** query document to pinpoint modal element. */
             let show = document.querySelector(`.crypto-portfolio-${config['action']}-wrapper`);
-            /** remove and hide backdrop. */
+            /** show modal. */
             show.classList.add('backdrop');
             show.style.display = 'block';
         }
 
         if (config['mode'] === 'hide') {
             /** query document to pinpoint modal element. */
-            let hide = document.querySelector(`.crypto-portfolio-${config['action']}-wrapper`);
-            /** remove and hide backdrop. */
-            hide.classList.remove('backdrop');
-            hide.style.display = 'none';
+            let modal = document.querySelector(`.crypto-portfolio-${config['action']}-wrapper`);
+            /** hide modal. */
+            modal.classList.remove('backdrop');
+            modal.style.display = 'none';
             if (config['trigger'] === 'submit') {
                 /** collect all input for processing. */
                 let collect = this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'value', data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']});;
@@ -170,8 +170,6 @@ class portfolio {
                 let result = this.helper.init({type: 'validate', data: collect});
                 /** double check and then proceed. */
                 if (Object.keys(result['error']).length === 0) {
-                    /** hide backdrop. */
-                    this.backdrop({mode:'hide', action:config['action']});
                     /** request access token and then post to backend. */
                     this.request({method: 'POST', table:'portfolio', statement:config['action'], input:result['success']});
                     /** clear input. */
@@ -180,7 +178,9 @@ class portfolio {
                     }
                 } else {
                     this.error({target: `crypto-portfolio-${config['action']}`, data:result['error']});
-                    this.backdrop({mode:'show', action:config['action']});
+                    /** show modal. */
+                    modal.classList.add('backdrop');
+                    modal.style.display = 'block';
                 }
             }
         }
@@ -190,7 +190,8 @@ class portfolio {
         /** retrieve data. */
         if (config['method'] === 'GET') {
             axios.get('/sanctum/csrf-cookie').then(response => {
-                axios.get('/api/crypto-portfolio-retrieve', { params: {'table': 'portfolio'}
+                axios.get('/api/crypto-portfolio-retrieve', {
+                    params: {table: 'portfolio'}
                 }).then(response => {
                     if (response.data.status === true) {
                         /** populate order element with data. */

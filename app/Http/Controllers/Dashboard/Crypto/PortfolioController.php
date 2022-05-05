@@ -14,13 +14,13 @@ class PortfolioController extends Controller {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'insert') {
-                return $this->store(['table'=> 'portfolio', 'input' => $request->input('input')]);
+                return $this->store(['table' => 'portfolio', 'input' => $request->input('input')]);
             }
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'update') {
-                return $this->update(['table'=> 'portfolio', 'input' => $request->input('input')]);
+                return $this->update(['table' => 'portfolio', 'input' => $request->input('input')]);
             }
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'destroy') {
-                return $this->destroy(['table'=> 'portfolio', 'input' => $request->input('input')]);
+                return $this->destroy(['table' => 'portfolio', 'input' => $request->input('input')]);
             }
         }
         /** check if request contains method equal to get. */
@@ -224,6 +224,7 @@ class PortfolioController extends Controller {
                     'coin' => strip_tags($data['input']['coin']),
                     'quantity' => strip_tags($data['input']['quantity']),
                     'capital' => strip_tags($data['input']['capital']),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($update) {
                 $coins = DB::table('portfolios')

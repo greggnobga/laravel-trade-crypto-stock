@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="crypto-games">
+    <div class="crypto-game">
         <div class="items">
             <div class="id">ID</div>
             <div class="name">Title</div>

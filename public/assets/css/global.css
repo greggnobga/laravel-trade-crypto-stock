@@ -401,8 +401,8 @@
 .crypto-modal .modal-group {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 2fr 8fr;
-  grid-row-gap: 2rem;
+  grid-template-columns: 2fr 6fr 2fr;
+  margin-bottom: 2rem;
 }
 .crypto-modal .modal-group .modal-header {
   justify-self: start;
@@ -415,10 +415,18 @@
   margin-bottom: 3rem;
   cursor: pointer;
 }
+.crypto-modal .modal-group .modal-error {
+  font-weight: 1.5rem;
+  color: #D0364F;
+  padding-left: 1rem;
+  justify-self: start;
+  align-self: center;
+}
 .crypto-modal .modal-group .modal-button {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: repeat(10, 1fr);
+  grid-column-gap: 2rem;
 }
 .crypto-modal .modal-group .modal-button .button-dismiss {
   grid-row: 1/2;
@@ -1234,13 +1242,14 @@ select {
   padding: 2rem;
 }
 
-.crypto-games > .items {
+.crypto-game > .items {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 3rem repeat(9, 1fr);
+  grid-template-columns: 2rem repeat(9, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   padding: 1rem;
 }
-.crypto-games > .items:last-child {
+.crypto-game > .items:last-child {
   border-bottom: none;
 }
 

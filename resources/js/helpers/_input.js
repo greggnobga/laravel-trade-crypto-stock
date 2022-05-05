@@ -3,13 +3,15 @@ class input {
         if (config['action'] === 'value') {
             let items = {};
             for (let key in config['data']) {
-                items[config['data'][key]] = document.querySelector(`.${config['target']} > .crypto-${config['section']}-modal > .modal-${config['data'][key]}`).value;
+                items[config['data'][key]] = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group >.modal-${config['data'][key]}`).value;
+                //items[config['data'][key]] = document.querySelector(`.${config['target']} > .crypto-${config['section']}-modal > .modal-${config['data'][key]}`).value;
             }
             return items;
         }
         if (config['action'] === 'clear') {
             for (let key in config['data']) {
-                document.querySelector(`.${config['target']} > .crypto-${config['section']}-modal > .modal-${config['data'][key]}`).value = '';
+                document.querySelector(`.${config['target']} > .crypto-modal > .modal-group >.modal-${config['data'][key]}`).value = '';
+                //document.querySelector(`.${config['target']} > .crypto-${config['section']}-modal > .modal-${config['data'][key]}`).value = '';
             }
         }
     }

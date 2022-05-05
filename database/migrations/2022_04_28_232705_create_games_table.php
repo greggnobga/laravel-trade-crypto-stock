@@ -16,15 +16,14 @@ return new class extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->integer('userid');
-            $table->string('name');
-            $table->string('coin')->unique();
+            $table->string('title')->unique();
             $table->string('genre');
             $table->string('platform');
             $table->string('blockchain');
             $table->string('status');
             $table->string('earn');
             $table->string('free');
-            $table->string('rating');
+            $table->integer('rating')->default(0);
             $table->timestamps();
         });
     }

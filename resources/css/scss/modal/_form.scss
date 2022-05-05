@@ -9,8 +9,8 @@
     .modal-group {
         display: grid;
         grid-template-rows: 1fr;
-        grid-template-columns: 2fr 8fr;
-        grid-row-gap: 2rem;
+        grid-template-columns: 2fr 6fr 2fr;
+        margin-bottom: 2rem;
 
         .modal-header {
             justify-self: start;
@@ -25,10 +25,19 @@
             cursor: pointer;
         }
 
+        .modal-error {
+            font-weight: $fz-small;
+            color: $cl-red;
+            padding-left: 1rem;
+            justify-self: start;
+            align-self: center;
+        }
+
         .modal-button {
             display : grid;
             grid-template-rows: 1fr;
             grid-template-columns: repeat(10, 1fr);
+            grid-column-gap: 2rem;
 
             .button-dismiss {
                 grid-row: 1 / 2;

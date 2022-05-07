@@ -1,6 +1,6 @@
 .crypto-modal {
     color: $cl-dark;
-    font-size: $fz-compact;
+    font-size: $fz-small;
     background: rgba($cl-white, .75);
     border: 2px solid rgba($cl-white, .75);
     border-radius: 1rem;
@@ -18,7 +18,7 @@
             margin-bottom: 3rem;
         }
 
-        .modal-dismiss {
+        .modal-close {
             justify-self: end;
             align-self: center;
             margin-bottom: 3rem;
@@ -26,7 +26,7 @@
         }
 
         .modal-error {
-            font-weight: $fz-small;
+            font-size: $fz-mini;
             color: $cl-red;
             padding-left: 1rem;
             justify-self: start;

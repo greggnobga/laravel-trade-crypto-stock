@@ -6,7 +6,7 @@
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <button class="btn btn-primary click-game-record" data-modal="insert">Add Game</button>
+                <button class="btn btn-primary click-game-record" data-modal="crypto">Add Game</button>
             </div>
         </div>
     </div>

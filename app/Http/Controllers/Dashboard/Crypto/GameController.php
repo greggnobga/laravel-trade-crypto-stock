@@ -19,6 +19,9 @@ class GameController extends Controller {
             if ($request->input('table') === 'game' && $request->input('statement') === 'update') {
                 return $this->update(['table' => 'game', 'input' => $request->input('input')]);
             }
+            if ($request->input('table') === 'game' && $request->input('statement') === 'destroy') {
+                return $this->destroy(['table' => 'game', 'input' => $request->input('input')]);
+            }
         }
 
         /** check if request contains method equal to get. */
@@ -115,6 +118,23 @@ class GameController extends Controller {
                 return ['status' =>  true, 'sql' => 'update', 'message' => $data['input']['title'] . ' successfully updated.', 'coin' => $coins];
             } else {
                 return ['status' =>  false, 'sql' => 'update', 'message' => 'No changes made.', 'coin' => '' ];
+            }
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($data) {
+        if ($data['table'] === 'game') {
+            $delete = DB::table('games')
+                ->where('id', '=', $data['input']['id'])
+                ->where('userid', '=', Auth::id())
+                ->delete();
+            if ($delete) {
+                return ['status' =>  true, 'sql' => 'destroy', 'message' => $data['input']['title'] . ' has been deleted.', 'coin' => $data['input']['id']];
+            } else {
+                return ['status' =>  false, 'sql' => 'destroy', 'message' => 'No changes made.', 'coin' => '' ];
             }
         }
     }

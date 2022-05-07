@@ -32,7 +32,7 @@ class portfolio {
                         record.addEventListener("click", (e) => {
                             /** show insert modal. */
                             if (e.target.dataset.action === 'crypto') {
-                                this.backdrop({mode:'show',action:'insert'});
+                                this.backdrop({mode:'show', action:'insert'});
                             }
                             /** query document to cancel button. */
                             let insertCancel = document.querySelector(".crypto-portfolio-insert > .crypto-portfolio-modal > .insert-cancel");

@@ -1,11 +1,28 @@
-input[type=text], input[type=email], input[type=password], input[type=number], input[type=url], textarea {
+input[type=text],
+input[type=email],
+input[type=password],
+input[type=number],
+input[type=url],
+textarea {
     border-radius: 1rem;
     padding: 1rem;
     width: 100%;
     border: 1px solid rgba($cl-dark, .50);
     color: $cl-gray;
 }
-input:focus, input:active {
+
+input:focus,
+input:active {
     outline: none;
     color: $cl-dark;
+}
+
+input[type=text]:valid,
+input[type=email]:valid,
+input[type=password]:valid,
+input[type=number]:valid,
+input[type=url]:valid,
+textarea:valid {
+    border: 1px solid rgba($cl-green, .50);
+    color: rgba($cl-green, .75);
 }

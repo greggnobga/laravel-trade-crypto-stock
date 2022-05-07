@@ -3,7 +3,8 @@ class node {
         /** create base element. */
         if (config['statement'] === 'select') {
             /** create parent element. */
-            let parent = this.create({'element': 'div', 'class': 'items'});
+            let parent = document.createElement('div');
+            parent.classList.add('items');
             /** create child element. */
             for (let key in config['input']) {
                 let child = document.createElement('div');
@@ -56,13 +57,6 @@ class node {
 
         /** return. */
         return true;
-    }
-
-    /** create document element. */
-    create(el) {
-        let node = document.createElement(el['element']);
-        node.classList.add(el['class']);
-        return node;
     }
 }
 export default new node();

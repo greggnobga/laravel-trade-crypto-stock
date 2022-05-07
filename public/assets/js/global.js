@@ -2098,19 +2098,38 @@ var input = /*#__PURE__*/function () {
   _createClass(input, [{
     key: "init",
     value: function init(config) {
+      /** fetch value. */
       if (config['action'] === 'value') {
         var items = {};
 
         for (var key in config['data']) {
-          items[config['data'][key]] = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group >.modal-").concat(config['data'][key])).value; //items[config['data'][key]] = document.querySelector(`.${config['target']} > .crypto-${config['section']}-modal > .modal-${config['data'][key]}`).value;
+          items[config['data'][key]] = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(config['data'][key])).value;
         }
 
         return items;
       }
+      /** clear input. */
+
 
       if (config['action'] === 'clear') {
         for (var _key in config['data']) {
-          document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group >.modal-").concat(config['data'][_key])).value = ''; //document.querySelector(`.${config['target']} > .crypto-${config['section']}-modal > .modal-${config['data'][key]}`).value = '';
+          document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(config['data'][_key])).value = '';
+        }
+      }
+      /** populate input. */
+
+
+      if (config['action'] === 'populate') {
+        /** loop through keys */
+        for (var i = 0; i < config['data'].length; i++) {
+          var content = config['el'].querySelector(".".concat(config['data'][i])).textContent;
+
+          if (config['data'][i] === 'id') {
+            var id = config['el'].querySelector(".".concat(config['data'][i])).dataset.id;
+            document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(config['data'][i])).setAttribute('value', id);
+          } else {
+            document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(config['data'][i])).value = content;
+          }
         }
       }
     }
@@ -2211,10 +2230,8 @@ var node = /*#__PURE__*/function () {
       /** create base element. */
       if (config['statement'] === 'select') {
         /** create parent element. */
-        var parent = this.create({
-          'element': 'div',
-          'class': 'items'
-        });
+        var parent = document.createElement('div');
+        parent.classList.add('items');
         /** create child element. */
 
         for (var key in config['input']) {
@@ -2281,17 +2298,6 @@ var node = /*#__PURE__*/function () {
 
 
       return true;
-    }
-    /** create document element. */
-
-  }, {
-    key: "create",
-    value: function create(el) {
-      var _node = document.createElement(el['element']);
-
-      _node.classList.add(el['class']);
-
-      return _node;
     }
   }]);
 
@@ -2800,6 +2806,16 @@ var games = /*#__PURE__*/function () {
                   }
                 }
               }
+              /** display message. */
+
+
+              if (response.data.status) {
+                _this3.helper.init({
+                  type: 'message',
+                  status: response.data.status,
+                  message: response.data.message
+                });
+              }
             });
           });
         }
@@ -2911,26 +2927,11 @@ var moons = /*#__PURE__*/function () {
                   });
                 }
               });
-              /** query document to cancel button. */
+              /** query close button. */
 
-              var insertCancel = document.querySelector(".crypto-moon-insert > .crypto-moon-modal > .insert-cancel");
-
-              if (insertCancel) {
-                /** set event listener. */
-                insertCancel.addEventListener('click', function (e) {
-                  _this.backdrop({
-                    mode: 'hide',
-                    action: 'insert'
-                  });
-                });
-              }
-              /** query document to close button. */
-
-
-              var insertClose = document.querySelector(".crypto-moon-insert > .crypto-moon-modal > .insert-close");
+              var insertClose = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-close');
 
               if (insertClose) {
-                /** set event listener. */
                 insertClose.addEventListener('click', function (e) {
                   _this.backdrop({
                     mode: 'hide',
@@ -2938,10 +2939,23 @@ var moons = /*#__PURE__*/function () {
                   });
                 });
               }
-              /** query document add button. */
+              /** query cancel button. */
 
 
-              var insertSubmit = document.querySelector(".crypto-moon-insert > .crypto-moon-modal > .insert-submit");
+              var insertCancel = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+              if (insertCancel) {
+                insertCancel.addEventListener('click', function (e) {
+                  _this.backdrop({
+                    mode: 'hide',
+                    action: 'insert'
+                  });
+                });
+              }
+              /** query submit button. */
+
+
+              var insertSubmit = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
 
               if (insertSubmit) {
                 /** set event listener. */
@@ -2964,34 +2978,30 @@ var moons = /*#__PURE__*/function () {
               if (update) {
                 var _loop = function _loop(i) {
                   update[i].addEventListener("click", function () {
-                    /** show update modal. */
+                    /** show modal. */
                     _this.backdrop({
                       mode: 'show',
                       action: 'update'
                     });
-                    /** populate modal form on load. */
+                    /** populate modal. */
 
 
-                    var modal = document.querySelector(".crypto-moon-update > .crypto-moon-modal");
-                    var cl = ['id', 'name', 'coin', 'description', 'zone', 'website'];
+                    var parent = update[i].parentElement.parentElement;
 
-                    for (var key in cl) {
-                      var text = update[i].parentElement.parentElement.querySelector(".".concat(cl[key])).textContent;
-
-                      if (cl[key] === 'id') {
-                        var id = update[i].parentElement.parentElement.querySelector(".".concat(cl[key])).dataset.id;
-                        modal.querySelector(".modal-".concat(cl[key])).value = id;
-                      } else {
-                        modal.querySelector(".modal-".concat(cl[key])).value = text;
-                      }
-                    }
-                    /** query document element. */
+                    _this.helper.init({
+                      type: 'input',
+                      action: 'populate',
+                      target: 'crypto-moon-update',
+                      el: parent,
+                      data: ['id', 'name', 'coin', 'description', 'zone', 'website']
+                    });
+                    /** query submit button. */
 
 
-                    var updateSubmit = modal.querySelector(".update-submit");
-                    /** set submit event listener. */
+                    var updateSubmit = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
 
                     if (updateSubmit) {
+                      /** set event listener. */
                       updateSubmit.addEventListener('click', function (e) {
                         _this.backdrop({
                           mode: 'hide',
@@ -3010,7 +3020,7 @@ var moons = /*#__PURE__*/function () {
                 /** query document close button. */
 
 
-                var updateClose = document.querySelector(".crypto-moon-update > .crypto-moon-modal > .update-close");
+                var updateClose = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-close');
 
                 if (updateClose) {
                   updateClose.addEventListener('click', function (e) {
@@ -3023,7 +3033,7 @@ var moons = /*#__PURE__*/function () {
                 /** query document update button. */
 
 
-                var updateCancel = document.querySelector(".crypto-moon-update > .crypto-moon-modal > .update-cancel");
+                var updateCancel = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (updateCancel) {
                   updateCancel.addEventListener('click', function (e) {
@@ -3043,34 +3053,30 @@ var moons = /*#__PURE__*/function () {
               if (destroy) {
                 var _loop2 = function _loop2(i) {
                   destroy[i].addEventListener("click", function () {
-                    /** show destroy modal. */
+                    /** show modal. */
                     _this.backdrop({
                       mode: 'show',
                       action: 'destroy'
                     });
-                    /** populate modal form on load. */
+                    /** populate modal. */
 
 
-                    var modal = document.querySelector(".crypto-moon-destroy > .crypto-moon-modal");
-                    var cl = ['id', 'name', 'coin', 'description', 'zone', 'website'];
+                    var parent = destroy[i].parentElement.parentElement;
 
-                    for (var key in cl) {
-                      var text = destroy[i].parentElement.parentElement.querySelector(".".concat(cl[key])).textContent;
-
-                      if (cl[key] === 'id') {
-                        var id = destroy[i].parentElement.parentElement.querySelector(".".concat(cl[key])).dataset.id;
-                        modal.querySelector(".modal-".concat(cl[key])).value = id;
-                      } else {
-                        modal.querySelector(".modal-".concat(cl[key])).value = text;
-                      }
-                    }
-                    /** query document element. */
+                    _this.helper.init({
+                      type: 'input',
+                      action: 'populate',
+                      target: 'crypto-moon-destroy',
+                      el: parent,
+                      data: ['id', 'name', 'coin', 'description', 'zone', 'website']
+                    });
+                    /** query submit button. */
 
 
-                    var destroySubmit = modal.querySelector(".destroy-submit");
-                    /** set submit event listener. */
+                    var destroySubmit = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
 
                     if (destroySubmit) {
+                      /** set event listener. */
                       destroySubmit.addEventListener('click', function (e) {
                         _this.backdrop({
                           mode: 'hide',
@@ -3089,7 +3095,7 @@ var moons = /*#__PURE__*/function () {
                 /** query document close button. */
 
 
-                var destroyClose = document.querySelector(".crypto-moon-destroy > .crypto-moon-modal > .destroy-close");
+                var destroyClose = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-close');
 
                 if (destroyClose) {
                   destroyClose.addEventListener('click', function (e) {
@@ -3102,7 +3108,7 @@ var moons = /*#__PURE__*/function () {
                 /** query document update button. */
 
 
-                var destroyCancel = document.querySelector(".crypto-moon-destroy > .crypto-moon-modal > .destroy-cancel");
+                var destroyCancel = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (destroyCancel) {
                   destroyCancel.addEventListener('click', function (e) {
@@ -3131,7 +3137,7 @@ var moons = /*#__PURE__*/function () {
     value: function backdrop(config) {
       if (config['mode'] === 'show') {
         /** query document to pinpoint modal element. */
-        var show = document.querySelector(".crypto-moon-".concat(config['action'], "-wrapper"));
+        var show = document.querySelector(".crypto-moon-".concat(config['action']));
         /** remove and hide backdrop. */
 
         show.classList.add('backdrop');
@@ -3140,7 +3146,7 @@ var moons = /*#__PURE__*/function () {
 
       if (config['mode'] === 'hide') {
         /** query document to pinpoint modal element. */
-        var hide = document.querySelector(".crypto-moon-".concat(config['action'], "-wrapper"));
+        var hide = document.querySelector(".crypto-moon-".concat(config['action']));
         /** remove and hide backdrop. */
 
         hide.classList.add('backdrop');
@@ -3150,7 +3156,6 @@ var moons = /*#__PURE__*/function () {
           /** collect all input for processing. */
           var collect = this.helper.init({
             type: 'input',
-            section: 'moon',
             target: "crypto-moon-".concat(config['action']),
             action: 'value',
             data: ['id', 'name', 'coin', 'description', 'zone', 'website']
@@ -3182,7 +3187,6 @@ var moons = /*#__PURE__*/function () {
             if (config['action'] === 'insert') {
               this.helper.init({
                 type: 'input',
-                section: 'moon',
                 target: "crypto-moon-".concat(config['action']),
                 action: 'clear',
                 data: ['name', 'coin', 'description', 'zone', 'website']
@@ -3303,7 +3307,7 @@ var moons = /*#__PURE__*/function () {
     value: function error(config) {
       /** run trough it all. */
       for (var key in config['data']) {
-        var display = document.querySelector(".".concat(config['target'], " > .crypto-moon-modal > .modal-").concat(key, "-error"));
+        var display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(key, "-error"));
         display.textContent = config['data'][key];
       }
       /** clear all error messages after five seconds. */
@@ -3311,7 +3315,7 @@ var moons = /*#__PURE__*/function () {
 
       setTimeout(function () {
         for (var _key2 in config['data']) {
-          var _display = document.querySelector(".".concat(config['target'], " > .crypto-moon-modal > .modal-").concat(_key2, "-error"));
+          var _display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(_key2, "-error"));
 
           _display.textContent = '';
         }

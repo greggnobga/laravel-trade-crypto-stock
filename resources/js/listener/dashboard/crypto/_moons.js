@@ -30,34 +30,32 @@ class moons {
                         record.addEventListener("click", (e) => {
                             if (e.target.dataset.action === 'crypto') {
                                 /** show insert modal. */
-                                this.backdrop({mode:'show',action:'insert'});
+                                this.backdrop({mode:'show', action:'insert'});
                             }
                         });
 
-                        /** query document to cancel button. */
-                        let insertCancel = document.querySelector(".crypto-moon-insert > .crypto-moon-modal > .insert-cancel");
-                        if (insertCancel) {
-                            /** set event listener. */
-                            insertCancel.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide',action:'insert'});
-                            })
-                        }
-
-                        /** query document to close button. */
-                        let insertClose = document.querySelector(".crypto-moon-insert > .crypto-moon-modal > .insert-close");
+                        /** query close button. */
+                        let insertClose = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-close');
                         if (insertClose) {
-                            /** set event listener. */
                             insertClose.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide',action:'insert'});
-                            })
+                                this.backdrop({mode:'hide', action:'insert'});
+                            });
                         }
 
-                        /** query document add button. */
-                        let insertSubmit = document.querySelector(".crypto-moon-insert > .crypto-moon-modal > .insert-submit");
+                        /** query cancel button. */
+                        let insertCancel = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                        if (insertCancel) {
+                            insertCancel.addEventListener('click', (e) => {
+                                this.backdrop({mode:'hide', action:'insert'});
+                            });
+                        }
+
+                        /** query submit button. */
+                        let insertSubmit = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
                         if (insertSubmit) {
                             /** set event listener. */
                             insertSubmit.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide',action:'insert', trigger: 'submit', input: insertSubmit});
+                                this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: insertSubmit});
                             })
                         }
                     }
@@ -67,33 +65,25 @@ class moons {
                         if (update) {
                             for (let i = 0; i < update.length; i++) {
                                 update[i].addEventListener("click", () => {
-                                    /** show update modal. */
-                                    this.backdrop({mode:'show',action:'update'});
-                                    /** populate modal form on load. */
-                                    let modal = document.querySelector(".crypto-moon-update > .crypto-moon-modal");
-                                    let cl = ['id', 'name', 'coin', 'description', 'zone', 'website'];
-                                    for (let key in cl) {
-                                        let text = update[i].parentElement.parentElement.querySelector(`.${cl[key]}`).textContent;
-                                        if (cl[key] === 'id') {
-                                            let id = update[i].parentElement.parentElement.querySelector(`.${cl[key]}`).dataset.id;
-                                            modal.querySelector(`.modal-${cl[key]}`).value = id;
-                                        } else {
-                                            modal.querySelector(`.modal-${cl[key]}`).value = text;
-                                        }
-                                    }
-                                    /** query document element. */
-                                    let updateSubmit = modal.querySelector(".update-submit");
-                                    /** set submit event listener. */
+                                    /** show modal. */
+                                    this.backdrop({mode:'show', action:'update'});
+                                    /** populate modal. */
+                                    let parent = update[i].parentElement.parentElement;
+                                    this.helper.init({type: 'input', action: 'populate', target: 'crypto-moon-update', el: parent, data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
+
+                                    /** query submit button. */
+                                    let updateSubmit = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
                                     if (updateSubmit) {
+                                        /** set event listener. */
                                         updateSubmit.addEventListener('click', (e) => {
                                             this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: updateSubmit});
-                                        });
+                                        })
                                     }
                                 });
                             }
 
                             /** query document close button. */
-                            let updateClose = document.querySelector(".crypto-moon-update > .crypto-moon-modal > .update-close");
+                            let updateClose = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-close');
                             if (updateClose) {
                                 updateClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'update'});
@@ -101,7 +91,7 @@ class moons {
                             }
 
                             /** query document update button. */
-                            let updateCancel = document.querySelector(".crypto-moon-update > .crypto-moon-modal > .update-cancel");
+                            let updateCancel = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (updateCancel) {
                                 updateCancel.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'update'});
@@ -117,32 +107,25 @@ class moons {
                         if (destroy) {
                             for (let i = 0; i < destroy.length; i++) {
                                 destroy[i].addEventListener("click", () => {
-                                    /** show destroy modal. */
-                                    this.backdrop({mode:'show',action:'destroy'});
-                                    /** populate modal form on load. */
-                                    let modal = document.querySelector(".crypto-moon-destroy > .crypto-moon-modal");
-                                    let cl = ['id', 'name', 'coin', 'description', 'zone', 'website'];
-                                    for (let key in cl) {
-                                        let text = destroy[i].parentElement.parentElement.querySelector(`.${cl[key]}`).textContent;
-                                        if (cl[key] === 'id') {
-                                            let id = destroy[i].parentElement.parentElement.querySelector(`.${cl[key]}`).dataset.id;
-                                            modal.querySelector(`.modal-${cl[key]}`).value = id;
-                                        } else {
-                                            modal.querySelector(`.modal-${cl[key]}`).value = text;
-                                        }
-                                    }
-                                    /** query document element. */
-                                    let destroySubmit = modal.querySelector(".destroy-submit");
-                                    /** set submit event listener. */
+                                    /** show modal. */
+                                    this.backdrop({mode:'show', action:'destroy'});
+                                    /** populate modal. */
+                                    let parent = destroy[i].parentElement.parentElement;
+                                    this.helper.init({type: 'input', action: 'populate', target: 'crypto-moon-destroy', el: parent, data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
+
+                                    /** query submit button. */
+                                    let destroySubmit = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
                                     if (destroySubmit) {
+                                        /** set event listener. */
                                         destroySubmit.addEventListener('click', (e) => {
                                             this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: destroySubmit});
-                                        });
+                                        })
                                     }
                                 });
                             }
+
                             /** query document close button. */
-                            let destroyClose = document.querySelector(".crypto-moon-destroy > .crypto-moon-modal > .destroy-close");
+                            let destroyClose = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-close');
                             if (destroyClose) {
                                 destroyClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'destroy'});
@@ -150,12 +133,13 @@ class moons {
                             }
 
                             /** query document update button. */
-                            let destroyCancel = document.querySelector(".crypto-moon-destroy > .crypto-moon-modal > .destroy-cancel");
+                            let destroyCancel = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (destroyCancel) {
                                 destroyCancel.addEventListener('click', (e) => {
-                                    this.backdrop({mode:'hide', action:'destroy'});
+                                    this.backdrop({mode:'hide',action:'destroy'});
                                 });
                             }
+
                         }
                     }, 10000);
 
@@ -172,7 +156,7 @@ class moons {
     backdrop(config) {
         if (config['mode'] === 'show') {
             /** query document to pinpoint modal element. */
-            let show = document.querySelector(`.crypto-moon-${config['action']}-wrapper`);
+            let show = document.querySelector(`.crypto-moon-${config['action']}`);
             /** remove and hide backdrop. */
             show.classList.add('backdrop');
             show.style.display = 'block';
@@ -180,13 +164,13 @@ class moons {
 
         if (config['mode'] === 'hide') {
             /** query document to pinpoint modal element. */
-            let hide = document.querySelector(`.crypto-moon-${config['action']}-wrapper`);
+            let hide = document.querySelector(`.crypto-moon-${config['action']}`);
             /** remove and hide backdrop. */
             hide.classList.add('backdrop');
             hide.style.display = 'none';
             if (config['trigger'] === 'submit') {
                 /** collect all input for processing. */
-                let collect = this.helper.init({type:'input', section: 'moon', target: `crypto-moon-${config['action']}`, action: 'value', data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
+                let collect = this.helper.init({type:'input', target: `crypto-moon-${config['action']}`, action: 'value', data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
                 /** check if inputs are empty and valid. */
                 let result = this.helper.init({type: 'validate', data: collect});
                 /** double check and then proceed. */
@@ -197,7 +181,7 @@ class moons {
                     this.request({method: 'POST', table: 'moon', statement: `${config['action']}`, input: result['success']});
                     /** clear input if insert. */
                     if (config['action'] === 'insert') {
-                        this.helper.init({type:'input', section: 'moon', target: `crypto-moon-${config['action']}`, action: 'clear', data: ['name', 'coin', 'description', 'zone', 'website']});
+                        this.helper.init({type:'input', target: `crypto-moon-${config['action']}`, action: 'clear', data: ['name', 'coin', 'description', 'zone', 'website']});
                     }
                 } else {
                     this.backdrop({mode:'show', action:config['action']});
@@ -266,13 +250,13 @@ class moons {
     error(config) {
         /** run trough it all. */
         for (let key in config['data']) {
-            let display = document.querySelector(`.${config['target']} > .crypto-moon-modal > .modal-${key}-error`);
+            let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
             display.textContent = config['data'][key];
         }
         /** clear all error messages after five seconds. */
         setTimeout( () => {
             for (let key in config['data']) {
-                let display = document.querySelector(`.${config['target']} > .crypto-moon-modal > .modal-${key}-error`);
+                let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
                 display.textContent = '';
             }
         }, 5000);

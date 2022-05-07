@@ -176,6 +176,11 @@ class games {
                                 }
                             }
                         }
+
+                        /** display message. */
+                        if (response.data.status) {
+                            this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
+                        }
                     });
                 });
             }

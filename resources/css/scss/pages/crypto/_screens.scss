@@ -1,0 +1,11 @@
+.crypto-screen > .items {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 2rem repeat(9, 1fr);
+    border-bottom: 1px solid rgba($cl-gray, .15);
+    padding: 1rem;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}

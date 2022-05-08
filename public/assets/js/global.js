@@ -2553,176 +2553,305 @@ var games = /*#__PURE__*/function () {
 
 
           var content = _this.template.content.cloneNode(true);
-          /** clear element before appending. */
+          /** query document and do conditional statement base on the result. */
 
 
-          _this.element.innerHTML = '';
-          /** append template content. */
+          var check = document.querySelector(".click-game");
 
-          _this.element.appendChild(content);
-          /** insert modal code block. */
+          if (check === null || check === undefined) {
+            /** clear element before appending new content. */
+            _this.element.innerHTML = '';
+            /** append template content. */
 
-
-          var record = document.querySelector('.click-game-record');
-
-          if (record) {
-            record.addEventListener("click", function (e) {
-              /** show insert modal. */
-              if (e.target.dataset.modal === 'insert') {
-                _this.backdrop({
-                  mode: 'show',
-                  action: 'insert',
-                  trigger: 'submit'
-                });
-              }
-            });
-          }
-          /** update modal code block. */
+            _this.element.appendChild(content);
+            /** query document so to insert record event listener. */
 
 
-          setTimeout(function () {
-            var update = document.querySelectorAll('.crypto-game > .items > .action > .update');
+            var record = document.querySelector(".click-game-record");
 
-            if (update) {
-              var _loop = function _loop(i) {
-                update[i].addEventListener("click", function () {
-                  var grand = update[i].parentElement.parentElement;
-                  /** show update modal. */
-
+            if (record) {
+              record.addEventListener("click", function (e) {
+                if (e.target.dataset.action === 'crypto') {
+                  /** show modal. */
                   _this.backdrop({
                     mode: 'show',
-                    action: 'update',
-                    trigger: 'submit',
-                    input: grand
+                    action: 'insert'
+                  });
+                }
+              });
+              /** set close event listener. */
+
+              var insertClose = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-close');
+
+              if (insertClose) {
+                insertClose.addEventListener('click', function (e) {
+                  _this.backdrop({
+                    mode: 'hide',
+                    action: 'insert'
                   });
                 });
-              };
+              }
+              /** set cancel event listener. */
 
-              for (var i = 0; i < update.length; i++) {
-                _loop(i);
+
+              var insertCancel = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+              if (insertCancel) {
+                insertCancel.addEventListener('click', function (e) {
+                  _this.backdrop({
+                    mode: 'hide',
+                    action: 'insert'
+                  });
+                });
+              }
+              /** set submit event listener. */
+
+
+              var insertSubmit = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+
+              if (insertSubmit) {
+                insertSubmit.addEventListener('click', function (e) {
+                  _this.backdrop({
+                    mode: 'hide',
+                    action: 'insert',
+                    trigger: 'submit',
+                    input: insertSubmit
+                  });
+                });
               }
             }
-          }, 10000);
-          var info = document.querySelector('.card > .header > .meta > .right > .messenger');
-          info.classList.add('info');
-          info.textContent = 'Update button enabled right after this message disappear.';
-          setTimeout(function () {
-            info.classList.remove('info');
-          }, 9000);
+            /** update modal code block. */
+
+
+            setTimeout(function () {
+              var update = document.querySelectorAll('.crypto-game > .items > .action > .update');
+
+              if (update) {
+                var _loop = function _loop(i) {
+                  update[i].addEventListener("click", function () {
+                    /** show modal. */
+                    _this.backdrop({
+                      mode: 'show',
+                      action: 'update'
+                    });
+                    /** populate modal. */
+
+
+                    var parent = update[i].parentElement.parentElement;
+
+                    _this.helper.init({
+                      type: 'input',
+                      action: 'populate',
+                      target: 'crypto-game-update',
+                      el: parent,
+                      data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
+                    });
+                    /** set submit event listener. */
+
+
+                    var updateSubmit = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+
+                    if (updateSubmit) {
+                      updateSubmit.addEventListener('click', function (e) {
+                        _this.backdrop({
+                          mode: 'hide',
+                          action: 'update',
+                          trigger: 'submit',
+                          input: updateSubmit
+                        });
+                      });
+                    }
+                  });
+                };
+
+                for (var i = 0; i < update.length; i++) {
+                  _loop(i);
+                }
+                /** set close event listener. */
+
+
+                var updateClose = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-close');
+
+                if (updateClose) {
+                  updateClose.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'update'
+                    });
+                  });
+                }
+                /** set cancel event listener. */
+
+
+                var updateCancel = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+                if (updateCancel) {
+                  updateCancel.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'update'
+                    });
+                  });
+                }
+              }
+            }, 10000);
+            /** destroy modal code block. */
+
+            setTimeout(function () {
+              var destroy = document.querySelectorAll('.crypto-game > .items > .action > .destroy');
+
+              if (destroy) {
+                var _loop2 = function _loop2(i) {
+                  destroy[i].addEventListener("click", function () {
+                    /** show modal. */
+                    _this.backdrop({
+                      mode: 'show',
+                      action: 'destroy'
+                    });
+                    /** populate modal. */
+
+
+                    var parent = destroy[i].parentElement.parentElement;
+
+                    _this.helper.init({
+                      type: 'input',
+                      action: 'populate',
+                      target: 'crypto-game-destroy',
+                      el: parent,
+                      data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
+                    });
+                    /** set submit event listener. */
+
+
+                    var destroySubmit = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+
+                    if (destroySubmit) {
+                      destroySubmit.addEventListener('click', function (e) {
+                        _this.backdrop({
+                          mode: 'hide',
+                          action: 'destroy',
+                          trigger: 'submit',
+                          input: destroySubmit
+                        });
+                      });
+                    }
+                  });
+                };
+
+                for (var i = 0; i < destroy.length; i++) {
+                  _loop2(i);
+                }
+                /** set close event listener. */
+
+
+                var destroyClose = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-close');
+
+                if (destroyClose) {
+                  destroyClose.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'destroy'
+                    });
+                  });
+                }
+                /** set cancel event listener. */
+
+
+                var destroyCancel = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+                if (destroyCancel) {
+                  destroyCancel.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'destroy'
+                    });
+                  });
+                }
+              }
+            }, 10000);
+            var info = document.querySelector('.card > .header > .meta > .right > .messenger');
+            info.classList.add('info');
+            info.textContent = 'Update button enabled right after this message disappear.';
+            setTimeout(function () {
+              info.classList.remove('info');
+            }, 9000);
+          }
         }
       });
     }
+    /** function on how backdrop behaves. */
+
   }, {
     key: "backdrop",
     value: function backdrop(config) {
-      var _this2 = this;
-
       if (config['mode'] === 'show') {
-        (function () {
-          /** show modal. */
-          var modal = document.querySelector(".crypto-game-wrapper");
-          modal.classList.add('backdrop');
-          modal.style.display = 'block';
-          /** change insert header. */
+        /** query document to pinpoint modal element. */
+        var show = document.querySelector(".crypto-game-".concat(config['action']));
+        /** remove and hide backdrop. */
 
-          if (config['action'] === 'insert') {
-            var header = document.querySelector('.modal-header');
-            header.textContent = 'Add Game';
-          }
-          /** change update header. */
+        show.classList.add('backdrop');
+        show.style.display = 'block';
+      }
 
+      if (config['mode'] === 'hide') {
+        /** query document to pinpoint modal element. */
+        var hide = document.querySelector(".crypto-game-".concat(config['action']));
+        /** remove and hide backdrop. */
 
-          if (config['action'] === 'update') {
-            var _header = document.querySelector('.modal-header');
+        hide.classList.add('backdrop');
+        hide.style.display = 'none';
 
-            _header.textContent = 'Update Game';
-            /** extrapolate content into input value. */
+        if (config['trigger'] === 'submit') {
+          /** collect all input for processing. */
+          var collect = this.helper.init({
+            type: 'input',
+            target: "crypto-game-".concat(config['action']),
+            action: 'value',
+            data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
+          });
+          /** check if inputs are empty and valid. */
 
-            var items = ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating'];
+          var result = this.helper.init({
+            type: 'validate',
+            data: collect
+          });
+          /** double check and then proceed. */
 
-            for (var i = 0; i < items.length; i++) {
-              var txt = config['input'].querySelector(".items > .".concat(items[i])).textContent;
-
-              if (items[i] === 'id') {
-                var id = config['input'].querySelector(".items > .".concat(items[i])).dataset.id;
-                document.querySelector(".crypto-modal > .modal-group > .modal-".concat(items[i])).setAttribute('value', id);
-              } else {
-                document.querySelector(".crypto-modal > .modal-group > .modal-".concat(items[i])).setAttribute('value', txt);
-              }
-            }
-          }
-          /** set dismiss button listener. */
-
-
-          var dismiss = document.querySelectorAll(".modal-dismiss");
-
-          for (var _i = 0; _i < dismiss.length; _i++) {
-            dismiss[_i].addEventListener('click', function () {
-              /** hide modal. */
-              modal.classList.remove('backdrop');
-              modal.style.display = 'none';
+          if (Object.keys(result['error']).length === 0) {
+            /** hide backdrop. */
+            this.backdrop({
+              mode: 'hide',
+              action: config['action']
             });
-          }
-          /** set submit button listener. */
+            /** request access token and then post to backend. */
 
+            this.request({
+              method: 'POST',
+              table: 'game',
+              statement: "".concat(config['action']),
+              input: result['success']
+            });
+            /** clear input if insert. */
 
-          var submit = document.querySelector(".modal-submit");
-          submit.addEventListener('click', function () {
-            if (config['trigger'] === 'submit') {
-              /** collect all input for processing. */
-              var collect = _this2.helper.init({
+            if (config['action'] === 'insert') {
+              this.helper.init({
                 type: 'input',
-                target: "crypto-game-wrapper",
-                action: 'value',
+                target: "crypto-game-".concat(config['action']),
+                action: 'clear',
                 data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
               });
-              /** check if inputs are valid. */
-
-
-              var result = _this2.helper.init({
-                type: 'validate',
-                data: collect
-              });
-              /** if no errors. */
-
-
-              if (Object.keys(result['error']).length === 0) {
-                /** hide modal. */
-                modal.classList.remove('backdrop');
-                modal.style.display = 'none';
-                /** forward to backend. */
-
-                _this2.request({
-                  method: 'POST',
-                  table: 'game',
-                  statement: config['action'],
-                  input: result['success']
-                });
-                /** clear input. */
-
-
-                if (config['action'] === 'insert') {
-                  _this2.helper.init({
-                    type: 'input',
-                    target: "crypto-game-wrapper",
-                    action: 'clear',
-                    data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
-                  });
-                }
-              } else {
-                _this2.error({
-                  target: "crypto-game-wrapper",
-                  data: result['error']
-                });
-                /** show modal. */
-
-
-                modal.classList.add('backdrop');
-                modal.style.display = 'block';
-              }
             }
-          });
-        })();
+          } else {
+            this.backdrop({
+              mode: 'show',
+              action: config['action']
+            });
+            this.error({
+              target: "crypto-game-".concat(config['action']),
+              data: result['error']
+            });
+          }
+        }
       }
     }
     /** function to process http request. */
@@ -2730,8 +2859,9 @@ var games = /*#__PURE__*/function () {
   }, {
     key: "request",
     value: function request(config) {
-      var _this3 = this;
+      var _this2 = this;
 
+      /** retrieve data. */
       if (config['method'] === 'GET') {
         axios.get('/sanctum/csrf-cookie').then(function (response) {
           axios.get('/api/crypto-game-retrieve', {
@@ -2743,7 +2873,7 @@ var games = /*#__PURE__*/function () {
               /** populate order element with data. */
               if (response.data.coin) {
                 for (var i = 0; i < response.data.coin.length; i++) {
-                  _this3.helper.init({
+                  _this2.helper.init({
                     type: 'node',
                     id: "".concat(i + 1),
                     target: 'crypto-game',
@@ -2756,69 +2886,67 @@ var games = /*#__PURE__*/function () {
           });
         });
       }
+      /** store data. */
+
 
       if (config['method'] === 'POST') {
-        if (config['statement'] === 'insert') {
-          axios.get('/sanctum/csrf-cookie').then(function (response) {
-            axios.post('/api/crypto-game-store', {
-              table: config['table'],
-              statement: config['statement'],
-              input: config['input']
-            }).then(function (response) {
-              /** populate order element with data. */
-              if (response.data.status === true) {
-                /** add or update element in document tree. */
-                if (response.data.sql === 'select') {
-                  for (var key in response.data.coin) {
-                    _this3.helper.init({
-                      type: 'node',
-                      id: 0,
-                      target: 'crypto-game',
-                      statement: response.data.sql,
-                      input: response.data.coin[key]
-                    });
-                  }
+        axios.get('/sanctum/csrf-cookie').then(function (response) {
+          axios.post('/api/crypto-game-store', {
+            table: config['table'],
+            statement: config['statement'],
+            input: config['input']
+          }).then(function (response) {
+            /** populate order element with data. */
+            if (response.data.status === true) {
+              /** add or update element in document tree. */
+              if (response.data.sql === 'select') {
+                for (var key in response.data.coin) {
+                  _this2.helper.init({
+                    type: 'node',
+                    id: 0,
+                    target: 'crypto-game',
+                    statement: response.data.sql,
+                    input: response.data.coin[key]
+                  });
                 }
               }
-            });
-          });
-        }
+              /** add or update element in document tree. */
 
-        if (config['statement'] === 'update') {
-          axios.get('/sanctum/csrf-cookie').then(function (response) {
-            axios.post('/api/crypto-game-store', {
-              table: config['table'],
-              statement: config['statement'],
-              input: config['input']
-            }).then(function (response) {
-              /** populate order element with data. */
-              if (response.data.status === true) {
-                /** add or update element in document tree. */
-                if (response.data.sql === 'update') {
-                  for (var key in response.data.coin) {
-                    _this3.helper.init({
-                      type: 'node',
-                      id: 0,
-                      target: 'crypto-game',
-                      statement: response.data.sql,
-                      input: response.data.coin[key]
-                    });
-                  }
+
+              if (response.data.sql === 'update') {
+                for (var _key in response.data.coin) {
+                  _this2.helper.init({
+                    type: 'node',
+                    target: 'crypto-game',
+                    statement: response.data.sql,
+                    input: response.data.coin[_key]
+                  });
                 }
               }
-              /** display message. */
+              /** remove element in document tree. */
 
 
-              if (response.data.status) {
-                _this3.helper.init({
-                  type: 'message',
-                  status: response.data.status,
-                  message: response.data.message
+              if (response.data.sql === 'destroy') {
+                _this2.helper.init({
+                  type: 'node',
+                  target: 'crypto-game',
+                  statement: response.data.sql,
+                  input: response.data.coin
                 });
               }
-            });
+            }
+            /** display message. */
+
+
+            if (response.data.status) {
+              _this2.helper.init({
+                type: 'message',
+                status: response.data.status,
+                message: response.data.message
+              });
+            }
           });
-        }
+        });
       }
     }
     /** function to display error. */
@@ -2835,10 +2963,8 @@ var games = /*#__PURE__*/function () {
 
 
       setTimeout(function () {
-        for (var _key in config['data']) {
-          if (_key === 'id') continue;
-
-          var _display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(_key, "-error"));
+        for (var _key2 in config['data']) {
+          var _display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(_key2, "-error"));
 
           _display.textContent = '';
         }
@@ -2920,14 +3046,14 @@ var moons = /*#__PURE__*/function () {
             if (record) {
               record.addEventListener("click", function (e) {
                 if (e.target.dataset.action === 'crypto') {
-                  /** show insert modal. */
+                  /** show modal. */
                   _this.backdrop({
                     mode: 'show',
                     action: 'insert'
                   });
                 }
               });
-              /** query close button. */
+              /** set close event listener. */
 
               var insertClose = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-close');
 
@@ -2939,7 +3065,7 @@ var moons = /*#__PURE__*/function () {
                   });
                 });
               }
-              /** query cancel button. */
+              /** set cancel event listener. */
 
 
               var insertCancel = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
@@ -2952,13 +3078,12 @@ var moons = /*#__PURE__*/function () {
                   });
                 });
               }
-              /** query submit button. */
+              /** set submit event listener. */
 
 
               var insertSubmit = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
 
               if (insertSubmit) {
-                /** set event listener. */
                 insertSubmit.addEventListener('click', function (e) {
                   _this.backdrop({
                     mode: 'hide',
@@ -2995,13 +3120,12 @@ var moons = /*#__PURE__*/function () {
                       el: parent,
                       data: ['id', 'name', 'coin', 'description', 'zone', 'website']
                     });
-                    /** query submit button. */
+                    /** set submit event listener. */
 
 
                     var updateSubmit = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
 
                     if (updateSubmit) {
-                      /** set event listener. */
                       updateSubmit.addEventListener('click', function (e) {
                         _this.backdrop({
                           mode: 'hide',
@@ -3017,7 +3141,7 @@ var moons = /*#__PURE__*/function () {
                 for (var i = 0; i < update.length; i++) {
                   _loop(i);
                 }
-                /** query document close button. */
+                /** set close event listener. */
 
 
                 var updateClose = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-close');
@@ -3030,7 +3154,7 @@ var moons = /*#__PURE__*/function () {
                     });
                   });
                 }
-                /** query document update button. */
+                /** set cancel event listener. */
 
 
                 var updateCancel = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
@@ -3070,13 +3194,12 @@ var moons = /*#__PURE__*/function () {
                       el: parent,
                       data: ['id', 'name', 'coin', 'description', 'zone', 'website']
                     });
-                    /** query submit button. */
+                    /** set submit event listener. */
 
 
                     var destroySubmit = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
 
                     if (destroySubmit) {
-                      /** set event listener. */
                       destroySubmit.addEventListener('click', function (e) {
                         _this.backdrop({
                           mode: 'hide',
@@ -3092,7 +3215,7 @@ var moons = /*#__PURE__*/function () {
                 for (var i = 0; i < destroy.length; i++) {
                   _loop2(i);
                 }
-                /** query document close button. */
+                /** set close event listener. */
 
 
                 var destroyClose = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-close');
@@ -3105,7 +3228,7 @@ var moons = /*#__PURE__*/function () {
                     });
                   });
                 }
-                /** query document update button. */
+                /** set cancel event listener. */
 
 
                 var destroyCancel = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
@@ -3476,42 +3599,47 @@ var portfolio = /*#__PURE__*/function () {
                     action: 'insert'
                   });
                 }
-                /** query document to cancel button. */
-
-
-                var insertCancel = document.querySelector(".crypto-portfolio-insert > .crypto-portfolio-modal > .insert-cancel");
                 /** set insert event listener. */
 
-                insertCancel.addEventListener('click', function (e) {
-                  _this.backdrop({
-                    mode: 'hide',
-                    action: 'insert'
-                  });
-                });
-                /** query document to close button. */
 
-                var insertClose = document.querySelector(".crypto-portfolio-insert > .crypto-portfolio-modal > .insert-close");
+                var insertCancel = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-close');
+
+                if (insertCancel) {
+                  insertCancel.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'insert'
+                    });
+                  });
+                }
                 /** set close event listener. */
 
-                insertClose.addEventListener('click', function (e) {
-                  _this.backdrop({
-                    mode: 'hide',
-                    action: 'insert'
-                  });
-                });
-                /** query document add button. */
 
-                var insertSubmit = document.querySelector(".crypto-portfolio-insert > .crypto-portfolio-modal > .insert-submit");
+                var insertClose = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+                if (insertClose) {
+                  insertClose.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'insert'
+                    });
+                  });
+                }
                 /** set submit event listener. */
 
-                insertSubmit.addEventListener('click', function (e) {
-                  _this.backdrop({
-                    mode: 'hide',
-                    action: 'insert',
-                    trigger: 'submit',
-                    input: insertSubmit
+
+                var insertSubmit = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+
+                if (insertSubmit) {
+                  insertSubmit.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'insert',
+                      trigger: 'submit',
+                      input: insertSubmit
+                    });
                   });
-                });
+                }
               });
             }
             /** update modal code block. */
@@ -3528,36 +3656,33 @@ var portfolio = /*#__PURE__*/function () {
                       mode: 'show',
                       action: 'update'
                     });
-                    /** populate modal form on load. */
+                    /** populate modal. */
 
 
-                    var modal = document.querySelector(".crypto-portfolio-update > .crypto-portfolio-modal");
-                    var cl = ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital'];
+                    var parent = update[i].parentElement.parentElement;
 
-                    for (var key in cl) {
-                      var text = update[i].parentElement.parentElement.querySelector(".".concat(cl[key])).textContent;
-
-                      if (cl[key] === 'id') {
-                        var id = update[i].parentElement.parentElement.querySelector(".".concat(cl[key])).dataset.id;
-                        modal.querySelector(".modal-".concat(cl[key])).value = id;
-                      } else {
-                        modal.querySelector(".modal-".concat(cl[key])).value = text;
-                      }
-                    }
-                    /** query document element. */
-
-
-                    var updateSubmit = modal.querySelector(".update-submit");
+                    _this.helper.init({
+                      type: 'input',
+                      action: 'populate',
+                      target: 'crypto-portfolio-update',
+                      el: parent,
+                      data: ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital']
+                    });
                     /** set submit event listener. */
 
-                    updateSubmit.addEventListener('click', function (e) {
-                      _this.backdrop({
-                        mode: 'hide',
-                        action: 'update',
-                        trigger: 'submit',
-                        input: updateSubmit
+
+                    var updateSubmit = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+
+                    if (updateSubmit) {
+                      updateSubmit.addEventListener('click', function (e) {
+                        _this.backdrop({
+                          mode: 'hide',
+                          action: 'update',
+                          trigger: 'submit',
+                          input: updateSubmit
+                        });
                       });
-                    });
+                    }
                   });
                 };
 
@@ -3567,93 +3692,101 @@ var portfolio = /*#__PURE__*/function () {
                 /** query document close button. */
 
 
-                var updateClose = document.querySelector(".crypto-portfolio-update > .crypto-portfolio-modal > .update-close");
-                updateClose.addEventListener('click', function (e) {
-                  _this.backdrop({
-                    mode: 'hide',
-                    action: 'update'
+                var updateClose = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-close');
+
+                if (updateClose) {
+                  updateClose.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'update'
+                    });
                   });
-                });
+                }
                 /** query document update button. */
 
-                var updateCancel = document.querySelector(".crypto-portfolio-update > .crypto-portfolio-modal > .update-cancel");
-                updateCancel.addEventListener('click', function (e) {
-                  _this.backdrop({
-                    mode: 'hide',
-                    action: 'update'
+
+                var updateCancel = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+                if (updateCancel) {
+                  updateCancel.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'update'
+                    });
                   });
-                });
+                }
               }
             }, 10000);
             /** destroy modal code block. */
 
             setTimeout(function () {
-              var trash = document.querySelectorAll('.crypto-order > .items > .action > .destroy');
+              var destroy = document.querySelectorAll('.crypto-order > .items > .action > .destroy');
 
-              if (trash) {
+              if (destroy) {
                 var _loop2 = function _loop2(i) {
-                  trash[i].addEventListener("click", function () {
+                  destroy[i].addEventListener("click", function () {
                     /** show destroy modal. */
                     _this.backdrop({
                       mode: 'show',
                       action: 'destroy'
                     });
-                    /** populate modal form on load. */
+                    /** populate modal. */
 
 
-                    var modal = document.querySelector(".crypto-portfolio-destroy > .crypto-portfolio-modal");
-                    var cl = ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital'];
+                    var parent = destroy[i].parentElement.parentElement;
+                    console.log(parent);
 
-                    for (var key in cl) {
-                      var text = trash[i].parentElement.parentElement.querySelector(".".concat(cl[key])).textContent;
-
-                      if (cl[key] === 'id') {
-                        var id = trash[i].parentElement.parentElement.querySelector(".".concat(cl[key])).dataset.id;
-                        modal.querySelector(".modal-".concat(cl[key])).value = id;
-                      } else {
-                        modal.querySelector(".modal-".concat(cl[key])).value = text;
-                      }
-                    }
-                    /** query document element. */
-
-
-                    var destroySubmit = modal.querySelector(".destroy-submit");
+                    _this.helper.init({
+                      type: 'input',
+                      action: 'populate',
+                      target: 'crypto-portfolio-destroy',
+                      el: parent,
+                      data: ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital']
+                    });
                     /** set destroy event listener. */
 
-                    destroySubmit.addEventListener('click', function (e) {
+
+                    var destroySubmit = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+
+                    if (destroySubmit) {
+                      destroySubmit.addEventListener('click', function (e) {
+                        _this.backdrop({
+                          mode: 'hide',
+                          action: 'destroy',
+                          trigger: 'submit',
+                          input: destroySubmit
+                        });
+                      });
+                    }
+                  });
+                  /** set cancel event listener. */
+
+                  var destroyClose = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-close');
+
+                  if (destroyClose) {
+                    destroyClose.addEventListener('click', function (e) {
                       _this.backdrop({
                         mode: 'hide',
-                        action: 'destroy',
-                        trigger: 'submit',
-                        input: destroySubmit
+                        action: 'destroy'
                       });
                     });
-                  });
-                  /** query document close button. */
-
-                  var destroyClose = document.querySelector(".crypto-portfolio-destroy > .crypto-portfolio-modal > .destroy-close");
+                  }
                   /** set cancel event listener. */
 
-                  destroyClose.addEventListener('click', function (e) {
-                    _this.backdrop({
-                      mode: 'hide',
-                      action: 'destroy'
-                    });
-                  });
-                  /** query document destroy button. */
 
-                  var destroyCancel = document.querySelector(".crypto-portfolio-destroy > .crypto-portfolio-modal > .destroy-cancel");
-                  /** set cancel event listener. */
+                  var destroyCancel = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
-                  destroyCancel.addEventListener('click', function (e) {
-                    _this.backdrop({
-                      mode: 'hide',
-                      action: 'destroy'
+                  if (destroyCancel) {
+                    destroyCancel.addEventListener('click', function (e) {
+                      _this.backdrop({
+                        mode: 'hide',
+                        action: 'destroy'
+                      });
                     });
-                  });
+                  }
                 };
 
-                for (var i = 0; i < trash.length; i++) {
+                for (var i = 0; i < destroy.length; i++) {
                   _loop2(i);
                 }
               }
@@ -3675,7 +3808,7 @@ var portfolio = /*#__PURE__*/function () {
     value: function backdrop(config) {
       if (config['mode'] === 'show') {
         /** query document to pinpoint modal element. */
-        var show = document.querySelector(".crypto-portfolio-".concat(config['action'], "-wrapper"));
+        var show = document.querySelector(".crypto-portfolio-".concat(config['action']));
         /** show modal. */
 
         show.classList.add('backdrop');
@@ -3684,7 +3817,7 @@ var portfolio = /*#__PURE__*/function () {
 
       if (config['mode'] === 'hide') {
         /** query document to pinpoint modal element. */
-        var modal = document.querySelector(".crypto-portfolio-".concat(config['action'], "-wrapper"));
+        var modal = document.querySelector(".crypto-portfolio-".concat(config['action']));
         /** hide modal. */
 
         modal.classList.remove('backdrop');
@@ -3868,7 +4001,7 @@ var portfolio = /*#__PURE__*/function () {
     value: function error(config) {
       /** run trough it all. */
       for (var key in config['data']) {
-        var display = document.querySelector(".".concat(config['target'], " > .crypto-portfolio-modal > .modal-").concat(key, "-error"));
+        var display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(key, "-error"));
         display.textContent = config['data'][key];
       }
       /** clear all error messages after five seconds. */
@@ -3876,7 +4009,7 @@ var portfolio = /*#__PURE__*/function () {
 
       setTimeout(function () {
         for (var _key3 in config['data']) {
-          var _display = document.querySelector(".".concat(config['target'], " > .crypto-portfolio-modal > .modal-").concat(_key3, "-error"));
+          var _display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(_key3, "-error"));
 
           _display.textContent = '';
         }
@@ -3944,7 +4077,7 @@ var screen = /*#__PURE__*/function () {
     key: "request",
     value: function request() {
       axios.get('/sanctum/csrf-cookie').then(function (response) {
-        axios.get('/api/user').then(function (response) {
+        axios.get('/api/crypto-screen-retrieve').then(function (response) {
           console.log(response.data);
         });
       });

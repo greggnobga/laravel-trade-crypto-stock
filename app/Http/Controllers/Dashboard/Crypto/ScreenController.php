@@ -12,8 +12,10 @@ class ScreenController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return View::make('test')->with('name', 'John Smith')->with('user', 'Jane Smith');
+    public function init(Request $request) {
+        $result = Auth::id();
+        if ($result) {
+            return array(['status' => true, 'message' => 'Test response message.', 'coin' => $result]);
+        }
     }
 }

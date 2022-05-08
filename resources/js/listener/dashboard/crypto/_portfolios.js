@@ -34,24 +34,30 @@ class portfolio {
                             if (e.target.dataset.action === 'crypto') {
                                 this.backdrop({mode:'show', action:'insert'});
                             }
-                            /** query document to cancel button. */
-                            let insertCancel = document.querySelector(".crypto-portfolio-insert > .crypto-portfolio-modal > .insert-cancel");
+
                             /** set insert event listener. */
-                            insertCancel.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide', action:'insert'});
-                            });
-                            /** query document to close button. */
-                            let insertClose = document.querySelector(".crypto-portfolio-insert > .crypto-portfolio-modal > .insert-close");
+                            let insertCancel = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-close');
+                            if (insertCancel) {
+                                insertCancel.addEventListener('click', (e) => {
+                                    this.backdrop({mode:'hide', action:'insert'});
+                                });
+                            }
+
                             /** set close event listener. */
-                            insertClose.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide', action:'insert'});
-                            });
-                            /** query document add button. */
-                            let insertSubmit = document.querySelector(".crypto-portfolio-insert > .crypto-portfolio-modal > .insert-submit");
+                            let insertClose = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            if (insertClose) {
+                                insertClose.addEventListener('click', (e) => {
+                                    this.backdrop({mode:'hide', action:'insert'});
+                                });
+                            }
+
                             /** set submit event listener. */
-                            insertSubmit.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: insertSubmit});
-                            })
+                            let insertSubmit = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                            if (insertSubmit) {
+                                insertSubmit.addEventListener('click', (e) => {
+                                    this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: insertSubmit});
+                                })
+                            }
                         });
                     }
                     /** update modal code block. */
@@ -62,79 +68,75 @@ class portfolio {
                                 update[i].addEventListener("click", () => {
                                     /** show update modal. */
                                     this.backdrop({mode:'show',action:'update'});
-                                    /** populate modal form on load. */
-                                    let modal = document.querySelector(".crypto-portfolio-update > .crypto-portfolio-modal");
-                                    let cl = ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital'];
-                                    for (let key in cl) {
-                                        let text = update[i].parentElement.parentElement.querySelector(`.${cl[key]}`).textContent;
-                                        if (cl[key] === 'id') {
-                                            let id = update[i].parentElement.parentElement.querySelector(`.${cl[key]}`).dataset.id;
-                                            modal.querySelector(`.modal-${cl[key]}`).value = id;
-                                        } else {
-                                            modal.querySelector(`.modal-${cl[key]}`).value = text;
-                                        }
-                                    }
-                                    /** query document element. */
-                                    let updateSubmit = modal.querySelector(".update-submit");
+
+                                    /** populate modal. */
+                                    let parent = update[i].parentElement.parentElement;
+                                    this.helper.init({type: 'input', action: 'populate', target: 'crypto-portfolio-update', el: parent, data: ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital']});
+
                                     /** set submit event listener. */
-                                    updateSubmit.addEventListener('click', (e) => {
-                                        this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: updateSubmit});
-                                    });
+                                    let updateSubmit = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                                    if (updateSubmit) {
+                                        updateSubmit.addEventListener('click', (e) => {
+                                            this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: updateSubmit});
+                                        });
+                                    }
                                 });
                             }
                             /** query document close button. */
-                            let updateClose = document.querySelector(".crypto-portfolio-update > .crypto-portfolio-modal > .update-close");
-                            updateClose.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide',action:'update'});
-                            });
+                            let updateClose = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-close');
+                            if (updateClose) {
+                                updateClose.addEventListener('click', (e) => {
+                                    this.backdrop({mode:'hide', action:'update'});
+                                });
+                            }
 
                             /** query document update button. */
-                            let updateCancel = document.querySelector(".crypto-portfolio-update > .crypto-portfolio-modal > .update-cancel");
-                            updateCancel.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide',action:'update'});
-                            });
+                            let updateCancel = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            if (updateCancel) {
+                                updateCancel.addEventListener('click', (e) => {
+                                    this.backdrop({mode:'hide', action:'update'});
+                                });
+                            }
                         }
                     }, 10000);
                     /** destroy modal code block. */
                     setTimeout( () => {
-                        let trash = document.querySelectorAll('.crypto-order > .items > .action > .destroy');
-                        if (trash) {
-                            for (let i = 0; i < trash.length; i++) {
-                                trash[i].addEventListener("click", () => {
+                        let destroy = document.querySelectorAll('.crypto-order > .items > .action > .destroy');
+                        if (destroy) {
+                            for (let i = 0; i < destroy.length; i++) {
+                                destroy[i].addEventListener("click", () => {
                                     /** show destroy modal. */
-                                    this.backdrop({mode:'show',action:'destroy'});
-                                    /** populate modal form on load. */
-                                    let modal = document.querySelector(".crypto-portfolio-destroy > .crypto-portfolio-modal");
-                                    let cl = ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital'];
-                                    for (let key in cl) {
-                                        let text = trash[i].parentElement.parentElement.querySelector(`.${cl[key]}`).textContent;
-                                        if (cl[key] === 'id') {
-                                            let id = trash[i].parentElement.parentElement.querySelector(`.${cl[key]}`).dataset.id;
-                                            modal.querySelector(`.modal-${cl[key]}`).value = id;
-                                        } else {
-                                            modal.querySelector(`.modal-${cl[key]}`).value = text;
-                                        }
-                                    }
-                                    /** query document element. */
-                                    let destroySubmit = modal.querySelector(".destroy-submit");
+                                    this.backdrop({mode:'show', action:'destroy'});
+
+                                    /** populate modal. */
+                                    let parent = destroy[i].parentElement.parentElement;
+                                    console.log(parent);
+                                    this.helper.init({type: 'input', action: 'populate', target: 'crypto-portfolio-destroy', el: parent, data: ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital']});
+
                                     /** set destroy event listener. */
-                                    destroySubmit.addEventListener('click', (e) => {
-                                        this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: destroySubmit});
-                                    });
-                                });
-                                /** query document close button. */
-                                let destroyClose = document.querySelector(".crypto-portfolio-destroy > .crypto-portfolio-modal > .destroy-close");
-                                /** set cancel event listener. */
-                                destroyClose.addEventListener('click', (e) => {
-                                    this.backdrop({mode:'hide', action:'destroy'});
+                                    let destroySubmit = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                                    if (destroySubmit) {
+                                        destroySubmit.addEventListener('click', (e) => {
+                                            this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: destroySubmit});
+                                        });
+                                    }
                                 });
 
-                                /** query document destroy button. */
-                                let destroyCancel = document.querySelector(".crypto-portfolio-destroy > .crypto-portfolio-modal > .destroy-cancel");
                                 /** set cancel event listener. */
-                                destroyCancel.addEventListener('click', (e) => {
-                                    this.backdrop({mode:'hide', action:'destroy'});
-                                });
+                                let destroyClose = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-close');
+                                if (destroyClose) {
+                                    destroyClose.addEventListener('click', (e) => {
+                                        this.backdrop({mode:'hide', action:'destroy'});
+                                    });
+                                }
+
+                                /** set cancel event listener. */
+                                let destroyCancel = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                                if (destroyCancel) {
+                                    destroyCancel.addEventListener('click', (e) => {
+                                        this.backdrop({mode:'hide', action:'destroy'});
+                                    });
+                                }
                             }
                         }
                     }, 10000);
@@ -151,7 +153,7 @@ class portfolio {
     backdrop(config) {
         if (config['mode'] === 'show') {
             /** query document to pinpoint modal element. */
-            let show = document.querySelector(`.crypto-portfolio-${config['action']}-wrapper`);
+            let show = document.querySelector(`.crypto-portfolio-${config['action']}`);
             /** show modal. */
             show.classList.add('backdrop');
             show.style.display = 'block';
@@ -159,7 +161,7 @@ class portfolio {
 
         if (config['mode'] === 'hide') {
             /** query document to pinpoint modal element. */
-            let modal = document.querySelector(`.crypto-portfolio-${config['action']}-wrapper`);
+            let modal = document.querySelector(`.crypto-portfolio-${config['action']}`);
             /** hide modal. */
             modal.classList.remove('backdrop');
             modal.style.display = 'none';
@@ -256,13 +258,13 @@ class portfolio {
     error(config) {
         /** run trough it all. */
         for (let key in config['data']) {
-            let display = document.querySelector(`.${config['target']} > .crypto-portfolio-modal > .modal-${key}-error`);
+            let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
             display.textContent = config['data'][key];
         }
         /** clear all error messages after five seconds. */
         setTimeout( () => {
             for (let key in config['data']) {
-                let display = document.querySelector(`.${config['target']} > .crypto-portfolio-modal > .modal-${key}-error`);
+                let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
                 display.textContent = '';
             }
         }, 5000);

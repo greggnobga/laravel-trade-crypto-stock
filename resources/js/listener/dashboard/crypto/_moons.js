@@ -29,12 +29,12 @@ class moons {
                     if (record) {
                         record.addEventListener("click", (e) => {
                             if (e.target.dataset.action === 'crypto') {
-                                /** show insert modal. */
+                                /** show modal. */
                                 this.backdrop({mode:'show', action:'insert'});
                             }
                         });
 
-                        /** query close button. */
+                        /** set close event listener. */
                         let insertClose = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-close');
                         if (insertClose) {
                             insertClose.addEventListener('click', (e) => {
@@ -42,7 +42,7 @@ class moons {
                             });
                         }
 
-                        /** query cancel button. */
+                        /** set cancel event listener. */
                         let insertCancel = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                         if (insertCancel) {
                             insertCancel.addEventListener('click', (e) => {
@@ -50,10 +50,9 @@ class moons {
                             });
                         }
 
-                        /** query submit button. */
+                        /** set submit event listener. */
                         let insertSubmit = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
                         if (insertSubmit) {
-                            /** set event listener. */
                             insertSubmit.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: insertSubmit});
                             })
@@ -67,14 +66,14 @@ class moons {
                                 update[i].addEventListener("click", () => {
                                     /** show modal. */
                                     this.backdrop({mode:'show', action:'update'});
+
                                     /** populate modal. */
                                     let parent = update[i].parentElement.parentElement;
                                     this.helper.init({type: 'input', action: 'populate', target: 'crypto-moon-update', el: parent, data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
 
-                                    /** query submit button. */
+                                    /** set submit event listener. */
                                     let updateSubmit = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
                                     if (updateSubmit) {
-                                        /** set event listener. */
                                         updateSubmit.addEventListener('click', (e) => {
                                             this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: updateSubmit});
                                         })
@@ -82,7 +81,7 @@ class moons {
                                 });
                             }
 
-                            /** query document close button. */
+                            /** set close event listener. */
                             let updateClose = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-close');
                             if (updateClose) {
                                 updateClose.addEventListener('click', (e) => {
@@ -90,7 +89,7 @@ class moons {
                                 });
                             }
 
-                            /** query document update button. */
+                            /** set cancel event listener. */
                             let updateCancel = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (updateCancel) {
                                 updateCancel.addEventListener('click', (e) => {
@@ -109,14 +108,14 @@ class moons {
                                 destroy[i].addEventListener("click", () => {
                                     /** show modal. */
                                     this.backdrop({mode:'show', action:'destroy'});
+
                                     /** populate modal. */
                                     let parent = destroy[i].parentElement.parentElement;
                                     this.helper.init({type: 'input', action: 'populate', target: 'crypto-moon-destroy', el: parent, data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
 
-                                    /** query submit button. */
+                                    /** set submit event listener. */
                                     let destroySubmit = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
                                     if (destroySubmit) {
-                                        /** set event listener. */
                                         destroySubmit.addEventListener('click', (e) => {
                                             this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: destroySubmit});
                                         })
@@ -124,7 +123,7 @@ class moons {
                                 });
                             }
 
-                            /** query document close button. */
+                            /** set close event listener. */
                             let destroyClose = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-close');
                             if (destroyClose) {
                                 destroyClose.addEventListener('click', (e) => {
@@ -132,7 +131,7 @@ class moons {
                                 });
                             }
 
-                            /** query document update button. */
+                            /** set cancel event listener. */
                             let destroyCancel = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (destroyCancel) {
                                 destroyCancel.addEventListener('click', (e) => {

@@ -1,4 +1,4 @@
-<div class="crypto-game-insert">
+<div class="crypto-screen-insert">
     <div class="crypto-modal">
         <div class="modal-group">
             <h2 class="modal-header">Add Record</h2>
@@ -74,7 +74,7 @@
     </div>
 </div>
 
-<div class="crypto-game-update">
+<div class="crypto-screen-update">
     <div class="crypto-modal">
         <div class="modal-group">
             <h2 class="modal-header">Update Record</h2>
@@ -150,7 +150,7 @@
     </div>
 </div>
 
-<div class="crypto-game-destroy">
+<div class="crypto-screen-destroy">
     <div class="crypto-modal">
         <div class="modal-group">
             <h2 class="modal-header">Destroy Record</h2>

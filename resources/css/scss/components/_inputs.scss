@@ -3,7 +3,8 @@ input[type=email],
 input[type=password],
 input[type=number],
 input[type=url],
-textarea {
+textarea,
+select {
     border-radius: 1rem;
     padding: 1rem;
     width: 100%;
@@ -12,7 +13,11 @@ textarea {
 }
 
 input:focus,
-input:active {
+input:active,
+textarea:focus,
+textarea:active,
+select:focus,
+select:active {
     outline: none;
     color: $cl-dark;
 }
@@ -22,7 +27,19 @@ input[type=email]:valid,
 input[type=password]:valid,
 input[type=number]:valid,
 input[type=url]:valid,
-textarea:valid {
+textarea:valid,
+select:valid {
     border: 1px solid rgba($cl-green, .50);
     color: rgba($cl-green, .75);
+}
+
+input[type=text]:invalid,
+input[type=email]:invalid,
+input[type=password]:invalid,
+input[type=number]:invalid,
+input[type=url]:invalid,
+textarea:invalid,
+select:invalid {
+    border: 1px solid rgba($cl-red, .50);
+    color: rgba($cl-red, .75);
 }

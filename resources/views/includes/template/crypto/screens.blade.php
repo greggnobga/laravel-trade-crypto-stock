@@ -2,15 +2,15 @@
     <div class="header">
         <div class="meta">
             <div class="left">
-                <h2>Game</h2>
+                <h2>Screen</h2>
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <button class="btn btn-primary click-game-record" data-action="crypto">Add Game</button>
+                <button class="btn btn-primary click-screen-record" data-action="crypto">Add Coin</button>
             </div>
         </div>
     </div>
-    <div class="crypto-game">
+    <div class="crypto-screen">
         <div class="items">
             <div class="id">ID</div>
             <div class="name">Title</div>

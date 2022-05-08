@@ -1,10 +1,9 @@
 @import "backdrop.scss";
 @import "sidebar.scss";
 @import "form.scss";
+
 @import "crypto/games.scss";
 @import "crypto/moons.scss";
+@import "crypto/portfolios.scss";
+@import "crypto/screens.scss";
 
-@import "crypto/portfolios/destroy.scss";
-@import "crypto/portfolios/insert.scss";
-@import "crypto/portfolios/update.scss";
-@import "crypto/portfolios/modal.scss";

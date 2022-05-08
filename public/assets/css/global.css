@@ -461,139 +461,28 @@
   display: none;
 }
 
-.crypto-portfolio-destroy-wrapper {
+.crypto-portfolio-insert {
   display: none;
 }
 
-.crypto-portfolio-insert-wrapper {
+.crypto-portfolio-update {
   display: none;
 }
 
-.crypto-portfolio-update-wrapper {
+.crypto-portfolio-destroy {
   display: none;
 }
 
-.crypto-portfolio-modal {
-  display: grid;
-  grid-template-rows: repeat(10, 1fr);
-  grid-template-columns: repeat(10, 1fr);
-  grid-row-gap: 2rem;
-  grid-column-gap: 1rem;
-  align-items: center;
-  justify-items: end;
-  color: #F5F5F5;
-  font-size: 1.75rem;
-  background: rgba(3, 166, 109, 0.5);
-  border: 2px solid rgba(245, 245, 245, 0.5);
-  border-radius: 1rem;
+.crypto-screen-insert {
+  display: none;
 }
-.crypto-portfolio-modal .modal-header {
-  grid-row: 1/2;
-  grid-column: 1/6;
-  align-self: center;
-  justify-self: start;
-  padding: 1rem;
+
+.crypto-screen-update {
+  display: none;
 }
-.crypto-portfolio-modal .modal-close {
-  grid-row: 1/2;
-  grid-column: 10/11;
-  align-self: center;
-  justify-self: center;
-  padding: 1rem 2rem;
-  color: #F5F5F5;
-  cursor: pointer;
-}
-.crypto-portfolio-modal .modal-id-label {
-  grid-row: 2/3;
-  grid-column: 2/3;
-}
-.crypto-portfolio-modal .modal-id {
-  grid-row: 2/3;
-  grid-column: 3/9;
-}
-.crypto-portfolio-modal .modal-order-label {
-  grid-row: 3/4;
-  grid-column: 2/3;
-}
-.crypto-portfolio-modal .modal-order {
-  grid-row: 3/4;
-  grid-column: 3/9;
-}
-.crypto-portfolio-modal .modal-order-error {
-  grid-row: 3/4;
-  grid-column: 9/11;
-}
-.crypto-portfolio-modal .modal-wallet-label {
-  grid-row: 4/5;
-  grid-column: 2/3;
-}
-.crypto-portfolio-modal .modal-wallet {
-  grid-row: 4/5;
-  grid-column: 3/9;
-}
-.crypto-portfolio-modal .modal-wallet-error {
-  grid-row: 4/5;
-  grid-column: 9/11;
-}
-.crypto-portfolio-modal .modal-name-label {
-  grid-row: 5/6;
-  grid-column: 2/3;
-}
-.crypto-portfolio-modal .modal-name {
-  grid-row: 5/6;
-  grid-column: 3/9;
-}
-.crypto-portfolio-modal .modal-name-error {
-  grid-row: 5/6;
-  grid-column: 9/11;
-}
-.crypto-portfolio-modal .modal-coin-label {
-  grid-row: 6/7;
-  grid-column: 2/3;
-}
-.crypto-portfolio-modal .modal-coin {
-  grid-row: 6/7;
-  grid-column: 3/9;
-}
-.crypto-portfolio-modal .modal-coin-error {
-  grid-row: 6/7;
-  grid-column: 9/11;
-}
-.crypto-portfolio-modal .modal-quantity-label {
-  grid-row: 7/8;
-  grid-column: 2/3;
-}
-.crypto-portfolio-modal .modal-quantity {
-  grid-row: 7/8;
-  grid-column: 3/9;
-}
-.crypto-portfolio-modal .modal-quantity-error {
-  grid-row: 7/8;
-  grid-column: 9/11;
-}
-.crypto-portfolio-modal .modal-capital-label {
-  grid-row: 8/9;
-  grid-column: 2/3;
-}
-.crypto-portfolio-modal .modal-capital {
-  grid-row: 8/9;
-  grid-column: 3/9;
-}
-.crypto-portfolio-modal .modal-capital-error {
-  grid-row: 8/9;
-  grid-column: 9/11;
-}
-.crypto-portfolio-modal .modal-cancel {
-  grid-row: 9/10;
-  grid-column: 7/8;
-}
-.crypto-portfolio-modal .modal-submit {
-  grid-row: 9/10;
-  grid-column: 8/9;
-}
-.crypto-portfolio-modal .modal-error {
-  width: 100%;
-  font-size: 1.25rem;
+
+.crypto-screen-destroy {
+  display: none;
 }
 
 /** ---------- Cores ---------- */
@@ -840,7 +729,8 @@ input[type=email],
 input[type=password],
 input[type=number],
 input[type=url],
-textarea {
+textarea,
+select {
   border-radius: 1rem;
   padding: 1rem;
   width: 100%;
@@ -849,7 +739,11 @@ textarea {
 }
 
 input:focus,
-input:active {
+input:active,
+textarea:focus,
+textarea:active,
+select:focus,
+select:active {
   outline: none;
   color: #383838;
 }
@@ -859,9 +753,21 @@ input[type=email]:valid,
 input[type=password]:valid,
 input[type=number]:valid,
 input[type=url]:valid,
-textarea:valid {
+textarea:valid,
+select:valid {
   border: 1px solid rgba(3, 166, 109, 0.5);
   color: rgba(3, 166, 109, 0.75);
+}
+
+input[type=text]:invalid,
+input[type=email]:invalid,
+input[type=password]:invalid,
+input[type=number]:invalid,
+input[type=url]:invalid,
+textarea:invalid,
+select:invalid {
+  border: 1px solid rgba(208, 54, 79, 0.5);
+  color: rgba(208, 54, 79, 0.75);
 }
 
 label {
@@ -1163,6 +1069,17 @@ select {
   padding: 1rem;
 }
 .crypto-order > .items:last-child {
+  border-bottom: none;
+}
+
+.crypto-screen > .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 2rem repeat(9, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 1rem;
+}
+.crypto-screen > .items:last-child {
   border-bottom: none;
 }
 

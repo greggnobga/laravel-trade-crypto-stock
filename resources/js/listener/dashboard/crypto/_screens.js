@@ -22,7 +22,7 @@ class screen {
 
     request() {
        axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.get('/api/user').then(response => {
+            axios.get('/api/crypto-screen-retrieve').then(response => {
                 console.log(response.data);
             });
         });

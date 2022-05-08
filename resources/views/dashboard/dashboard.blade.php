@@ -19,7 +19,8 @@
     </template>
 
     <template class="stage-crypto-screens">
-        <h2>Template for screen data.</h2>
+        @include('includes.template.crypto.screens')
+        @include('includes.modal.crypto.screens')
     </template>
 
     <template class="stage-crypto-games">

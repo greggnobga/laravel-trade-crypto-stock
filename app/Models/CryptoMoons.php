@@ -7,27 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Portfolio extends Model
+class CryptoMoons extends Model
 {
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * Base table.
      */
 
-    protected $table = 'portfolios';
+    protected $table = 'crypto_moons';
 
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
         'userid',
-        'order',
-        'wallet',
         'name',
         'coin',
-        'capital',
-        'quantity',
+        'description',
+        'zone',
+        'website',
     ];
 
     /**
@@ -45,6 +45,6 @@ class Portfolio extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'userid');
+        return $this->belongsTo(Users::class, 'userid');
     }
 }

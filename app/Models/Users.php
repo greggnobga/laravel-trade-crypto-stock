@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Users extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -49,7 +49,7 @@ class User extends Authenticatable
      */
     public function portfolio()
     {
-        return $this->hasOne(Portfolio::class, 'userid');
+        return $this->hasOne(CryptoPortfolios::class, 'userid');
     }
 
     /**
@@ -57,6 +57,6 @@ class User extends Authenticatable
      */
     public function moon()
     {
-        return $this->hasOne(Moon::class, 'userid');
+        return $this->hasOne(CryptoMoons::class, 'userid');
     }
 }

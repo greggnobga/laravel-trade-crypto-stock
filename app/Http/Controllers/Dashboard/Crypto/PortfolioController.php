@@ -33,7 +33,7 @@ class PortfolioController extends Controller {
                 $fund = [];
 
                 /** order data. */
-                $coin = DB::table('portfolios')
+                $coin = DB::table('crypto_portfolios')
                     ->select('id', 'created_at as date', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital')
                     ->where('userid', '=', Auth::id())
                     ->get();
@@ -46,7 +46,7 @@ class PortfolioController extends Controller {
                 $result['order'] = $order;
 
                 /** create coin buy list. */
-                $diamond['buy'] = DB::table('portfolios')
+                $diamond['buy'] = DB::table('crypto_portfolios')
                     ->select('coin')
                     ->where('order', '=', 'buy')
                     ->where('userid', '=', Auth::id())
@@ -57,7 +57,7 @@ class PortfolioController extends Controller {
                     $hold['buy'] = $this->helpers(['purpose' => 'compute', 'condition' => 'buy', 'source' => 'hold', 'coin' => $diamond['buy']]);
                 }
                 /** create coin sell list. */
-                $diamond['sell'] = DB::table('portfolios')
+                $diamond['sell'] = DB::table('crypto_portfolios')
                     ->select('coin')
                     ->where('order', '=', 'sell')
                     ->where('userid', '=', Auth::id())
@@ -98,7 +98,7 @@ class PortfolioController extends Controller {
                 $result['hold'] = $hold;
 
                 /** wallet data. */
-                $wallet = DB::table('portfolios')
+                $wallet = DB::table('crypto_portfolios')
                     ->select('wallet')
                     ->where('userid', '=', Auth::id())
                     ->get()
@@ -106,7 +106,7 @@ class PortfolioController extends Controller {
 
                 if ($wallet) {
                     foreach ($wallet as $key => $value) {
-                        $buy = DB::table('portfolios')
+                        $buy = DB::table('crypto_portfolios')
                             ->select('capital')
                             ->where('order', '=', 'buy')
                             ->where('wallet', '=', $value->wallet)
@@ -117,7 +117,7 @@ class PortfolioController extends Controller {
                         $fund['buy'][$key]['name'] = $value->wallet;
                         $fund['buy'][$key]['capital'] = number_format($buy, '2', '.', ',');
 
-                        $sell = DB::table('portfolios')
+                        $sell = DB::table('crypto_portfolios')
                             ->select('capital')
                             ->where('order', '=', 'sell')
                             ->where('wallet', '=', $value->wallet)
@@ -132,7 +132,7 @@ class PortfolioController extends Controller {
                 }
 
                 /** check if not empty. */
-                $check = DB::table('portfolios')
+                $check = DB::table('crypto_portfolios')
                     ->select('coin')
                     ->where('userid', '=', Auth::id())
                     ->first();
@@ -182,7 +182,7 @@ class PortfolioController extends Controller {
     public function store($data) {
         if ($data['table'] === 'portfolio') {
             /** insert with appropriate data. */
-            $insert = DB::table('portfolios')
+            $insert = DB::table('crypto_portfolios')
                 ->insertGetId([
                     'userid' => Auth::id(),
                     'order' => strip_tags($data['input']['order']),
@@ -195,7 +195,7 @@ class PortfolioController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($insert) {
-                $coins = DB::table('portfolios')
+                $coins = DB::table('crypto_portfolios')
                     ->select('id', 'created_at as date', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital')
                     ->where('id', '=', $insert)
                     ->where('userid', '=', Auth::id())
@@ -214,7 +214,7 @@ class PortfolioController extends Controller {
     public function update($data) {
         if ($data['table'] === 'portfolio') {
             /** run update query.*/
-            $update = DB::table('portfolios')
+            $update = DB::table('crypto_portfolios')
                 ->where('id', $data['input']['id'])
                 ->where('userid', Auth::id())
                 ->update([
@@ -227,7 +227,7 @@ class PortfolioController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($update) {
-                $coins = DB::table('portfolios')
+                $coins = DB::table('crypto_portfolios')
                     ->select('id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital')
                     ->where('id', '=', $data['input']['id'])
                     ->where('userid', '=', Auth::id())
@@ -245,7 +245,7 @@ class PortfolioController extends Controller {
      */
     public function destroy($data) {
         if ($data['table'] === 'portfolio') {
-            $delete = DB::table('portfolios')
+            $delete = DB::table('crypto_portfolios')
                 ->where('id', '=', $data['input']['id'])
                 ->where('userid', '=', Auth::id())
                 ->delete();
@@ -286,7 +286,7 @@ class PortfolioController extends Controller {
             foreach ($data['coin'] as $key => $value) {
                 foreach ($value as $item) {
                     /** query record. */
-                    $record[$key] = DB::table('portfolios')
+                    $record[$key] = DB::table('crypto_portfolios')
                         ->select('name', 'coin')
                         ->where('order', '=', $data['condition'])
                         ->where('coin', '=', strtolower($item))
@@ -306,7 +306,7 @@ class PortfolioController extends Controller {
                     }
 
                     /** sum quantity. */
-                    $quantity = DB::table('portfolios')
+                    $quantity = DB::table('crypto_portfolios')
                         ->select('quantity')
                         ->where('order', '=', $data['condition'])
                         ->where('coin', '=', strtolower($item))
@@ -317,7 +317,7 @@ class PortfolioController extends Controller {
                     $result[$key]['quantity'] = number_format($quantity, '2', '.', ',');
 
                     /** sum capital. */
-                    $capital = DB::table('portfolios')
+                    $capital = DB::table('crypto_portfolios')
                         ->select('capital')
                         ->where('order', '=', $data['condition'])
                         ->where('coin', '=', strtolower($item))

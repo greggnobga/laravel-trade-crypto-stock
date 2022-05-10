@@ -38,7 +38,7 @@
 
         <div class="modal-group">
             <label class="modal-website-label" for="website">Website</label>
-            <input id="website" class="modal-website" name="website" type="url" placeholder="trade.poseidon.local" required/>
+            <input id="website" class="modal-website" name="website" type="text" placeholder="trade.poseidon.local" required/>
             <span class="modal-error modal-website-error"></span>
         </div>
 
@@ -142,7 +142,7 @@
         </div>
         <div class="modal-group">
             <label class="modal-website-label" for="website">Website</label>
-            <input id="website" class="modal-website" name="website" type="url" placeholder="trade.poseidon.local" disabled/>
+            <input id="website" class="modal-website" name="website" type="text" placeholder="trade.poseidon.local" disabled/>
             <span class="modal-error modal-website-error"></span>
         </div>
         <div class="modal-group">

@@ -11,7 +11,7 @@ class CreatePortfoliosTable extends Migration
      */
     public function up()
     {
-        Schema::create('portfolios', function (Blueprint $table) {
+        Schema::create('crypto_portfolios', function (Blueprint $table) {
             $table->id();
             $table->integer('userid');
             $table->string('order');
@@ -29,6 +29,6 @@ class CreatePortfoliosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('portfolios');
+        Schema::dropIfExists('crypto_portfolios');
     }
 }

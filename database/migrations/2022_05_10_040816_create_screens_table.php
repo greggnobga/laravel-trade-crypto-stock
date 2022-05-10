@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('crypto_moons', function (Blueprint $table) {
+        Schema::create('crypto_screens', function (Blueprint $table) {
             $table->id();
             $table->integer('userid');
-            $table->string('name');
-            $table->string('coin')->unique();
-            $table->text('description');
-            $table->string('zone');
-            $table->string('website');
+            $table->string('api');
+            $table->decimal('currency',12,4)->default(0.00);
+            $table->decimal('market',12,4)->default(0.00);
+            $table->decimal('volume',12,4)->default(0.00);
+            $table->decimal('change',12,4)->default(0.00);
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('crypto_moons');
+        Schema::dropIfExists('crypto_screens');
     }
 };

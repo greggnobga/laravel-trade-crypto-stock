@@ -27,7 +27,7 @@ class GameController extends Controller {
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
             if ($request->input('table') === 'game') {
-                $game = DB::table('games')
+                $game = DB::table('crypto_games')
                     ->select('id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating')
                     ->where('userid', '=', Auth::id())
                     ->get();
@@ -50,7 +50,7 @@ class GameController extends Controller {
     public function store($data) {
         if ($data['table'] === 'game') {
             /** insert with appropriate data. */
-            $insert = DB::table('games')
+            $insert = DB::table('crypto_games')
                 ->insertGetId([
                     'userid' => Auth::id(),
                     'title' => strip_tags($data['input']['title']),
@@ -67,7 +67,7 @@ class GameController extends Controller {
 
             /** retrieve newly created record. */
             if ($insert) {
-                $coins = DB::table('games')
+                $coins = DB::table('crypto_games')
                     ->select('id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating')
                     ->where('id', '=', $insert)
                     ->where('userid', '=', Auth::id())
@@ -95,7 +95,7 @@ class GameController extends Controller {
     public function update($data) {
         if ($data['table'] === 'game') {
             /** run update query.*/
-            $update = DB::table('games')
+            $update = DB::table('crypto_games')
                 ->where('id', $data['input']['id'])
                 ->where('userid', Auth::id())
                 ->update([
@@ -110,7 +110,7 @@ class GameController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($update) {
-                $coins = DB::table('games')
+                $coins = DB::table('crypto_games')
                     ->select('id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating')
                     ->where('id', '=', $data['input']['id'])
                     ->where('userid', '=', Auth::id())
@@ -127,7 +127,7 @@ class GameController extends Controller {
      */
     public function destroy($data) {
         if ($data['table'] === 'game') {
-            $delete = DB::table('games')
+            $delete = DB::table('crypto_games')
                 ->where('id', '=', $data['input']['id'])
                 ->where('userid', '=', Auth::id())
                 ->delete();

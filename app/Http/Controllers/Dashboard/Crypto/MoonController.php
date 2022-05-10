@@ -27,7 +27,7 @@ class MoonController extends Controller {
         if ($request->method() === 'GET') {
             if ($request->input('table') === 'moon') {
                 /** moon data. */
-                $moon = DB::table('moons')
+                $moon = DB::table('crypto_moons')
                     ->select('id', 'name', 'coin', 'description', 'zone', 'website')
                     ->where('userid', '=', Auth::id())
                     ->get();
@@ -48,14 +48,14 @@ class MoonController extends Controller {
      */
     public function store($data) {
         if ($data['table'] === 'moon') {
-            $unique = DB::table('moons')
+            $unique = DB::table('crypto_moons')
                 ->select('coin')
                 ->where('coin', '=', $data['input']['coin'])
                 ->where('userid', '=', Auth::id())
                 ->first();
             if (!$unique) {
                 /** insert with appropriate data. */
-                $insert = DB::table('moons')
+                $insert = DB::table('crypto_moons')
                     ->insertGetId([
                         'userid' => Auth::id(),
                         'name' => strip_tags($data['input']['name']),
@@ -67,7 +67,7 @@ class MoonController extends Controller {
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
                 if ($insert) {
-                    $moon = DB::table('moons')
+                    $moon = DB::table('crypto_moons')
                         ->select('id', 'name', 'coin', 'description', 'zone', 'website')
                         ->where('id', '=', $insert)
                         ->where('userid', '=', Auth::id())
@@ -91,7 +91,7 @@ class MoonController extends Controller {
     public function update($data) {
         if ($data['table'] === 'moon') {
             /** run update query.*/
-            $update = DB::table('moons')
+            $update = DB::table('crypto_moons')
                 ->where('id', $data['input']['id'])
                 ->where('userid', Auth::id())
                 ->update([
@@ -102,7 +102,7 @@ class MoonController extends Controller {
                     'website' => strip_tags($data['input']['website']),
                 ]);
             if ($update) {
-                $coins = DB::table('moons')
+                $coins = DB::table('crypto_moons')
                     ->select('id', 'name', 'coin', 'description', 'zone', 'website')
                     ->where('id', '=', $data['input']['id'])
                     ->where('userid', '=', Auth::id())
@@ -119,7 +119,7 @@ class MoonController extends Controller {
      */
     public function destroy($data) {
         if ($data['table'] === 'moon') {
-            $delete = DB::table('moons')
+            $delete = DB::table('crypto_moons')
                 ->where('id', '=', $data['input']['id'])
                 ->where('userid', '=', Auth::id())
                 ->delete();

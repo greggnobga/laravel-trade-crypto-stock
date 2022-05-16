@@ -13,12 +13,25 @@ class PortfolioController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
+            /** forward insert command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'insert') {
-                return $this->store(['table' => 'portfolio', 'input' => $request->input('input')]);
+                if ($request->input('order') === 'buy') {
+                    return $this->store(['table' => 'portfolio', 'input' => $request->input('input')]);
+                } else {
+                    return ['status' =>  false, 'sql' => 'insert', 'message' => 'No sell order allowed, just BTFD and HODL.', 'coin' => '' ];
+                }
             }
+
+            /** forward update command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'update') {
-                return $this->update(['table' => 'portfolio', 'input' => $request->input('input')]);
+                if ($request->input('order') === 'buy') {
+                    return $this->update(['table' => 'portfolio', 'input' => $request->input('input')]);
+                } else {
+                    return ['status' =>  false, 'sql' => 'update', 'message' => 'No sell order allowed, just BTFD and HODL.', 'coin' => '' ];
+                }
             }
+
+            /** forward destroy command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'destroy') {
                 return $this->destroy(['table' => 'portfolio', 'input' => $request->input('input')]);
             }

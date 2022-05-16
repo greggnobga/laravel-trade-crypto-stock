@@ -300,9 +300,12 @@ class screen {
                         if (response.data.sql === 'destroy') {
                             this.helper.init({type:'node', target:'crypto-screen', statement: response.data.sql, input: response.data.coin});
                         }
+                        /** display success message. */
+                        this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
                     }
-                    /** display message. */
-                    if (response.data.status) {
+
+                    /** display error message. */
+                    if (response.data.status === false) {
                         this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
                     }
                 });

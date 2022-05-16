@@ -233,6 +233,7 @@ class portfolio {
             axios.get('/sanctum/csrf-cookie').then( () => {
                 axios.post('/api/crypto-portfolio-store', {
                     table: config['table'],
+                    order: config['input']['order'].toLowerCase(),
                     statement: config['statement'],
                     input: config['input']
                 }).then(response => {
@@ -255,9 +256,12 @@ class portfolio {
                             this.helper.init({type:'node', target:'crypto-order', statement: response.data.sql, input: response.data.coin});
                         }
 
+                        /** display success message. */
+                        this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
                     }
-                    /** display message. */
-                    if (response.data.status) {
+
+                    /** display error message. */
+                    if (response.data.status === false) {
                         this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
                     }
                 })

@@ -31,31 +31,31 @@ class games {
                             if (e.target.dataset.action === 'crypto') {
                                 /** show modal. */
                                 this.backdrop({mode:'show', action:'insert'});
+
+                                /** set submit event listener. */
+                                let gameSubmit = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                                if (gameSubmit) {
+                                    gameSubmit.addEventListener('click', (e) => {
+                                        this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: gameSubmit});
+                                    })
+                                }
                             }
                         });
 
                         /** set close event listener. */
-                        let insertClose = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-close');
-                        if (insertClose) {
-                            insertClose.addEventListener('click', (e) => {
+                        let gameClose = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-close');
+                        if (gameClose) {
+                            gameClose.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'insert'});
                             });
                         }
 
                         /** set cancel event listener. */
-                        let insertCancel = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-                        if (insertCancel) {
-                            insertCancel.addEventListener('click', (e) => {
+                        let gameCancel = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                        if (gameCancel) {
+                            gameCancel.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'insert'});
                             });
-                        }
-
-                        /** set submit event listener. */
-                        let insertSubmit = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
-                        if (insertSubmit) {
-                            insertSubmit.addEventListener('click', (e) => {
-                                this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: insertSubmit});
-                            })
                         }
                     }
                     /** update modal code block. */
@@ -72,27 +72,27 @@ class games {
                                     this.helper.init({type: 'input', action: 'populate', target: 'crypto-game-update', el: parent, data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
 
                                     /** set submit event listener. */
-                                    let updateSubmit = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
-                                    if (updateSubmit) {
-                                        updateSubmit.addEventListener('click', (e) => {
-                                            this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: updateSubmit});
+                                    let gameSubmit = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                                    if (gameSubmit) {
+                                        gameSubmit.addEventListener('click', (e) => {
+                                            this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: gameSubmit});
                                         })
                                     }
                                 });
                             }
 
                             /** set close event listener. */
-                            let updateClose = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-close');
-                            if (updateClose) {
-                                updateClose.addEventListener('click', (e) => {
+                            let gameClose = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-close');
+                            if (gameClose) {
+                                gameClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'update'});
                                 });
                             }
 
                             /** set cancel event listener. */
-                            let updateCancel = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-                            if (updateCancel) {
-                                updateCancel.addEventListener('click', (e) => {
+                            let gameCancel = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            if (gameCancel) {
+                                gameCancel.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'update'});
                                 });
                             }
@@ -114,27 +114,27 @@ class games {
                                     this.helper.init({type: 'input', action: 'populate', target: 'crypto-game-destroy', el: parent, data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
 
                                     /** set submit event listener. */
-                                    let destroySubmit = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
-                                    if (destroySubmit) {
-                                        destroySubmit.addEventListener('click', (e) => {
-                                            this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: destroySubmit});
+                                    let gameSubmit = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                                    if (gameSubmit) {
+                                        gameSubmit.addEventListener('click', (e) => {
+                                            this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: gameSubmit});
                                         })
                                     }
                                 });
                             }
 
                             /** set close event listener. */
-                            let destroyClose = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-close');
-                            if (destroyClose) {
-                                destroyClose.addEventListener('click', (e) => {
+                            let gameClose = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-close');
+                            if (gameClose) {
+                                gameClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'destroy'});
                                 });
                             }
 
                             /** set cancel event listener. */
-                            let destroyCancel = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-                            if (destroyCancel) {
-                                destroyCancel.addEventListener('click', (e) => {
+                            let gameCancel = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            if (gameCancel) {
+                                gameCancel.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'destroy'});
                                 });
                             }
@@ -153,38 +153,47 @@ class games {
 
     /** function on how backdrop behaves. */
     backdrop(config) {
+        /** query modal. */
+        let modal = document.querySelector(`.crypto-game-${config['action']}`);
+
         if (config['mode'] === 'show') {
-            /** query document to pinpoint modal element. */
-            let show = document.querySelector(`.crypto-game-${config['action']}`);
-            /** remove and hide backdrop. */
-            show.classList.add('backdrop');
-            show.style.display = 'block';
+            /** show backdrop. */
+            modal.classList.add('backdrop');
+            modal.style.display = 'block';
         }
 
         if (config['mode'] === 'hide') {
-            /** query document to pinpoint modal element. */
-            let hide = document.querySelector(`.crypto-game-${config['action']}`);
-            /** remove and hide backdrop. */
-            hide.classList.add('backdrop');
-            hide.style.display = 'none';
+            /** hide backdrop. */
+            modal.classList.remove('backdrop');
+            modal.style.display = 'none';
+
             if (config['trigger'] === 'submit') {
+                /** hide backdrop. */
+                modal.classList.remove('backdrop');
+                modal.style.display = 'none';
+
                 /** collect all input for processing. */
                 let collect = this.helper.init({type:'input', target: `crypto-game-${config['action']}`, action: 'value', data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
+
                 /** check if inputs are empty and valid. */
                 let result = this.helper.init({type: 'validate', data: collect});
+
                 /** double check and then proceed. */
                 if (Object.keys(result['error']).length === 0) {
-                    /** hide backdrop. */
-                    this.backdrop({mode:'hide', action:config['action']});
                     /** request access token and then post to backend. */
                     this.request({method: 'POST', table: 'game', statement: `${config['action']}`, input: result['success']});
+
                     /** clear input if insert. */
                     if (config['action'] === 'insert') {
                         this.helper.init({type:'input', target: `crypto-game-${config['action']}`, action: 'clear', data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
                     }
                 } else {
-                    this.backdrop({mode:'show', action:config['action']});
+                    /** display error. */
                     this.error({target: `crypto-game-${config['action']}`, data:result['error']});
+
+                    /** show backdrop. */
+                    modal.classList.add('backdrop');
+                    modal.style.display = 'block';
                 }
             }
         }

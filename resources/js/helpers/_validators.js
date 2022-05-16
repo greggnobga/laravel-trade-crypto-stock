@@ -10,7 +10,7 @@ class validator {
                     config['data'][key] = config['data'][key].replace(',', '');
                 }
                 if (typeof(key) === 'string') {
-                    if (/^[a-zA-Z0-9,. ]*$/i.test(config['data'][key]) === true) {
+                    if (/^[a-zA-Z0-9\-&,. ]*$/i.test(config['data'][key]) === true) {
                         success[key] = config['data'][key];
                     } else {
                         error[key] = 'Only letters and numbers are allowed.';

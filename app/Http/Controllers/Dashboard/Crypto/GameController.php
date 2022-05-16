@@ -38,10 +38,13 @@ class GameController extends Controller {
                     $item = collect($value);
                     $result[$key] = $item->put('action', 'Update Destroy');
                 }
+
                 /** return. */
                 return ['status' => true, 'sql' => 'select', 'coin' => $result];
             }
         }
+        /** return. */
+        return false;
     }
 
     /**
@@ -87,6 +90,8 @@ class GameController extends Controller {
                 return ['status' =>  false, 'sql' => 'select', 'message' => 'No changes made.', 'coin' => '' ];
             }
         }
+        /** return. */
+        return true;
     }
 
     /**
@@ -120,6 +125,9 @@ class GameController extends Controller {
                 return ['status' =>  false, 'sql' => 'update', 'message' => 'No changes made.', 'coin' => '' ];
             }
         }
+
+        /** return. */
+        return true;
     }
 
     /**
@@ -137,5 +145,8 @@ class GameController extends Controller {
                 return ['status' =>  false, 'sql' => 'destroy', 'message' => 'No changes made.', 'coin' => '' ];
             }
         }
+
+        /** return. */
+        return true;
     }
 }

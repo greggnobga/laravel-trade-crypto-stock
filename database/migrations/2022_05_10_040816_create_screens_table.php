@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->integer('userid');
             $table->string('api');
-            $table->decimal('currency',12,4)->default(0.00);
-            $table->decimal('market',12,4)->default(0.00);
-            $table->decimal('volume',12,4)->default(0.00);
-            $table->decimal('change',12,4)->default(0.00);
+            $table->string('coin');
+            $table->decimal('price',24,2)->default(0.00);
+            $table->decimal('market',24,2)->default(0.00);
+            $table->decimal('volume',24,2)->default(0.00);
+            $table->decimal('change',24,2)->default(0.00);
             $table->timestamps();
         });
     }

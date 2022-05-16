@@ -436,6 +436,18 @@
   grid-row: 1/2;
   grid-column: 10/11;
 }
+.crypto-modal .modal-group .modal-gecko {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5fr 1fr;
+  grid-column-gap: 2rem;
+}
+.crypto-modal .modal-group .modal-gecko .modal-fetch {
+  width: 100%;
+  justify-self: end;
+  align-self: center;
+  border-radius: 1rem;
+}
 
 .crypto-game-insert {
   display: none;
@@ -702,6 +714,10 @@ a:hover {
 }
 .card .header .meta .left h2 {
   padding: 1rem;
+}
+.card .header .meta .left span {
+  font-size: 1.25rem;
+  font-weight: lighter;
 }
 .card .header .meta .right {
   align-self: center;
@@ -1075,7 +1091,8 @@ select {
 .crypto-screen > .items {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 2rem repeat(9, 1fr);
+  grid-template-columns: 2rem repeat(7, 1fr);
+  grid-column-gap: 2rem;
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   padding: 1rem;
 }

@@ -18,8 +18,8 @@ class CreatePortfoliosTable extends Migration
             $table->string('wallet');
             $table->string('name');
             $table->string('coin');
-            $table->decimal('capital',12,4)->default(0.00);
-            $table->decimal('quantity',12,4)->default(0.00);
+            $table->decimal('capital',24,2)->default(0.00);
+            $table->decimal('quantity',24,2)->default(0.00);
             $table->timestamps();
         });
     }

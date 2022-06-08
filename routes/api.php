@@ -28,4 +28,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::post('/crypto-screen-store', [App\Http\Controllers\Dashboard\Crypto\ScreenController::class, 'init']);
     Route::get('/crypto-screen-retrieve', [App\Http\Controllers\Dashboard\Crypto\ScreenController::class, 'init']);
+
+    Route::post('/crypto-overview-store', [App\Http\Controllers\Dashboard\Crypto\OverviewController::class, 'init']);
+    Route::get('/crypto-overview-retrieve', [App\Http\Controllers\Dashboard\Crypto\OverviewController::class, 'init']);
 });

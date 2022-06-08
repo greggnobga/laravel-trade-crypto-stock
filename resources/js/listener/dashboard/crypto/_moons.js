@@ -1,7 +1,7 @@
 /** import helper function. */
 import helpers from "../../../helpers/helpers.js";
 
-class moons {
+class crypto_moons {
     constructor() {
         this.event = document.querySelector(".speak-crypto-moons");
         this.template = document.querySelector(".stage-crypto-moons");
@@ -12,7 +12,7 @@ class moons {
     init() {
         /** setup overview listener. */
         this.event.addEventListener("click", (e) => {
-            if (e.target.dataset.sidebar === 'moons') {
+            if (e.target.dataset.sidebar === 'crypto_moons') {
                 /** retrieve data .*/
                 this.request({method: 'GET', table:'moon'});
                 /** clone template. */
@@ -273,4 +273,4 @@ class moons {
         }, 5000);
     }
 }
-export default new moons();
+export default new crypto_moons();

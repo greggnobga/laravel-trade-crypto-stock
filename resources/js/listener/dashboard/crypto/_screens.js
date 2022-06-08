@@ -12,7 +12,7 @@ class screen {
     init() {
         /** setup overview listener. */
         this.event.addEventListener("click", (e) => {
-            if (e.target.dataset.sidebar === 'screens') {
+            if (e.target.dataset.sidebar === 'crypto_screens') {
                 /** retrieve data .*/
                 this.request({method: 'GET', table:'screen', provider: 'local'});
                 let content = this.template.content.cloneNode(true);

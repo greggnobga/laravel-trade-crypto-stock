@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Dashboard;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 
@@ -9,9 +7,8 @@ class DashboardController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function init()
-    {
-        return View::make('dashboard.dashboard')->with('Jane', 'Smith');
+    public function init() {
+        return View::make('dashboard.dashboard');
     }
 
     public function user() {

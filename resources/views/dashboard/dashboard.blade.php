@@ -37,4 +37,24 @@
         @include('includes.template.crypto.portfolios')
         @include('includes.modal.crypto.portfolios')
     </template>
+
+    <template class="stage-stock-overviews">
+        @include('includes.template.stock.overviews')
+    </template>
+
+    <template class="stage-stock-watchlists">
+        @include('includes.template.stock.watchlists')
+    </template>
+
+    <template class="stage-stock-portfolios">
+        @include('includes.template.stock.portfolios')
+    </template>
+
+    <template class="stage-stock-trades">
+        @include('includes.template.stock.trades')
+    </template>
+
+    <template class="stage-stock-notes">
+        @include('includes.template.stock.notes')
+    </template>
 @stop

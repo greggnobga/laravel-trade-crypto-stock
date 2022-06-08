@@ -1,7 +1,7 @@
 /** import helper function. */
 import helpers from "../../../helpers/helpers.js";
 
-class portfolio {
+class crypto_portfolio {
     /** default actions. */
     constructor() {
         this.event = document.querySelector(".speak-crypto-portfolios");
@@ -14,7 +14,7 @@ class portfolio {
     init() {
         /** setup initial listener. */
         this.event.addEventListener("click", (e) => {
-            if (e.target.dataset.sidebar === 'portfolios') {
+            if (e.target.dataset.sidebar === 'crypto_portfolios') {
                 /** retrieve data .*/
                 this.request({method: 'GET', table:'portfolio'});
                 /** clone template. */
@@ -40,7 +40,7 @@ class portfolio {
                                 if (portfolioSubmit) {
                                     portfolioSubmit.addEventListener('click', (e) => {
                                         this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: portfolioSubmit});
-                                    })
+                                    });
                                 }
                             }
 
@@ -167,7 +167,7 @@ class portfolio {
 
             if (config['trigger'] === 'submit') {
                 /** collect all input for processing. */
-                let collect = this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'value', data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']});;
+                let collect = this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'value', data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']});
 
                 /** check if inputs are empty and valid. */
                 let result = this.helper.init({type: 'validate', data: collect});
@@ -284,4 +284,4 @@ class portfolio {
         }, 5000);
     }
 }
-export default new portfolio();
+export default new crypto_portfolio();

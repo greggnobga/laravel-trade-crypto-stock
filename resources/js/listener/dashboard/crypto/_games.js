@@ -1,7 +1,7 @@
 /** import helper function. */
 import helpers from "../../../helpers/helpers.js";
 
-class games {
+class crypto_games {
     constructor() {
         this.event = document.querySelector(".speak-crypto-games");
         this.template = document.querySelector(".stage-crypto-games");
@@ -12,7 +12,7 @@ class games {
     init() {
         /** setup overview listener. */
         this.event.addEventListener("click", (e) => {
-            if (e.target.dataset.sidebar === 'games') {
+            if (e.target.dataset.sidebar === 'crypto_games') {
                 /** retrieve data .*/
                 this.request({method: 'GET', table:'game'});
                 /** clone template. */
@@ -273,4 +273,4 @@ class games {
         }, 5000);
     }
 }
-export default new games();
+export default new crypto_games();

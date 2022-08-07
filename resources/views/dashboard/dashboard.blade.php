@@ -48,6 +48,7 @@
 
     <template class="stage-stock-portfolios">
         @include('includes.template.stock.portfolios')
+        @include('includes.modal.stock.portfolios')
     </template>
 
     <template class="stage-stock-trades">

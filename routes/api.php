@@ -31,4 +31,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::post('/crypto-overview-store', [App\Http\Controllers\Dashboard\Crypto\OverviewController::class, 'init']);
     Route::get('/crypto-overview-retrieve', [App\Http\Controllers\Dashboard\Crypto\OverviewController::class, 'init']);
+
+    Route::post('/stock-portfolio-store', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'init']);
+    Route::get('/stock-portfolio-retrieve', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'init']);
 });

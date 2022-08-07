@@ -6,7 +6,7 @@
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <button class="btn btn-primary click-moon-record" data-action="crypto">More</button>
+                <button class="btn btn-primary click-fund-more" data-action="crypto">More</button>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <button class="btn btn-primary click-moon-record" data-action="crypto">More</button>
+                <button class="btn btn-primary click-hold-more" data-action="crypto">More</button>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <button class="btn btn-primary click-order-record" data-action="crypto">Add Order</button>
+                <button class="btn btn-primary click-crypto-record" data-action="crypto">Add Order</button>
             </div>
         </div>
     </div>

@@ -2099,17 +2099,17 @@ var input = /*#__PURE__*/function () {
     key: "init",
     value: function init(config) {
       /** fetch value. */
-      if (config['action'] === 'value') {
+      if (config.action === 'value') {
         var items = [];
 
-        for (var i = 0; i < config['data'].length; i++) {
+        for (var i = 0; i < config.data.length; i++) {
           /** screen api. */
-          if (config['data'][i] === 'api') {
-            items[config['data'][i]] = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-gecko > .modal-").concat(config['data'][i])).value;
+          if (config.data[i] === 'api') {
+            items[config.data[i]] = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-gecko > .modal-").concat(config.data[i])).value;
           }
           /** the rest. */
           else {
-            items[config['data'][i]] = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(config['data'][i])).value;
+            items[config.data[i]] = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(config.data[i])).value;
           }
         }
 
@@ -2118,16 +2118,16 @@ var input = /*#__PURE__*/function () {
       /** clear input. */
 
 
-      if (config['action'] === 'clear') {
-        for (var key in config['data']) {
-          if (config['data'].hasOwnProperty(key)) {
+      if (config.action === 'clear') {
+        for (var key in config.data) {
+          if (config.data.hasOwnProperty(key)) {
             /** screen api. */
-            if (config['data'][key] === 'api') {
-              document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-gecko > .modal-").concat(config['data'][key])).value = '';
+            if (config.data[key] === 'api') {
+              document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-gecko > .modal-").concat(config.data[key])).value = '';
             }
             /** the rest. */
             else {
-              document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(config['data'][key])).value = '';
+              document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(config.data[key])).value = '';
             }
           }
         }
@@ -2135,24 +2135,24 @@ var input = /*#__PURE__*/function () {
       /** populate input. */
 
 
-      if (config['action'] === 'populate') {
+      if (config.action === 'populate') {
         /** loop through keys */
-        for (var _i = 0; _i < config['data'].length; _i++) {
+        for (var _i = 0; _i < config.data.length; _i++) {
           /** scavenge content. */
-          var content = config['el'].querySelector(".".concat(config['data'][_i])).textContent;
+          var content = config.el.querySelector(".".concat(config.data[_i])).textContent;
           /** set id value. */
 
-          if (config['data'][_i] === 'id') {
-            var id = config['el'].querySelector(".".concat(config['data'][_i])).dataset.id;
-            document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(config['data'][_i])).setAttribute('value', id);
+          if (config.data[_i] === 'id') {
+            var id = config.el.querySelector(".".concat(config.data[_i])).dataset.id;
+            document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(config.data[_i])).setAttribute('value', id);
           }
           /** set api value. */
-          else if (config['data'][_i] === 'api') {
-            document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-gecko > .modal-").concat(config['data'][_i])).value = content;
+          else if (config.data[_i] === 'api') {
+            document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-gecko > .modal-").concat(config.data[_i])).value = content;
           }
           /** the rest. */
           else {
-            document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(config['data'][_i])).value = content;
+            document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(config.data[_i])).value = content;
           }
         }
       }
@@ -2195,9 +2195,9 @@ var message = /*#__PURE__*/function () {
       var board = document.querySelector('.card > .header > .meta > .right > .messenger');
       /** display success message. */
 
-      if (config['status'] === true) {
+      if (config.status === true) {
         board.classList.add('success');
-        board.textContent = config['message'];
+        board.textContent = config.message;
         setTimeout(function () {
           board.classList.remove('success');
         }, 10000);
@@ -2205,9 +2205,9 @@ var message = /*#__PURE__*/function () {
       /** display error message. */
 
 
-      if (config['status'] === false) {
+      if (config.status === false) {
         board.classList.add('error');
-        board.textContent = config['message'];
+        board.textContent = config.message;
         setTimeout(function () {
           board.classList.remove('error');
         }, 10000);
@@ -2252,23 +2252,23 @@ var node = /*#__PURE__*/function () {
     key: "init",
     value: function init(config) {
       /** create base element. */
-      if (config['statement'] === 'select') {
+      if (config.statement === 'select') {
         /** create parent element. */
         var parent = document.createElement('div');
         parent.classList.add('items');
         /** create child element. */
 
-        for (var key in config['input']) {
+        for (var key in config.input) {
           var child = document.createElement('div');
           child.classList.add(key);
-          child.textContent = config['input'][key];
+          child.textContent = config.input[key];
           parent.appendChild(child);
           /** restructure id content. */
 
           if (key === 'id') {
             child.classList.add(key);
-            child.setAttribute('data-id', config['input'][key]);
-            child.textContent = config['id'];
+            child.setAttribute('data-id', config.input[key]);
+            child.textContent = config.id;
           }
           /** restructure action content. */
 
@@ -2276,7 +2276,7 @@ var node = /*#__PURE__*/function () {
           if (key === 'action') {
             var content = parent.querySelector('.action');
             content.textContent = '';
-            var string = config['input'][key];
+            var string = config.input[key];
             var action = string.split(' ');
 
             for (var k in action) {
@@ -2291,30 +2291,30 @@ var node = /*#__PURE__*/function () {
         /** append parent element. */
 
 
-        var element = document.querySelector(".".concat(config['target']));
+        var element = document.querySelector(".".concat(config.target));
         element.appendChild(parent);
       }
       /** update element. */
 
 
-      if (config['statement'] === 'update') {
-        var _element = document.querySelector(".".concat(config['target'], " > .items > [data-id='").concat(config['input']['id'], "']")).parentElement;
+      if (config.statement === 'update') {
+        var _element = document.querySelector(".".concat(config.target, " > .items > [data-id='").concat(config.input.id, "']")).parentElement;
         /** run trough it all. */
 
-        for (var _key in config['input']) {
+        for (var _key in config.input) {
           if (_key === 'action') continue;
           if (_key === 'id') continue;
 
           var _child = _element.querySelector(".".concat(_key));
 
-          _child.textContent = config['input'][_key];
+          _child.textContent = config.input[_key];
         }
       }
       /** destroy element. */
 
 
-      if (config['statement'] === 'destroy') {
-        var _element2 = document.querySelector(".".concat(config['target'], " > .items > [data-id='").concat(config['input'], "']"));
+      if (config.statement === 'destroy') {
+        var _element2 = document.querySelector(".".concat(config.target, " > .items > [data-id='").concat(config.input, "']"));
 
         _element2.parentElement.remove();
       }
@@ -2359,21 +2359,21 @@ var sanitize = /*#__PURE__*/function () {
     value: function init(config) {
       var result = {};
 
-      if (config['action'] === 'comma') {
-        for (var y in config['data']) {
-          if (config['data'].hasOwnProperty(y)) {
-            for (var x in config['condition']) {
-              if (config['condition'].hasOwnProperty(x)) {
+      if (config.action === 'comma') {
+        for (var y in config.data) {
+          if (config.data.hasOwnProperty(y)) {
+            for (var x in config.condition) {
+              if (config.condition.hasOwnProperty(x)) {
                 /** replace comma. */
-                if (config['condition'][x] === y) {
-                  result[y] = config['data'][config['condition'][x]].replace(/,/g, '');
+                if (config.condition[x] === y) {
+                  result[y] = config.data[config.condition[x]].replace(/,/g, '');
                 }
                 /** check if key undefined. */
 
 
                 if (!result.hasOwnProperty(y)) {
                   /** the rest. */
-                  result[y] = config['data'][y];
+                  result[y] = config.data[y];
                 }
               }
             }
@@ -2422,17 +2422,17 @@ var validator = /*#__PURE__*/function () {
       var success = {};
       var error = {};
 
-      for (var key in config['data']) {
-        if (config['data'][key] === '' || config['data'][key].length === 0) {
+      for (var key in config.data) {
+        if (config.data[key] === '' || config.data[key].length === 0) {
           error[key] = 'This field is required.';
         } else {
           if (key === 'quantity' || key === 'capital') {
-            config['data'][key] = config['data'][key].replace(',', '');
+            config.data[key] = config.data[key].replace(',', '');
           }
 
           if (typeof key === 'string') {
-            if (/^[a-zA-Z0-9\-&,. ]*$/i.test(config['data'][key]) === true) {
-              success[key] = config['data'][key];
+            if (/^[a-zA-Z0-9\-&,. ]*$/i.test(config.data[key]) === true) {
+              success[key] = config.data[key];
             } else {
               error[key] = 'Only letters and numbers are allowed.';
             }
@@ -2495,31 +2495,31 @@ var helpers = /*#__PURE__*/function () {
       var result;
       /** run input. */
 
-      if (config['type'] === 'input') {
+      if (config.type === 'input') {
         result = _input_js__WEBPACK_IMPORTED_MODULE_1__["default"].init(config);
       }
       /** run message. */
 
 
-      if (config['type'] === 'message') {
+      if (config.type === 'message') {
         result = _message_js__WEBPACK_IMPORTED_MODULE_3__["default"].init(config);
       }
       /** run node. */
 
 
-      if (config['type'] === 'node') {
+      if (config.type === 'node') {
         result = _node_js__WEBPACK_IMPORTED_MODULE_2__["default"].init(config);
       }
       /** run message. */
 
 
-      if (config['type'] === 'sanitize') {
+      if (config.type === 'sanitize') {
         result = _sanitize_js__WEBPACK_IMPORTED_MODULE_4__["default"].init(config);
       }
       /** run validator. */
 
 
-      if (config['type'] === 'validate') {
+      if (config.type === 'validate') {
         result = _validators_js__WEBPACK_IMPORTED_MODULE_0__["default"].init(config);
       }
 
@@ -2620,9 +2620,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /** import helper function. */
 
 
-var crypto_games = /*#__PURE__*/function () {
-  function crypto_games() {
-    _classCallCheck(this, crypto_games);
+var crypto_game = /*#__PURE__*/function () {
+  function crypto_game() {
+    _classCallCheck(this, crypto_game);
 
     this.event = document.querySelector(".speak-crypto-games");
     this.template = document.querySelector(".stage-crypto-games");
@@ -2630,7 +2630,7 @@ var crypto_games = /*#__PURE__*/function () {
     this.helper = _helpers_helpers_js__WEBPACK_IMPORTED_MODULE_0__["default"];
   }
 
-  _createClass(crypto_games, [{
+  _createClass(crypto_game, [{
     key: "init",
     value: function init() {
       var _this = this;
@@ -2674,7 +2674,7 @@ var crypto_games = /*#__PURE__*/function () {
                   /** set submit event listener. */
 
 
-                  var gameSubmit = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                  var gameSubmit = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
 
                   if (gameSubmit) {
                     gameSubmit.addEventListener('click', function (e) {
@@ -2690,7 +2690,7 @@ var crypto_games = /*#__PURE__*/function () {
               });
               /** set close event listener. */
 
-              var gameClose = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-close');
+              var gameClose = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-close');
 
               if (gameClose) {
                 gameClose.addEventListener('click', function (e) {
@@ -2703,7 +2703,7 @@ var crypto_games = /*#__PURE__*/function () {
               /** set cancel event listener. */
 
 
-              var gameCancel = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+              var gameCancel = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
               if (gameCancel) {
                 gameCancel.addEventListener('click', function (e) {
@@ -2722,6 +2722,7 @@ var crypto_games = /*#__PURE__*/function () {
 
               if (update) {
                 var _loop = function _loop(i) {
+                  /* jshint -W083 */
                   update[i].addEventListener("click", function () {
                     /** show modal. */
                     _this.backdrop({
@@ -2743,7 +2744,7 @@ var crypto_games = /*#__PURE__*/function () {
                     /** set submit event listener. */
 
 
-                    var gameSubmit = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                    var gameSubmit = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
 
                     if (gameSubmit) {
                       gameSubmit.addEventListener('click', function (e) {
@@ -2756,6 +2757,7 @@ var crypto_games = /*#__PURE__*/function () {
                       });
                     }
                   });
+                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < update.length; i++) {
@@ -2764,7 +2766,7 @@ var crypto_games = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var _gameClose = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-close');
+                var _gameClose = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-close');
 
                 if (_gameClose) {
                   _gameClose.addEventListener('click', function (e) {
@@ -2777,7 +2779,7 @@ var crypto_games = /*#__PURE__*/function () {
                 /** set cancel event listener. */
 
 
-                var _gameCancel = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var _gameCancel = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (_gameCancel) {
                   _gameCancel.addEventListener('click', function (e) {
@@ -2796,6 +2798,7 @@ var crypto_games = /*#__PURE__*/function () {
 
               if (destroy) {
                 var _loop2 = function _loop2(i) {
+                  /* jshint -W083 */
                   destroy[i].addEventListener("click", function () {
                     /** show modal. */
                     _this.backdrop({
@@ -2817,7 +2820,7 @@ var crypto_games = /*#__PURE__*/function () {
                     /** set submit event listener. */
 
 
-                    var gameSubmit = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                    var gameSubmit = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
 
                     if (gameSubmit) {
                       gameSubmit.addEventListener('click', function (e) {
@@ -2830,6 +2833,7 @@ var crypto_games = /*#__PURE__*/function () {
                       });
                     }
                   });
+                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < destroy.length; i++) {
@@ -2838,7 +2842,7 @@ var crypto_games = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var _gameClose2 = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-close');
+                var _gameClose2 = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-close');
 
                 if (_gameClose2) {
                   _gameClose2.addEventListener('click', function (e) {
@@ -2851,7 +2855,7 @@ var crypto_games = /*#__PURE__*/function () {
                 /** set cancel event listener. */
 
 
-                var _gameCancel2 = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var _gameCancel2 = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (_gameCancel2) {
                   _gameCancel2.addEventListener('click', function (e) {
@@ -2879,20 +2883,20 @@ var crypto_games = /*#__PURE__*/function () {
     key: "backdrop",
     value: function backdrop(config) {
       /** query modal. */
-      var modal = document.querySelector(".crypto-game-".concat(config['action']));
+      var modal = document.querySelector(".crypto-game-".concat(config.action));
 
-      if (config['mode'] === 'show') {
+      if (config.mode === 'show') {
         /** show backdrop. */
         modal.classList.add('backdrop');
         modal.style.display = 'block';
       }
 
-      if (config['mode'] === 'hide') {
+      if (config.mode === 'hide') {
         /** hide backdrop. */
         modal.classList.remove('backdrop');
         modal.style.display = 'none';
 
-        if (config['trigger'] === 'submit') {
+        if (config.trigger === 'submit') {
           /** hide backdrop. */
           modal.classList.remove('backdrop');
           modal.style.display = 'none';
@@ -2900,7 +2904,7 @@ var crypto_games = /*#__PURE__*/function () {
 
           var collect = this.helper.init({
             type: 'input',
-            target: "crypto-game-".concat(config['action']),
+            target: "crypto-game-".concat(config.action),
             action: 'value',
             data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
           });
@@ -2912,20 +2916,20 @@ var crypto_games = /*#__PURE__*/function () {
           });
           /** double check and then proceed. */
 
-          if (Object.keys(result['error']).length === 0) {
+          if (Object.keys(result.error).length === 0) {
             /** request access token and then post to backend. */
             this.request({
               method: 'POST',
               table: 'game',
-              statement: "".concat(config['action']),
-              input: result['success']
+              statement: "".concat(config.action),
+              input: result.success
             });
             /** clear input if insert. */
 
-            if (config['action'] === 'insert') {
+            if (config.action === 'insert') {
               this.helper.init({
                 type: 'input',
-                target: "crypto-game-".concat(config['action']),
+                target: "crypto-game-".concat(config.action),
                 action: 'clear',
                 data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
               });
@@ -2933,8 +2937,8 @@ var crypto_games = /*#__PURE__*/function () {
           } else {
             /** display error. */
             this.error({
-              target: "crypto-game-".concat(config['action']),
-              data: result['error']
+              target: "crypto-game-".concat(config.action),
+              data: result.error
             });
             /** show backdrop. */
 
@@ -2952,7 +2956,7 @@ var crypto_games = /*#__PURE__*/function () {
       var _this2 = this;
 
       /** retrieve data. */
-      if (config['method'] === 'GET') {
+      if (config.method === 'GET') {
         axios.get('/sanctum/csrf-cookie').then(function (response) {
           axios.get('/api/crypto-game-retrieve', {
             params: {
@@ -2979,12 +2983,12 @@ var crypto_games = /*#__PURE__*/function () {
       /** store data. */
 
 
-      if (config['method'] === 'POST') {
+      if (config.method === 'POST') {
         axios.get('/sanctum/csrf-cookie').then(function (response) {
           axios.post('/api/crypto-game-store', {
-            table: config['table'],
-            statement: config['statement'],
-            input: config['input']
+            table: config.table,
+            statement: config.statement,
+            input: config.input
           }).then(function (response) {
             /** populate order element with data. */
             if (response.data.status === true) {
@@ -3053,16 +3057,16 @@ var crypto_games = /*#__PURE__*/function () {
     key: "error",
     value: function error(config) {
       /** run trough it all. */
-      for (var key in config['data']) {
-        var display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config['data'][key];
+      for (var key in config.data) {
+        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
+        display.textContent = config.data[key];
       }
       /** clear all error messages after five seconds. */
 
 
       setTimeout(function () {
-        for (var _key2 in config['data']) {
-          var _display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(_key2, "-error"));
+        for (var _key2 in config.data) {
+          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key2, "-error"));
 
           _display.textContent = '';
         }
@@ -3070,10 +3074,10 @@ var crypto_games = /*#__PURE__*/function () {
     }
   }]);
 
-  return crypto_games;
+  return crypto_game;
 }();
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new crypto_games());
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new crypto_game());
 
 /***/ }),
 
@@ -3098,9 +3102,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /** import helper function. */
 
 
-var crypto_moons = /*#__PURE__*/function () {
-  function crypto_moons() {
-    _classCallCheck(this, crypto_moons);
+var crypto_moon = /*#__PURE__*/function () {
+  function crypto_moon() {
+    _classCallCheck(this, crypto_moon);
 
     this.event = document.querySelector(".speak-crypto-moons");
     this.template = document.querySelector(".stage-crypto-moons");
@@ -3108,7 +3112,7 @@ var crypto_moons = /*#__PURE__*/function () {
     this.helper = _helpers_helpers_js__WEBPACK_IMPORTED_MODULE_0__["default"];
   }
 
-  _createClass(crypto_moons, [{
+  _createClass(crypto_moon, [{
     key: "init",
     value: function init() {
       var _this = this;
@@ -3152,7 +3156,7 @@ var crypto_moons = /*#__PURE__*/function () {
                   /** set submit event listener. */
 
 
-                  var moonSubmit = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                  var moonSubmit = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
 
                   if (moonSubmit) {
                     moonSubmit.addEventListener('click', function (e) {
@@ -3168,7 +3172,7 @@ var crypto_moons = /*#__PURE__*/function () {
               });
               /** set close event listener. */
 
-              var moonClose = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-close');
+              var moonClose = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-close');
 
               if (moonClose) {
                 moonClose.addEventListener('click', function (e) {
@@ -3181,7 +3185,7 @@ var crypto_moons = /*#__PURE__*/function () {
               /** set cancel event listener. */
 
 
-              var moonCancel = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+              var moonCancel = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
               if (moonCancel) {
                 moonCancel.addEventListener('click', function (e) {
@@ -3200,6 +3204,7 @@ var crypto_moons = /*#__PURE__*/function () {
 
               if (update) {
                 var _loop = function _loop(i) {
+                  /* jshint -W083 */
                   update[i].addEventListener("click", function () {
                     /** show modal. */
                     _this.backdrop({
@@ -3221,7 +3226,7 @@ var crypto_moons = /*#__PURE__*/function () {
                     /** set submit event listener. */
 
 
-                    var moonSubmit = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                    var moonSubmit = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
 
                     if (moonSubmit) {
                       moonSubmit.addEventListener('click', function (e) {
@@ -3234,6 +3239,7 @@ var crypto_moons = /*#__PURE__*/function () {
                       });
                     }
                   });
+                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < update.length; i++) {
@@ -3242,7 +3248,7 @@ var crypto_moons = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var updateClose = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-close');
+                var updateClose = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-close');
 
                 if (updateClose) {
                   updateClose.addEventListener('click', function (e) {
@@ -3255,7 +3261,7 @@ var crypto_moons = /*#__PURE__*/function () {
                 /** set cancel event listener. */
 
 
-                var updateCancel = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var updateCancel = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (updateCancel) {
                   updateCancel.addEventListener('click', function (e) {
@@ -3274,6 +3280,7 @@ var crypto_moons = /*#__PURE__*/function () {
 
               if (destroy) {
                 var _loop2 = function _loop2(i) {
+                  /* jshint -W083 */
                   destroy[i].addEventListener("click", function () {
                     /** show modal. */
                     _this.backdrop({
@@ -3295,7 +3302,7 @@ var crypto_moons = /*#__PURE__*/function () {
                     /** set submit event listener. */
 
 
-                    var moonSubmit = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                    var moonSubmit = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
 
                     if (moonSubmit) {
                       moonSubmit.addEventListener('click', function (e) {
@@ -3308,6 +3315,7 @@ var crypto_moons = /*#__PURE__*/function () {
                       });
                     }
                   });
+                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < destroy.length; i++) {
@@ -3316,7 +3324,7 @@ var crypto_moons = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var _moonClose = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-close');
+                var _moonClose = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-close');
 
                 if (_moonClose) {
                   _moonClose.addEventListener('click', function (e) {
@@ -3329,7 +3337,7 @@ var crypto_moons = /*#__PURE__*/function () {
                 /** set cancel event listener. */
 
 
-                var _moonCancel = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var _moonCancel = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (_moonCancel) {
                   _moonCancel.addEventListener('click', function (e) {
@@ -3357,20 +3365,20 @@ var crypto_moons = /*#__PURE__*/function () {
     key: "backdrop",
     value: function backdrop(config) {
       /** query modal. */
-      var modal = document.querySelector(".crypto-moon-".concat(config['action']));
+      var modal = document.querySelector(".crypto-moon-".concat(config.action));
 
-      if (config['mode'] === 'show') {
+      if (config.mode === 'show') {
         /** show backdrop. */
         modal.classList.add('backdrop');
         modal.style.display = 'block';
       }
 
-      if (config['mode'] === 'hide') {
+      if (config.mode === 'hide') {
         /** hide backdrop. */
         modal.classList.add('backdrop');
         modal.style.display = 'none';
 
-        if (config['trigger'] === 'submit') {
+        if (config.trigger === 'submit') {
           /** hide backdrop. */
           modal.classList.add('backdrop');
           modal.style.display = 'none';
@@ -3378,7 +3386,7 @@ var crypto_moons = /*#__PURE__*/function () {
 
           var collect = this.helper.init({
             type: 'input',
-            target: "crypto-moon-".concat(config['action']),
+            target: "crypto-moon-".concat(config.action),
             action: 'value',
             data: ['id', 'name', 'coin', 'description', 'zone', 'website']
           });
@@ -3390,20 +3398,20 @@ var crypto_moons = /*#__PURE__*/function () {
           });
           /** double check and then proceed. */
 
-          if (Object.keys(result['error']).length === 0) {
+          if (Object.keys(result.error).length === 0) {
             /** request access token and then post to backend. */
             this.request({
               method: 'POST',
               table: 'moon',
-              statement: "".concat(config['action']),
-              input: result['success']
+              statement: "".concat(config.action),
+              input: result.success
             });
             /** clear input if insert. */
 
-            if (config['action'] === 'insert') {
+            if (config.action === 'insert') {
               this.helper.init({
                 type: 'input',
-                target: "crypto-moon-".concat(config['action']),
+                target: "crypto-moon-".concat(config.action),
                 action: 'clear',
                 data: ['name', 'coin', 'description', 'zone', 'website']
               });
@@ -3411,8 +3419,8 @@ var crypto_moons = /*#__PURE__*/function () {
           } else {
             /** display error. */
             this.error({
-              target: "crypto-moon-".concat(config['action']),
-              data: result['error']
+              target: "crypto-moon-".concat(config.action),
+              data: result.error
             });
             /** show backdrop. */
 
@@ -3430,7 +3438,7 @@ var crypto_moons = /*#__PURE__*/function () {
       var _this2 = this;
 
       /** retrieve data. */
-      if (config['method'] === 'GET') {
+      if (config.method === 'GET') {
         axios.get('/sanctum/csrf-cookie').then(function (response) {
           axios.get('/api/crypto-moon-retrieve', {
             params: {
@@ -3457,12 +3465,12 @@ var crypto_moons = /*#__PURE__*/function () {
       /** store data. */
 
 
-      if (config['method'] === 'POST') {
+      if (config.method === 'POST') {
         axios.get('/sanctum/csrf-cookie').then(function (response) {
           axios.post('/api/crypto-moon-store', {
-            table: config['table'],
-            statement: config['statement'],
-            input: config['input']
+            table: config.table,
+            statement: config.statement,
+            input: config.input
           }).then(function (response) {
             /** populate order element with data. */
             if (response.data.status === true) {
@@ -3531,16 +3539,16 @@ var crypto_moons = /*#__PURE__*/function () {
     key: "error",
     value: function error(config) {
       /** run trough it all. */
-      for (var key in config['data']) {
-        var display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config['data'][key];
+      for (var key in config.data) {
+        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
+        display.textContent = config.data[key];
       }
       /** clear all error messages after five seconds. */
 
 
       setTimeout(function () {
-        for (var _key2 in config['data']) {
-          var _display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(_key2, "-error"));
+        for (var _key2 in config.data) {
+          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key2, "-error"));
 
           _display.textContent = '';
         }
@@ -3548,10 +3556,10 @@ var crypto_moons = /*#__PURE__*/function () {
     }
   }]);
 
-  return crypto_moons;
+  return crypto_moon;
 }();
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new crypto_moons());
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new crypto_moon());
 
 /***/ }),
 
@@ -3854,7 +3862,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
             /** insert modal code block. */
 
 
-            var record = document.querySelector('.click-order-record');
+            var record = document.querySelector('.click-crypto-record');
 
             if (record) {
               record.addEventListener("click", function (e) {
@@ -3868,7 +3876,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                   /** set submit event listener. */
 
 
-                  var portfolioSubmit = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                  var portfolioSubmit = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
 
                   if (portfolioSubmit) {
                     portfolioSubmit.addEventListener('click', function (e) {
@@ -3884,7 +3892,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                 /** set insert event listener. */
 
 
-                var portfolioCancel = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-close');
+                var portfolioCancel = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-close');
 
                 if (portfolioCancel) {
                   portfolioCancel.addEventListener('click', function (e) {
@@ -3897,7 +3905,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var portfolioClose = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var portfolioClose = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (portfolioClose) {
                   portfolioClose.addEventListener('click', function (e) {
@@ -3917,6 +3925,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
 
               if (update) {
                 var _loop = function _loop(i) {
+                  /* jshint -W083 */
                   update[i].addEventListener("click", function () {
                     /** show update modal. */
                     _this.backdrop({
@@ -3938,7 +3947,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                     /** set submit event listener. */
 
 
-                    var portfolioSubmit = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                    var portfolioSubmit = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
 
                     if (portfolioSubmit) {
                       portfolioSubmit.addEventListener('click', function (e) {
@@ -3951,6 +3960,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                       });
                     }
                   });
+                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < update.length; i++) {
@@ -3959,7 +3969,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                 /** query document close button. */
 
 
-                var portfolioClose = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-close');
+                var portfolioClose = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-close');
 
                 if (portfolioClose) {
                   portfolioClose.addEventListener('click', function (e) {
@@ -3972,7 +3982,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                 /** query document update button. */
 
 
-                var portfolioCancel = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var portfolioCancel = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (portfolioCancel) {
                   portfolioCancel.addEventListener('click', function (e) {
@@ -3991,6 +4001,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
 
               if (destroy) {
                 var _loop2 = function _loop2(i) {
+                  /* jshint -W083 */
                   destroy[i].addEventListener("click", function () {
                     /** show destroy modal. */
                     _this.backdrop({
@@ -4012,7 +4023,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                     /** set destroy event listener. */
 
 
-                    var portfolioSubmit = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                    var portfolioSubmit = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
 
                     if (portfolioSubmit) {
                       portfolioSubmit.addEventListener('click', function (e) {
@@ -4025,9 +4036,11 @@ var crypto_portfolio = /*#__PURE__*/function () {
                       });
                     }
                   });
+                  /* jshint +W083 */
+
                   /** set cancel event listener. */
 
-                  var portfolioClose = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-close');
+                  var portfolioClose = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-close');
 
                   if (portfolioClose) {
                     portfolioClose.addEventListener('click', function (e) {
@@ -4040,7 +4053,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
                   /** set cancel event listener. */
 
 
-                  var portfolioCancel = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                  var portfolioCancel = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                   if (portfolioCancel) {
                     portfolioCancel.addEventListener('click', function (e) {
@@ -4073,25 +4086,25 @@ var crypto_portfolio = /*#__PURE__*/function () {
     key: "backdrop",
     value: function backdrop(config) {
       /** query document to pinpoint modal element. */
-      var modal = document.querySelector(".crypto-portfolio-".concat(config['action']));
+      var modal = document.querySelector(".crypto-portfolio-".concat(config.action));
 
-      if (config['mode'] === 'show') {
+      if (config.mode === 'show') {
         /** show modal. */
         modal.classList.add('backdrop');
         modal.style.display = 'block';
       }
 
-      if (config['mode'] === 'hide') {
+      if (config.mode === 'hide') {
         /** hide modal. */
         modal.classList.remove('backdrop');
         modal.style.display = 'none';
 
-        if (config['trigger'] === 'submit') {
+        if (config.trigger === 'submit') {
           /** collect all input for processing. */
           var collect = this.helper.init({
             type: 'input',
             section: 'portfolio',
-            target: "crypto-portfolio-".concat(config['action']),
+            target: "crypto-portfolio-".concat(config.action),
             action: 'value',
             data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']
           });
@@ -4103,7 +4116,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
           });
           /** double check and then proceed. */
 
-          if (Object.keys(result['error']).length === 0) {
+          if (Object.keys(result.error).length === 0) {
             /** hide modal. */
             modal.classList.remove('backdrop');
             modal.style.display = 'none';
@@ -4112,16 +4125,16 @@ var crypto_portfolio = /*#__PURE__*/function () {
             this.request({
               method: 'POST',
               table: 'portfolio',
-              statement: config['action'],
-              input: result['success']
+              statement: config.action,
+              input: result.success
             });
             /** clear input. */
 
-            if (config['action'] === 'insert') {
+            if (config.action === 'insert') {
               this.helper.init({
                 type: 'input',
                 section: 'portfolio',
-                target: "crypto-portfolio-".concat(config['action']),
+                target: "crypto-portfolio-".concat(config.action),
                 action: 'clear',
                 data: ['wallet', 'name', 'coin', 'quantity', 'capital']
               });
@@ -4129,8 +4142,8 @@ var crypto_portfolio = /*#__PURE__*/function () {
           } else {
             /** display error. */
             this.error({
-              target: "crypto-portfolio-".concat(config['action']),
-              data: result['error']
+              target: "crypto-portfolio-".concat(config.action),
+              data: result.error
             });
             /** show modal. */
 
@@ -4148,7 +4161,7 @@ var crypto_portfolio = /*#__PURE__*/function () {
       var _this2 = this;
 
       /** retrieve data. */
-      if (config['method'] === 'GET') {
+      if (config.method === 'GET') {
         axios.get('/sanctum/csrf-cookie').then(function (response) {
           axios.get('/api/crypto-portfolio-retrieve', {
             params: {
@@ -4201,13 +4214,13 @@ var crypto_portfolio = /*#__PURE__*/function () {
       /** store data. */
 
 
-      if (config['method'] === 'POST') {
+      if (config.method === 'POST') {
         axios.get('/sanctum/csrf-cookie').then(function () {
           axios.post('/api/crypto-portfolio-store', {
-            table: config['table'],
-            order: config['input']['order'].toLowerCase(),
-            statement: config['statement'],
-            input: config['input']
+            table: config.table,
+            order: config.input.order.toLowerCase(),
+            statement: config.statement,
+            input: config.input
           }).then(function (response) {
             /** populate order element with data. */
             if (response.data.status === true) {
@@ -4276,16 +4289,16 @@ var crypto_portfolio = /*#__PURE__*/function () {
     key: "error",
     value: function error(config) {
       /** run trough it all. */
-      for (var key in config['data']) {
-        var display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config['data'][key];
+      for (var key in config.data) {
+        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
+        display.textContent = config.data[key];
       }
       /** clear all error messages after five seconds. */
 
 
       setTimeout(function () {
-        for (var _key3 in config['data']) {
-          var _display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(_key3, "-error"));
+        for (var _key3 in config.data) {
+          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key3, "-error"));
 
           _display.textContent = '';
         }
@@ -4321,9 +4334,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /** import helper function. */
 
 
-var screen = /*#__PURE__*/function () {
-  function screen() {
-    _classCallCheck(this, screen);
+var crypto_screen = /*#__PURE__*/function () {
+  function crypto_screen() {
+    _classCallCheck(this, crypto_screen);
 
     this.event = document.querySelector(".speak-crypto-screens");
     this.template = document.querySelector(".stage-crypto-screens");
@@ -4331,7 +4344,7 @@ var screen = /*#__PURE__*/function () {
     this.helper = _helpers_helpers_js__WEBPACK_IMPORTED_MODULE_0__["default"];
   }
 
-  _createClass(screen, [{
+  _createClass(crypto_screen, [{
     key: "init",
     value: function init() {
       var _this = this;
@@ -4370,7 +4383,7 @@ var screen = /*#__PURE__*/function () {
                 /** set submit event listener. */
 
 
-                var screenSubmit = document.querySelector('.crypto-screen-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                var screenSubmit = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
 
                 if (screenSubmit) {
                   screenSubmit.addEventListener('click', function (e) {
@@ -4386,7 +4399,7 @@ var screen = /*#__PURE__*/function () {
             });
             /** set close event listener. */
 
-            var screenClose = document.querySelector('.crypto-screen-insert > .crypto-modal > .modal-group > .modal-close');
+            var screenClose = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-close');
 
             if (screenClose) {
               screenClose.addEventListener('click', function (e) {
@@ -4399,7 +4412,7 @@ var screen = /*#__PURE__*/function () {
             /** set cancel event listener. */
 
 
-            var screenCancel = document.querySelector('.crypto-screen-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+            var screenCancel = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
             if (screenCancel) {
               screenCancel.addEventListener('click', function (e) {
@@ -4418,6 +4431,7 @@ var screen = /*#__PURE__*/function () {
 
             if (update) {
               var _loop = function _loop(i) {
+                /* jshint -W083 */
                 update[i].addEventListener("click", function () {
                   /** show update modal. */
                   _this.backdrop({
@@ -4439,7 +4453,7 @@ var screen = /*#__PURE__*/function () {
                   /** set submit event listener. */
 
 
-                  var screenSubmit = document.querySelector('.crypto-screen-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                  var screenSubmit = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
 
                   if (screenSubmit) {
                     screenSubmit.addEventListener('click', function (e) {
@@ -4452,6 +4466,7 @@ var screen = /*#__PURE__*/function () {
                     });
                   }
                 });
+                /* jshint +W083 */
               };
 
               for (var i = 0; i < update.length; i++) {
@@ -4460,7 +4475,7 @@ var screen = /*#__PURE__*/function () {
               /** query document close button. */
 
 
-              var _screenClose = document.querySelector('.crypto-screen-update > .crypto-modal > .modal-group > .modal-close');
+              var _screenClose = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-close');
 
               if (_screenClose) {
                 _screenClose.addEventListener('click', function (e) {
@@ -4473,7 +4488,7 @@ var screen = /*#__PURE__*/function () {
               /** query document update button. */
 
 
-              var _screenCancel = document.querySelector('.crypto-screen-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+              var _screenCancel = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
               if (_screenCancel) {
                 _screenCancel.addEventListener('click', function (e) {
@@ -4492,6 +4507,7 @@ var screen = /*#__PURE__*/function () {
 
             if (destroy) {
               var _loop2 = function _loop2(i) {
+                /* jshint -W083 */
                 destroy[i].addEventListener("click", function () {
                   /** show destroy modal. */
                   _this.backdrop({
@@ -4513,7 +4529,7 @@ var screen = /*#__PURE__*/function () {
                   /** set destroy event listener. */
 
 
-                  var screenSubmit = document.querySelector('.crypto-screen-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                  var screenSubmit = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
 
                   if (screenSubmit) {
                     screenSubmit.addEventListener('click', function (e) {
@@ -4526,9 +4542,11 @@ var screen = /*#__PURE__*/function () {
                     });
                   }
                 });
+                /* jshint +W083 */
+
                 /** set cancel event listener. */
 
-                var screenClose = document.querySelector('.crypto-screen-destroy > .crypto-modal > .modal-group > .modal-close');
+                var screenClose = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-close');
 
                 if (screenClose) {
                   screenClose.addEventListener('click', function (e) {
@@ -4541,7 +4559,7 @@ var screen = /*#__PURE__*/function () {
                 /** set cancel event listener. */
 
 
-                var screenCancel = document.querySelector('.crypto-screen-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var screenCancel = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
                 if (screenCancel) {
                   screenCancel.addEventListener('click', function (e) {
@@ -4575,24 +4593,24 @@ var screen = /*#__PURE__*/function () {
       var _this2 = this;
 
       /** query document to pinpoint modal element. */
-      var modal = document.querySelector(".crypto-screen-".concat(config['action']));
+      var modal = document.querySelector(".crypto-screen-".concat(config.action));
 
-      if (config['mode'] === 'show') {
+      if (config.mode === 'show') {
         /** show backdrop. */
         modal.classList.add('backdrop');
         modal.style.display = 'block';
         /** insert fetch gecko. */
 
-        if (config['action'] === 'insert' || config['action'] === 'update') {
-          var fetch = document.querySelector(".crypto-screen-".concat(config['action'], " > .crypto-modal > .modal-group > .modal-gecko > .modal-fetch"));
+        if (config.action === 'insert' || config.action === 'update') {
+          var fetch = document.querySelector(".crypto-screen-".concat(config.action, " > .modal-form > .modal-group > .modal-gecko > .modal-fetch"));
           fetch.addEventListener('click', function () {
-            var api = document.querySelector(".crypto-screen-".concat(config['action'], " > .crypto-modal > .modal-group > .modal-gecko > .modal-api")).value;
+            var api = document.querySelector(".crypto-screen-".concat(config.action, " > .modal-form > .modal-group > .modal-gecko > .modal-api")).value;
 
             if (api) {
               _this2.request({
                 method: 'GET',
                 provider: 'gecko',
-                action: config['action'],
+                action: config.action,
                 data: api
               });
             }
@@ -4600,12 +4618,12 @@ var screen = /*#__PURE__*/function () {
         }
       }
 
-      if (config['mode'] === 'hide') {
+      if (config.mode === 'hide') {
         /** hide backdrop. */
         modal.classList.remove('backdrop');
         modal.style.display = 'none';
 
-        if (config['trigger'] === 'submit') {
+        if (config.trigger === 'submit') {
           /** hide backdrop. */
           modal.classList.remove('backdrop');
           modal.style.display = 'none';
@@ -4613,7 +4631,7 @@ var screen = /*#__PURE__*/function () {
 
           var collect = this.helper.init({
             type: 'input',
-            target: "crypto-screen-".concat(config['action']),
+            target: "crypto-screen-".concat(config.action),
             action: 'value',
             data: ['id', 'coin', 'api', 'price', 'market', 'volume', 'change']
           });
@@ -4625,7 +4643,7 @@ var screen = /*#__PURE__*/function () {
           });
           /** double check and then proceed. */
 
-          if (Object.keys(result['error']).length === 0) {
+          if (Object.keys(result.error).length === 0) {
             /** hide backdrop. */
             modal.classList.remove('backdrop');
             modal.style.display = 'none';
@@ -4635,22 +4653,22 @@ var screen = /*#__PURE__*/function () {
               type: 'sanitize',
               action: 'comma',
               condition: ['price', 'market', 'volume', 'change'],
-              data: result['success']
+              data: result.success
             });
             /** request access token and then post to backend. */
 
             this.request({
               method: 'POST',
               table: 'screen',
-              statement: "".concat(config['action']),
+              statement: "".concat(config.action),
               input: sanitize
             });
             /** clear input if insert. */
 
-            if (config['action'] === 'insert') {
+            if (config.action === 'insert') {
               this.helper.init({
                 type: 'input',
-                target: "crypto-screen-".concat(config['action']),
+                target: "crypto-screen-".concat(config.action),
                 action: 'clear',
                 data: ['coin', 'api', 'price', 'market', 'volume', 'change']
               });
@@ -4662,8 +4680,8 @@ var screen = /*#__PURE__*/function () {
             /** display backdrop. */
 
             this.error({
-              target: "crypto-screen-".concat(config['action']),
-              data: result['error']
+              target: "crypto-screen-".concat(config.action),
+              data: result.error
             });
           }
         }
@@ -4674,9 +4692,9 @@ var screen = /*#__PURE__*/function () {
     value: function request(config) {
       var _this3 = this;
 
-      if (config['method'] === 'GET') {
+      if (config.method === 'GET') {
         /** fetch local data. */
-        if (config['provider'] === 'local') {
+        if (config.provider === 'local') {
           axios.get('/sanctum/csrf-cookie').then(function (response) {
             axios.get('/api/crypto-screen-retrieve', {
               params: {
@@ -4701,8 +4719,8 @@ var screen = /*#__PURE__*/function () {
         /** fetch coingecko data. */
 
 
-        if (config['provider'] === 'gecko') {
-          axios.get("https://api.coingecko.com/api/v3/simple/price?ids=".concat(config['data'], "&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"), {
+        if (config.provider === 'gecko') {
+          axios.get("https://api.coingecko.com/api/v3/simple/price?ids=".concat(config.data, "&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"), {
             headers: {
               'Access-Control-Allow-Origin': '*',
               'Content-Type': 'application/json'
@@ -4719,19 +4737,19 @@ var screen = /*#__PURE__*/function () {
                     if (response.data[key].hasOwnProperty(val)) {
                       switch (val) {
                         case 'usd':
-                          coin['price'] = response.data[key][val];
+                          coin.price = response.data[key][val];
                           break;
 
                         case 'usd_market_cap':
-                          coin['market'] = response.data[key][val];
+                          coin.market = response.data[key][val];
                           break;
 
                         case 'usd_24h_vol':
-                          coin['volume'] = response.data[key][val];
+                          coin.volume = response.data[key][val];
                           break;
 
                         case 'usd_24h_change':
-                          coin['change'] = response.data[key][val];
+                          coin.change = response.data[key][val];
                           break;
 
                         default:
@@ -4746,7 +4764,7 @@ var screen = /*#__PURE__*/function () {
 
               if (coin) {
                 for (var x in coin) {
-                  document.querySelector(".crypto-screen-".concat(config['action'], " > .crypto-modal > .modal-group > .modal-").concat(x)).value = coin[x].toLocaleString('en');
+                  document.querySelector(".crypto-screen-".concat(config.action, " > .modal-form > .modal-group > .modal-").concat(x)).value = coin[x].toLocaleString('en');
                 }
               }
             }
@@ -4756,12 +4774,12 @@ var screen = /*#__PURE__*/function () {
       /** store data. */
 
 
-      if (config['method'] === 'POST') {
+      if (config.method === 'POST') {
         axios.get('/sanctum/csrf-cookie').then(function (response) {
           axios.post('/api/crypto-screen-store', {
-            table: config['table'],
-            statement: config['statement'],
-            input: config['input']
+            table: config.table,
+            statement: config.statement,
+            input: config.input
           }).then(function (response) {
             /** populate order element with data. */
             if (response.data.status === true) {
@@ -4830,16 +4848,16 @@ var screen = /*#__PURE__*/function () {
     key: "error",
     value: function error(config) {
       /** run trough it all. */
-      for (var key in config['data']) {
-        var display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config['data'][key];
+      for (var key in config.data) {
+        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
+        display.textContent = config.data[key];
       }
       /** clear all error messages after five seconds. */
 
 
       setTimeout(function () {
-        for (var _key2 in config['data']) {
-          var _display = document.querySelector(".".concat(config['target'], " > .crypto-modal > .modal-group > .modal-").concat(_key2, "-error"));
+        for (var _key2 in config.data) {
+          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key2, "-error"));
 
           _display.textContent = '';
         }
@@ -4847,10 +4865,10 @@ var screen = /*#__PURE__*/function () {
     }
   }]);
 
-  return screen;
+  return crypto_screen;
 }();
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new screen());
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new crypto_screen());
 
 /***/ }),
 
@@ -5558,11 +5576,13 @@ var stock_portfolio = /*#__PURE__*/function () {
       /** setup initial listener. */
       this.event.addEventListener("click", function (e) {
         if (e.target.dataset.sidebar === 'stock_portfolios') {
-          console.log('Clicked Stock Porfolio');
           /** retrieve data .*/
-          // this.request({method: 'GET', table:'portfolio'});
-
+          _this.request({
+            method: 'GET',
+            table: 'portfolio'
+          });
           /** clone template. */
+
 
           var content = _this.template.content.cloneNode(true); // /** query document and do conditional statement base on the result. */
 
@@ -5576,268 +5596,425 @@ var stock_portfolio = /*#__PURE__*/function () {
 
             _this.element.appendChild(content);
             /** insert modal code block. */
-            // let record = document.querySelector('.click-order-record');
-            // if (record) {
-            //     record.addEventListener("click", (e) => {
-            //         /** show insert modal. */
-            //         if (e.target.dataset.action === 'crypto') {
-            //             /** show modal. */
-            //             this.backdrop({mode:'show', action:'insert'});
-            //
-            //             /** set submit event listener. */
-            //             let portfolioSubmit = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
-            //             if (portfolioSubmit) {
-            //                 portfolioSubmit.addEventListener('click', (e) => {
-            //                     this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: portfolioSubmit});
-            //                 });
-            //             }
-            //         }
-            //
-            //         /** set insert event listener. */
-            //         let portfolioCancel = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-close');
-            //         if (portfolioCancel) {
-            //             portfolioCancel.addEventListener('click', (e) => {
-            //                 this.backdrop({mode:'hide', action:'insert'});
-            //             });
-            //         }
-            //
-            //         /** set close event listener. */
-            //         let portfolioClose = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-            //         if (portfolioClose) {
-            //             portfolioClose.addEventListener('click', (e) => {
-            //                 this.backdrop({mode:'hide', action:'insert'});
-            //             });
-            //         }
-            //     });
-            // }
 
+
+            var record = document.querySelector('.click-stock-record');
+
+            if (record) {
+              record.addEventListener("click", function (e) {
+                /** show insert modal. */
+                if (e.target.dataset.action === 'stock') {
+                  /** show modal. */
+                  _this.backdrop({
+                    mode: 'show',
+                    action: 'insert'
+                  });
+                  /** set submit event listener. */
+
+
+                  var portfolioSubmit = document.querySelector('.stock-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
+
+                  if (portfolioSubmit) {
+                    portfolioSubmit.addEventListener('click', function (e) {
+                      _this.backdrop({
+                        mode: 'hide',
+                        action: 'insert',
+                        trigger: 'submit',
+                        input: portfolioSubmit
+                      });
+                    });
+                  }
+                }
+                /** set insert event listener. */
+
+
+                var portfolioCancel = document.querySelector('.stock-portfolio-insert > .modal-form > .modal-group > .modal-close');
+
+                if (portfolioCancel) {
+                  portfolioCancel.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'insert'
+                    });
+                  });
+                }
+                /** set close event listener. */
+
+
+                var portfolioClose = document.querySelector('.stock-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+                if (portfolioClose) {
+                  portfolioClose.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'insert'
+                    });
+                  });
+                }
+              });
+            }
             /** update modal code block. */
-            // setTimeout( () => {
-            //     let update = document.querySelectorAll('.crypto-order > .items > .action > .update');
-            //     if (update) {
-            //         for (let i = 0; i < update.length; i++) {
-            //             update[i].addEventListener("click", () => {
-            //                 /** show update modal. */
-            //                 this.backdrop({mode:'show', action:'update'});
-            //
-            //                 /** populate modal. */
-            //                 let parent = update[i].parentElement.parentElement;
-            //                 this.helper.init({type: 'input', action: 'populate', target: 'crypto-portfolio-update', el: parent, data: ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital']});
-            //
-            //                 /** set submit event listener. */
-            //                 let portfolioSubmit = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
-            //                 if (portfolioSubmit) {
-            //                     portfolioSubmit.addEventListener('click', (e) => {
-            //                         this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: portfolioSubmit});
-            //                     });
-            //                 }
-            //             });
-            //         }
-            //         /** query document close button. */
-            //         let portfolioClose = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-close');
-            //         if (portfolioClose) {
-            //             portfolioClose.addEventListener('click', (e) => {
-            //                 this.backdrop({mode:'hide', action:'update'});
-            //             });
-            //         }
-            //
-            //         /** query document update button. */
-            //         let portfolioCancel = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-            //         if (portfolioCancel) {
-            //             portfolioCancel.addEventListener('click', (e) => {
-            //                 this.backdrop({mode:'hide', action:'update'});
-            //             });
-            //         }
-            //     }
-            // }, 10000);
 
+
+            setTimeout(function () {
+              var update = document.querySelectorAll('.stock-order > .items > .action > .update');
+
+              if (update) {
+                var _loop = function _loop(i) {
+                  update[i].addEventListener("click", function () {
+                    /** show update modal. */
+                    _this.backdrop({
+                      mode: 'show',
+                      action: 'update'
+                    });
+                    /** populate modal. */
+
+
+                    var parent = update[i].parentElement.parentElement;
+
+                    _this.helper.init({
+                      type: 'input',
+                      action: 'populate',
+                      target: 'stock-portfolio-update',
+                      el: parent,
+                      data: ['id', 'order', 'ticker', 'name', 'fee', 'share', 'capital']
+                    });
+                    /** set submit event listener. */
+
+
+                    var portfolioSubmit = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
+
+                    if (portfolioSubmit) {
+                      portfolioSubmit.addEventListener('click', function (e) {
+                        _this.backdrop({
+                          mode: 'hide',
+                          action: 'update',
+                          trigger: 'submit',
+                          input: portfolioSubmit
+                        });
+                      });
+                    }
+                  });
+                };
+
+                for (var i = 0; i < update.length; i++) {
+                  _loop(i);
+                }
+                /** query document close button. */
+
+
+                var portfolioClose = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-close');
+
+                if (portfolioClose) {
+                  portfolioClose.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'update'
+                    });
+                  });
+                }
+                /** query document update button. */
+
+
+                var portfolioCancel = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+                if (portfolioCancel) {
+                  portfolioCancel.addEventListener('click', function (e) {
+                    _this.backdrop({
+                      mode: 'hide',
+                      action: 'update'
+                    });
+                  });
+                }
+              }
+            }, 10000);
             /** destroy modal code block. */
-            // setTimeout( () => {
-            //     let destroy = document.querySelectorAll('.crypto-order > .items > .action > .destroy');
-            //     if (destroy) {
-            //         for (let i = 0; i < destroy.length; i++) {
-            //             destroy[i].addEventListener("click", () => {
-            //                 /** show destroy modal. */
-            //                 this.backdrop({mode:'show', action:'destroy'});
-            //
-            //                 /** populate modal. */
-            //                 let parent = destroy[i].parentElement.parentElement;
-            //                 this.helper.init({type: 'input', action: 'populate', target: 'crypto-portfolio-destroy', el: parent, data: ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital']});
-            //
-            //                 /** set destroy event listener. */
-            //                 let portfolioSubmit = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
-            //                 if (portfolioSubmit) {
-            //                     portfolioSubmit.addEventListener('click', (e) => {
-            //                         this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: portfolioSubmit});
-            //                     });
-            //                 }
-            //             });
-            //
-            //             /** set cancel event listener. */
-            //             let portfolioClose = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-close');
-            //             if (portfolioClose) {
-            //                 portfolioClose.addEventListener('click', (e) => {
-            //                     this.backdrop({mode:'hide', action:'destroy'});
-            //                 });
-            //             }
-            //
-            //             /** set cancel event listener. */
-            //             let portfolioCancel = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-            //             if (portfolioCancel) {
-            //                 portfolioCancel.addEventListener('click', (e) => {
-            //                     this.backdrop({mode:'hide', action:'destroy'});
-            //                 });
-            //             }
-            //         }
-            //     }
-            // }, 10000);
-            //
-            // let info = document.querySelector('.card > .header > .meta > .right > .messenger');
-            // info.classList.add('info');
-            // info.textContent = 'Update button enabled right after this message disappear.';
-            // setTimeout(() => { info.classList.remove('info'); }, 9000);
 
+            setTimeout(function () {
+              var destroy = document.querySelectorAll('.stock-order > .items > .action > .destroy');
+
+              if (destroy) {
+                var _loop2 = function _loop2(i) {
+                  destroy[i].addEventListener("click", function () {
+                    /** show destroy modal. */
+                    _this.backdrop({
+                      mode: 'show',
+                      action: 'destroy'
+                    });
+                    /** populate modal. */
+
+
+                    var parent = destroy[i].parentElement.parentElement;
+
+                    _this.helper.init({
+                      type: 'input',
+                      action: 'populate',
+                      target: 'stock-portfolio-destroy',
+                      el: parent,
+                      data: ['id', 'order', 'ticker', 'name', 'fee', 'share', 'capital']
+                    });
+                    /** set destroy event listener. */
+
+
+                    var portfolioSubmit = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                    console.log(portfolioSubmit);
+
+                    if (portfolioSubmit) {
+                      portfolioSubmit.addEventListener('click', function (e) {
+                        _this.backdrop({
+                          mode: 'hide',
+                          action: 'destroy',
+                          trigger: 'submit',
+                          input: portfolioSubmit
+                        });
+                      });
+                    }
+                  });
+                  /** set cancel event listener. */
+
+                  var portfolioClose = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-close');
+
+                  if (portfolioClose) {
+                    portfolioClose.addEventListener('click', function (e) {
+                      _this.backdrop({
+                        mode: 'hide',
+                        action: 'destroy'
+                      });
+                    });
+                  }
+                  /** set cancel event listener. */
+
+
+                  var portfolioCancel = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+
+                  if (portfolioCancel) {
+                    portfolioCancel.addEventListener('click', function (e) {
+                      _this.backdrop({
+                        mode: 'hide',
+                        action: 'destroy'
+                      });
+                    });
+                  }
+                };
+
+                for (var i = 0; i < destroy.length; i++) {
+                  _loop2(i);
+                }
+              }
+            }, 10000);
+            var info = document.querySelector('.card > .header > .meta > .right > .messenger');
+            info.classList.add('info');
+            info.textContent = 'Update button enabled right after this message disappear.';
+            setTimeout(function () {
+              info.classList.remove('info');
+            }, 9000);
           }
         }
       });
     }
     /** function on how backdrop behaves. */
-    // backdrop(config) {
-    //     /** query document to pinpoint modal element. */
-    //     let modal = document.querySelector(`.crypto-portfolio-${config['action']}`);
-    //
-    //     if (config['mode'] === 'show') {
-    //         /** show modal. */
-    //         modal.classList.add('backdrop');
-    //         modal.style.display = 'block';
-    //     }
-    //
-    //     if (config['mode'] === 'hide') {
-    //         /** hide modal. */
-    //         modal.classList.remove('backdrop');
-    //         modal.style.display = 'none';
-    //
-    //         if (config['trigger'] === 'submit') {
-    //             /** collect all input for processing. */
-    //             let collect = this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'value', data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']});
-    //
-    //             /** check if inputs are empty and valid. */
-    //             let result = this.helper.init({type: 'validate', data: collect});
-    //
-    //             /** double check and then proceed. */
-    //             if (Object.keys(result['error']).length === 0) {
-    //                 /** hide modal. */
-    //                 modal.classList.remove('backdrop');
-    //                 modal.style.display = 'none';
-    //
-    //                 /** request access token and then post to backend. */
-    //                 this.request({method: 'POST', table:'portfolio', statement:config['action'], input:result['success']});
-    //
-    //                 /** clear input. */
-    //                 if (config['action'] === 'insert') {
-    //                     this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'clear', data: ['wallet', 'name', 'coin', 'quantity', 'capital']});
-    //                 }
-    //             } else {
-    //                 /** display error. */
-    //                 this.error({target: `crypto-portfolio-${config['action']}`, data:result['error']});
-    //
-    //                 /** show modal. */
-    //                 modal.classList.add('backdrop');
-    //                 modal.style.display = 'block';
-    //             }
-    //         }
-    //     }
-    // }
 
+  }, {
+    key: "backdrop",
+    value: function backdrop(config) {
+      /** query document to pinpoint modal element. */
+      var modal = document.querySelector(".stock-portfolio-".concat(config.action));
+
+      if (config.mode === 'show') {
+        /** show modal. */
+        modal.classList.add('backdrop');
+        modal.style.display = 'block';
+      }
+
+      if (config.mode === 'hide') {
+        /** hide modal. */
+        modal.classList.remove('backdrop');
+        modal.style.display = 'none';
+
+        if (config.trigger === 'submit') {
+          /** collect all input for processing. */
+          var collect = this.helper.init({
+            type: 'input',
+            section: 'portfolio',
+            target: "stock-portfolio-".concat(config.action),
+            action: 'value',
+            data: ['id', 'order', 'ticker', 'name', 'fee', 'share', 'capital']
+          });
+          /** check if inputs are empty and valid. */
+
+          var result = this.helper.init({
+            type: 'validate',
+            data: collect
+          });
+          /** double check and then proceed. */
+
+          if (Object.keys(result.error).length === 0) {
+            /** hide modal. */
+            modal.classList.remove('backdrop');
+            modal.style.display = 'none';
+            /** request access token and then post to backend. */
+
+            this.request({
+              method: 'POST',
+              table: 'portfolio',
+              order: result.success.order,
+              statement: config.action,
+              input: result.success
+            });
+            /** clear input. */
+
+            if (config.action === 'insert') {
+              this.helper.init({
+                type: 'input',
+                section: 'portfolio',
+                target: "stock-portfolio-".concat(config.action),
+                action: 'clear',
+                data: ['order', 'ticker', 'name', 'fee', 'share', 'capital']
+              });
+            }
+          } else {
+            /** display error. */
+            this.error({
+              target: "stock-portfolio-".concat(config.action),
+              data: result.error
+            });
+            /** show modal. */
+
+            modal.classList.add('backdrop');
+            modal.style.display = 'block';
+          }
+        }
+      }
+    }
     /** function to process http request. */
-    // request(config) {
-    //     /** retrieve data. */
-    //     if (config['method'] === 'GET') {
-    //         axios.get('/sanctum/csrf-cookie').then(response => {
-    //             axios.get('/api/crypto-portfolio-retrieve', {
-    //                 params: {table: 'portfolio'}
-    //             }).then(response => {
-    //                 if (response.data.status === true) {
-    //                     /** populate order element with data. */
-    //                     if (response.data.order) {
-    //                         for (let i=0; i<response.data.order.length; i++) {
-    //                             this.helper.init({type:'node', id:`${i+1}`, target:'crypto-order', statement: response.data.sql, input: response.data.order[i]});
-    //                         }
-    //                     }
-    //                     /** populate hold element with data. */
-    //                     if (response.data.hold.total) {
-    //                         for (let key in response.data.hold.total) {
-    //                             this.helper.init({type:'node', target:'crypto-hold', statement: response.data.sql, input: response.data.hold.total[key]});
-    //                         }
-    //                     }
-    //                     /** populate fund element with data. */
-    //                     if (response.data.fund.total) {
-    //                         for (let key in response.data.fund.total) {
-    //                             this.helper.init({type:'node', target:'crypto-fund', statement: response.data.sql, input: response.data.fund.total[key]});
-    //                         }
-    //                     }
-    //                 }
-    //             });
-    //         });
-    //     }
-    //
-    //     /** store data. */
-    //     if (config['method'] === 'POST') {
-    //         axios.get('/sanctum/csrf-cookie').then( () => {
-    //             axios.post('/api/crypto-portfolio-store', {
-    //                 table: config['table'],
-    //                 order: config['input']['order'].toLowerCase(),
-    //                 statement: config['statement'],
-    //                 input: config['input']
-    //             }).then(response => {
-    //                 /** populate order element with data. */
-    //                 if (response.data.status === true) {
-    //                     /** add or update element in document tree. */
-    //                     if (response.data.sql === 'select') {
-    //                         for (let key in response.data.coin) {
-    //                             this.helper.init({type:'node', id: 0, target:'crypto-order', statement: response.data.sql, input: response.data.coin[key]});
-    //                         }
-    //                     }
-    //                     /** add or update element in document tree. */
-    //                     if (response.data.sql === 'update') {
-    //                         for (let key in response.data.coin) {
-    //                             this.helper.init({type:'node', target:'crypto-order', statement: response.data.sql, input: response.data.coin[key]});
-    //                         }
-    //                     }
-    //                     /** remove element in document tree. */
-    //                     if (response.data.sql === 'destroy') {
-    //                         this.helper.init({type:'node', target:'crypto-order', statement: response.data.sql, input: response.data.coin});
-    //                     }
-    //
-    //                     /** display success message. */
-    //                     this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
-    //                 }
-    //
-    //                 /** display error message. */
-    //                 if (response.data.status === false) {
-    //                     this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
-    //                 }
-    //             })
-    //         });
-    //     }
-    // }
 
+  }, {
+    key: "request",
+    value: function request(config) {
+      var _this2 = this;
+
+      /** retrieve data. */
+      if (config.method === 'GET') {
+        axios.get('/sanctum/csrf-cookie').then(function (response) {
+          axios.get('/api/stock-portfolio-retrieve', {
+            params: {
+              table: 'portfolio'
+            }
+          }).then(function (response) {
+            if (response.data.status === true) {
+              /** populate order element with data. */
+              if (response.data.order) {
+                for (var i = 0; i < response.data.order.length; i++) {
+                  _this2.helper.init({
+                    type: 'node',
+                    id: "".concat(i + 1),
+                    target: 'stock-order',
+                    statement: response.data.sql,
+                    input: response.data.order[i]
+                  });
+                }
+              }
+            }
+          });
+        });
+      }
+      /** store data. */
+
+
+      if (config.method === 'POST') {
+        axios.get('/sanctum/csrf-cookie').then(function () {
+          axios.post('/api/stock-portfolio-store', {
+            table: config.table,
+            order: config.input.order.toLowerCase(),
+            statement: config.statement,
+            input: config.input
+          }).then(function (response) {
+            /** populate order element with data. */
+            console.log(response.data);
+
+            if (response.data.status === true) {
+              /** add or update element in document tree. */
+              if (response.data.sql === 'select') {
+                for (var key in response.data.stock) {
+                  _this2.helper.init({
+                    type: 'node',
+                    id: 0,
+                    target: 'stock-order',
+                    statement: response.data.sql,
+                    input: response.data.stock[key]
+                  });
+                }
+              }
+              /** add or update element in document tree. */
+
+
+              if (response.data.sql === 'update') {
+                for (var _key in response.data.stock) {
+                  _this2.helper.init({
+                    type: 'node',
+                    target: 'stock-order',
+                    statement: response.data.sql,
+                    input: response.data.stock[_key]
+                  });
+                }
+              }
+              /** remove element in document tree. */
+
+
+              if (response.data.sql === 'destroy') {
+                console.log(response.data);
+
+                _this2.helper.init({
+                  type: 'node',
+                  target: 'stock-order',
+                  statement: response.data.sql,
+                  input: response.data.stock
+                });
+              }
+              /** display success message. */
+
+
+              _this2.helper.init({
+                type: 'message',
+                status: response.data.status,
+                message: response.data.message
+              });
+            }
+            /** display error message. */
+
+
+            if (response.data.status === false) {
+              _this2.helper.init({
+                type: 'message',
+                status: response.data.status,
+                message: response.data.message
+              });
+            }
+          });
+        });
+      }
+    }
     /** function to display error. */
-    // error(config) {
-    //     /** run trough it all. */
-    //     for (let key in config['data']) {
-    //         let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-    //         display.textContent = config['data'][key];
-    //     }
-    //     /** clear all error messages after five seconds. */
-    //     setTimeout( () => {
-    //         for (let key in config['data']) {
-    //             let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-    //             display.textContent = '';
-    //         }
-    //     }, 5000);
-    // }
 
+  }, {
+    key: "error",
+    value: function error(config) {
+      /** run trough it all. */
+      for (var key in config.data) {
+        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
+        display.textContent = config.data[key];
+      }
+      /** clear all error messages after five seconds. */
+
+
+      setTimeout(function () {
+        for (var _key2 in config.data) {
+          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key2, "-error"));
+
+          _display.textContent = '';
+        }
+      }, 5000);
+    }
   }]);
 
   return stock_portfolio;

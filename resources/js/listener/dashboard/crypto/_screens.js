@@ -1,7 +1,7 @@
 /** import helper function. */
 import helpers from "../../../helpers/helpers.js";
 
-class screen {
+class crypto_screen {
     constructor() {
         this.event = document.querySelector(".speak-crypto-screens");
         this.template = document.querySelector(".stage-crypto-screens");
@@ -29,18 +29,18 @@ class screen {
                             this.backdrop({mode:'show', action:'insert'});
 
                             /** set submit event listener. */
-                            let screenSubmit = document.querySelector('.crypto-screen-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                            let screenSubmit = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
                             if (screenSubmit) {
                                 screenSubmit.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: screenSubmit});
-                                })
+                                });
                             }
                         }
 
                     });
 
                     /** set close event listener. */
-                    let screenClose = document.querySelector('.crypto-screen-insert > .crypto-modal > .modal-group > .modal-close');
+                    let screenClose = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-close');
                     if (screenClose) {
                         screenClose.addEventListener('click', (e) => {
                             this.backdrop({mode:'hide', action:'insert'});
@@ -48,7 +48,7 @@ class screen {
                     }
 
                     /** set cancel event listener. */
-                    let screenCancel = document.querySelector('.crypto-screen-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                    let screenCancel = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                     if (screenCancel) {
                         screenCancel.addEventListener('click', (e) => {
                             this.backdrop({mode:'hide', action:'insert'});
@@ -60,6 +60,7 @@ class screen {
                     let update = document.querySelectorAll('.crypto-screen > .items > .action > .update');
                     if (update) {
                         for (let i = 0; i < update.length; i++) {
+                          /* jshint -W083 */
                             update[i].addEventListener("click", () => {
                                 /** show update modal. */
                                 this.backdrop({mode:'show', action:'update'});
@@ -69,16 +70,17 @@ class screen {
                                 this.helper.init({type: 'input', action: 'populate', target: 'crypto-screen-update', el: parent, data: ['id', 'api', 'coin', 'price', 'market', 'volume', 'change']});
 
                                 /** set submit event listener. */
-                                let screenSubmit = document.querySelector('.crypto-screen-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                                let screenSubmit = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
                                 if (screenSubmit) {
                                     screenSubmit.addEventListener('click', (e) => {
                                         this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: screenSubmit});
                                     });
                                 }
                             });
+                            /* jshint +W083 */
                         }
                         /** query document close button. */
-                        let screenClose = document.querySelector('.crypto-screen-update > .crypto-modal > .modal-group > .modal-close');
+                        let screenClose = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-close');
                         if (screenClose) {
                             screenClose.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'update'});
@@ -86,7 +88,7 @@ class screen {
                         }
 
                         /** query document update button. */
-                        let screenCancel = document.querySelector('.crypto-screen-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                        let screenCancel = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                         if (screenCancel) {
                             screenCancel.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'update'});
@@ -100,6 +102,7 @@ class screen {
                     let destroy = document.querySelectorAll('.crypto-screen > .items > .action > .destroy');
                     if (destroy) {
                         for (let i = 0; i < destroy.length; i++) {
+                          /* jshint -W083 */
                             destroy[i].addEventListener("click", () => {
                                 /** show destroy modal. */
                                 this.backdrop({mode:'show', action:'destroy'});
@@ -109,16 +112,17 @@ class screen {
                                 this.helper.init({type: 'input', action: 'populate', target: 'crypto-screen-destroy', el: parent, data: ['id', 'api', 'coin', 'price', 'market', 'volume', 'change']});
 
                                 /** set destroy event listener. */
-                                let screenSubmit = document.querySelector('.crypto-screen-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                                let screenSubmit = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
                                 if (screenSubmit) {
                                     screenSubmit.addEventListener('click', (e) => {
                                         this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: screenSubmit});
                                     });
                                 }
                             });
+                            /* jshint +W083 */
 
                             /** set cancel event listener. */
-                            let screenClose = document.querySelector('.crypto-screen-destroy > .crypto-modal > .modal-group > .modal-close');
+                            let screenClose = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-close');
                             if (screenClose) {
                                 screenClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide', action:'destroy'});
@@ -126,7 +130,7 @@ class screen {
                             }
 
                             /** set cancel event listener. */
-                            let screenCancel = document.querySelector('.crypto-screen-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            let screenCancel = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (screenCancel) {
                                 screenCancel.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide', action:'destroy'});
@@ -147,72 +151,72 @@ class screen {
     /** function on how backdrop behaves. */
     backdrop(config) {
         /** query document to pinpoint modal element. */
-        let modal = document.querySelector(`.crypto-screen-${config['action']}`);
+        let modal = document.querySelector(`.crypto-screen-${config.action}`);
 
-        if (config['mode'] === 'show') {
+        if (config.mode === 'show') {
             /** show backdrop. */
             modal.classList.add('backdrop');
             modal.style.display = 'block';
 
             /** insert fetch gecko. */
-            if(config['action'] === 'insert' || config['action'] === 'update') {
-                let fetch = document.querySelector(`.crypto-screen-${config['action']} > .crypto-modal > .modal-group > .modal-gecko > .modal-fetch`);
+            if(config.action === 'insert' || config.action === 'update') {
+                let fetch = document.querySelector(`.crypto-screen-${config.action} > .modal-form > .modal-group > .modal-gecko > .modal-fetch`);
                 fetch.addEventListener('click', () => {
-                    let api = document.querySelector(`.crypto-screen-${config['action']} > .crypto-modal > .modal-group > .modal-gecko > .modal-api`).value;
+                    let api = document.querySelector(`.crypto-screen-${config.action} > .modal-form > .modal-group > .modal-gecko > .modal-api`).value;
                     if (api) {
-                        this.request({method: 'GET', provider: 'gecko', action: config['action'], data: api});
+                        this.request({method: 'GET', provider: 'gecko', action: config.action, data: api});
                     }
                 });
             }
         }
 
-        if (config['mode'] === 'hide') {
+        if (config.mode === 'hide') {
             /** hide backdrop. */
             modal.classList.remove('backdrop');
             modal.style.display = 'none';
 
-            if (config['trigger'] === 'submit') {
+            if (config.trigger === 'submit') {
                 /** hide backdrop. */
                 modal.classList.remove('backdrop');
                 modal.style.display = 'none';
 
                 /** collect all input for processing. */
-                let collect = this.helper.init({type:'input', target: `crypto-screen-${config['action']}`, action: 'value', data: ['id', 'coin', 'api', 'price', 'market', 'volume', 'change']});
+                let collect = this.helper.init({type:'input', target: `crypto-screen-${config.action}`, action: 'value', data: ['id', 'coin', 'api', 'price', 'market', 'volume', 'change']});
 
                 /** check if inputs are empty and valid. */
                 let result = this.helper.init({type: 'validate', data: collect});
 
                 /** double check and then proceed. */
-                if (Object.keys(result['error']).length === 0) {
+                if (Object.keys(result.error).length === 0) {
                     /** hide backdrop. */
                     modal.classList.remove('backdrop');
                     modal.style.display = 'none';
 
                     /** sanitize input. */
-                    let sanitize = this.helper.init({type:'sanitize', action: 'comma', condition: ['price', 'market', 'volume', 'change'], data: result['success']});
+                    let sanitize = this.helper.init({type:'sanitize', action: 'comma', condition: ['price', 'market', 'volume', 'change'], data: result.success});
 
                     /** request access token and then post to backend. */
-                    this.request({method: 'POST', table: 'screen', statement: `${config['action']}`, input: sanitize});
+                    this.request({method: 'POST', table: 'screen', statement: `${config.action}`, input: sanitize});
 
                     /** clear input if insert. */
-                    if (config['action'] === 'insert') {
-                        this.helper.init({type:'input', target: `crypto-screen-${config['action']}`, action: 'clear', data: ['coin', 'api', 'price', 'market', 'volume', 'change']});
+                    if (config.action === 'insert') {
+                        this.helper.init({type:'input', target: `crypto-screen-${config.action}`, action: 'clear', data: ['coin', 'api', 'price', 'market', 'volume', 'change']});
                     }
                 } else {
                     /** show backdrop. */
                     modal.classList.add('backdrop');
                     modal.style.display = 'block';
                     /** display backdrop. */
-                    this.error({target: `crypto-screen-${config['action']}`, data:result['error']});
+                    this.error({target: `crypto-screen-${config.action}`, data:result.error});
                 }
             }
         }
     }
 
     request(config) {
-        if (config['method'] === 'GET') {
+        if (config.method === 'GET') {
             /** fetch local data. */
-            if (config['provider'] === 'local') {
+            if (config.provider === 'local') {
                 axios.get('/sanctum/csrf-cookie').then(response => {
                     axios.get('/api/crypto-screen-retrieve', {
                         params: {'table': 'screen'}
@@ -224,12 +228,12 @@ class screen {
                             }
                         }
                     });
-                })
+                });
             }
 
             /** fetch coingecko data. */
-            if (config['provider'] === 'gecko') {
-                axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${config['data']}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`, {
+            if (config.provider === 'gecko') {
+                axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${config.data}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`, {
                     headers: {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json',
@@ -245,16 +249,16 @@ class screen {
                                     if (response.data[key].hasOwnProperty(val)) {
                                         switch (val) {
                                             case 'usd':
-                                                coin['price'] = response.data[key][val];
+                                                coin.price = response.data[key][val];
                                                 break;
                                             case 'usd_market_cap':
-                                                coin['market'] = response.data[key][val];
+                                                coin.market = response.data[key][val];
                                                 break;
                                             case 'usd_24h_vol'  :
-                                                coin['volume'] = response.data[key][val];
+                                                coin.volume = response.data[key][val];
                                                 break;
                                             case 'usd_24h_change':
-                                                coin['change'] = response.data[key][val];
+                                                coin.change = response.data[key][val];
                                                 break;
                                             default:
                                                 coin = [];
@@ -266,21 +270,21 @@ class screen {
                         /** append to element. */
                         if (coin) {
                             for (let x in coin) {
-                                document.querySelector(`.crypto-screen-${config['action']} > .crypto-modal > .modal-group > .modal-${x}`).value = coin[x].toLocaleString('en');
+                                document.querySelector(`.crypto-screen-${config.action} > .modal-form > .modal-group > .modal-${x}`).value = coin[x].toLocaleString('en');
                             }
                         }
                     }
-                })
+                });
 
             }
         }
         /** store data. */
-        if(config['method'] === 'POST') {
+        if(config.method === 'POST') {
             axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.post('/api/crypto-screen-store', {
-                    table: config['table'],
-                    statement: config['statement'],
-                    input: config['input']
+                    table: config.table,
+                    statement: config.statement,
+                    input: config.input,
                 }).then(response => {
                     /** populate order element with data. */
                     if (response.data.status === true) {
@@ -316,18 +320,18 @@ class screen {
     /** function to display error. */
     error(config) {
         /** run trough it all. */
-        for (let key in config['data']) {
-            let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-            display.textContent = config['data'][key];
+        for (let key in config.data) {
+            let display = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${key}-error`);
+            display.textContent = config.data[key];
         }
         /** clear all error messages after five seconds. */
         setTimeout( () => {
-            for (let key in config['data']) {
-                let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
+            for (let key in config.data) {
+                let display = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${key}-error`);
                 display.textContent = '';
             }
         }, 5000);
     }
 }
 
-export default new screen();
+export default new crypto_screen();

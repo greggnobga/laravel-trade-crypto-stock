@@ -1,7 +1,7 @@
 /** import helper function. */
 import helpers from "../../../helpers/helpers.js";
 
-class crypto_games {
+class crypto_game {
     constructor() {
         this.event = document.querySelector(".speak-crypto-games");
         this.template = document.querySelector(".stage-crypto-games");
@@ -33,17 +33,17 @@ class crypto_games {
                                 this.backdrop({mode:'show', action:'insert'});
 
                                 /** set submit event listener. */
-                                let gameSubmit = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                                let gameSubmit = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
                                 if (gameSubmit) {
                                     gameSubmit.addEventListener('click', (e) => {
                                         this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: gameSubmit});
-                                    })
+                                    });
                                 }
                             }
                         });
 
                         /** set close event listener. */
-                        let gameClose = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-close');
+                        let gameClose = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-close');
                         if (gameClose) {
                             gameClose.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'insert'});
@@ -51,7 +51,7 @@ class crypto_games {
                         }
 
                         /** set cancel event listener. */
-                        let gameCancel = document.querySelector('.crypto-game-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                        let gameCancel = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                         if (gameCancel) {
                             gameCancel.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'insert'});
@@ -63,6 +63,7 @@ class crypto_games {
                         let update = document.querySelectorAll('.crypto-game > .items > .action > .update');
                         if (update) {
                             for (let i = 0; i < update.length; i++) {
+                                /* jshint -W083 */
                                 update[i].addEventListener("click", () => {
                                     /** show modal. */
                                     this.backdrop({mode:'show', action:'update'});
@@ -72,17 +73,18 @@ class crypto_games {
                                     this.helper.init({type: 'input', action: 'populate', target: 'crypto-game-update', el: parent, data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
 
                                     /** set submit event listener. */
-                                    let gameSubmit = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                                    let gameSubmit = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
                                     if (gameSubmit) {
                                         gameSubmit.addEventListener('click', (e) => {
                                             this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: gameSubmit});
-                                        })
+                                        });
                                     }
                                 });
+                                  /* jshint +W083 */
                             }
 
                             /** set close event listener. */
-                            let gameClose = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-close');
+                            let gameClose = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-close');
                             if (gameClose) {
                                 gameClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'update'});
@@ -90,7 +92,7 @@ class crypto_games {
                             }
 
                             /** set cancel event listener. */
-                            let gameCancel = document.querySelector('.crypto-game-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            let gameCancel = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (gameCancel) {
                                 gameCancel.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'update'});
@@ -105,6 +107,7 @@ class crypto_games {
                         let destroy = document.querySelectorAll('.crypto-game > .items > .action > .destroy');
                         if (destroy) {
                             for (let i = 0; i < destroy.length; i++) {
+                              /* jshint -W083 */
                                 destroy[i].addEventListener("click", () => {
                                     /** show modal. */
                                     this.backdrop({mode:'show', action:'destroy'});
@@ -114,17 +117,18 @@ class crypto_games {
                                     this.helper.init({type: 'input', action: 'populate', target: 'crypto-game-destroy', el: parent, data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
 
                                     /** set submit event listener. */
-                                    let gameSubmit = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                                    let gameSubmit = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
                                     if (gameSubmit) {
                                         gameSubmit.addEventListener('click', (e) => {
                                             this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: gameSubmit});
-                                        })
+                                        });
                                     }
                                 });
+                                /* jshint +W083 */
                             }
 
                             /** set close event listener. */
-                            let gameClose = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-close');
+                            let gameClose = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-close');
                             if (gameClose) {
                                 gameClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'destroy'});
@@ -132,7 +136,7 @@ class crypto_games {
                             }
 
                             /** set cancel event listener. */
-                            let gameCancel = document.querySelector('.crypto-game-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            let gameCancel = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (gameCancel) {
                                 gameCancel.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'destroy'});
@@ -154,42 +158,42 @@ class crypto_games {
     /** function on how backdrop behaves. */
     backdrop(config) {
         /** query modal. */
-        let modal = document.querySelector(`.crypto-game-${config['action']}`);
+        let modal = document.querySelector(`.crypto-game-${config.action}`);
 
-        if (config['mode'] === 'show') {
+        if (config.mode === 'show') {
             /** show backdrop. */
             modal.classList.add('backdrop');
             modal.style.display = 'block';
         }
 
-        if (config['mode'] === 'hide') {
+        if (config.mode === 'hide') {
             /** hide backdrop. */
             modal.classList.remove('backdrop');
             modal.style.display = 'none';
 
-            if (config['trigger'] === 'submit') {
+            if (config.trigger === 'submit') {
                 /** hide backdrop. */
                 modal.classList.remove('backdrop');
                 modal.style.display = 'none';
 
                 /** collect all input for processing. */
-                let collect = this.helper.init({type:'input', target: `crypto-game-${config['action']}`, action: 'value', data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
+                let collect = this.helper.init({type:'input', target: `crypto-game-${config.action}`, action: 'value', data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
 
                 /** check if inputs are empty and valid. */
                 let result = this.helper.init({type: 'validate', data: collect});
 
                 /** double check and then proceed. */
-                if (Object.keys(result['error']).length === 0) {
+                if (Object.keys(result.error).length === 0) {
                     /** request access token and then post to backend. */
-                    this.request({method: 'POST', table: 'game', statement: `${config['action']}`, input: result['success']});
+                    this.request({method: 'POST', table: 'game', statement: `${config.action}`, input: result.success});
 
                     /** clear input if insert. */
-                    if (config['action'] === 'insert') {
-                        this.helper.init({type:'input', target: `crypto-game-${config['action']}`, action: 'clear', data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
+                    if (config.action === 'insert') {
+                        this.helper.init({type:'input', target: `crypto-game-${config.action}`, action: 'clear', data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status' , 'earn', 'free', 'rating']});
                     }
                 } else {
                     /** display error. */
-                    this.error({target: `crypto-game-${config['action']}`, data:result['error']});
+                    this.error({target: `crypto-game-${config.action}`, data:result.error});
 
                     /** show backdrop. */
                     modal.classList.add('backdrop');
@@ -202,7 +206,7 @@ class crypto_games {
     /** function to process http request. */
     request(config) {
         /** retrieve data. */
-        if (config['method'] === 'GET') {
+        if (config.method=== 'GET') {
             axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.get('/api/crypto-game-retrieve', { params: {'table': 'game'}
                 }).then(response => {
@@ -219,12 +223,12 @@ class crypto_games {
         }
 
         /** store data. */
-        if(config['method'] === 'POST') {
+        if(config.method === 'POST') {
             axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.post('/api/crypto-game-store', {
-                    table: config['table'],
-                    statement: config['statement'],
-                    input: config['input']
+                    table: config.table,
+                    statement: config.statement,
+                    input: config.input
                 }).then(response => {
                     /** populate order element with data. */
                     if (response.data.status === true) {
@@ -260,17 +264,17 @@ class crypto_games {
     /** function to display error. */
     error(config) {
         /** run trough it all. */
-        for (let key in config['data']) {
-            let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-            display.textContent = config['data'][key];
+        for (let key in config.data) {
+            let display = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${key}-error`);
+            display.textContent = config.data[key];
         }
         /** clear all error messages after five seconds. */
         setTimeout( () => {
-            for (let key in config['data']) {
-                let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
+            for (let key in config.data) {
+                let display = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${key}-error`);
                 display.textContent = '';
             }
         }, 5000);
     }
 }
-export default new crypto_games();
+export default new crypto_game();

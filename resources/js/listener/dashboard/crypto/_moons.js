@@ -1,7 +1,7 @@
 /** import helper function. */
 import helpers from "../../../helpers/helpers.js";
 
-class crypto_moons {
+class crypto_moon {
     constructor() {
         this.event = document.querySelector(".speak-crypto-moons");
         this.template = document.querySelector(".stage-crypto-moons");
@@ -33,17 +33,17 @@ class crypto_moons {
                                 this.backdrop({mode:'show', action:'insert'});
 
                                 /** set submit event listener. */
-                                let moonSubmit = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
+                                let moonSubmit = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
                                 if (moonSubmit) {
                                     moonSubmit.addEventListener('click', (e) => {
                                         this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: moonSubmit});
-                                    })
+                                    });
                                 }
                             }
                         });
 
                         /** set close event listener. */
-                        let moonClose = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-close');
+                        let moonClose = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-close');
                         if (moonClose) {
                             moonClose.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'insert'});
@@ -51,7 +51,7 @@ class crypto_moons {
                         }
 
                         /** set cancel event listener. */
-                        let moonCancel = document.querySelector('.crypto-moon-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                        let moonCancel = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                         if (moonCancel) {
                             moonCancel.addEventListener('click', (e) => {
                                 this.backdrop({mode:'hide', action:'insert'});
@@ -63,6 +63,7 @@ class crypto_moons {
                         let update = document.querySelectorAll('.crypto-moon > .items > .action > .update');
                         if (update) {
                             for (let i = 0; i < update.length; i++) {
+                              /* jshint -W083 */
                                 update[i].addEventListener("click", () => {
                                     /** show modal. */
                                     this.backdrop({mode:'show', action:'update'});
@@ -72,17 +73,18 @@ class crypto_moons {
                                     this.helper.init({type: 'input', action: 'populate', target: 'crypto-moon-update', el: parent, data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
 
                                     /** set submit event listener. */
-                                    let moonSubmit = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
+                                    let moonSubmit = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
                                     if (moonSubmit) {
                                         moonSubmit.addEventListener('click', (e) => {
                                             this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: moonSubmit});
-                                        })
+                                        });
                                     }
                                 });
+                                /* jshint +W083 */
                             }
 
                             /** set close event listener. */
-                            let updateClose = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-close');
+                            let updateClose = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-close');
                             if (updateClose) {
                                 updateClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'update'});
@@ -90,7 +92,7 @@ class crypto_moons {
                             }
 
                             /** set cancel event listener. */
-                            let updateCancel = document.querySelector('.crypto-moon-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            let updateCancel = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (updateCancel) {
                                 updateCancel.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'update'});
@@ -105,6 +107,7 @@ class crypto_moons {
                         let destroy = document.querySelectorAll('.crypto-moon > .items > .action > .destroy');
                         if (destroy) {
                             for (let i = 0; i < destroy.length; i++) {
+                              /* jshint -W083 */
                                 destroy[i].addEventListener("click", () => {
                                     /** show modal. */
                                     this.backdrop({mode:'show', action:'destroy'});
@@ -114,17 +117,18 @@ class crypto_moons {
                                     this.helper.init({type: 'input', action: 'populate', target: 'crypto-moon-destroy', el: parent, data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
 
                                     /** set submit event listener. */
-                                    let moonSubmit = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                                    let moonSubmit = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
                                     if (moonSubmit) {
                                         moonSubmit.addEventListener('click', (e) => {
                                             this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: moonSubmit});
-                                        })
+                                        });
                                     }
                                 });
+                                /* jshint +W083 */
                             }
 
                             /** set close event listener. */
-                            let moonClose = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-close');
+                            let moonClose = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-close');
                             if (moonClose) {
                                 moonClose.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'destroy'});
@@ -132,7 +136,7 @@ class crypto_moons {
                             }
 
                             /** set cancel event listener. */
-                            let moonCancel = document.querySelector('.crypto-moon-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                            let moonCancel = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (moonCancel) {
                                 moonCancel.addEventListener('click', (e) => {
                                     this.backdrop({mode:'hide',action:'destroy'});
@@ -154,42 +158,42 @@ class crypto_moons {
     /** function on how backdrop behaves. */
     backdrop(config) {
         /** query modal. */
-        let modal = document.querySelector(`.crypto-moon-${config['action']}`);
+        let modal = document.querySelector(`.crypto-moon-${config.action}`);
 
-        if (config['mode'] === 'show') {
+        if (config.mode === 'show') {
             /** show backdrop. */
             modal.classList.add('backdrop');
             modal.style.display = 'block';
         }
 
-        if (config['mode'] === 'hide') {
+        if (config.mode === 'hide') {
             /** hide backdrop. */
             modal.classList.add('backdrop');
             modal.style.display = 'none';
 
-            if (config['trigger'] === 'submit') {
+            if (config.trigger === 'submit') {
                 /** hide backdrop. */
                 modal.classList.add('backdrop');
                 modal.style.display = 'none';
 
                 /** collect all input for processing. */
-                let collect = this.helper.init({type:'input', target: `crypto-moon-${config['action']}`, action: 'value', data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
+                let collect = this.helper.init({type:'input', target: `crypto-moon-${config.action}`, action: 'value', data: ['id', 'name', 'coin', 'description', 'zone', 'website']});
 
                 /** check if inputs are empty and valid. */
                 let result = this.helper.init({type: 'validate', data: collect});
 
                 /** double check and then proceed. */
-                if (Object.keys(result['error']).length === 0) {
+                if (Object.keys(result.error).length === 0) {
                     /** request access token and then post to backend. */
-                    this.request({method: 'POST', table: 'moon', statement: `${config['action']}`, input: result['success']});
+                    this.request({method: 'POST', table: 'moon', statement: `${config.action}`, input: result.success});
 
                     /** clear input if insert. */
-                    if (config['action'] === 'insert') {
-                        this.helper.init({type:'input', target: `crypto-moon-${config['action']}`, action: 'clear', data: ['name', 'coin', 'description', 'zone', 'website']});
+                    if (config.action === 'insert') {
+                        this.helper.init({type:'input', target: `crypto-moon-${config.action}`, action: 'clear', data: ['name', 'coin', 'description', 'zone', 'website']});
                     }
                 } else {
                     /** display error. */
-                    this.error({target: `crypto-moon-${config['action']}`, data:result['error']});
+                    this.error({target: `crypto-moon-${config.action}`, data:result.error});
 
                     /** show backdrop. */
                     modal.classList.add('backdrop');
@@ -202,7 +206,7 @@ class crypto_moons {
     /** function to process http request. */
     request(config) {
         /** retrieve data. */
-        if (config['method'] === 'GET') {
+        if (config.method === 'GET') {
             axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.get('/api/crypto-moon-retrieve', { params: {'table': 'moon'}
                 }).then(response => {
@@ -219,12 +223,12 @@ class crypto_moons {
         }
 
         /** store data. */
-        if(config['method'] === 'POST') {
+        if(config.method === 'POST') {
             axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.post('/api/crypto-moon-store', {
-                    table: config['table'],
-                    statement: config['statement'],
-                    input: config['input']
+                    table: config.table,
+                    statement: config.statement,
+                    input: config.input,
                 }).then(response => {
                     /** populate order element with data. */
                     if (response.data.status === true) {
@@ -260,17 +264,17 @@ class crypto_moons {
     /** function to display error. */
     error(config) {
         /** run trough it all. */
-        for (let key in config['data']) {
-            let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-            display.textContent = config['data'][key];
+        for (let key in config.data) {
+            let display = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${key}-error`);
+            display.textContent = config.data[key];
         }
         /** clear all error messages after five seconds. */
         setTimeout( () => {
-            for (let key in config['data']) {
-                let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
+            for (let key in config.data) {
+                let display = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${key}-error`);
                 display.textContent = '';
             }
         }, 5000);
     }
 }
-export default new crypto_moons();
+export default new crypto_moon();

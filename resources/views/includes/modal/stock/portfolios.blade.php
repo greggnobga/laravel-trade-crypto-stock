@@ -1,4 +1,4 @@
-<div class="crypto-portfolio-insert">
+<div class="stock-portfolio-insert">
     <div class="modal-form">
         <div class="modal-group">
             <h2 class="modal-header">Add Record</h2>
@@ -19,28 +19,28 @@
             <span class="modal-error modal-order-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-wallet-label" for="wallet">Wallet</label>
-            <input id="wallet" class="modal-wallet" name="wallet" type="text" placeholder="Binance" required/>
-            <span class="modal-error modal-wallet-error"></span>
+            <label class="modal-ticker-label" for="ticker">Ticker</label>
+            <input id="wallet" class="modal-ticker" name="ticker" type="text" placeholder="GTCAP" required/>
+            <span class="modal-error modal-ticker-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-name-label" for="name">Name</label>
-            <input id="name" class="modal-name" name="name" type="text" placeholder="Bitcoin" required/>
+            <input id="name" class="modal-name" name="name" type="text" placeholder="GT Capital Holdings Inc." required/>
             <span class="modal-error modal-name-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-coin-label" for="coin">Coin</label>
-            <input id="coin" class="modal-coin" name="coin" type="text" placeholder="BTC" required/>
-            <span class="modal-error modal-coin-error"></span>
+            <label class="modal-fee-label" for="fee">Fee</label>
+            <input id="coin" class="modal-fee" name="fee" type="text" placeholder="0.00" required/>
+            <span class="modal-error modal-fee-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-quantity-label" for="quantity">Quantity</label>
-            <input id="quantity" class="modal-quantity" name="quantity" type="number" placeholder="0.00" required/>
-            <span class="modal-error modal-quantity-error"></span>
+            <label class="modal-sharel-label" for="sharel">Share</label>
+            <input id="share" class="modal-share" name="share" type="number" placeholder="0.00" required/>
+            <span class="modal-error modal-share-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-capital-label" for="capital">Capital</label>
-            <input id="capital" class="modal-capital" name="capital" type="number" placeholder="00.00" required/>
+            <input id="capital" class="modal-capital" name="capital" type="text" placeholder="0.00" required/>
             <span class="modal-error modal-capital-error"></span>
         </div>
         <div class="modal-group">
@@ -56,7 +56,8 @@
         </div>
     </div>
 </div>
-<div class="crypto-portfolio-update">
+
+<div class="stock-portfolio-update">
     <div class="modal-form">
         <div class="modal-group">
             <h2 class="modal-header">Update Record</h2>
@@ -65,36 +66,40 @@
         </div>
         <div class="modal-group">
             <label class="modal-id-label" for="id">ID</label>
-            <input id="id" class="modal-id" name="id" type="number" placeholder="ID" disabled/>
+            <input id="id" class="modal-id" name="id" type="number" placeholder="ID" value="0" disabled/>
         </div>
         <div class="modal-group">
-            <label class="modal-order-label" for="wallet">Order</label>
-            <input id="order" class="modal-order" name="wallet" type="text" placeholder="Order" required/>
+            <label class="modal-order-label" for="id">Order</label>
+            <select name="order" class="modal-order" id="order">
+                <option value=""></option>
+                <option value="Buy">Buy</option>
+                <option value="Sell">Sell</option>
+            </select>
             <span class="modal-error modal-order-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-wallet-label" for="wallet">Wallet</label>
-            <input id="wallet" class="modal-wallet" name="wallet" type="text" placeholder="Binance" required/>
-            <span class="modal-error modal-wallet-error"></span>
+            <label class="modal-ticker-label" for="ticker">Ticker</label>
+            <input id="wallet" class="modal-ticker" name="ticker" type="text" placeholder="GTCAP" required/>
+            <span class="modal-error modal-ticker-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-name-label" for="name">Name</label>
-            <input id="name" class="modal-name" name="name" type="text" placeholder="Bitcoin" required/>
+            <input id="name" class="modal-name" name="name" type="text" placeholder="GT Capital Holdings Inc." required/>
             <span class="modal-error modal-name-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-coin-label" for="coin">Coin</label>
-            <input id="coin" class="modal-coin" name="coin" type="text" placeholder="BTC" required/>
-            <span class="modal-error modal-coin-error"></span>
+            <label class="modal-fee-label" for="fee">Fee</label>
+            <input id="coin" class="modal-fee" name="fee" type="text" placeholder="0.00" required/>
+            <span class="modal-error modal-fee-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-quantity-label" for="quantity">Quantity</label>
-            <input id="quantity" class="modal-quantity" name="quantity" type="text" placeholder="0.00" required/>
-            <span class="modal-error modal-quantity-error"></span>
+            <label class="modal-sharel-label" for="sharel">Share</label>
+            <input id="share" class="modal-share" name="share" type="number" placeholder="0.00" required/>
+            <span class="modal-error modal-share-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-capital-label" for="capital">Capital</label>
-            <input id="capital" class="modal-capital" name="capital" type="text" placeholder="00.00" required/>
+            <input id="capital" class="modal-capital" name="capital" type="text" placeholder="0.00" required/>
             <span class="modal-error modal-capital-error"></span>
         </div>
         <div class="modal-group">
@@ -110,45 +115,50 @@
         </div>
     </div>
 </div>
-<div class="crypto-portfolio-destroy">
+
+<div class="stock-portfolio-destroy">
     <div class="modal-form">
         <div class="modal-group">
-            <h2 class="modal-header">Destroy Record</h2>
+            <h2 class="modal-header">Update Record</h2>
             <span class="modal-buffer"></span>
             <span class="modal-close">X</span>
         </div>
         <div class="modal-group">
             <label class="modal-id-label" for="id">ID</label>
-            <input id="id" class="modal-id" name="id" type="number" placeholder="ID" disabled/>
+            <input id="id" class="modal-id" name="id" type="number" placeholder="ID" value="0" disabled/>
         </div>
         <div class="modal-group">
-            <label class="modal-order-label" for="wallet">Order</label>
-            <input id="order" class="modal-order" name="wallet" type="text" placeholder="Order" disabled/>
+            <label class="modal-order-label" for="id">Order</label>
+            <select name="order" class="modal-order" id="order" disabled>
+                <option value=""></option>
+                <option value="Buy">Buy</option>
+                <option value="Sell">Sell</option>
+            </select>
             <span class="modal-error modal-order-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-wallet-label" for="wallet">Wallet</label>
-            <input id="wallet" class="modal-wallet" name="wallet" type="text" placeholder="Binance" disabled/>
-            <span class="modal-error modal-wallet-error"></span>
+            <label class="modal-ticker-label" for="ticker">Ticker</label>
+            <input id="wallet" class="modal-ticker" name="ticker" type="text" placeholder="GTCAP" disabled/>
+            <span class="modal-error modal-ticker-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-name-label" for="name">Name</label>
-            <input id="name" class="modal-name" name="name" type="text" placeholder="Bitcoin" disabled/>
+            <input id="name" class="modal-name" name="name" type="text" placeholder="GT Capital Holdings Inc." disabled/>
             <span class="modal-error modal-name-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-coin-label" for="coin">Coin</label>
-            <input id="coin" class="modal-coin" name="coin" type="text" placeholder="BTC" disabled/>
-            <span class="modal-error modal-coin-error"></span>
+            <label class="modal-fee-label" for="fee">Fee</label>
+            <input id="coin" class="modal-fee" name="fee" type="text" placeholder="0.00" disabled/>
+            <span class="modal-error modal-fee-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-quantity-label" for="quantity">Quantity</label>
-            <input id="quantity" class="modal-quantity" name="quantity" type="text" placeholder="0.00" disabled/>
-            <span class="modal-error modal-quantity-error"></span>
+            <label class="modal-sharel-label" for="sharel">Share</label>
+            <input id="share" class="modal-share" name="share" type="number" placeholder="0.00" disabled/>
+            <span class="modal-error modal-share-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-capital-label" for="capital">Capital</label>
-            <input id="capital" class="modal-capital" name="capital" type="text" placeholder="00.00" disabled/>
+            <input id="capital" class="modal-capital" name="capital" type="text" placeholder="0.00" disabled/>
             <span class="modal-error modal-capital-error"></span>
         </div>
         <div class="modal-group">

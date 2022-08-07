@@ -1,5 +1,5 @@
 <div class="crypto-game-insert">
-    <div class="crypto-modal">
+    <div class="modal-form">
         <div class="modal-group">
             <h2 class="modal-header">Add Record</h2>
             <span class="modal-buffer"></span>
@@ -75,7 +75,7 @@
 </div>
 
 <div class="crypto-game-update">
-    <div class="crypto-modal">
+    <div class="modal-form">
         <div class="modal-group">
             <h2 class="modal-header">Update Record</h2>
             <span class="modal-buffer"></span>
@@ -151,7 +151,7 @@
 </div>
 
 <div class="crypto-game-destroy">
-    <div class="crypto-modal">
+    <div class="modal-form">
         <div class="modal-group">
             <h2 class="modal-header">Destroy Record</h2>
             <span class="modal-buffer"></span>

@@ -43,6 +43,10 @@ class PortfolioController extends Controller {
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
             if ($request->input('table') === 'portfolio') {
+              /** repository. */
+              $result = [];
+              $order = [];
+              $hold = [];
               /** order data. */
               $stocks = DB::table('stock_portfolios')
                   ->select('id', 'created_at as date', 'order', 'ticker', 'name', 'fee', 'share', 'capital')
@@ -51,10 +55,61 @@ class PortfolioController extends Controller {
 
                   if ($stocks) {
                     $result['order'] = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stocks]);
-
-                    return ['status' => true, 'sql' => 'select', 'order' => $result['order'] ];
                   }
+
+              /** hold data. */
+              $ticker = DB::table('stock_portfolios')
+                  ->select('ticker', 'name')
+                  ->where('userid', '=', Auth::id())
+                  ->get()
+                  ->unique();
+
+              if ($ticker) {
+                    foreach ($ticker as $key => $value) {
+                      /** build buy data. */
+                        $buy = DB::table('stock_portfolios')
+                            ->select('name', 'ticker', 'fee', 'share', 'capital')
+                            ->where('order', '=', 'buy')
+                            ->where('userid', '=', Auth::id())
+                            ->get();
+
+                          $hold['buy'][$key]['name'] = $value->name;
+                          $hold['buy'][$key]['order'] = 'Buy';
+                          $hold['buy'][$key]['ticker'] = $value->ticker;
+                          $hold['buy'][$key]['share'] = number_format($buy->where('ticker', $value->ticker)->sum('share'), '2', '.', ',');
+                          $hold['buy'][$key]['fee'] = number_format($buy->where('ticker', $value->ticker)->sum('fee'), '2', '.', ',');
+                          $hold['buy'][$key]['capital'] = number_format($buy->where('ticker', $value->ticker)->sum('capital'), '2', '.', ',');
+
+                          /** build sell data. */
+                          $sell = DB::table('stock_portfolios')
+                              ->select('name', 'ticker', 'fee', 'share', 'capital')
+                              ->where('order', '=', 'sell')
+                              ->where('userid', '=', Auth::id())
+                              ->get();
+
+                          $hold['sell'][$key]['name'] = $value->name;
+                          $hold['sell'][$key]['order'] = 'Sell';
+                          $hold['sell'][$key]['ticker'] = $value->ticker;
+                          $hold['sell'][$key]['share'] = number_format($sell->where('ticker', $value->ticker)->sum('share'), '2', '.', ',');
+                          $hold['sell'][$key]['fee'] = number_format($sell->where('ticker', $value->ticker)->sum('fee'), '2', '.', ',');
+                          $hold['sell'][$key]['capital'] = number_format($sell->where('ticker', $value->ticker)->sum('capital'), '2', '.', ',');
+
+                          /** build total data. */
+                          $hold['total'][$key]['name'] = $value->name;
+                          $hold['total'][$key]['ticker'] = $value->ticker;
+                          $hold['total'][$key]['share'] =  number_format($buy->where('ticker', $value->ticker)->sum('share') - $sell->where('ticker', $value->ticker)->sum('share'), '2', '.', ',');
+                          $hold['total'][$key]['fee'] = number_format($buy->where('ticker', $value->ticker)->sum('fee') - $sell->where('ticker', $value->ticker)->sum('fee'), '2', '.', ',');
+                          $hold['total'][$key]['capital'] = number_format($buy->where('ticker', $value->ticker)->sum('capital') - $sell->where('ticker', $value->ticker)->sum('capital'), '2', '.', ',');
+                      }
+
+                      /** resequence array keys*/
+                      $result['hold']['buy'] = array_values($hold['buy']);
+                      $result['hold']['sell'] = array_values($hold['sell']);
+                      $result['hold']['total'] = array_values($hold['total']);
+                }
             }
+            /** return something. */
+            return ['status' => true, 'sql' => 'select', 'order' => $result['order'], 'hold' => $result['hold']];
         }
       }
 
@@ -166,60 +221,8 @@ class PortfolioController extends Controller {
                     }
                 }
                 $return[$key] = $result;
-            }
-            return $return;
-        }
-
-        if ($data['purpose'] === 'compute' && $data['source'] === 'hold') {
-            /** repository */
-            $result = [];
-            foreach ($data['stock'] as $key => $value) {
-                foreach ($value as $item) {
-                    /** query record. */
-                    $record[$key] = DB::table('stock_portfolios')
-                        ->select('name', 'ticker')
-                        ->where('order', '=', $data['condition'])
-                        ->where('ticker', '=', strtolower($item))
-                        ->where('userid', '=', Auth::id())
-                        ->get();
-
-                    /** reconstruct array. */
-                    foreach ($record[$key] as $items) {
-                        foreach($items as $k => $v) {
-                            if ($k === 'name')  {
-                                $result[$key]['name'] = $v;
-                            }
-                            if ($k === 'ticker')  {
-                                $result[$key]['ticker'] = $v;
-                            }
-                        }
-                    }
-
-                    /** sum quantity. */
-                    $quantity = DB::table('stock_portfolios')
-                        ->select('share')
-                        ->where('order', '=', $data['condition'])
-                        ->where('ticker', '=', strtolower($item))
-                        ->where('userid', '=', Auth::id())
-                        ->get()
-                        ->sum('share');
-
-                    $result[$key]['share'] = number_format($quantity, '2', '.', ',');
-
-                    /** sum capital. */
-                    $capital = DB::table('stock_portfolios')
-                        ->select('capital')
-                        ->where('order', '=', $data['condition'])
-                        ->where('ticker', '=', strtolower($item))
-                        ->where('userid', '=', Auth::id())
-                        ->get()
-                        ->sum('capital');
-
-                    $result[$key]['capital'] = number_format($capital, '2', '.', ',');
-                }
-            }
-            /** return result. */
-            return $result;
-        }
-      }
+              }
+              return $return;
+          }
+    }
 }

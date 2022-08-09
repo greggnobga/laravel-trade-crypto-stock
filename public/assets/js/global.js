@@ -5901,16 +5901,18 @@ var stock_portfolio = /*#__PURE__*/function () {
               table: 'portfolio'
             }
           }).then(function (response) {
+            console.log(response.data);
+
             if (response.data.status === true) {
               /** populate order element with data. */
-              if (response.data.order) {
-                for (var i = 0; i < response.data.order.length; i++) {
+              if (response.data.stock) {
+                for (var i = 0; i < response.data.stock.order.length; i++) {
                   _this2.helper.init({
                     type: 'node',
                     id: "".concat(i + 1),
                     target: 'stock-order',
                     statement: response.data.sql,
-                    input: response.data.order[i]
+                    input: response.data.stock.order[i]
                   });
                 }
               }

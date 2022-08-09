@@ -246,11 +246,12 @@ class stock_portfolio {
                         table: 'portfolio'
                     }
                 }).then(response => {
+                  console.log(response.data);
                     if (response.data.status === true) {
                         /** populate order element with data. */
-                        if (response.data.order) {
-                            for (let i=0; i<response.data.order.length; i++) {
-                                this.helper.init({type:'node', id:`${i+1}`, target:'stock-order', statement: response.data.sql, input: response.data.order[i]});
+                        if (response.data.stock) {
+                            for (let i=0; i<response.data.stock.order.length; i++) {
+                                this.helper.init({type:'node', id:`${i+1}`, target:'stock-order', statement: response.data.sql, input: response.data.stock.order[i]});
                             }
                         }
                     }

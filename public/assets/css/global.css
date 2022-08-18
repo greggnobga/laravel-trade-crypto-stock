@@ -720,8 +720,8 @@ a:hover {
 }
 .btn-warning:hover {
   color: #F5F5F5;
-  background: #03A66D;
-  border: 1px solid rgba(0, 204, 51, 0.25);
+  background: #FF4500;
+  border: 1px solid rgba(208, 54, 79, 0.25);
 }
 
 .btn-crypto:hover {
@@ -791,6 +791,7 @@ a:hover {
 .card .header .meta .right .btn {
   width: 10rem;
   padding: 0.45rem;
+  display: inline-block;
 }
 
 .form-auth {
@@ -1178,7 +1179,7 @@ select {
 .stock-hold > .items {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 5rem repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   padding: 1rem;
   vertical-align: top;
@@ -1196,6 +1197,30 @@ select {
   vertical-align: top;
 }
 .stock-order > .items:last-child {
+  border-bottom: none;
+}
+
+.stock-index > .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5rem 2fr repeat(4, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 1rem;
+  vertical-align: top;
+}
+.stock-index > .items:last-child {
+  border-bottom: none;
+}
+
+.stock-trade > .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5rem 2fr repeat(5, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 1rem;
+  vertical-align: top;
+}
+.stock-trade > .items:last-child {
   border-bottom: none;
 }
 

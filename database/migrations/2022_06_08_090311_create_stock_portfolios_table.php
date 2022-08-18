@@ -17,14 +17,14 @@ return new class extends Migration
           $table->id();
           $table->integer('userid');
           $table->string('order');
-          $table->string('ticker');
+          $table->string('symbol');
           $table->string('name');
           $table->decimal('fee', 24, 2)->default(0.00);
           $table->decimal('share', 24, 2)->default(0.00);
           $table->decimal('capital', 24, 2)->default(0.00);
           $table->timestamps();
         });
-    } 
+    }
 
     /**
      * Reverse the migrations.

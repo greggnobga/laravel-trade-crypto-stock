@@ -20,8 +20,8 @@
         </div>
         <div class="modal-group">
             <label class="modal-ticker-label" for="ticker">Ticker</label>
-            <input id="wallet" class="modal-ticker" name="ticker" type="text" placeholder="GTCAP" required/>
-            <span class="modal-error modal-ticker-error"></span>
+            <input id="symbol" class="modal-symbol" name="symbol" type="text" placeholder="GTCAP" required/>
+            <span class="modal-error modal-symbol-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-name-label" for="name">Name</label>

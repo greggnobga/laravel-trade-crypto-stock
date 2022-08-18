@@ -86,7 +86,7 @@ class stock_portfolio {
 
                                     /** populate modal. */
                                     let parent = update[i].parentElement.parentElement;
-                                    this.helper.init({type: 'input', action: 'populate', target: 'stock-portfolio-update', el: parent, data: ['id', 'order', 'ticker', 'name', 'fee', 'share', 'capital']});
+                                    this.helper.init({type: 'input', action: 'populate', target: 'stock-portfolio-update', el: parent, data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital']});
 
                                     /** set submit event listener. */
                                     let portfolioSubmit = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
@@ -125,7 +125,7 @@ class stock_portfolio {
 
                                     /** populate modal. */
                                     let parent = destroy[i].parentElement.parentElement;
-                                    this.helper.init({type: 'input', action: 'populate', target: 'stock-portfolio-destroy', el: parent, data: ['id', 'order', 'ticker', 'name', 'fee', 'share', 'capital']});
+                                    this.helper.init({type: 'input', action: 'populate', target: 'stock-portfolio-destroy', el: parent, data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital']});
 
                                     /** set destroy event listener. */
                                     let portfolioSubmit = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
@@ -188,7 +188,7 @@ class stock_portfolio {
                     section: 'portfolio',
                     target: `stock-portfolio-${config.action}`,
                     action: 'value',
-                    data: ['id', 'order', 'ticker', 'name', 'fee', 'share', 'capital']
+                    data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital']
                 });
 
                 /** check if inputs are empty and valid. */
@@ -219,7 +219,7 @@ class stock_portfolio {
                             section: 'portfolio',
                             target: `stock-portfolio-${config.action}`,
                             action: 'clear',
-                            data: ['order', 'ticker', 'name', 'fee', 'share', 'capital']
+                            data: ['order', 'symbol', 'name', 'fee', 'share', 'capital']
                         });
                     }
                 } else {
@@ -246,12 +246,17 @@ class stock_portfolio {
                         table: 'portfolio'
                     }
                 }).then(response => {
-                  console.log(response.data);
                     if (response.data.status === true) {
                         /** populate order element with data. */
-                        if (response.data.stock) {
-                            for (let i=0; i<response.data.stock.order.length; i++) {
-                                this.helper.init({type:'node', id:`${i+1}`, target:'stock-order', statement: response.data.sql, input: response.data.stock.order[i]});
+                        if (response.data.order) {
+                            for (let i=0; i<response.data.order.length; i++) {
+                                this.helper.init({type:'node', id:`${i+1}`, target:'stock-order', statement: response.data.sql, input: response.data.order[i]});
+                            }
+                        }
+                        /** populate hold element with data. */
+                        if (response.data.hold.total) {
+                            for (let i=0; i<response.data.hold.total.length; i++) {
+                                this.helper.init({type:'node', id:`${i+1}`, target:'stock-hold', statement: response.data.sql, input: response.data.hold.total[i]});
                             }
                         }
                     }

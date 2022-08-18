@@ -12,11 +12,11 @@
     </div>
     <div class="stock-hold">
         <div class="items">
-          <div class="id">ID</div>
-          <div class="ticker">Ticker</div>
+          <div class="symbol">Symbol</div>
           <div class="share">Share</div>
+          <div class="fee">Fee</div>
           <div class="capital">Capital</div>
-          <div class="capital">Average</div>
+          <div class="average">Average</div>
         </div>
     </div>
 </div>
@@ -38,7 +38,7 @@
           <div class="id">ID</div>
           <div class="date">Date</div>
           <div class="order">Order</div>
-          <div class="ticker">Ticker</div>
+          <div class="symbol">Symbol</div>
           <div class="name">Name</div>
           <div class="fee">Fee</div>
           <div class="share">Share</div>

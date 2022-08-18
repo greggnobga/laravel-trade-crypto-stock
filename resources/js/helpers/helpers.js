@@ -4,6 +4,7 @@ import input from './_input.js';
 import node from './_node.js';
 import message from './_message.js';
 import sanitze from './_sanitize.js';
+import titlecase from './_titlecase.js';
 
 /** define class. */
 class helpers {
@@ -32,6 +33,11 @@ class helpers {
         /** run validator. */
         if (config.type === 'validate') {
             result = validators.init(config);
+        }
+
+        /** run titlecase. */
+        if (config.type === 'titlecase') {
+            result = titlecase.init(config);
         }
 
         return result;

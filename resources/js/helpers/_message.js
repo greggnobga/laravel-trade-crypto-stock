@@ -6,14 +6,13 @@ class message {
         if (config.status=== true) {
             board.classList.add('success');
             board.textContent = config.message;
-            setTimeout(() => { board.classList.remove('success'); }, 10000);
-
+            setTimeout(() => { board.classList.remove('success'); }, 3000);
         }
         /** display error message. */
         if (config.status=== false) {
             board.classList.add('error');
             board.textContent = config.message;
-            setTimeout(() => { board.classList.remove('error'); }, 10000);
+            setTimeout(() => { board.classList.remove('error'); }, 3000);
         }
         /** return. */
         return true;

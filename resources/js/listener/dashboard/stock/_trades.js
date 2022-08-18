@@ -15,18 +15,25 @@ class stock_trade {
         /** setup initial listener. */
         this.event.addEventListener("click", (e) => {
             if (e.target.dataset.sidebar === 'stock_trades') {
-              console.log('Clicked Stock Trades');
-                /** retrieve data .*/
-                // this.request({method: 'GET', table:'portfolio'});
                 /** clone template. */
                 let content = this.template.content.cloneNode(true);
                 // /** query document and do conditional statement base on the result. */
                 let check = document.querySelector('.stock-trade');
                 if (check === null || check === undefined) {
+                  /** retrieve data .*/
+                  this.request({method: 'GET', table:'trade'});
                     /** clear element before appending. */
                     this.element.innerHTML = '';
                     /** append template content. */
                     this.element.appendChild(content);
+                    /** fetch button. */
+                    let fetch = document.querySelector(`.card > .header > .meta > .right > .click-trade-fetch`);
+                    if (fetch) {
+                      fetch.addEventListener('click', (e) => {
+                        this.request({method:'POST', action: 'fetch'});
+                      });
+                    }
+
                     /** insert modal code block. */
                     // let record = document.querySelector('.click-order-record');
                     // if (record) {
@@ -199,77 +206,82 @@ class stock_trade {
     //     }
     // }
     /** function to process http request. */
-    // request(config) {
-    //     /** retrieve data. */
-    //     if (config['method'] === 'GET') {
-    //         axios.get('/sanctum/csrf-cookie').then(response => {
-    //             axios.get('/api/crypto-portfolio-retrieve', {
-    //                 params: {table: 'portfolio'}
-    //             }).then(response => {
-    //                 if (response.data.status === true) {
-    //                     /** populate order element with data. */
-    //                     if (response.data.order) {
-    //                         for (let i=0; i<response.data.order.length; i++) {
-    //                             this.helper.init({type:'node', id:`${i+1}`, target:'crypto-order', statement: response.data.sql, input: response.data.order[i]});
-    //                         }
-    //                     }
-    //                     /** populate hold element with data. */
-    //                     if (response.data.hold.total) {
-    //                         for (let key in response.data.hold.total) {
-    //                             this.helper.init({type:'node', target:'crypto-hold', statement: response.data.sql, input: response.data.hold.total[key]});
-    //                         }
-    //                     }
-    //                     /** populate fund element with data. */
-    //                     if (response.data.fund.total) {
-    //                         for (let key in response.data.fund.total) {
-    //                             this.helper.init({type:'node', target:'crypto-fund', statement: response.data.sql, input: response.data.fund.total[key]});
-    //                         }
-    //                     }
-    //                 }
-    //             });
-    //         });
-    //     }
-    //
-    //     /** store data. */
-    //     if (config['method'] === 'POST') {
-    //         axios.get('/sanctum/csrf-cookie').then( () => {
-    //             axios.post('/api/crypto-portfolio-store', {
-    //                 table: config['table'],
-    //                 order: config['input']['order'].toLowerCase(),
-    //                 statement: config['statement'],
-    //                 input: config['input']
-    //             }).then(response => {
-    //                 /** populate order element with data. */
-    //                 if (response.data.status === true) {
-    //                     /** add or update element in document tree. */
-    //                     if (response.data.sql === 'select') {
-    //                         for (let key in response.data.coin) {
-    //                             this.helper.init({type:'node', id: 0, target:'crypto-order', statement: response.data.sql, input: response.data.coin[key]});
-    //                         }
-    //                     }
-    //                     /** add or update element in document tree. */
-    //                     if (response.data.sql === 'update') {
-    //                         for (let key in response.data.coin) {
-    //                             this.helper.init({type:'node', target:'crypto-order', statement: response.data.sql, input: response.data.coin[key]});
-    //                         }
-    //                     }
-    //                     /** remove element in document tree. */
-    //                     if (response.data.sql === 'destroy') {
-    //                         this.helper.init({type:'node', target:'crypto-order', statement: response.data.sql, input: response.data.coin});
-    //                     }
-    //
-    //                     /** display success message. */
-    //                     this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
-    //                 }
-    //
-    //                 /** display error message. */
-    //                 if (response.data.status === false) {
-    //                     this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
-    //                 }
-    //             })
-    //         });
-    //     }
-    // }
+    request(config) {
+        /** retrieve data. */
+        if (config.method === 'GET') {
+            axios.get('/sanctum/csrf-cookie').then(response => {
+                axios.get('/api/stock-trade-retrieve', {
+                    params: {table: 'trade'}
+                }).then(response => {
+                  if (response.data.status === true) {
+                    if (response.data.indexes.length != 0) {
+                      /** populate indexes element with data. */
+                      if (response.data.indexes) {
+                        for (let i=0; i<response.data.indexes.length; i++) {
+                          /** add item to document. */
+                          this.helper.init({type:'node', id:`${i+1}`, target:'stock-index', statement: response.data.sql, input: response.data.indexes[i]});
+                          }
+                      }
+                      /** populate trade element with data. */
+                      if (response.data.stocks) {
+                        for (let x=0; x<response.data.stocks.length; x++) {
+                          /** add item to document. */
+                          this.helper.init({type:'node', id:`${x+1}`, target:'stock-trade', statement: response.data.sql, input: response.data.stocks[x]});
+                          }
+                      }
+                    }
+                  }
+                });
+            });
+        }
+
+        /** store data. */
+        if (config.method === 'POST') {
+          /** fetch stock list. */
+          if (config.action === 'fetch') {
+            axios.get('https://phisix-api4.appspot.com/stocks.json', {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                  'Content-Type': 'application/json',
+                },
+                withCredentials: false,
+                credentials: 'same-origin',
+              }).then( response => {
+                if (response.data.stock.length != 0) {
+                  let push = setInterval(() => {
+                      /** remove first array element. */
+                      let stock = response.data.stock[0];
+                    /** format item data */
+                    let input = {
+                      name: this.helper.init({type: 'titlecase', string: stock.name}),
+                      symbol: stock.symbol,
+                      price: stock.price.amount,
+                      change: stock.percent_change,
+                      volume: stock.volume,
+                    };
+                    /** get csrf token and send post request. */
+                    axios.get('/sanctum/csrf-cookie').then(response => {
+                      axios.post('/api/stock-trade-store', {
+                        table: 'trade',
+                        statement: 'fetch',
+                        input: input,
+                        }).then(response => {
+                          /** send user a message. */
+                          this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
+                        });
+                      });
+                      /** remove first array element. */
+                      response.data.stock.shift();
+                      /** clear interval when array reach zero. */
+                      if (response.data.stock.length === 0) {
+                        clearInterval(push);
+                      }
+                  }, 5000);
+                }
+              });
+          }
+        }
+    }
     /** function to display error. */
     // error(config) {
     //     /** run trough it all. */

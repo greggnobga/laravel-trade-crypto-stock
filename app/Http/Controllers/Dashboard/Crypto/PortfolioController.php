@@ -45,108 +45,114 @@ class PortfolioController extends Controller {
                 $hold = [];
                 $fund = [];
 
-                /** order data. */
-                $orders = DB::table('crypto_portfolios')
-                    ->select('id', 'created_at as date', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital')
+                /** check record. */
+                $check = DB::table('crypto_portfolios')
+                    ->select('coin')
                     ->where('userid', '=', Auth::id())
                     ->get();
 
-                if ($orders) {
-                    $result['order']  = $this->helpers(['purpose' => 'format', 'source' => 'order', 'coin' => $orders]);
-                }
+                  if ($check->isNotEmpty()) {
+                    /** order data. */
+                    $orders = DB::table('crypto_portfolios')
+                        ->select('id', 'created_at as date', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital')
+                        ->where('userid', '=', Auth::id())
+                        ->get();
 
-                /** hold data. */
-                $holds = DB::table('crypto_portfolios')
-                    ->select('coin', 'name')
-                    ->where('userid', '=', Auth::id())
-                    ->get()
-                    ->unique();
-
-                if ($holds) {
-                    foreach ($holds as $key => $value) {
-                      /** build buy data. */
-                        $buy = DB::table('crypto_portfolios')
-                            ->select('wallet', 'name', 'coin', 'quantity', 'capital')
-                            ->where('order', '=', 'buy')
-                            ->where('userid', '=', Auth::id())
-                            ->get();
-
-                        $hold['buy'][$key]['name'] = $value->name;
-                        $hold['buy'][$key]['order'] = 'Buy';
-                        $hold['buy'][$key]['coin'] = $value->coin;
-                        $hold['buy'][$key]['quantity'] = number_format($buy->where('coin', $value->coin)->sum('quantity'), '2', '.', ',');
-                        $hold['buy'][$key]['capital'] = number_format($buy->where('coin', $value->coin)->sum('capital'), '2', '.', ',');
-
-                      /** build buy data. */
-                        $sell = DB::table('crypto_portfolios')
-                          ->select('wallet', 'name', 'coin', 'quantity', 'capital')
-                          ->where('order', '=', 'sell')
-                          ->where('userid', '=', Auth::id())
-                          ->get();
-
-                        $hold['sell'][$key]['name'] = $value->name;
-                        $hold['sell'][$key]['order'] = 'Sell';
-                        $hold['sell'][$key]['coin'] = $value->coin;
-                        $hold['sell'][$key]['quantity'] = number_format($sell->where('coin', $value->coin)->sum('quantity'), '2', '.', ',');
-                        $hold['sell'][$key]['capital'] = number_format($sell->where('coin', $value->coin)->sum('capital'), '2', '.', ',');
-
-                        /** build total data. */
-                        $hold['total'][$key]['name'] = $value->name;
-                        $hold['total'][$key]['ticker'] = $value->coin;
-                        $hold['total'][$key]['quantity'] =  number_format($buy->where('coin', $value->coin)->sum('quantity') - $sell->where('coin', $value->coin)->sum('quantity'), '2', '.', ',');
-                        $hold['total'][$key]['capital'] = number_format($buy->where('coin', $value->coin)->sum('capital') - $sell->where('coin', $value->coin)->sum('capital'), '2', '.', ',');
+                    if ($orders->isNotEmpty()) {
+                        $result['order']  = $this->helpers(['purpose' => 'format', 'source' => 'order', 'coin' => $orders]);
                     }
 
-                    /** resequence array keys*/
-                    $result['hold']['buy'] = array_values($hold['buy']);
-                    $result['hold']['sell'] = array_values($hold['sell']);
-                    $result['hold']['total'] = array_values($hold['total']);
-                }
+                    /** hold data. */
+                    $holds = DB::table('crypto_portfolios')
+                        ->select('coin', 'name')
+                        ->where('userid', '=', Auth::id())
+                        ->get()
+                        ->unique();
 
-                /** fund data. */
-                $funds = DB::table('crypto_portfolios')
-                    ->select('wallet')
-                    ->where('userid', '=', Auth::id())
-                    ->get()
-                    ->unique();
+                    if ($holds->isNotEmpty()) {
+                        foreach ($holds as $key => $value) {
+                          /** build buy data. */
+                            $buy = DB::table('crypto_portfolios')
+                                ->select('wallet', 'name', 'coin', 'quantity', 'capital')
+                                ->where('order', '=', 'buy')
+                                ->where('userid', '=', Auth::id())
+                                ->get();
 
-                if ($funds) {
-                    foreach ($funds as $key => $value) {
-                      /** build buy data. */
-                        $buy = DB::table('crypto_portfolios')
-                          ->select('capital', 'wallet')
-                          ->where('order', '=', 'buy')
-                          ->where('userid', '=', Auth::id())
-                          ->get();
+                            $hold['buy'][$key]['name'] = $value->name;
+                            $hold['buy'][$key]['order'] = 'Buy';
+                            $hold['buy'][$key]['coin'] = $value->coin;
+                            $hold['buy'][$key]['quantity'] = number_format($buy->where('coin', $value->coin)->sum('quantity'), '2', '.', ',');
+                            $hold['buy'][$key]['capital'] = number_format($buy->where('coin', $value->coin)->sum('capital'), '2', '.', ',');
 
-                      $fund['buy'][$key]['wallet'] = $value->wallet;
-                      $fund['buy'][$key]['capital'] = number_format($buy->where('wallet', $value->wallet)->sum('capital'), '2', '.', ',');
+                          /** build buy data. */
+                            $sell = DB::table('crypto_portfolios')
+                              ->select('wallet', 'name', 'coin', 'quantity', 'capital')
+                              ->where('order', '=', 'sell')
+                              ->where('userid', '=', Auth::id())
+                              ->get();
 
-                      /** build sell data. */
-                        $sell = DB::table('crypto_portfolios')
-                          ->select('capital', 'wallet')
-                          ->where('order', '=', 'sell')
-                          ->where('userid', '=', Auth::id())
-                          ->get();
+                            $hold['sell'][$key]['name'] = $value->name;
+                            $hold['sell'][$key]['order'] = 'Sell';
+                            $hold['sell'][$key]['coin'] = $value->coin;
+                            $hold['sell'][$key]['quantity'] = number_format($sell->where('coin', $value->coin)->sum('quantity'), '2', '.', ',');
+                            $hold['sell'][$key]['capital'] = number_format($sell->where('coin', $value->coin)->sum('capital'), '2', '.', ',');
 
-                      $fund['sell'][$key]['wallet'] = $value->wallet;
-                      $fund['sell'][$key]['capital'] = number_format($sell->where('wallet', $value->wallet)->sum('capital'), '2', '.', ',');
+                            /** build total data. */
+                            $hold['total'][$key]['name'] = $value->name;
+                            $hold['total'][$key]['ticker'] = $value->coin;
+                            $hold['total'][$key]['quantity'] =  number_format($buy->where('coin', $value->coin)->sum('quantity') - $sell->where('coin', $value->coin)->sum('quantity'), '2', '.', ',');
+                            $hold['total'][$key]['capital'] = number_format($buy->where('coin', $value->coin)->sum('capital') - $sell->where('coin', $value->coin)->sum('capital'), '2', '.', ',');
+                        }
 
-                      /** build total data. */
-                      $fund['total'][$key]['wallet'] = $value->wallet;
-                      $fund['total'][$key]['capital'] = number_format($buy->where('wallet', $value->wallet)->sum('capital') - $sell->where('wallet', $value->wallet)->sum('capital'), '2', '.', ',');
+                        /** resequence array keys*/
+                        $result['hold']['buy'] = array_values($hold['buy']);
+                        $result['hold']['sell'] = array_values($hold['sell']);
+                        $result['hold']['total'] = array_values($hold['total']);
                     }
-                    /** resequence array keys*/
-                    $result['fund']['buy'] = array_values($fund['buy']);
-                    $result['fund']['sell'] = array_values($fund['sell']);
-                    $result['fund']['total'] = array_values($fund['total']);
-                }
-                /** return something. */
-                if ($result) {
+
+                    /** fund data. */
+                    $funds = DB::table('crypto_portfolios')
+                        ->select('wallet')
+                        ->where('userid', '=', Auth::id())
+                        ->get()
+                        ->unique();
+
+                    if ($funds->isNotEmpty()) {
+                        foreach ($funds as $key => $value) {
+                          /** build buy data. */
+                            $buy = DB::table('crypto_portfolios')
+                              ->select('capital', 'wallet')
+                              ->where('order', '=', 'buy')
+                              ->where('userid', '=', Auth::id())
+                              ->get();
+
+                          $fund['buy'][$key]['wallet'] = $value->wallet;
+                          $fund['buy'][$key]['capital'] = number_format($buy->where('wallet', $value->wallet)->sum('capital'), '2', '.', ',');
+
+                          /** build sell data. */
+                            $sell = DB::table('crypto_portfolios')
+                              ->select('capital', 'wallet')
+                              ->where('order', '=', 'sell')
+                              ->where('userid', '=', Auth::id())
+                              ->get();
+
+                          $fund['sell'][$key]['wallet'] = $value->wallet;
+                          $fund['sell'][$key]['capital'] = number_format($sell->where('wallet', $value->wallet)->sum('capital'), '2', '.', ',');
+
+                          /** build total data. */
+                          $fund['total'][$key]['wallet'] = $value->wallet;
+                          $fund['total'][$key]['capital'] = number_format($buy->where('wallet', $value->wallet)->sum('capital') - $sell->where('wallet', $value->wallet)->sum('capital'), '2', '.', ',');
+                        }
+                        /** resequence array keys*/
+                        $result['fund']['buy'] = array_values($fund['buy']);
+                        $result['fund']['sell'] = array_values($fund['sell']);
+                        $result['fund']['total'] = array_values($fund['total']);
+                    }
+                    /** return something. */
                     return ['status' => true, 'sql' => 'select', 'order' => $result['order'], 'hold' => $result['hold'], 'fund' => $result['fund']];
-                } else {
+                  } else {
                     return ['status' => false, 'sql' => 'select', 'order' => [], 'hold' => [], 'fund' => []];
-                }
+                  }
             }
         }
     }

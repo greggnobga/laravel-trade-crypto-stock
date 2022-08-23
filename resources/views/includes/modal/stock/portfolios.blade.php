@@ -19,7 +19,7 @@
             <span class="modal-error modal-order-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-ticker-label" for="ticker">Ticker</label>
+            <label class="modal-symbol-label" for="symbol">Symbol</label>
             <input id="symbol" class="modal-symbol" name="symbol" type="text" placeholder="GTCAP" required/>
             <span class="modal-error modal-symbol-error"></span>
         </div>
@@ -78,9 +78,9 @@
             <span class="modal-error modal-order-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-ticker-label" for="ticker">Ticker</label>
-            <input id="wallet" class="modal-ticker" name="ticker" type="text" placeholder="GTCAP" required/>
-            <span class="modal-error modal-ticker-error"></span>
+            <label class="modal-symbol-label" for="symbol">symbol</label>
+            <input id="wallet" class="modal-symbol" name="symbol" type="text" placeholder="GTCAP" required/>
+            <span class="modal-error modal-symbol-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-name-label" for="name">Name</label>
@@ -137,9 +137,9 @@
             <span class="modal-error modal-order-error"></span>
         </div>
         <div class="modal-group">
-            <label class="modal-ticker-label" for="ticker">Ticker</label>
-            <input id="wallet" class="modal-ticker" name="ticker" type="text" placeholder="GTCAP" disabled/>
-            <span class="modal-error modal-ticker-error"></span>
+            <label class="modal-symbol-label" for="symbol">symbol</label>
+            <input id="wallet" class="modal-symbol" name="symbol" type="text" placeholder="GTCAP" disabled/>
+            <span class="modal-error modal-symbol-error"></span>
         </div>
         <div class="modal-group">
             <label class="modal-name-label" for="name">Name</label>

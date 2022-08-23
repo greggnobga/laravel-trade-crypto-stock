@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
+        Weidner\Goutte\GoutteServiceProvider::class,
     ],
 
     /*
@@ -228,6 +229,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Goutte' => Weidner\Goutte\GoutteFacade::class,
 
     ],
 

@@ -29,18 +29,23 @@
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <button class="btn btn-primary click-trade-fetch" data-action="stock">Fetch</button>
+                <a class="btn btn-primary click-trade-fetch" data-action="stock">Fetch</a>
+                <a class="btn btn-primary click-trade-price"data-action="stock">Stock Data</a>
+                <a class="btn btn-primary click-trade-finance" data-action="stock">Finance Data</a>
             </div>
         </div>
     </div>
     <div class="stock-trade">
       <div class="items">
         <div class="id">ID</div>
-        <div class="name">Name</div>
         <div class="symbol">Symbol</div>
         <div class="price">Price</div>
         <div class="change">Change</div>
+        <div class="earning">Earning Per Share</div>
+        <div class="high">52 Week High</div>
+        <div class="income">Income After Tax</div>
         <div class="volume">Volume</div>
+
         <div class="action">Action</div>
       </div>
     </div>

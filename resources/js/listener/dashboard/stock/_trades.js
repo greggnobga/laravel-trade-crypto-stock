@@ -15,6 +15,7 @@ class stock_trade {
         /** setup initial listener. */
         this.event.addEventListener("click", (e) => {
             if (e.target.dataset.sidebar === 'stock_trades') {
+
                 /** clone template. */
                 let content = this.template.content.cloneNode(true);
                 // /** query document and do conditional statement base on the result. */
@@ -31,6 +32,22 @@ class stock_trade {
                     if (fetch) {
                       fetch.addEventListener('click', (e) => {
                         this.request({method:'POST', action: 'fetch'});
+                      });
+                    }
+
+                    /** finance button. */
+                    let finance = document.querySelector(`.card > .header > .meta > .right > .click-trade-finance`);
+                    if (finance) {
+                      finance.addEventListener('click', (e) => {
+                        this.request({method:'POST', action: 'finance'});
+                      });
+                    }
+
+                    /** finance button. */
+                    let price = document.querySelector(`.card > .header > .meta > .right > .click-trade-price`);
+                    if (price) {
+                      price.addEventListener('click', (e) => {
+                        this.request({method:'POST', action: 'price'});
                       });
                     }
 
@@ -211,7 +228,7 @@ class stock_trade {
         if (config.method === 'GET') {
             axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.get('/api/stock-trade-retrieve', {
-                    params: {table: 'trade'}
+                    params: { table: 'trade' }
                 }).then(response => {
                   if (response.data.status === true) {
                     if (response.data.indexes.length != 0) {
@@ -274,12 +291,106 @@ class stock_trade {
                       response.data.stock.shift();
                       /** clear interval when array reach zero. */
                       if (response.data.stock.length === 0) {
+                        /** send user a message. */
+                        this.helper.init({type: 'message', status: true, message: 'Processed completed.'});
+                        /** clear interval. */
                         clearInterval(push);
+                        /** chat console. */
+                        console.log('Processed completed.');
                       }
                   }, 5000);
+                } else {
+                  console.log('All records are up to date.');
                 }
               });
           }
+            /** fetch financial information */
+          if (config.action === 'finance') {
+            axios.get('/sanctum/csrf-cookie').then(response => {
+              axios.get('/stock-reports-retrieve', {
+                params: { section: 'stocks' }
+                }).then(response => {
+                  if (response.data.status === true) {
+                      if (response.data.stocks.length !== 0) {
+                        let stocks = setInterval(() => {
+                            /** remove first array element. */
+                            let stock = response.data.stocks[0];
+
+                          /** get csrf token and send post request. */
+                          axios.get('/sanctum/csrf-cookie').then(response => {
+                            axios.post('/stock-reports-store', {
+                              section: 'finance',
+                              id: stock.edge
+                              }).then(response => {
+                                /** send user a message. */
+                                this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
+                              });
+                            });
+                            /** remove first array element. */
+                            response.data.stocks.shift();
+                            /** clear interval when array reach zero. */
+                            if (response.data.stocks.length === 0) {
+                              /** send user a message. */
+                              this.helper.init({type: 'message', status: true, message: 'Processed completed.'});
+                              /** clear interval. */
+                              clearInterval(stocks);
+                              /** chat console. */
+                              console.log('Processed completed.');
+                            }
+                        }, 5000);
+                      } else {
+                        console.log('All records are up to date.');
+                      }
+                  }
+                  /** send user a message. */
+                  this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
+                });
+              });
+          }
+
+          /** fetch financial information */
+        if (config.action === 'price') {
+          axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.get('/stock-reports-retrieve', {
+              params: { section: 'stocks' }
+              }).then(response => {
+                if (response.data.status === true) {
+                    if (response.data.stocks.length !== 0) {
+                      let stocks = setInterval(() => {
+                          /** remove first array element. */
+                          let stock = response.data.stocks[0];
+                        /** get csrf token and send post request. */
+                        axios.get('/sanctum/csrf-cookie').then(response => {
+                          axios.post('/stock-reports-store', {
+                            section: 'price',
+                            id: stock.edge
+                            }).then(response => {
+                              /** send user a message. */
+                              this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
+                            });
+                          });
+                          /** remove first array element. */
+                          response.data.stocks.shift();
+                          /** clear interval when array reach zero. */
+                          if (response.data.stocks.length === 0) {
+                            /** send user a message. */
+                            this.helper.init({type: 'message', status: true, message: 'Processed completed.'});
+                            /** clear interval. */
+                            clearInterval(stocks);
+                            /** chat console. */
+                            console.log('Processed completed.');
+                          }
+                      }, 5000);
+                    } else {
+                      console.log('All records are up to date.');
+                    }
+                }
+
+                /** send user a message. */
+              this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
+              });
+            });
+        }
         }
     }
     /** function to display error. */

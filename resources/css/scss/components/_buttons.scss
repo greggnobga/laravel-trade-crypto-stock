@@ -9,6 +9,7 @@
     color: $cl-gray;
     border-radius: .25rem;
     width: 7.5rem;
+    text-align: center;
 
     &:hover {
         color: $cl-dark;
@@ -53,7 +54,7 @@
     }
 }
 
-.btn-crypto:hover {
+.btn-crypto {
     color: $cl-white;
     background: $cl-lime;
     border: 1px solid rgba($cl-green, .25);
@@ -89,4 +90,38 @@
     &:hover {
         background: rgba($cl-gray, .35);
     }
+}
+
+.show {
+  color: $cl-gray;
+  background: $cl-gold;
+  border: 1px solid rgba($cl-green, .25);
+  padding: .50rem 1rem;
+  border-radius: .25rem;
+  margin-left: .25rem;
+  cursor: pointer;
+  display: inline-block;
+
+  &:hover {
+    color: $cl-white;
+    background: $cl-green;
+    border: 1px solid rgba($cl-green, .25);
+  }
+}
+
+.add {
+  color: $cl-white;
+  background: $cl-red;
+  border: 1px solid rgba($cl-lime, .25);
+  padding: .50rem 1rem;
+  border-radius: .25rem;
+  margin-left: .25rem;
+  cursor: pointer;
+  display: inline-block;
+
+  &:hover {
+    color: $cl-white;
+    background: $cl-orange;
+    border: 1px solid rgba($cl-red, .25);
+  }
 }

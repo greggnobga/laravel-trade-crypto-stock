@@ -7,6 +7,10 @@ class node {
             parent.classList.add('items');
             /** create child element. */
             for (let key in config.input) {
+                /** ignore edge key. */
+                if (key === 'edge') continue;
+
+                /** create document node. */
                 let child = document.createElement('div');
                 child.classList.add(key);
                 child.textContent = config.input[key];
@@ -26,11 +30,22 @@ class node {
                     let string = config.input[key];
                     let action = string.split(' ');
                     for (let k in action) {
-                        /** create inner element. */
-                        let inner = document.createElement('span');
-                        inner.classList.add(action[k].toLowerCase());
+                      /** create inner element. */
+                      let inner = document.createElement('span');
+                      /** set class. */
+                      inner.classList.add(action[k].toLowerCase());
+                      /** evaluate value. */
+                      if (action[k] ==='Show') {
+                        inner = document.createElement('a');
+                        inner.setAttribute('href', `https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${config.input.edge}`);
+                        inner.setAttribute('target', '_blank');
                         inner.textContent = action[k];
-                        content.appendChild(inner);
+                        inner.classList.add(action[k].toLowerCase());
+                      } else {
+                        inner.textContent = action[k];
+                      }
+                      /** append to document node. */
+                      content.appendChild(inner);
                     }
                 }
             }
@@ -43,6 +58,7 @@ class node {
             let element = document.querySelector(`.${config.target} > .items > [data-id='${config.input.id}']`).parentElement;
             /** run trough it all. */
             for (let key in config.input) {
+              if (key === 'edge') continue;
                 if (key === 'action') continue;
                 if (key === 'id') continue;
                 let child = element.querySelector(`.${key}`);

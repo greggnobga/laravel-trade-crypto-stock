@@ -19,9 +19,9 @@ return new class extends Migration
           $table->string('order');
           $table->string('symbol');
           $table->string('name');
-          $table->decimal('fee', 24, 2)->default(0.00);
-          $table->decimal('share', 24, 2)->default(0.00);
-          $table->decimal('capital', 24, 2)->default(0.00);
+          $table->decimal('fee', 24, 2)->signed()->default(0.00);
+          $table->decimal('share', 24, 2)->signed()->default(0.00);
+          $table->decimal('capital', 24, 2)->signed()->default(0.00);
           $table->timestamps();
         });
     }

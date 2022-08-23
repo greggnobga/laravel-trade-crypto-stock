@@ -11,6 +11,7 @@
   align-content: start;
   min-height: 100%;
   margin-bottom: -5rem;
+  margin-top: 6rem;
 }
 #wrapper .push {
   height: 5rem;
@@ -22,6 +23,9 @@
   grid-template-columns: 1fr;
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  height: 6rem;
 }
 #header .navi {
   display: grid;
@@ -371,6 +375,8 @@
 
 .sidebar {
   width: 10rem;
+  position: fixed;
+  top: 25%;
 }
 .sidebar .items {
   display: grid;
@@ -610,14 +616,15 @@ section {
 /** ---------- Components ---------- */
 /** Anchors */
 a {
-  display: block;
-  text-decoration: none;
-  padding: 0.5rem 0;
   color: #383838;
+  display: block;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  text-decoration: none;
 }
-
 a:hover {
   color: #383838;
+  background: #F0F0F0;
 }
 
 .boxes {
@@ -684,6 +691,7 @@ a:hover {
   color: #808080;
   border-radius: 0.25rem;
   width: 7.5rem;
+  text-align: center;
 }
 .btn:hover {
   color: #383838;
@@ -724,12 +732,12 @@ a:hover {
   border: 1px solid rgba(208, 54, 79, 0.25);
 }
 
-.btn-crypto:hover {
+.btn-crypto {
   color: #F5F5F5;
   background: #00CC33;
   border: 1px solid rgba(3, 166, 109, 0.25);
 }
-.btn-crypto:hover:hover {
+.btn-crypto:hover {
   color: #F5F5F5;
   background: #D0364F;
   border: 1px solid rgba(240, 186, 14, 0.25);
@@ -757,6 +765,38 @@ a:hover {
 }
 .destroy:hover {
   background: rgba(128, 128, 128, 0.35);
+}
+
+.show {
+  color: #808080;
+  background: #F0BA0E;
+  border: 1px solid rgba(3, 166, 109, 0.25);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  margin-left: 0.25rem;
+  cursor: pointer;
+  display: inline-block;
+}
+.show:hover {
+  color: #F5F5F5;
+  background: #03A66D;
+  border: 1px solid rgba(3, 166, 109, 0.25);
+}
+
+.add {
+  color: #F5F5F5;
+  background: #D0364F;
+  border: 1px solid rgba(0, 204, 51, 0.25);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  margin-left: 0.25rem;
+  cursor: pointer;
+  display: inline-block;
+}
+.add:hover {
+  color: #F5F5F5;
+  background: #FF4500;
+  border: 1px solid rgba(208, 54, 79, 0.25);
 }
 
 .card {
@@ -1215,7 +1255,7 @@ select {
 .stock-trade > .items {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 5rem 2fr repeat(5, 1fr);
+  grid-template-columns: 5rem repeat(8, 1fr);
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   padding: 1rem;
   vertical-align: top;

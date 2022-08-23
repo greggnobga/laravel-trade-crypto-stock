@@ -15,14 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'web'], function() {
     Route::get('/', [App\Http\Controllers\App\AppController::class, 'init']);
-
     Route::get('/screen', [App\Http\Controllers\App\ScreenController::class, 'init']);
-
     Route::get('/game', [App\Http\Controllers\App\GameController::class, 'init']);
-
     Route::get('/moon', [App\Http\Controllers\App\MoonController::class, 'init']);
 });
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/dashboard', [App\Http\Controllers\Dashboard\DashboardController::class, 'init']);
+
+    Route::post('/stock-reports-store', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
+    Route::get('/stock-reports-retrieve', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
 });
+
+Route::get('/test', [App\Http\Controllers\Dashboard\DashboardController::class, 'stocklists']);

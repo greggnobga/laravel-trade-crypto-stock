@@ -1,5 +1,7 @@
 .sidebar {
     width: 10rem;
+    position: fixed;
+    top: 25%;
 
     .items {
         display: grid;

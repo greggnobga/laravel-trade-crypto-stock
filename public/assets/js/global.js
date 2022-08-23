@@ -2259,6 +2259,10 @@ var node = /*#__PURE__*/function () {
         /** create child element. */
 
         for (var key in config.input) {
+          /** ignore edge key. */
+          if (key === 'edge') continue;
+          /** create document node. */
+
           var child = document.createElement('div');
           child.classList.add(key);
           child.textContent = config.input[key];
@@ -2282,8 +2286,23 @@ var node = /*#__PURE__*/function () {
             for (var k in action) {
               /** create inner element. */
               var inner = document.createElement('span');
+              /** set class. */
+
               inner.classList.add(action[k].toLowerCase());
-              inner.textContent = action[k];
+              /** evaluate value. */
+
+              if (action[k] === 'Show') {
+                inner = document.createElement('a');
+                inner.setAttribute('href', "https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=".concat(config.input.edge));
+                inner.setAttribute('target', '_blank');
+                inner.textContent = action[k];
+                inner.classList.add(action[k].toLowerCase());
+              } else {
+                inner.textContent = action[k];
+              }
+              /** append to document node. */
+
+
               content.appendChild(inner);
             }
           }
@@ -2302,6 +2321,7 @@ var node = /*#__PURE__*/function () {
         /** run trough it all. */
 
         for (var _key in config.input) {
+          if (_key === 'edge') continue;
           if (_key === 'action') continue;
           if (_key === 'id') continue;
 
@@ -6162,6 +6182,32 @@ var stock_trade = /*#__PURE__*/function () {
                 });
               });
             }
+            /** finance button. */
+
+
+            var finance = document.querySelector(".card > .header > .meta > .right > .click-trade-finance");
+
+            if (finance) {
+              finance.addEventListener('click', function (e) {
+                _this.request({
+                  method: 'POST',
+                  action: 'finance'
+                });
+              });
+            }
+            /** finance button. */
+
+
+            var price = document.querySelector(".card > .header > .meta > .right > .click-trade-price");
+
+            if (price) {
+              price.addEventListener('click', function (e) {
+                _this.request({
+                  method: 'POST',
+                  action: 'price'
+                });
+              });
+            }
             /** insert modal code block. */
             // let record = document.querySelector('.click-order-record');
             // if (record) {
@@ -6438,10 +6484,156 @@ var stock_trade = /*#__PURE__*/function () {
                 /** clear interval when array reach zero. */
 
                 if (response.data.stock.length === 0) {
+                  /** send user a message. */
+                  _this2.helper.init({
+                    type: 'message',
+                    status: true,
+                    message: 'Processed completed.'
+                  });
+                  /** clear interval. */
+
+
                   clearInterval(push);
+                  /** chat console. */
+
+                  console.log('Processed completed.');
                 }
               }, 5000);
+            } else {
+              console.log('All records are up to date.');
             }
+          });
+        }
+        /** fetch financial information */
+
+
+        if (config.action === 'finance') {
+          axios.get('/sanctum/csrf-cookie').then(function (response) {
+            axios.get('/stock-reports-retrieve', {
+              params: {
+                section: 'stocks'
+              }
+            }).then(function (response) {
+              if (response.data.status === true) {
+                if (response.data.stocks.length !== 0) {
+                  var stocks = setInterval(function () {
+                    /** remove first array element. */
+                    var stock = response.data.stocks[0];
+                    /** get csrf token and send post request. */
+
+                    axios.get('/sanctum/csrf-cookie').then(function (response) {
+                      axios.post('/stock-reports-store', {
+                        section: 'finance',
+                        id: stock.edge
+                      }).then(function (response) {
+                        /** send user a message. */
+                        _this2.helper.init({
+                          type: 'message',
+                          status: response.data.status,
+                          message: response.data.message
+                        });
+                      });
+                    });
+                    /** remove first array element. */
+
+                    response.data.stocks.shift();
+                    /** clear interval when array reach zero. */
+
+                    if (response.data.stocks.length === 0) {
+                      /** send user a message. */
+                      _this2.helper.init({
+                        type: 'message',
+                        status: true,
+                        message: 'Processed completed.'
+                      });
+                      /** clear interval. */
+
+
+                      clearInterval(stocks);
+                      /** chat console. */
+
+                      console.log('Processed completed.');
+                    }
+                  }, 5000);
+                } else {
+                  console.log('All records are up to date.');
+                }
+              }
+              /** send user a message. */
+
+
+              _this2.helper.init({
+                type: 'message',
+                status: response.data.status,
+                message: response.data.message
+              });
+            });
+          });
+        }
+        /** fetch financial information */
+
+
+        if (config.action === 'price') {
+          axios.get('/sanctum/csrf-cookie').then(function (response) {
+            axios.get('/stock-reports-retrieve', {
+              params: {
+                section: 'stocks'
+              }
+            }).then(function (response) {
+              if (response.data.status === true) {
+                if (response.data.stocks.length !== 0) {
+                  var stocks = setInterval(function () {
+                    /** remove first array element. */
+                    var stock = response.data.stocks[0];
+                    /** get csrf token and send post request. */
+
+                    axios.get('/sanctum/csrf-cookie').then(function (response) {
+                      axios.post('/stock-reports-store', {
+                        section: 'price',
+                        id: stock.edge
+                      }).then(function (response) {
+                        /** send user a message. */
+                        _this2.helper.init({
+                          type: 'message',
+                          status: response.data.status,
+                          message: response.data.message
+                        });
+                      });
+                    });
+                    /** remove first array element. */
+
+                    response.data.stocks.shift();
+                    /** clear interval when array reach zero. */
+
+                    if (response.data.stocks.length === 0) {
+                      /** send user a message. */
+                      _this2.helper.init({
+                        type: 'message',
+                        status: true,
+                        message: 'Processed completed.'
+                      });
+                      /** clear interval. */
+
+
+                      clearInterval(stocks);
+                      /** chat console. */
+
+                      console.log('Processed completed.');
+                    }
+                  }, 5000);
+                } else {
+                  console.log('All records are up to date.');
+                }
+              }
+              /** send user a message. */
+
+
+              _this2.helper.init({
+                type: 'message',
+                status: response.data.status,
+                message: response.data.message
+              });
+            });
           });
         }
       }

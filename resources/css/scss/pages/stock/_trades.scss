@@ -1,4 +1,4 @@
-.stock-index > .items {
+.stock-index>.items {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 5rem 2fr repeat(4, 1fr);
@@ -11,10 +11,10 @@
     }
 }
 
-.stock-trade > .items {
+.stock-trade>.items {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 5rem repeat(8, 1fr);
+    grid-template-columns: 5rem repeat(9, 1fr);
     border-bottom: 1px solid rgba($cl-gray, .15);
     padding: 1rem;
     vertical-align: top;

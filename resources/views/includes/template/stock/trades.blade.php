@@ -42,10 +42,10 @@
         <div class="price">Price</div>
         <div class="change">Change</div>
         <div class="earning">Earning Per Share</div>
+        <div class="average">Average Price</div>
         <div class="high">52 Week High</div>
         <div class="income">Income After Tax</div>
         <div class="volume">Volume</div>
-
         <div class="action">Action</div>
       </div>
     </div>

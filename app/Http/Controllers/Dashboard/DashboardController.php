@@ -146,7 +146,7 @@ class DashboardController extends Controller {
       }
 
       /** fetch and crawl document element. */
-      $stockprices = $client->request('GET', 'https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=139');
+      $stockprices = $client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=19');
       $stockprice = $stockprices->filter('tr > td')->each(function ($node) { return $node->text(); });
 
       if (count($finance) != 0) {
@@ -199,7 +199,7 @@ class DashboardController extends Controller {
       $stocks = DB::table('stock_trades')
         ->select('edge')
         ->where('edge', '>', '0')
-        ->where('updated_at', '<', Carbon::now()->subMinutes(10))
+        ->where('updated_at', '<', Carbon::now()->subHour(6))
         ->get()
         ->toArray();
 
@@ -211,4 +211,113 @@ class DashboardController extends Controller {
         }
     }
 
+
+    /**
+      * Declare financials function.
+      */
+    public function stockreports() {
+      /** initialize goutte client. */
+      $client = new Client();
+      /** repository. */
+      $financialreports;
+      $result;
+      /** fetch and crawl document element. */
+      $financial = $client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=600');
+      $finance = $financial->filter('tr > td')->each(function ($node) { return $node->text(); });
+      if (count($finance) != 0) {
+        /** mapping net after tax . */
+        $annualincomestatement['CurrentYearNetIncomeLossAfterTax'] = $finance['22'];
+        $annualincomestatement['PreviousYearNetIncomeLossAfterTax'] = $finance['23'];
+        /** check if key exist in array. */
+        if (array_key_exists("CurrentYearNetIncomeLossAfterTax", $annualincomestatement)) {
+          /** match string if in currency format. */
+          if (preg_match("/^-?[0-9,.?\d{0,2}]+$/", $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
+            $result['income']['current'] = floatval(str_replace(',', '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
+          }
+          if (preg_match('/^\(.*,.*,.*\)$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
+            $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
+            $result['income']['current'] = -abs($result['income']['current']);
+          }
+          /** match string if has no value. */
+          if ($annualincomestatement['CurrentYearNetIncomeLossAfterTax'] == '') {
+            $result['income']['current'] = 0.00;
+          }
+        }
+        /** check if key exist in array. */
+        if (array_key_exists("PreviousYearNetIncomeLossAfterTax", $annualincomestatement)) {
+          /** match string if in currency format. */
+          if (preg_match("/^-?[0-9,.?\d{0,2}]+$/", $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
+            $result['income']['previous'] = floatval(str_replace(',', '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
+          }
+          if (preg_match('/^\(.*,.*,.*\)$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
+              $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
+              $result['income']['previous'] = -abs($result['income']['previous']);
+            }
+          /** match string if has no value. */
+          if ($annualincomestatement['PreviousYearNetIncomeLossAfterTax'] == '') {
+            $result['income']['previous'] = 0.00;
+          }
+        }
+        /** determine if profitable against previous year. */
+        $result['income']['balance'] = $result['income']['current'] - $result['income']['previous'] ;
+        /** save to database.. */
+        // DB::table('stock_trades')
+        //   ->where('edge', '=', $data)
+        //   ->update([
+        //     'incomeaftertax' => $income['income']['balance'],
+        //   ]);
+
+        /** mapping earning per share . */
+        $annualincomestatement['CurrentYearEarningsLossPerShareBasic'] = $finance['26'];
+        $annualincomestatement['PreviousYearEarningsLossPerShareBasic'] = $finance['27'];
+
+        /** check if key exist in array. */
+        if (array_key_exists("CurrentYearEarningsLossPerShareBasic", $annualincomestatement)) {
+          /** replace rouge character. */
+          $annualincomestatement['CurrentYearEarningsLossPerShareBasic'] = str_replace('$', '', $annualincomestatement['CurrentYearEarningsLossPerShareBasic']);
+          $annualincomestatement['CurrentYearEarningsLossPerShareBasic'] = str_replace('(', '', $annualincomestatement['CurrentYearEarningsLossPerShareBasic']);
+          $annualincomestatement['CurrentYearEarningsLossPerShareBasic'] = str_replace(' ', '', $annualincomestatement['CurrentYearEarningsLossPerShareBasic']);
+          /** match string if in currency format. */
+          if (preg_match("/^-?\d*\.{0,1}\d+$/", $annualincomestatement['CurrentYearEarningsLossPerShareBasic'])) {
+            $result['earning']['current'] = floatval(str_replace(',', '', $annualincomestatement['CurrentYearEarningsLossPerShareBasic']));
+          }
+          /** match string if has no value. */
+          if ($annualincomestatement['CurrentYearEarningsLossPerShareBasic'] == '') {
+            $result['earning']['current'] = 0.00;
+          }
+        }
+        /** check if key exist in array. */
+        if (array_key_exists("PreviousYearEarningsLossPerShareBasic", $annualincomestatement)) {
+          /** replace rouge character. */
+          $annualincomestatement['PreviousYearEarningsLossPerShareBasic'] = str_replace('$', '', $annualincomestatement['PreviousYearEarningsLossPerShareBasic']);
+          $annualincomestatement['PreviousYearEarningsLossPerShareBasic'] = str_replace('(', '', $annualincomestatement['PreviousYearEarningsLossPerShareBasic']);
+          $annualincomestatement['PreviousYearEarningsLossPerShareBasic'] = str_replace(' ', '', $annualincomestatement['PreviousYearEarningsLossPerShareBasic']);
+          /** match string if in currency format. */
+          if (preg_match("/^-?\d*\.{0,1}\d+$/", $annualincomestatement['PreviousYearEarningsLossPerShareBasic'])) {
+            $result['earning']['previous'] = floatval(str_replace(',', '', $annualincomestatement['PreviousYearEarningsLossPerShareBasic']));
+          }
+          /** match string if has no value. */
+          if ($annualincomestatement['PreviousYearEarningsLossPerShareBasic'] == '') {
+            $result['earning']['previous'] = 0.00;
+          }
+        }
+        //dd(preg_match("/^-?\d*\.{0,1}\d+$/", $annualincomestatement['PreviousYearEarningsLossPerShareBasic']));
+        /** determine if profitable against previous year. */
+        $result['earning']['balance'] =  floatval(number_format($result['earning']['current'] - $result['earning']['previous'], 2, '.', ','));
+        /** save to database.. */
+        // DB::table('stock_trades')
+        //   ->where('edge', '=', $data)
+        //   ->update([
+        //     'earningpershare' => $income['earning']['balance'],
+        //   ]);
+        /** search database.. */
+        // $financialreports =   DB::table('stock_trades')
+        //   ->select('name')
+        //   ->where('edge', '=', $data)
+        //   ->first();
+        /** return something. */
+        return $result;
+        //return ['status' => true, 'message' => $financialreports->name . ' has been successfully updated.', 'reports' => $financialreports];
+    }
+  }
  }

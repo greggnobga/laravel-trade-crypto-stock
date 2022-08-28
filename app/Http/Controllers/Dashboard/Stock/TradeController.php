@@ -5,7 +5,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class TradeController extends Controller {
   /**
@@ -45,7 +44,7 @@ class TradeController extends Controller {
 
               /** create stock list. */
               $items = DB::table('stock_trades')
-                ->select('id', 'edge', 'symbol' , 'price', 'change', 'earningpershare',  'yearhighprice', 'incomeaftertax', 'volume')
+                ->select('id', 'edge', 'symbol' , 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
                 ->orderBy('incomeaftertax', 'desc')
                 ->get();
 

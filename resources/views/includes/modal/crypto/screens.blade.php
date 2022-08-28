@@ -29,25 +29,25 @@
 
         <div class="modal-group">
             <label class="modal-label" for="price">Price</label>
-            <input id="coin" class="modal-price" name="price" type="text" placeholder="0.00" disabled/>
+            <input id="price" class="modal-price" name="price" type="text" placeholder="0.00" disabled/>
             <span class="modal-error modal-price-error"></span>
         </div>
 
         <div class="modal-group">
             <label class="modal-label" for="market">Market</label>
-            <input id="coin" class="modal-market" name="market" type="text" placeholder="0.00" disabled/>
+            <input id="market" class="modal-market" name="market" type="text" placeholder="0.00" disabled/>
             <span class="modal-error modal-market-error"></span>
         </div>
 
         <div class="modal-group">
             <label class="modal-label" for="volume">Volume</label>
-            <input id="coin" class="modal-volume" name="volume" type="text" placeholder="0.00" disabled/>
+            <input id="volume" class="modal-volume" name="volume" type="text" placeholder="0.00" disabled/>
             <span class="modal-error modal-volume-error"></span>
         </div>
 
         <div class="modal-group">
             <label class="modal-label" for="change">Change</label>
-            <input id="coin" class="modal-change" name="change" type="text" placeholder="0.00" disabled/>
+            <input id="change" class="modal-change" name="change" type="text" placeholder="0.00" disabled/>
             <span class="modal-error modal-change-error"></span>
         </div>
 

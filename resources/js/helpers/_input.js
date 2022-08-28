@@ -3,9 +3,14 @@ class input {
         /** fetch value. */
         if (config.action === 'value') {
             let items = [];
-            for (let i=0; i<config.data.length; i++) {
+            for (let i = 0; i < config.data.length; i++) {
                 /** screen api. */
                 if (config.data[i] === 'api') {
+                    items[config.data[i]] = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[i]}`).value;
+                }
+
+                /** screen api. */
+                if (config.data[i] === 'edge') {
                     items[config.data[i]] = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[i]}`).value;
                 }
 
@@ -37,7 +42,7 @@ class input {
         /** populate input. */
         if (config.action === 'populate') {
             /** loop through keys */
-            for (let i=0; i<config.data.length; i++) {
+            for (let i = 0; i < config.data.length; i++) {
                 /** scavenge content. */
                 let content = config.el.querySelector(`.${config.data[i]}`).textContent;
 
@@ -49,6 +54,11 @@ class input {
 
                 /** set api value. */
                 else if (config.data[i] === 'api') {
+                    document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[i]}`).value = content;
+                }
+
+                /** set edge value. */
+                else if (config.data[i] === 'edge') {
                     document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[i]}`).value = content;
                 }
 

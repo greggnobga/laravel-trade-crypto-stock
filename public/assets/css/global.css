@@ -514,6 +514,10 @@
   display: none;
 }
 
+.stock-trade-insert {
+  display: none;
+}
+
 /** ---------- Cores ---------- */
 /** CSS reset */
 *,
@@ -1255,7 +1259,7 @@ select {
 .stock-trade > .items {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 5rem repeat(8, 1fr);
+  grid-template-columns: 5rem repeat(9, 1fr);
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   padding: 1rem;
   vertical-align: top;

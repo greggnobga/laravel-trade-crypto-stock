@@ -2107,6 +2107,12 @@ var input = /*#__PURE__*/function () {
           if (config.data[i] === 'api') {
             items[config.data[i]] = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-gecko > .modal-").concat(config.data[i])).value;
           }
+          /** screen api. */
+
+
+          if (config.data[i] === 'edge') {
+            items[config.data[i]] = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-gecko > .modal-").concat(config.data[i])).value;
+          }
           /** the rest. */
           else {
             items[config.data[i]] = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(config.data[i])).value;
@@ -2148,6 +2154,10 @@ var input = /*#__PURE__*/function () {
           }
           /** set api value. */
           else if (config.data[_i] === 'api') {
+            document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-gecko > .modal-").concat(config.data[_i])).value = content;
+          }
+          /** set edge value. */
+          else if (config.data[_i] === 'edge') {
             document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-gecko > .modal-").concat(config.data[_i])).value = content;
           }
           /** the rest. */
@@ -2252,49 +2262,52 @@ var node = /*#__PURE__*/function () {
     key: "init",
     value: function init(config) {
       /** create base element. */
-      if (config.statement === 'select') {
+      if (config.statement === "select") {
         /** create parent element. */
-        var parent = document.createElement('div');
-        parent.classList.add('items');
+        var parent = document.createElement("div");
+        parent.classList.add("items");
         /** create child element. */
 
         for (var key in config.input) {
-          /** ignore edge key. */
-          if (key === 'edge') continue;
           /** create document node. */
-
-          var child = document.createElement('div');
+          var child = document.createElement("div");
           child.classList.add(key);
           child.textContent = config.input[key];
           parent.appendChild(child);
+          /** set style display to none. */
+
+          if (key === "edge") {
+            child.style.display = 'none';
+          }
           /** restructure id content. */
 
-          if (key === 'id') {
+
+          if (key === "id") {
             child.classList.add(key);
-            child.setAttribute('data-id', config.input[key]);
+            child.setAttribute("data-id", config.input[key]);
             child.textContent = config.id;
           }
           /** restructure action content. */
 
 
-          if (key === 'action') {
-            var content = parent.querySelector('.action');
-            content.textContent = '';
+          if (key === "action") {
+            var content = parent.querySelector(".action");
+            content.textContent = "";
             var string = config.input[key];
-            var action = string.split(' ');
+            var action = string.split(" ");
 
             for (var k in action) {
               /** create inner element. */
-              var inner = document.createElement('span');
+              var inner = document.createElement("span");
               /** set class. */
 
               inner.classList.add(action[k].toLowerCase());
               /** evaluate value. */
 
-              if (action[k] === 'Show') {
-                inner = document.createElement('a');
-                inner.setAttribute('href', "https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=".concat(config.input.edge));
-                inner.setAttribute('target', '_blank');
+              if (action[k] === "Show") {
+                inner = document.createElement("a");
+                inner.setAttribute("href", "https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=".concat(config.input.edge));
+                inner.setAttribute("target", "_blank");
                 inner.textContent = action[k];
                 inner.classList.add(action[k].toLowerCase());
               } else {
@@ -2316,14 +2329,14 @@ var node = /*#__PURE__*/function () {
       /** update element. */
 
 
-      if (config.statement === 'update') {
+      if (config.statement === "update") {
         var _element = document.querySelector(".".concat(config.target, " > .items > [data-id='").concat(config.input.id, "']")).parentElement;
         /** run trough it all. */
 
         for (var _key in config.input) {
-          if (_key === 'edge') continue;
-          if (_key === 'action') continue;
-          if (_key === 'id') continue;
+          if (_key === "edge") continue;
+          if (_key === "action") continue;
+          if (_key === "id") continue;
 
           var _child = _element.querySelector(".".concat(_key));
 
@@ -2333,7 +2346,7 @@ var node = /*#__PURE__*/function () {
       /** destroy element. */
 
 
-      if (config.statement === 'destroy') {
+      if (config.statement === "destroy") {
         var _element2 = document.querySelector(".".concat(config.target, " > .items > [data-id='").concat(config.input, "']"));
 
         _element2.parentElement.remove();
@@ -6149,23 +6162,24 @@ var stock_trade = /*#__PURE__*/function () {
 
       /** setup initial listener. */
       this.event.addEventListener("click", function (e) {
-        if (e.target.dataset.sidebar === 'stock_trades') {
+        if (e.target.dataset.sidebar === "stock_trades") {
           /** clone template. */
           var content = _this.template.content.cloneNode(true); // /** query document and do conditional statement base on the result. */
 
 
-          var check = document.querySelector('.stock-trade');
+          var check = document.querySelector(".stock-trade");
 
           if (check === null || check === undefined) {
             /** retrieve data .*/
             _this.request({
-              method: 'GET',
-              table: 'trade'
+              method: "GET",
+              action: "trade",
+              table: "trade"
             });
             /** clear element before appending. */
 
 
-            _this.element.innerHTML = '';
+            _this.element.innerHTML = "";
             /** append template content. */
 
             _this.element.appendChild(content);
@@ -6175,10 +6189,10 @@ var stock_trade = /*#__PURE__*/function () {
             var fetch = document.querySelector(".card > .header > .meta > .right > .click-trade-fetch");
 
             if (fetch) {
-              fetch.addEventListener('click', function (e) {
+              fetch.addEventListener("click", function (e) {
                 _this.request({
-                  method: 'POST',
-                  action: 'fetch'
+                  method: "POST",
+                  action: "fetch"
                 });
               });
             }
@@ -6188,10 +6202,10 @@ var stock_trade = /*#__PURE__*/function () {
             var finance = document.querySelector(".card > .header > .meta > .right > .click-trade-finance");
 
             if (finance) {
-              finance.addEventListener('click', function (e) {
+              finance.addEventListener("click", function (e) {
                 _this.request({
-                  method: 'POST',
-                  action: 'finance'
+                  method: "POST",
+                  action: "finance"
                 });
               });
             }
@@ -6201,250 +6215,281 @@ var stock_trade = /*#__PURE__*/function () {
             var price = document.querySelector(".card > .header > .meta > .right > .click-trade-price");
 
             if (price) {
-              price.addEventListener('click', function (e) {
+              price.addEventListener("click", function (e) {
                 _this.request({
-                  method: 'POST',
-                  action: 'price'
+                  method: "POST",
+                  action: "price"
                 });
               });
             }
-            /** insert modal code block. */
-            // let record = document.querySelector('.click-order-record');
-            // if (record) {
-            //     record.addEventListener("click", (e) => {
-            //         /** show insert modal. */
-            //         if (e.target.dataset.action === 'crypto') {
-            //             /** show modal. */
-            //             this.backdrop({mode:'show', action:'insert'});
-            //
-            //             /** set submit event listener. */
-            //             let portfolioSubmit = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
-            //             if (portfolioSubmit) {
-            //                 portfolioSubmit.addEventListener('click', (e) => {
-            //                     this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: portfolioSubmit});
-            //                 });
-            //             }
-            //         }
-            //
-            //         /** set insert event listener. */
-            //         let portfolioCancel = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-close');
-            //         if (portfolioCancel) {
-            //             portfolioCancel.addEventListener('click', (e) => {
-            //                 this.backdrop({mode:'hide', action:'insert'});
-            //             });
-            //         }
-            //
-            //         /** set close event listener. */
-            //         let portfolioClose = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-            //         if (portfolioClose) {
-            //             portfolioClose.addEventListener('click', (e) => {
-            //                 this.backdrop({mode:'hide', action:'insert'});
-            //             });
-            //         }
-            //     });
-            // }
+            /** add modal code block. */
 
-            /** update modal code block. */
-            // setTimeout( () => {
-            //     let update = document.querySelectorAll('.crypto-order > .items > .action > .update');
-            //     if (update) {
-            //         for (let i = 0; i < update.length; i++) {
-            //             update[i].addEventListener("click", () => {
-            //                 /** show update modal. */
-            //                 this.backdrop({mode:'show', action:'update'});
-            //
-            //                 /** populate modal. */
-            //                 let parent = update[i].parentElement.parentElement;
-            //                 this.helper.init({type: 'input', action: 'populate', target: 'crypto-portfolio-update', el: parent, data: ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital']});
-            //
-            //                 /** set submit event listener. */
-            //                 let portfolioSubmit = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update');
-            //                 if (portfolioSubmit) {
-            //                     portfolioSubmit.addEventListener('click', (e) => {
-            //                         this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: portfolioSubmit});
-            //                     });
-            //                 }
-            //             });
-            //         }
-            //         /** query document close button. */
-            //         let portfolioClose = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-close');
-            //         if (portfolioClose) {
-            //             portfolioClose.addEventListener('click', (e) => {
-            //                 this.backdrop({mode:'hide', action:'update'});
-            //             });
-            //         }
-            //
-            //         /** query document update button. */
-            //         let portfolioCancel = document.querySelector('.crypto-portfolio-update > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-            //         if (portfolioCancel) {
-            //             portfolioCancel.addEventListener('click', (e) => {
-            //                 this.backdrop({mode:'hide', action:'update'});
-            //             });
-            //         }
-            //     }
-            // }, 10000);
 
-            /** destroy modal code block. */
-            // setTimeout( () => {
-            //     let destroy = document.querySelectorAll('.crypto-order > .items > .action > .destroy');
-            //     if (destroy) {
-            //         for (let i = 0; i < destroy.length; i++) {
-            //             destroy[i].addEventListener("click", () => {
-            //                 /** show destroy modal. */
-            //                 this.backdrop({mode:'show', action:'destroy'});
-            //
-            //                 /** populate modal. */
-            //                 let parent = destroy[i].parentElement.parentElement;
-            //                 this.helper.init({type: 'input', action: 'populate', target: 'crypto-portfolio-destroy', el: parent, data: ['id', 'order', 'wallet', 'name', 'coin', 'quantity', 'capital']});
-            //
-            //                 /** set destroy event listener. */
-            //                 let portfolioSubmit = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-destroy');
-            //                 if (portfolioSubmit) {
-            //                     portfolioSubmit.addEventListener('click', (e) => {
-            //                         this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: portfolioSubmit});
-            //                     });
-            //                 }
-            //             });
-            //
-            //             /** set cancel event listener. */
-            //             let portfolioClose = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-close');
-            //             if (portfolioClose) {
-            //                 portfolioClose.addEventListener('click', (e) => {
-            //                     this.backdrop({mode:'hide', action:'destroy'});
-            //                 });
-            //             }
-            //
-            //             /** set cancel event listener. */
-            //             let portfolioCancel = document.querySelector('.crypto-portfolio-destroy > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-            //             if (portfolioCancel) {
-            //                 portfolioCancel.addEventListener('click', (e) => {
-            //                     this.backdrop({mode:'hide', action:'destroy'});
-            //                 });
-            //             }
-            //         }
-            //     }
-            // }, 10000);
-            //
-            // let info = document.querySelector('.card > .header > .meta > .right > .messenger');
-            // info.classList.add('info');
-            // info.textContent = 'Update button enabled right after this message disappear.';
-            // setTimeout(() => { info.classList.remove('info'); }, 9000);
+            setTimeout(function () {
+              var add = document.querySelectorAll(".stock-trade > .items > .action > .add");
 
+              if (add) {
+                var _loop = function _loop(i) {
+                  add[i].addEventListener("click", function () {
+                    /** show update modal. */
+                    _this.backdrop({
+                      mode: "show",
+                      action: "insert"
+                    }); // /** populate modal. */
+
+
+                    var parent = add[i].parentElement.parentElement;
+
+                    _this.helper.init({
+                      type: "input",
+                      action: "populate",
+                      target: "stock-trade-insert",
+                      el: parent,
+                      data: ["id", "symbol", "edge"]
+                    }); // /** set submit event listener. */
+                    // let portfolioSubmit =
+                    //     document.querySelector(
+                    //         ".stock-trade-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update"
+                    //     );
+                    // if (portfolioSubmit) {
+                    //     portfolioSubmit.addEventListener(
+                    //         "click",
+                    //         (e) => {
+                    //             this.backdrop({
+                    //                 mode: "hide",
+                    //                 action: "update",
+                    //                 trigger: "submit",
+                    //                 input: portfolioSubmit,
+                    //             });
+                    //         }
+                    //     );
+                    // }
+
+                  });
+                };
+
+                for (var i = 0; i < add.length; i++) {
+                  _loop(i);
+                }
+                /** query document close button. */
+
+
+                var tradeClose = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-close");
+
+                if (tradeClose) {
+                  tradeClose.addEventListener("click", function (e) {
+                    _this.backdrop({
+                      mode: "hide",
+                      action: "insert"
+                    });
+                  });
+                }
+                /** query document cancel button. */
+
+
+                var tradeCancel = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
+
+                if (tradeCancel) {
+                  tradeCancel.addEventListener("click", function (e) {
+                    _this.backdrop({
+                      mode: "hide",
+                      action: "insert"
+                    });
+                  });
+                }
+              }
+            }, 10000);
+            var info = document.querySelector(".card > .header > .meta > .right > .messenger");
+            info.classList.add("info");
+            info.textContent = "Update button enabled right after this message disappear.";
+            setTimeout(function () {
+              info.classList.remove("info");
+            }, 9000);
           }
         }
       });
     }
     /** function on how backdrop behaves. */
-    // backdrop(config) {
-    //     /** query document to pinpoint modal element. */
-    //     let modal = document.querySelector(`.crypto-portfolio-${config['action']}`);
-    //
-    //     if (config['mode'] === 'show') {
-    //         /** show modal. */
-    //         modal.classList.add('backdrop');
-    //         modal.style.display = 'block';
-    //     }
-    //
-    //     if (config['mode'] === 'hide') {
-    //         /** hide modal. */
-    //         modal.classList.remove('backdrop');
-    //         modal.style.display = 'none';
-    //
-    //         if (config['trigger'] === 'submit') {
-    //             /** collect all input for processing. */
-    //             let collect = this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'value', data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']});
-    //
-    //             /** check if inputs are empty and valid. */
-    //             let result = this.helper.init({type: 'validate', data: collect});
-    //
-    //             /** double check and then proceed. */
-    //             if (Object.keys(result['error']).length === 0) {
-    //                 /** hide modal. */
-    //                 modal.classList.remove('backdrop');
-    //                 modal.style.display = 'none';
-    //
-    //                 /** request access token and then post to backend. */
-    //                 this.request({method: 'POST', table:'portfolio', statement:config['action'], input:result['success']});
-    //
-    //                 /** clear input. */
-    //                 if (config['action'] === 'insert') {
-    //                     this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'clear', data: ['wallet', 'name', 'coin', 'quantity', 'capital']});
-    //                 }
-    //             } else {
-    //                 /** display error. */
-    //                 this.error({target: `crypto-portfolio-${config['action']}`, data:result['error']});
-    //
-    //                 /** show modal. */
-    //                 modal.classList.add('backdrop');
-    //                 modal.style.display = 'block';
-    //             }
-    //         }
-    //     }
-    // }
 
+  }, {
+    key: "backdrop",
+    value: function backdrop(config) {
+      var _this2 = this;
+
+      /** query document to pinpoint modal element. */
+      var modal = document.querySelector(".stock-trade-".concat(config["action"]));
+
+      if (config["mode"] === "show") {
+        /** show modal. */
+        modal.classList.add("backdrop");
+        modal.style.display = "block";
+        /** insert fetch gecko. */
+
+        if (config["action"] === 'insert') {
+          var fetch = document.querySelector(".stock-trade-".concat(config["action"], " > .modal-form > .modal-group > .modal-gecko > .modal-fetch"));
+          fetch.addEventListener('click', function () {
+            var api = document.querySelector(".stock-trade-".concat(config["action"], " > .modal-form > .modal-group > .modal-gecko > .modal-edge")).value;
+            var parent = fetch.parentElement.parentElement.parentElement;
+
+            if (api) {
+              /** retrieve data .*/
+              _this2.request({
+                method: "GET",
+                action: "watch",
+                el: parent,
+                input: api
+              });
+            }
+          });
+        }
+      }
+
+      if (config["mode"] === "hide") {
+        /** hide modal. */
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
+
+        if (config["trigger"] === "submit") {
+          /** collect all input for processing. */
+          var collect = this.helper.init({
+            type: "input",
+            section: "portfolio",
+            target: "stock-trade-".concat(config["action"]),
+            action: "value",
+            data: ["id", "wallet", "order", "name", "coin", "quantity", "capital"]
+          });
+          /** check if inputs are empty and valid. */
+
+          var result = this.helper.init({
+            type: "validate",
+            data: collect
+          });
+          /** double check and then proceed. */
+
+          if (Object.keys(result["error"]).length === 0) {
+            /** hide modal. */
+            modal.classList.remove("backdrop");
+            modal.style.display = "none";
+            /** request access token and then post to backend. */
+
+            this.request({
+              method: "POST",
+              table: "portfolio",
+              statement: config["action"],
+              input: result["success"]
+            });
+            /** clear input. */
+
+            if (config["action"] === "insert") {
+              this.helper.init({
+                type: "input",
+                section: "portfolio",
+                target: "stock-trade-".concat(config["action"]),
+                action: "clear",
+                data: ["wallet", "name", "coin", "quantity", "capital"]
+              });
+            }
+          } else {
+            /** display error. */
+            this.error({
+              target: "stock-trade-".concat(config["action"]),
+              data: result["error"]
+            });
+            /** show modal. */
+
+            modal.classList.add("backdrop");
+            modal.style.display = "block";
+          }
+        }
+      }
+    }
     /** function to process http request. */
 
   }, {
     key: "request",
     value: function request(config) {
-      var _this2 = this;
+      var _this3 = this;
 
       /** retrieve data. */
-      if (config.method === 'GET') {
-        axios.get('/sanctum/csrf-cookie').then(function (response) {
-          axios.get('/api/stock-trade-retrieve', {
-            params: {
-              table: 'trade'
-            }
-          }).then(function (response) {
-            if (response.data.status === true) {
-              if (response.data.indexes.length != 0) {
-                /** populate indexes element with data. */
-                if (response.data.indexes) {
-                  for (var i = 0; i < response.data.indexes.length; i++) {
-                    /** add item to document. */
-                    _this2.helper.init({
-                      type: 'node',
-                      id: "".concat(i + 1),
-                      target: 'stock-index',
-                      statement: response.data.sql,
-                      input: response.data.indexes[i]
-                    });
+      if (config["method"] === "GET") {
+        if (config['action'] === 'trade') {
+          axios.get("/sanctum/csrf-cookie").then(function (response) {
+            axios.get("/api/stock-trade-retrieve", {
+              params: {
+                table: "trade"
+              }
+            }).then(function (response) {
+              if (response.data.status === true) {
+                if (response.data.indexes.length != 0) {
+                  /** populate indexes element with data. */
+                  if (response.data.indexes) {
+                    for (var i = 0; i < response.data.indexes.length; i++) {
+                      /** add item to document. */
+                      _this3.helper.init({
+                        type: "node",
+                        id: "".concat(i + 1),
+                        target: "stock-index",
+                        statement: response.data.sql,
+                        input: response.data.indexes[i]
+                      });
+                    }
                   }
-                }
-                /** populate trade element with data. */
+                  /** populate trade element with data. */
 
 
-                if (response.data.stocks) {
-                  for (var x = 0; x < response.data.stocks.length; x++) {
-                    /** add item to document. */
-                    _this2.helper.init({
-                      type: 'node',
-                      id: "".concat(x + 1),
-                      target: 'stock-trade',
-                      statement: response.data.sql,
-                      input: response.data.stocks[x]
-                    });
+                  if (response.data.stocks) {
+                    for (var x = 0; x < response.data.stocks.length; x++) {
+                      /** add item to document. */
+                      _this3.helper.init({
+                        type: "node",
+                        id: "".concat(x + 1),
+                        target: "stock-trade",
+                        statement: response.data.sql,
+                        input: response.data.stocks[x]
+                      });
+                    }
                   }
                 }
               }
-            }
+            });
           });
-        });
+        }
+        /** fetch stock information. */
+
+
+        if (config['action'] === "watch") {
+          axios.get("/sanctum/csrf-cookie").then(function (response) {
+            axios.get("/stock-reports-retrieve", {
+              params: {
+                section: config["action"],
+                id: config["input"]
+              }
+            }).then(function (response) {
+              if (response.data.status === true) {
+                /** populate modal. */
+                if (response.data.reports) {
+                  for (var x in response.data.reports) {
+                    document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-".concat(x)).value = response.data.reports[x].toLocaleString('en');
+                  }
+                }
+              }
+            });
+          });
+        }
       }
       /** store data. */
 
 
-      if (config.method === 'POST') {
+      if (config["method"] === "POST") {
         /** fetch stock list. */
-        if (config.action === 'fetch') {
-          axios.get('https://phisix-api4.appspot.com/stocks.json', {
+        if (config["action"] === "fetch") {
+          axios.get("https://phisix-api4.appspot.com/stocks.json", {
             headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json'
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json"
             },
             withCredentials: false,
-            credentials: 'same-origin'
+            credentials: "same-origin"
           }).then(function (response) {
             if (response.data.stock.length != 0) {
               var push = setInterval(function () {
@@ -6453,8 +6498,8 @@ var stock_trade = /*#__PURE__*/function () {
                 /** format item data */
 
                 var input = {
-                  name: _this2.helper.init({
-                    type: 'titlecase',
+                  name: _this3.helper.init({
+                    type: "titlecase",
                     string: stock.name
                   }),
                   symbol: stock.symbol,
@@ -6464,15 +6509,15 @@ var stock_trade = /*#__PURE__*/function () {
                 };
                 /** get csrf token and send post request. */
 
-                axios.get('/sanctum/csrf-cookie').then(function (response) {
-                  axios.post('/api/stock-trade-store', {
-                    table: 'trade',
-                    statement: 'fetch',
+                axios.get("/sanctum/csrf-cookie").then(function (response) {
+                  axios.post("/api/stock-trade-store", {
+                    table: "trade",
+                    statement: "fetch",
                     input: input
                   }).then(function (response) {
                     /** send user a message. */
-                    _this2.helper.init({
-                      type: 'message',
+                    _this3.helper.init({
+                      type: "message",
                       status: response.data.status,
                       message: response.data.message
                     });
@@ -6485,10 +6530,10 @@ var stock_trade = /*#__PURE__*/function () {
 
                 if (response.data.stock.length === 0) {
                   /** send user a message. */
-                  _this2.helper.init({
-                    type: 'message',
+                  _this3.helper.init({
+                    type: "message",
                     status: true,
-                    message: 'Processed completed.'
+                    message: "Processed completed."
                   });
                   /** clear interval. */
 
@@ -6496,22 +6541,22 @@ var stock_trade = /*#__PURE__*/function () {
                   clearInterval(push);
                   /** chat console. */
 
-                  console.log('Processed completed.');
+                  console.log("Processed completed.");
                 }
               }, 5000);
             } else {
-              console.log('All records are up to date.');
+              console.log("All records are up to date.");
             }
           });
         }
         /** fetch financial information */
 
 
-        if (config.action === 'finance') {
-          axios.get('/sanctum/csrf-cookie').then(function (response) {
-            axios.get('/stock-reports-retrieve', {
+        if (config["action"] === "finance") {
+          axios.get("/sanctum/csrf-cookie").then(function (response) {
+            axios.get("/stock-reports-retrieve", {
               params: {
-                section: 'stocks'
+                section: "stocks"
               }
             }).then(function (response) {
               if (response.data.status === true) {
@@ -6521,14 +6566,14 @@ var stock_trade = /*#__PURE__*/function () {
                     var stock = response.data.stocks[0];
                     /** get csrf token and send post request. */
 
-                    axios.get('/sanctum/csrf-cookie').then(function (response) {
-                      axios.post('/stock-reports-store', {
-                        section: 'finance',
+                    axios.get("/sanctum/csrf-cookie").then(function (response) {
+                      axios.post("/stock-reports-store", {
+                        section: "finance",
                         id: stock.edge
                       }).then(function (response) {
                         /** send user a message. */
-                        _this2.helper.init({
-                          type: 'message',
+                        _this3.helper.init({
+                          type: "message",
                           status: response.data.status,
                           message: response.data.message
                         });
@@ -6541,10 +6586,10 @@ var stock_trade = /*#__PURE__*/function () {
 
                     if (response.data.stocks.length === 0) {
                       /** send user a message. */
-                      _this2.helper.init({
-                        type: 'message',
+                      _this3.helper.init({
+                        type: "message",
                         status: true,
-                        message: 'Processed completed.'
+                        message: "Processed completed."
                       });
                       /** clear interval. */
 
@@ -6552,18 +6597,18 @@ var stock_trade = /*#__PURE__*/function () {
                       clearInterval(stocks);
                       /** chat console. */
 
-                      console.log('Processed completed.');
+                      console.log("Processed completed.");
                     }
                   }, 5000);
                 } else {
-                  console.log('All records are up to date.');
+                  console.log("All records are up to date.");
                 }
               }
               /** send user a message. */
 
 
-              _this2.helper.init({
-                type: 'message',
+              _this3.helper.init({
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -6573,11 +6618,11 @@ var stock_trade = /*#__PURE__*/function () {
         /** fetch financial information */
 
 
-        if (config.action === 'price') {
-          axios.get('/sanctum/csrf-cookie').then(function (response) {
-            axios.get('/stock-reports-retrieve', {
+        if (config["action"] === "price") {
+          axios.get("/sanctum/csrf-cookie").then(function (response) {
+            axios.get("/stock-reports-retrieve", {
               params: {
-                section: 'stocks'
+                section: "stocks"
               }
             }).then(function (response) {
               if (response.data.status === true) {
@@ -6587,14 +6632,14 @@ var stock_trade = /*#__PURE__*/function () {
                     var stock = response.data.stocks[0];
                     /** get csrf token and send post request. */
 
-                    axios.get('/sanctum/csrf-cookie').then(function (response) {
-                      axios.post('/stock-reports-store', {
-                        section: 'price',
+                    axios.get("/sanctum/csrf-cookie").then(function (response) {
+                      axios.post("/stock-reports-store", {
+                        section: "price",
                         id: stock.edge
                       }).then(function (response) {
                         /** send user a message. */
-                        _this2.helper.init({
-                          type: 'message',
+                        _this3.helper.init({
+                          type: "message",
                           status: response.data.status,
                           message: response.data.message
                         });
@@ -6607,10 +6652,10 @@ var stock_trade = /*#__PURE__*/function () {
 
                     if (response.data.stocks.length === 0) {
                       /** send user a message. */
-                      _this2.helper.init({
-                        type: 'message',
+                      _this3.helper.init({
+                        type: "message",
                         status: true,
-                        message: 'Processed completed.'
+                        message: "Processed completed."
                       });
                       /** clear interval. */
 
@@ -6618,18 +6663,18 @@ var stock_trade = /*#__PURE__*/function () {
                       clearInterval(stocks);
                       /** chat console. */
 
-                      console.log('Processed completed.');
+                      console.log("Processed completed.");
                     }
                   }, 5000);
                 } else {
-                  console.log('All records are up to date.');
+                  console.log("All records are up to date.");
                 }
               }
               /** send user a message. */
 
 
-              _this2.helper.init({
-                type: 'message',
+              _this3.helper.init({
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });

@@ -53,6 +53,7 @@
 
     <template class="stage-stock-trades">
         @include('includes.template.stock.trades')
+        @include('includes.modal.stock.trades')
     </template>
 
     <template class="stage-stock-notes">

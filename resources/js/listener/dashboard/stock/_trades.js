@@ -85,24 +85,24 @@ class stock_trade {
                                         ],
                                     });
 
-                                    // /** set submit event listener. */
-                                    // let portfolioSubmit =
-                                    //     document.querySelector(
-                                    //         ".stock-trade-update > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-update"
-                                    //     );
-                                    // if (portfolioSubmit) {
-                                    //     portfolioSubmit.addEventListener(
-                                    //         "click",
-                                    //         (e) => {
-                                    //             this.backdrop({
-                                    //                 mode: "hide",
-                                    //                 action: "update",
-                                    //                 trigger: "submit",
-                                    //                 input: portfolioSubmit,
-                                    //             });
-                                    //         }
-                                    //     );
-                                    // }
+                                    /** set submit event listener. */
+                                    let addSubmit =
+                                        document.querySelector(
+                                            ".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert"
+                                        );
+                                    if (addSubmit) {
+                                        addSubmit.addEventListener(
+                                            "click",
+                                            (e) => {
+                                                this.backdrop({
+                                                    mode: "hide",
+                                                    action: "insert",
+                                                    trigger: "submit",
+                                                    input: addSubmit,
+                                                });
+                                            }
+                                        );
+                                    }
                                 });
                             }
                             /** query document close button. */
@@ -179,17 +179,18 @@ class stock_trade {
                 /** collect all input for processing. */
                 let collect = this.helper.init({
                     type: "input",
-                    section: "portfolio",
+                    section: "watchlist",
                     target: `stock-trade-${config["action"]}`,
                     action: "value",
                     data: [
-                        "id",
-                        "wallet",
-                        "order",
-                        "name",
-                        "coin",
-                        "quantity",
-                        "capital",
+                        "symbol",
+                        "edge",
+                        "liabilities",
+                        "equity",
+                        "price",
+                        "earning",
+                        "income",
+                        "gross"
                     ],
                 });
 
@@ -205,27 +206,34 @@ class stock_trade {
                     modal.classList.remove("backdrop");
                     modal.style.display = "none";
 
+                    /** sanitize input. */
+                    let sanitize = this.helper.init({ type: 'sanitize', action: 'comma', condition: ['symbol', 'edge', 'liabilities', 'equity', 'price', 'earning', 'income', 'gross'], data: result.success });
+
                     /** request access token and then post to backend. */
                     this.request({
                         method: "POST",
-                        table: "portfolio",
+                        action: "watch",
+                        table: "watchlist",
                         statement: config["action"],
-                        input: result["success"],
+                        input: sanitize,
                     });
 
                     /** clear input. */
                     if (config["action"] === "insert") {
                         this.helper.init({
                             type: "input",
-                            section: "portfolio",
+                            section: "watchlist",
                             target: `stock-trade-${config["action"]}`,
                             action: "clear",
                             data: [
-                                "wallet",
-                                "name",
-                                "coin",
-                                "quantity",
-                                "capital",
+                                "symbol",
+                                "edge",
+                                "liabilities",
+                                "equity",
+                                "price",
+                                "earning",
+                                "income",
+                                "gross"
                             ],
                         });
                     }
@@ -523,22 +531,70 @@ class stock_trade {
                         });
                 });
             }
+            /** post watchlist. */
+            if (config['action'] === "watch") {
+                axios.get('/sanctum/csrf-cookie').then(() => {
+                    axios.post('/api/stock-watchlist-store', {
+                        table: config.table,
+                        statement: config.statement,
+                        input: config.input
+                    }).then(response => {
+                        /** populate order element with data. */
+                        console.log(response.data);
+                        // if (response.data.status === true) {
+                        //     /** add or update element in document tree. */
+                        //     if (response.data.sql === 'select') {
+                        //         for (let key in response.data.stock) {
+                        //             this.helper.init({ type: 'node', id: 0, target: 'stock-order', statement: response.data.sql, input: response.data.stock[key] });
+                        //         }
+                        //     }
+                        //     /** add or update element in document tree. */
+                        //     if (response.data.sql === 'update') {
+                        //         for (let key in response.data.stock) {
+                        //             this.helper.init({ type: 'node', target: 'stock-order', statement: response.data.sql, input: response.data.stock[key] });
+                        //         }
+                        //     }
+                        //     /** remove element in document tree. */
+                        //     if (response.data.sql === 'destroy') {
+                        //         console.log(response.data);
+                        //         this.helper.init({ type: 'node', target: 'stock-order', statement: response.data.sql, input: response.data.stock });
+                        //     }
+
+                        //     /** display success message. */
+                        //     this.helper.init({
+                        //         type: 'message',
+                        //         status: response.data.status,
+                        //         message: response.data.message
+                        //     });
+                        // }
+
+                        // /** display error message. */
+                        // if (response.data.status === false) {
+                        //     this.helper.init({
+                        //         type: 'message',
+                        //         status: response.data.status,
+                        //         message: response.data.message
+                        //     });
+                        // }
+                    });
+                });
+            }
         }
     }
     /** function to display error. */
-    // error(config) {
-    //     /** run trough it all. */
-    //     for (let key in config['data']) {
-    //         let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-    //         display.textContent = config['data'][key];
-    //     }
-    //     /** clear all error messages after five seconds. */
-    //     setTimeout( () => {
-    //         for (let key in config['data']) {
-    //             let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-    //             display.textContent = '';
-    //         }
-    //     }, 5000);
-    // }
+    error(config) {
+        /** run trough it all. */
+        for (let key in config['data']) {
+            let display = document.querySelector(`.${config['target']} > .modal-form > .modal-group > .modal-${key}-error`);
+            display.textContent = config['data'][key];
+        }
+        /** clear all error messages after five seconds. */
+        setTimeout(() => {
+            for (let key in config['data']) {
+                let display = document.querySelector(`.${config['target']} > .modal-form > .modal-group > .modal-${key}-error`);
+                display.textContent = '';
+            }
+        }, 5000);
+    }
 }
 export default new stock_trade();

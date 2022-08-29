@@ -5,6 +5,7 @@
     border: 2px solid rgba($cl-white, .75);
     border-radius: 1rem;
     padding: 2rem;
+    margin: 7.5rem;
 
     .modal-group {
         display: grid;
@@ -34,7 +35,7 @@
         }
 
         .modal-button {
-            display : grid;
+            display: grid;
             grid-template-rows: 1fr;
             grid-template-columns: repeat(10, 1fr);
             grid-column-gap: 2rem;
@@ -52,7 +53,7 @@
 
         .modal-gecko {
 
-            display : grid;
+            display: grid;
             grid-template-rows: 1fr;
             grid-template-columns: 5fr 1fr;
             grid-column-gap: 2rem;

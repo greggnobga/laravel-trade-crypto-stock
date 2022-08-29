@@ -1,6 +1,6 @@
 <ul class="navi">
     @auth
-        <li class="navi-trade"><a href="/">Orion Trade</a></li>
+        <li class="navi-trade"><a href="/">Orion Trade <sup>Alpha</sup></a></li>
         <li class="navi-screen"><a href="/screen">Screen</a></li>
         <li class="navi-games"><a href="/game">Game</a></li>
         <li class="navi-moons" ><a href="/moon">Moon</a></li>
@@ -12,7 +12,7 @@
             </form>
         </li>
     @else
-        <li class="navi-trade"><a href="/">Orion Trade</a></li>
+        <li class="navi-trade"><a href="/">Orion Trade <sup>Alpha</sup></a></li>
         <li class="navi-screen"><a href="/screen">Screen</a></li>
         <li class="navi-games"><a href="/game">Game</a></li>
         <li class="navi-moons"><a href="/moon">Moon</a></li>

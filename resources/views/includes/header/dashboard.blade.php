@@ -1,6 +1,6 @@
 <ul class="navi">
     <li class="navi-trade">
-        <a href="/dashboard">Dashboard</a>
+        <a href="/dashboard">Dashboard <sup>Alpha</sup></a>
     </li>
     <li class="navi-screen js-crypto">
         <button class="btn" name="crypto" type="button" data-sidebar="crypto">Crypto</button>

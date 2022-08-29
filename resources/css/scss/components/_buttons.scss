@@ -2,11 +2,11 @@
 .btn {
     display: block;
     padding: 1rem 1rem;
-    border: 1px solid rgba($cl-dark, .50);
+    border: 1px solid rgba($cl-white, .50);
     background: transparent;
     outline: none;
     cursor: pointer;
-    color: $cl-gray;
+    color: $cl-white;
     border-radius: .25rem;
     width: 7.5rem;
     text-align: center;
@@ -61,8 +61,20 @@
 
     &:hover {
         color: $cl-white;
+        background: $cl-green;
+        border: 1px solid rgba($cl-lime, .25);
+    }
+}
+
+.btn-stock {
+    color: $cl-white;
+    background: $cl-orange;
+    border: 1px solid rgba($cl-red, .25);
+
+    &:hover {
+        color: $cl-white;
         background: $cl-red;
-        border: 1px solid rgba($cl-gold, .25);
+        border: 1px solid rgba($cl-orange, .25);
     }
 }
 
@@ -93,35 +105,35 @@
 }
 
 .show {
-  color: $cl-gray;
-  background: $cl-gold;
-  border: 1px solid rgba($cl-green, .25);
-  padding: .50rem 1rem;
-  border-radius: .25rem;
-  margin-left: .25rem;
-  cursor: pointer;
-  display: inline-block;
-
-  &:hover {
-    color: $cl-white;
-    background: $cl-green;
+    color: $cl-gray;
+    background: $cl-gold;
     border: 1px solid rgba($cl-green, .25);
-  }
+    padding: .50rem 1rem;
+    border-radius: .25rem;
+    margin-left: .25rem;
+    cursor: pointer;
+    display: inline-block;
+
+    &:hover {
+        color: $cl-white;
+        background: $cl-green;
+        border: 1px solid rgba($cl-green, .25);
+    }
 }
 
 .add {
-  color: $cl-white;
-  background: $cl-red;
-  border: 1px solid rgba($cl-lime, .25);
-  padding: .50rem 1rem;
-  border-radius: .25rem;
-  margin-left: .25rem;
-  cursor: pointer;
-  display: inline-block;
-
-  &:hover {
     color: $cl-white;
-    background: $cl-orange;
-    border: 1px solid rgba($cl-red, .25);
-  }
+    background: $cl-red;
+    border: 1px solid rgba($cl-lime, .25);
+    padding: .50rem 1rem;
+    border-radius: .25rem;
+    margin-left: .25rem;
+    cursor: pointer;
+    display: inline-block;
+
+    &:hover {
+        color: $cl-white;
+        background: $cl-orange;
+        border: 1px solid rgba($cl-red, .25);
+    }
 }

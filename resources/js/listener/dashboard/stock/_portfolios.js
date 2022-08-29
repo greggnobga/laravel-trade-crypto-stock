@@ -16,7 +16,7 @@ class stock_portfolio {
         this.event.addEventListener("click", (e) => {
             if (e.target.dataset.sidebar === 'stock_portfolios') {
                 /** retrieve data .*/
-                this.request({method: 'GET', table:'portfolio'});
+                this.request({ method: 'GET', table: 'portfolio' });
                 /** clone template. */
                 let content = this.template.content.cloneNode(true);
                 // /** query document and do conditional statement base on the result. */
@@ -76,23 +76,23 @@ class stock_portfolio {
                         });
                     }
                     /** update modal code block. */
-                    setTimeout( () => {
+                    setTimeout(() => {
                         let update = document.querySelectorAll('.stock-order > .items > .action > .update');
                         if (update) {
                             for (let i = 0; i < update.length; i++) {
                                 update[i].addEventListener("click", () => {
                                     /** show update modal. */
-                                    this.backdrop({mode:'show', action:'update'});
+                                    this.backdrop({ mode: 'show', action: 'update' });
 
                                     /** populate modal. */
                                     let parent = update[i].parentElement.parentElement;
-                                    this.helper.init({type: 'input', action: 'populate', target: 'stock-portfolio-update', el: parent, data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital']});
+                                    this.helper.init({ type: 'input', action: 'populate', target: 'stock-portfolio-update', el: parent, data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital'] });
 
                                     /** set submit event listener. */
                                     let portfolioSubmit = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
                                     if (portfolioSubmit) {
                                         portfolioSubmit.addEventListener('click', (e) => {
-                                            this.backdrop({mode:'hide', action:'update', trigger: 'submit', input: portfolioSubmit});
+                                            this.backdrop({ mode: 'hide', action: 'update', trigger: 'submit', input: portfolioSubmit });
                                         });
                                     }
                                 });
@@ -101,7 +101,7 @@ class stock_portfolio {
                             let portfolioClose = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-close');
                             if (portfolioClose) {
                                 portfolioClose.addEventListener('click', (e) => {
-                                    this.backdrop({mode:'hide', action:'update'});
+                                    this.backdrop({ mode: 'hide', action: 'update' });
                                 });
                             }
 
@@ -109,30 +109,29 @@ class stock_portfolio {
                             let portfolioCancel = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                             if (portfolioCancel) {
                                 portfolioCancel.addEventListener('click', (e) => {
-                                    this.backdrop({mode:'hide', action:'update'});
+                                    this.backdrop({ mode: 'hide', action: 'update' });
                                 });
                             }
                         }
                     }, 10000);
                     /** destroy modal code block. */
-                    setTimeout( () => {
+                    setTimeout(() => {
                         let destroy = document.querySelectorAll('.stock-order > .items > .action > .destroy');
                         if (destroy) {
                             for (let i = 0; i < destroy.length; i++) {
                                 destroy[i].addEventListener("click", () => {
                                     /** show destroy modal. */
-                                    this.backdrop({mode:'show', action:'destroy'});
+                                    this.backdrop({ mode: 'show', action: 'destroy' });
 
                                     /** populate modal. */
                                     let parent = destroy[i].parentElement.parentElement;
-                                    this.helper.init({type: 'input', action: 'populate', target: 'stock-portfolio-destroy', el: parent, data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital']});
+                                    this.helper.init({ type: 'input', action: 'populate', target: 'stock-portfolio-destroy', el: parent, data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital'] });
 
                                     /** set destroy event listener. */
                                     let portfolioSubmit = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
-                                    console.log(portfolioSubmit);
                                     if (portfolioSubmit) {
                                         portfolioSubmit.addEventListener('click', (e) => {
-                                            this.backdrop({mode:'hide', action:'destroy', trigger: 'submit', input: portfolioSubmit});
+                                            this.backdrop({ mode: 'hide', action: 'destroy', trigger: 'submit', input: portfolioSubmit });
                                         });
                                     }
                                 });
@@ -141,7 +140,7 @@ class stock_portfolio {
                                 let portfolioClose = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-close');
                                 if (portfolioClose) {
                                     portfolioClose.addEventListener('click', (e) => {
-                                        this.backdrop({mode:'hide', action:'destroy'});
+                                        this.backdrop({ mode: 'hide', action: 'destroy' });
                                     });
                                 }
 
@@ -149,7 +148,7 @@ class stock_portfolio {
                                 let portfolioCancel = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
                                 if (portfolioCancel) {
                                     portfolioCancel.addEventListener('click', (e) => {
-                                        this.backdrop({mode:'hide', action:'destroy'});
+                                        this.backdrop({ mode: 'hide', action: 'destroy' });
                                     });
                                 }
                             }
@@ -249,14 +248,14 @@ class stock_portfolio {
                     if (response.data.status === true) {
                         /** populate order element with data. */
                         if (response.data.order) {
-                            for (let i=0; i<response.data.order.length; i++) {
-                                this.helper.init({type:'node', id:`${i+1}`, target:'stock-order', statement: response.data.sql, input: response.data.order[i]});
+                            for (let i = 0; i < response.data.order.length; i++) {
+                                this.helper.init({ type: 'node', id: `${i + 1}`, target: 'stock-order', statement: response.data.sql, input: response.data.order[i] });
                             }
                         }
                         /** populate hold element with data. */
                         if (response.data.hold.total) {
-                            for (let i=0; i<response.data.hold.total.length; i++) {
-                                this.helper.init({type:'node', id:`${i+1}`, target:'stock-hold', statement: response.data.sql, input: response.data.hold.total[i]});
+                            for (let i = 0; i < response.data.hold.total.length; i++) {
+                                this.helper.init({ type: 'node', id: `${i + 1}`, target: 'stock-hold', statement: response.data.sql, input: response.data.hold.total[i] });
                             }
                         }
                     }
@@ -274,24 +273,22 @@ class stock_portfolio {
                     input: config.input
                 }).then(response => {
                     /** populate order element with data. */
-                    console.log(response.data);
                     if (response.data.status === true) {
                         /** add or update element in document tree. */
                         if (response.data.sql === 'select') {
                             for (let key in response.data.stock) {
-                                this.helper.init({type:'node', id: 0, target:'stock-order', statement: response.data.sql, input: response.data.stock[key]});
+                                this.helper.init({ type: 'node', id: 0, target: 'stock-order', statement: response.data.sql, input: response.data.stock[key] });
                             }
                         }
                         /** add or update element in document tree. */
                         if (response.data.sql === 'update') {
                             for (let key in response.data.stock) {
-                                this.helper.init({type:'node', target:'stock-order', statement: response.data.sql, input: response.data.stock[key]});
+                                this.helper.init({ type: 'node', target: 'stock-order', statement: response.data.sql, input: response.data.stock[key] });
                             }
                         }
                         /** remove element in document tree. */
                         if (response.data.sql === 'destroy') {
-                          console.log(response.data);
-                            this.helper.init({type:'node', target:'stock-order', statement: response.data.sql, input: response.data.stock});
+                            this.helper.init({ type: 'node', target: 'stock-order', statement: response.data.sql, input: response.data.stock });
                         }
 
                         /** display success message. */

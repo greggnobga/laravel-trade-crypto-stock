@@ -2,6 +2,8 @@
     width: 10rem;
     position: fixed;
     top: 25%;
+    z-index: 101;
+    background: rgba($cl-gray, .50);
 
     .items {
         display: grid;
@@ -13,7 +15,7 @@
             border-bottom: 1px solid rgba($cl-gray, .15);
             padding: 1rem 1rem;
 
-            &:last-child{
+            &:last-child {
                 border: 0;
             }
         }

@@ -37,4 +37,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
   Route::post('/stock-trade-store', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'init']);
   Route::get('/stock-trade-retrieve', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'init']);
+
+  Route::post('/stock-watchlist-store', [App\Http\Controllers\Dashboard\Stock\WatchlistController::class, 'init']);
+  Route::get('/stock-watchlist-retrieve', [App\Http\Controllers\Dashboard\Stock\WatchlistController::class, 'init']);
 });

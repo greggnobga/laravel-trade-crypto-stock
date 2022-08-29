@@ -1,5 +1,5 @@
 #header {
-    display:grid;
+    display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
     border-bottom: 1px solid rgba($cl-gray, .15);
@@ -7,9 +7,11 @@
     position: fixed;
     top: 0;
     height: 6rem;
+    z-index: 100;
+    background: rgba($cl-gray, .50);
 
     .navi {
-        display:grid;
+        display: grid;
         grid-template-rows: 1fr;
         grid-template-columns: repeat(24, 1fr);
         align-items: center;
@@ -26,6 +28,10 @@
                 font-size: $fz-medium;
                 font-weight: $fw-bolder;
                 text-transform: uppercase;
+
+                &:hover {
+                    color: $cl-white;
+                }
             }
         }
 

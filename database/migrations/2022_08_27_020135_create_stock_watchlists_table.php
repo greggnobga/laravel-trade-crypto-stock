@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('stock_watchlists', function (Blueprint $table) {
             $table->id();
+            $table->integer('userid');
             $table->string('symbol');
             $table->integer('edge')->default(0);
             $table->decimal('totalliabilities', 24, 2)->signed()->default(0.00);
-            $table->decimal('shareholdersequity', 24, 2)->signed()->default(0.00);
-            $table->decimal('lastradedprice', 24, 2)->signed()->default(0.00);
+            $table->decimal('stockholdersequity', 24, 2)->signed()->default(0.00);
+            $table->decimal('lasttradedprice', 24, 2)->signed()->default(0.00);
             $table->decimal('earningspershare', 24, 2)->signed()->default(0.00);
             $table->decimal('netincomebeforetax', 24, 2)->signed()->default(0.00);
             $table->decimal('grossrevenue', 24, 2)->signed()->default(0.00);

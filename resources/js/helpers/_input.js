@@ -8,17 +8,14 @@ class input {
                 if (config.data[i] === 'api') {
                     items[config.data[i]] = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[i]}`).value;
                 }
-
-                /** screen api. */
-                if (config.data[i] === 'edge') {
+                /** screen edge. */
+                else if (config.data[i] === 'edge') {
                     items[config.data[i]] = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[i]}`).value;
                 }
-
                 /** the rest. */
                 else {
                     items[config.data[i]] = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}`).value;
                 }
-
             }
             return items;
         }
@@ -30,7 +27,10 @@ class input {
                     if (config.data[key] === 'api') {
                         document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[key]}`).value = '';
                     }
-
+                    /** screen edge. */
+                    else if (config.data[key] === 'edge') {
+                        document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[key]}`).value = '';
+                    }
                     /** the rest. */
                     else {
                         document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[key]}`).value = '';

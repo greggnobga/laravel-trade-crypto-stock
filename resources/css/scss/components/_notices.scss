@@ -5,10 +5,11 @@
 .error {
     display: block;
     position: fixed;
-    top: 4rem;
-    right: 2rem;
+    z-index: 103;
+    top: 7rem;
+    right: 1rem;
     color: $cl-white;
-    padding: 1rem;
+    padding: 2rem;
     border-radius: .35rem;
     border: 1px solid rgba($cl-gray, .25);
     background: rgba($cl-red, .75);
@@ -17,7 +18,8 @@
 .success {
     display: block;
     position: fixed;
-    top: 4rem;
+    z-index: 103;
+    top: 7rem;
     right: 2rem;
     color: $cl-white;
     padding: 1rem;
@@ -29,7 +31,8 @@
 .info {
     display: block;
     position: fixed;
-    top: 4rem;
+    z-index: 103;
+    top: 7rem;
     right: 2rem;
     color: $cl-dark;
     padding: 1rem;

@@ -15,7 +15,21 @@ class stock_watchlist {
         /** setup initial listener. */
         this.event.addEventListener("click", (e) => {
             if (e.target.dataset.sidebar === 'stock_watchlists') {
-              console.log('Clicked Stock Watchlists');
+
+                axios.get('/sanctum/csrf-cookie').then(response => {
+                    axios.get('/api/stock-watchlist-retrieve', {
+                        params: { table: 'watchlist', statement: 'select' }
+                    }).then(response => {
+                        if (response.data.status === true) {
+                            /** populate order element with data. */
+                            if (response.data.watchlist) {
+                                for (let i = 0; i < response.data.watchlist.length; i++) {
+                                    this.helper.init({ type: 'node', id: `${i + 1}`, target: 'stock-watchlist', statement: response.data.sql, input: response.data.watchlist[i] });
+                                }
+                            }
+                        }
+                    });
+                });
                 /** retrieve data .*/
                 // this.request({method: 'GET', table:'portfolio'});
                 /** clone template. */

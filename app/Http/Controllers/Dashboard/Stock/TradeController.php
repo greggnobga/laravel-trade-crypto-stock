@@ -10,27 +10,24 @@ class TradeController extends Controller {
   /**
    * Display a listing of the resource.
    */
-    public function init(Request $request)
-    {
-
-      /** check if request contains method equal to post. */
-      if ($request->method() === 'POST') {
-          /** forward insert command. */
-          if ($request->input('table') === 'trade' && $request->input('statement') === 'fetch') {
-            return $this->store(['table' => 'trade', 'input' => $request->input('input')]);
-          }
-      }
-
-      /** check if request contains method equal to get. */
+    public function init(Request $request) {
+        /** check if request contains method equal to post. */
+        if ($request->method() === 'POST') {
+        /** forward insert command. */
+            if ($request->input('table') === 'trade' && $request->input('statement') === 'fetch') {
+                return $this->store(['table' => 'trade', 'input' => $request->input('input')]);
+            }
+        }
+        /** check if request contains method equal to get. */
       if ($request->method() === 'GET') {
         if ($request->input('table') === 'trade') {
           /** repository. */
           $result = [];
           /** check record. */
           $check = DB::table('stock_trades')
-              ->select('symbol')
-              ->where('symbol', '=', 'PSEi')
-              ->get();
+            ->select('symbol')
+            ->where('symbol', '=', 'PSEi')
+            ->get();
 
             if ($check->isNotEmpty()) {
               /** create stock indexes. */

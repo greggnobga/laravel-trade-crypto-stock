@@ -68,6 +68,9 @@ class input {
                 }
             }
         }
+        
+        /** clear config */
+        config = null;
     }
 }
 export default new input();

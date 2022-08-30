@@ -1,3 +1,5 @@
+/** strick mode on. */
+"use strict";
 /** initialize javascript vendors. */
 require('./vendors/vendors.js');
 /** import javascript modules. */

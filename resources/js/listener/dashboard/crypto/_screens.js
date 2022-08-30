@@ -32,7 +32,10 @@ class crypto_screen {
                             let screenSubmit = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
                             if (screenSubmit) {
                                 screenSubmit.addEventListener('click', (e) => {
-                                    this.backdrop({ mode: 'hide', action: 'insert', trigger: 'submit', input: screenSubmit });
+                                    /** prevent double click. */
+                                    if (!e.detail || e.detail == 1) {
+                                        this.backdrop({ mode: 'hide', action: 'insert', trigger: 'submit', input: screenSubmit });
+                                    }
                                 });
                             }
                         }
@@ -60,7 +63,6 @@ class crypto_screen {
                     let update = document.querySelectorAll('.crypto-screen > .items > .action > .update');
                     if (update) {
                         for (let i = 0; i < update.length; i++) {
-                            /* jshint -W083 */
                             update[i].addEventListener("click", () => {
                                 /** show update modal. */
                                 this.backdrop({ mode: 'show', action: 'update' });
@@ -77,7 +79,6 @@ class crypto_screen {
                                     });
                                 }
                             });
-                            /* jshint +W083 */
                         }
                         /** query document close button. */
                         let screenClose = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-close');
@@ -174,41 +175,32 @@ class crypto_screen {
             /** hide backdrop. */
             modal.classList.remove('backdrop');
             modal.style.display = 'none';
+        }
 
-            if (config["trigger"] === 'submit') {
+        if (config["trigger"] === 'submit') {
+            /** collect all input for processing. */
+            let collect = this.helper.init({ type: 'input', target: `crypto-screen-${config["action"]}`, action: 'value', data: ['id', 'coin', 'api', 'price', 'market', 'volume', 'change'] });
+            /** check if inputs are empty and valid. */
+            let result = this.helper.init({ type: 'validate', data: collect });
+            /** double check and then proceed. */
+            if (Object.keys(result.error).length === 0) {
+                /** sanitize input. */
+                let sanitize = this.helper.init({ type: 'sanitize', action: 'comma', condition: ['price', 'market', 'volume', 'change'], data: result.success });
+                /** request access token and then post to backend. */
+                this.request({ method: 'POST', table: 'screen', statement: `${config["action"]}`, input: sanitize });
+                /** clear input if insert. */
+                setInterval(() => {
+                    this.helper.init({ type: 'input', target: `crypto-screen-${config["action"]}`, action: 'clear', data: ['coin', 'api', 'price', 'market', 'volume', 'change'] });
+                }, 10000);
                 /** hide backdrop. */
                 modal.classList.remove('backdrop');
                 modal.style.display = 'none';
-
-                /** collect all input for processing. */
-                let collect = this.helper.init({ type: 'input', target: `crypto-screen-${config["action"]}`, action: 'value', data: ['id', 'coin', 'api', 'price', 'market', 'volume', 'change'] });
-
-                /** check if inputs are empty and valid. */
-                let result = this.helper.init({ type: 'validate', data: collect });
-
-                /** double check and then proceed. */
-                if (Object.keys(result.error).length === 0) {
-                    /** hide backdrop. */
-                    modal.classList.remove('backdrop');
-                    modal.style.display = 'none';
-
-                    /** sanitize input. */
-                    let sanitize = this.helper.init({ type: 'sanitize', action: 'comma', condition: ['price', 'market', 'volume', 'change'], data: result.success });
-
-                    /** request access token and then post to backend. */
-                    this.request({ method: 'POST', table: 'screen', statement: `${config["action"]}`, input: sanitize });
-
-                    /** clear input if insert. */
-                    if (config["action"] === 'insert') {
-                        this.helper.init({ type: 'input', target: `crypto-screen-${config["action"]}`, action: 'clear', data: ['coin', 'api', 'price', 'market', 'volume', 'change'] });
-                    }
-                } else {
-                    /** show backdrop. */
-                    modal.classList.add('backdrop');
-                    modal.style.display = 'block';
-                    /** display backdrop. */
-                    this.error({ target: `crypto-screen-${config["action"]}`, data: result.error });
-                }
+            } else {
+                /** show backdrop. */
+                modal.classList.add('backdrop');
+                modal.style.display = 'block';
+                /** display backdrop. */
+                this.error({ target: `crypto-screen-${config["action"]}`, data: result.error });
             }
         }
     }

@@ -27,11 +27,11 @@ class PSEController extends Controller {
     /** check if request contains method equal to post. */
     if ($request->method() === 'POST') {
         /** forward update command. */
-        if ($request->input('section') === 'finance') {
+        if ($request->input('section') === 'reports') {
           return $this->stockreports($request->input('id'));
         }
         /** forward update command. */
-        if ($request->input('section') === 'price') {
+        if ($request->input('section') === 'prices') {
           return $this->stockprices($request->input('id'));
         }
     }
@@ -42,8 +42,8 @@ class PSEController extends Controller {
         return $this->stocktrades();
       }
       /** forward watchlist command. */
-      if ($request->input('section') === 'watch') {
-        return $this->stockwatch($request->input('id'));
+      if ($request->input('section') === 'watches') {
+        return $this->stockwatches($request->input('id'));
       }
     }
   }
@@ -60,42 +60,52 @@ class PSEController extends Controller {
     $finance = $financial->filter('tr > td')->each(function ($node) { return $node->text(); });
     if (count($finance) != 0) {
       /** mapping net after tax . */
-      $annualincomestatement['CurrentYearNetIncomeLossAfterTax'] = $finance['22'];
-      $annualincomestatement['PreviousYearNetIncomeLossAfterTax'] = $finance['23'];
-      /** check if key exist in array. */
-      if (array_key_exists("CurrentYearNetIncomeLossAfterTax", $annualincomestatement)) {
-        /** match string if has number and comma. */
-        if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
-          $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
-        }
-        /** match string if has number and comma and parentheses. */
-        if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
-          $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
-          $result['income']['current'] = -abs($result['income']['current']);
-        }
-        /** match string if has no value. */
-        if ($annualincomestatement['CurrentYearNetIncomeLossAfterTax'] == '') {
-          $result['income']['current'] = 0.00;
-        }
-      }
-      /** check if key exist in array. */
-      if (array_key_exists("PreviousYearNetIncomeLossAfterTax", $annualincomestatement)) {
-        /** match string if in currency format. */
-        if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
-          $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
-        }
-        /** match string if has number and comma and parentheses. */
-        if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
-            $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
-            $result['income']['previous'] = -abs($result['income']['previous']);
-        }
+        $annualincomestatement['CurrentYearNetIncomeLossAfterTax'] = $finance['22'];
+        $annualincomestatement['PreviousYearNetIncomeLossAfterTax'] = $finance['23'];
+        /** check if key exist in array. */
+        if (array_key_exists("CurrentYearNetIncomeLossAfterTax", $annualincomestatement)) {
+          /** match string if in currency format. */
+          if (preg_match("/^-?[0-9,.?\d{0,2}]+$/", $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
+            $result['income']['current'] = floatval(str_replace(',', '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
+          }
+          /** match string if has number and comma and parentheses. */
+          if (preg_match('/^\(.*,.*\.?d{0,2}$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
+            $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
+            $result['income']['current'] = -abs($result['income']['current']);
+          }
+          /** match string if has number and comma and parentheses. */
+          if (preg_match('/^\(.*,.*,.*\)$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
+            $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
+            $result['income']['current'] = -abs($result['income']['current']);
+          }
           /** match string if has no value. */
-        if ($annualincomestatement['PreviousYearNetIncomeLossAfterTax'] == '') {
-            $result['income']['previous'] = 0.00;
+          if ($annualincomestatement['CurrentYearNetIncomeLossAfterTax'] == '') {
+            $result['income']['current'] = 0.00;
+          }
         }
-      }
+        /** check if key exist in array. */
+        if (array_key_exists("PreviousYearNetIncomeLossAfterTax", $annualincomestatement)) {
+          /** match string if in currency format. */
+          if (preg_match("/^-?[0-9,.?\d{0,2}]+$/", $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
+            $result['income']['previous'] = floatval(str_replace(',', '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
+          }
+          /** match string if has number and comma and parentheses. */
+          if (preg_match('/^\(.*,.*\.?d{0,2}$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
+             $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
+             $result['income']['previous'] = -abs($result['income']['previous']);
+            }        
+          /** match string if has number and comma and parentheses. */  
+          if (preg_match('/^\(.*,.*,.*\)$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
+              $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
+              $result['income']['previous'] = -abs($result['income']['previous']);
+            }
+          /** match string if has no value. */
+          if ($annualincomestatement['PreviousYearNetIncomeLossAfterTax'] == '') {
+            $result['income']['previous'] = 0.00;
+          }
+        }
       /** determine if profitable against previous year. */
-      $result['income']['balance'] = abs($result['income']['current']) - abs($result['income']['previous']);
+      $result['income']['balance'] = floatval(bcsub($result['income']['current'], $result['income']['previous'], 2));
       /** save to database.. */
       DB::table('stock_trades')
         ->where('edge', '=', $data)
@@ -133,7 +143,7 @@ class PSEController extends Controller {
         }
       }
       /** determine if profitable against previous year. */
-      $result['earning']['balance'] =  abs($result['earning']['current']) - abs($result['earning']['previous']);
+      $result['earning']['balance'] =  floatval(bcsub($result['earning']['current'], $result['earning']['previous'], 2));
       /** save to database.. */
       DB::table('stock_trades')
         ->where('edge', '=', $data)
@@ -201,7 +211,7 @@ class PSEController extends Controller {
   /**
     * Declare financials function.
     */
-  public function stockwatch($data) {
+  public function stockwatches($data) {
     /** repository. */
     $financialreports;
     $result;

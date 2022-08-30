@@ -222,7 +222,7 @@ class DashboardController extends Controller {
       $financialreports;
       $result;
       /** fetch and crawl document element. */
-      $financial = $client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=600');
+      $financial = $client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=90');
       $finance = $financial->filter('tr > td')->each(function ($node) { return $node->text(); });
       if (count($finance) != 0) {
         /** mapping net after tax . */
@@ -234,6 +234,12 @@ class DashboardController extends Controller {
           if (preg_match("/^-?[0-9,.?\d{0,2}]+$/", $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
             $result['income']['current'] = floatval(str_replace(',', '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
           }
+          /** match string if has number and comma and parentheses. */
+          if (preg_match('/^\(.*,.*\.?d{0,2}$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
+            $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
+            $result['income']['current'] = -abs($result['income']['current']);
+          }
+          /** match string if has number and comma and parentheses. */
           if (preg_match('/^\(.*,.*,.*\)$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
             $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
             $result['income']['current'] = -abs($result['income']['current']);
@@ -249,6 +255,12 @@ class DashboardController extends Controller {
           if (preg_match("/^-?[0-9,.?\d{0,2}]+$/", $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
             $result['income']['previous'] = floatval(str_replace(',', '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
           }
+          /** match string if has number and comma and parentheses. */
+          if (preg_match('/^\(.*,.*\.?d{0,2}$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
+             $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
+             $result['income']['previous'] = -abs($result['income']['previous']);
+            }        
+          /** match string if has number and comma and parentheses. */  
           if (preg_match('/^\(.*,.*,.*\)$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
               $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
               $result['income']['previous'] = -abs($result['income']['previous']);
@@ -259,7 +271,7 @@ class DashboardController extends Controller {
           }
         }
         /** determine if profitable against previous year. */
-        $result['income']['balance'] = $result['income']['current'] - $result['income']['previous'] ;
+        $result['income']['balance'] = floatval(bcsub($result['income']['current'], $result['income']['previous'], 2));
         /** save to database.. */
         // DB::table('stock_trades')
         //   ->where('edge', '=', $data)
@@ -301,9 +313,8 @@ class DashboardController extends Controller {
             $result['earning']['previous'] = 0.00;
           }
         }
-        //dd(preg_match("/^-?\d*\.{0,1}\d+$/", $annualincomestatement['PreviousYearEarningsLossPerShareBasic']));
         /** determine if profitable against previous year. */
-        $result['earning']['balance'] =  floatval(number_format($result['earning']['current'] - $result['earning']['previous'], 2, '.', ','));
+        $result['earning']['balance'] =  floatval(bcsub($result['earning']['current'], $result['earning']['previous'], 2));
         /** save to database.. */
         // DB::table('stock_trades')
         //   ->where('edge', '=', $data)
@@ -318,6 +329,6 @@ class DashboardController extends Controller {
         /** return something. */
         return $result;
         //return ['status' => true, 'message' => $financialreports->name . ' has been successfully updated.', 'reports' => $financialreports];
+        }
     }
-  }
  }

@@ -18,8 +18,8 @@ class stock_trade {
                 /** clone template. */
                 let content = this.template.content.cloneNode(true);
                 // /** query document and do conditional statement base on the result. */
-                let check = document.querySelector(".stock-trade");
-                if (check === null || check === undefined) {
+                let trade = document.querySelector(".stock-trade");
+                if (trade === null || trade === undefined) {
                     /** retrieve data .*/
                     this.request({ method: "GET", provider: "local", table: "trade" });
                     /** clear element before appending. */
@@ -27,38 +27,47 @@ class stock_trade {
                     /** append template content. */
                     this.element.appendChild(content);
                     /** fetch button. */
-                    let fetch = document.querySelector(
-                        `.card > .header > .meta > .right > .click-trade-fetch`
-                    );
+                    let fetch = document.querySelector(".card > .header > .meta > .right > .click-trade-fetch");
                     if (fetch) {
-                        fetch.addEventListener("click", (e) => {
+                        let callback = () => {
                             this.request({ method: "POST", provider: "simple" });
-                        });
+                            /** remove event listener after firing once. */
+                            fetch.removeEventListener("click", callback);
+                            /** disabled when no listener around. */
+                            fetch.disabled = true;
+                        };
+                        /** add event listener. */
+                        fetch.addEventListener("click", callback, false);
                     }
                     /** finance button. */
-                    let finance = document.querySelector(
-                        `.card > .header > .meta > .right > .click-trade-finance`
-                    );
+                    let finance = document.querySelector(".card > .header > .meta > .right > .click-trade-finance");
                     if (finance) {
-                        finance.addEventListener("click", (e) => {
+                        let callback = () => {
                             this.request({ method: "POST", provider: "reports" });
-                        });
+                            /** remove event listener after firing once. */
+                            finance.removeEventListener("click", callback);
+                            /** disabled when no listener around. */
+                            finance.disabled = true;
+                        };
+                        /** add event listener. */
+                        finance.addEventListener("click", callback, false);
                     }
                     /** finance button. */
-                    let price = document.querySelector(
-                        `.card > .header > .meta > .right > .click-trade-price`
-                    );
+                    let price = document.querySelector(".card > .header > .meta > .right > .click-trade-price");
                     if (price) {
-                        price.addEventListener("click", (e) => {
+                        let callback = () => {
                             this.request({ method: "POST", provider: "prices" });
-                        });
+                            /** remove event listener after firing once. */
+                            price.removeEventListener("click", callback);
+                            /** disabled when no listener around. */
+                            price.disabled = true;
+                        };
+                        /** add event listener. */
+                        price.addEventListener("click", callback, false);
                     }
-
                     /** add modal code block. */
                     setTimeout(() => {
-                        let add = document.querySelectorAll(
-                            ".stock-trade > .items > .action > .add"
-                        );
+                        let add = document.querySelectorAll(".stock-trade > .items > .action > .add");
                         if (add) {
                             for (let i = 0; i < add.length; i++) {
                                 add[i].addEventListener("click", () => {
@@ -82,51 +91,41 @@ class stock_trade {
                                             "edge",
                                         ],
                                     });
-                                    /** set submit event listener. */
+                                    /** set event listener. */
                                     let submit = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
                                     if (submit) {
-                                        submit.addEventListener('click', () => {
-                                            this.backdrop({ action: 'insert', trigger: 'submit' });
-                                        });
+                                        let callback = () => {
+                                            this.backdrop({ action: "insert", mode: "submit", element: submit, callback: callback });
+                                        };
+                                        /** add event listener. */
+                                        submit.addEventListener("click", callback, false);
                                     }
-
-
                                 });
                             }
                             /** query document close button. */
-                            let tradeClose = document.querySelector(
-                                ".stock-trade-insert > .modal-form > .modal-group > .modal-close"
-                            );
-                            if (tradeClose) {
-                                tradeClose.addEventListener("click", (e) => {
-                                    this.backdrop({
-                                        mode: "hide",
-                                        action: "insert",
-                                    });
-                                });
+                            let close = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-close");
+                            if (close) {
+                                let callback = () => {
+                                    this.backdrop({ action: "insert", mode: "hide" });
+                                };
+                                /** add event listener. */
+                                close.addEventListener("click", callback, false);
                             }
-
                             /** query document cancel button. */
-                            let tradeCancel = document.querySelector(
-                                ".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel"
-                            );
-                            if (tradeCancel) {
-                                tradeCancel.addEventListener("click", (e) => {
-                                    this.backdrop({
-                                        mode: "hide",
-                                        action: "insert",
-                                    });
-                                });
+                            let cancel = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
+                            if (cancel) {
+                                let callback = () => {
+                                    this.backdrop({ action: "insert", mode: "hide" });
+                                };
+                                /** add event listener. */
+                                cancel.addEventListener("click", callback, false);
                             }
                         }
                     }, 10000);
 
-                    let info = document.querySelector(
-                        ".card > .header > .meta > .right > .messenger"
-                    );
+                    let info = document.querySelector(".card > .header > .meta > .right > .messenger");
                     info.classList.add("info");
-                    info.textContent =
-                        "Add button enabled right after this message disappear.";
+                    info.textContent = "Add button enabled right after this message disappear.";
                     setTimeout(() => {
                         info.classList.remove("info");
                     }, 9000);
@@ -137,7 +136,7 @@ class stock_trade {
     /** function on how backdrop behaves. */
     backdrop(config) {
         /** query document to pinpoint modal element. */
-        let modal = document.querySelector(`.stock-trade-insert`);
+        let modal = document.querySelector(".stock-trade-insert");
 
         if (config["mode"] === "show") {
             /** show modal. */
@@ -145,15 +144,19 @@ class stock_trade {
             modal.style.display = "block";
 
             /** insert fetch edge. */
-            if (config["provider"] === 'edge') {
-                let fetch = document.querySelector(`.stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-fetch`);
-                fetch.addEventListener('click', () => {
-                    let edge = document.querySelector(`.stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-edge`).value;
-                    if (edge) {
-                        /** retrieve data .*/
-                        this.request({ method: 'GET', provider: 'edge', section: "watches", input: edge });
-                    }
-                });
+            if (config["provider"] === "edge") {
+                let fetch = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-fetch");
+                if (fetch) {
+                    let callback = () => {
+                        let edge = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-edge").value;
+                        if (edge) {
+                            /** retrieve data .*/
+                            this.request({ method: "GET", provider: "edge", section: "watches", input: edge });
+                        }
+                    };
+                    /** add event listener. */
+                    fetch.addEventListener("click", callback, false);
+                }
             }
         }
 
@@ -163,7 +166,7 @@ class stock_trade {
             modal.style.display = "none";
         }
 
-        if (config["trigger"] === "submit") {
+        if (config["mode"] === "submit") {
             /** collect all input for processing. */
             let collect = this.helper.init({
                 type: "input",
@@ -186,12 +189,27 @@ class stock_trade {
                 type: "validate",
                 data: collect,
             });
-
+            /** clear input. */
+            setInterval(() => {
+                this.helper.init({
+                    type: "input",
+                    section: "watchlist",
+                    target: "stock-trade-insert",
+                    action: "clear",
+                    data: [
+                        "liabilities",
+                        "equity",
+                        "price",
+                        "earning",
+                        "income",
+                        "gross"
+                    ],
+                });
+            }, 10000)
             /** double check and then proceed. */
             if (Object.keys(result["error"]).length === 0) {
                 /** sanitize input. */
-                let sanitize = this.helper.init({ type: 'sanitize', action: 'comma', condition: ['symbol', 'edge', 'liabilities', 'equity', 'price', 'earning', 'income', 'gross'], data: result.success });
-
+                let sanitize = this.helper.init({ type: "sanitize", action: "comma", condition: ["symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"], data: result.success });
                 /** request access token and then post to backend. */
                 this.request({
                     method: "POST",
@@ -200,26 +218,11 @@ class stock_trade {
                     statement: config["action"],
                     input: sanitize,
                 });
-
-                setInterval(() => {
-                    this.helper.init({
-                        type: "input",
-                        section: "watchlist",
-                        target: "stock-trade-insert",
-                        action: "clear",
-                        data: [
-                            "liabilities",
-                            "equity",
-                            "price",
-                            "earning",
-                            "income",
-                            "gross"
-                        ],
-                    });
-                }, 10000);
                 /** hide modal. */
                 modal.classList.remove("backdrop");
                 modal.style.display = "none";
+                /** remove listener. */
+                config["element"].removeEventListener('click', config['callback']);
             } else {
                 /** display error. */
                 this.error({
@@ -236,7 +239,7 @@ class stock_trade {
     request(config) {
         /** retrieve data. */
         if (config["method"] === "GET") {
-            if (config['provider'] === 'local') {
+            if (config["provider"] === "local") {
                 axios.get("/sanctum/csrf-cookie").then((response) => {
                     axios
                         .get("/api/stock-trade-retrieve", {
@@ -247,11 +250,7 @@ class stock_trade {
                                 if (response.data.indexes.length != 0) {
                                     /** populate indexes element with data. */
                                     if (response.data.indexes) {
-                                        for (
-                                            let i = 0;
-                                            i < response.data.indexes.length;
-                                            i++
-                                        ) {
+                                        for (let i = 0; i < response.data.indexes.length; i++) {
                                             /** add item to document. */
                                             this.helper.init({
                                                 type: "node",
@@ -264,11 +263,7 @@ class stock_trade {
                                     }
                                     /** populate trade element with data. */
                                     if (response.data.stocks) {
-                                        for (
-                                            let x = 0;
-                                            x < response.data.stocks.length;
-                                            x++
-                                        ) {
+                                        for (let x = 0; x < response.data.stocks.length; x++) {
                                             /** add item to document. */
                                             this.helper.init({
                                                 type: "node",
@@ -285,18 +280,18 @@ class stock_trade {
                 });
             }
             /** fetch stock information. */
-            if (config['provider'] === "edge") {
+            if (config["provider"] === "edge") {
                 axios.get("/sanctum/csrf-cookie").then((response) => {
                     axios
                         .get("/stock-reports-retrieve", {
-                            params: { section: config["section"], id: config["input"] },
+                            params: { section: config["section"], id: config["input"] }
                         })
                         .then((response) => {
                             if (response.data.status === true) {
                                 /** populate modal. */
                                 if (response.data.reports) {
                                     for (let x in response.data.reports) {
-                                        document.querySelector(`.stock-trade-insert > .modal-form > .modal-group > .modal-${x}`).value = response.data.reports[x].toLocaleString('en');
+                                        document.querySelector(`.stock-trade-insert > .modal-form > .modal-group > .modal-${x}`).value = response.data.reports[x].toLocaleString("en");
                                     }
                                 }
                             }
@@ -325,10 +320,7 @@ class stock_trade {
                                 let stock = response.data.stock[0];
                                 /** format item data */
                                 let input = {
-                                    name: this.helper.init({
-                                        type: "titlecase",
-                                        string: stock.name,
-                                    }),
+                                    name: this.helper.init({ type: "titlecase", string: stock.name }),
                                     symbol: stock.symbol,
                                     price: stock.price.amount,
                                     change: stock.percent_change,
@@ -348,10 +340,8 @@ class stock_trade {
                                                 /** send user a message. */
                                                 this.helper.init({
                                                     type: "message",
-                                                    status: response.data
-                                                        .status,
-                                                    message:
-                                                        response.data.message,
+                                                    status: response.data.status,
+                                                    message: response.data.message,
                                                 });
                                             });
                                     });
@@ -389,28 +379,21 @@ class stock_trade {
                                     let stocks = setInterval(() => {
                                         /** remove first array element. */
                                         let stock = response.data.stocks[0];
-
                                         /** get csrf token and send post request. */
                                         axios
                                             .get("/sanctum/csrf-cookie")
                                             .then((response) => {
                                                 axios
-                                                    .post(
-                                                        "/stock-reports-store",
-                                                        {
-                                                            section: "reports",
-                                                            id: stock.edge,
-                                                        }
-                                                    )
+                                                    .post("/stock-reports-store", {
+                                                        section: "reports",
+                                                        id: stock.edge,
+                                                    })
                                                     .then((response) => {
                                                         /** send user a message. */
                                                         this.helper.init({
                                                             type: "message",
-                                                            status: response
-                                                                .data.status,
-                                                            message:
-                                                                response.data
-                                                                    .message,
+                                                            status: response.data.status,
+                                                            message: response.data.message,
                                                         });
                                                     });
                                             });
@@ -462,22 +445,16 @@ class stock_trade {
                                             .get("/sanctum/csrf-cookie")
                                             .then((response) => {
                                                 axios
-                                                    .post(
-                                                        "/stock-reports-store",
-                                                        {
-                                                            section: "prices",
-                                                            id: stock.edge,
-                                                        }
-                                                    )
+                                                    .post("/stock-reports-store", {
+                                                        section: "prices",
+                                                        id: stock.edge,
+                                                    })
                                                     .then((response) => {
                                                         /** send user a message. */
                                                         this.helper.init({
                                                             type: "message",
-                                                            status: response
-                                                                .data.status,
-                                                            message:
-                                                                response.data
-                                                                    .message,
+                                                            status: response.data.status,
+                                                            message: response.data.message,
                                                         });
                                                     });
                                             });
@@ -512,9 +489,9 @@ class stock_trade {
                 });
             }
             /** post watchlist. */
-            if (config['provider'] === "watches") {
-                axios.get('/sanctum/csrf-cookie').then(() => {
-                    axios.post('/api/stock-watchlist-store', {
+            if (config["provider"] === "watches") {
+                axios.get("/sanctum/csrf-cookie").then(() => {
+                    axios.post("/api/stock-watchlist-store", {
                         table: config.table,
                         statement: config.statement,
                         input: config.input
@@ -523,7 +500,7 @@ class stock_trade {
                         if (response.data.status === true) {
                             /** display success message. */
                             this.helper.init({
-                                type: 'message',
+                                type: "message",
                                 status: response.data.status,
                                 message: response.data.message
                             });
@@ -531,7 +508,7 @@ class stock_trade {
                         /** display error message. */
                         if (response.data.status === false) {
                             this.helper.init({
-                                type: 'message',
+                                type: "message",
                                 status: response.data.status,
                                 message: response.data.message
                             });
@@ -544,15 +521,15 @@ class stock_trade {
     /** function to display error. */
     error(config) {
         /** run trough it all. */
-        for (let key in config['data']) {
-            let display = document.querySelector(`.${config['target']} > .modal-form > .modal-group > .modal-${key}-error`);
-            display.textContent = config['data'][key];
+        for (let key in config["data"]) {
+            let display = document.querySelector(`.${config["target"]} > .modal-form > .modal-group > .modal-${key}-error`);
+            display.textContent = config["data"][key];
         }
         /** clear all error messages after five seconds. */
         setTimeout(() => {
-            for (let key in config['data']) {
-                let display = document.querySelector(`.${config['target']} > .modal-form > .modal-group > .modal-${key}-error`);
-                display.textContent = '';
+            for (let key in config["data"]) {
+                let display = document.querySelector(`.${config["target"]} > .modal-form > .modal-group > .modal-${key}-error`);
+                display.textContent = "";
             }
         }, 5000);
     }

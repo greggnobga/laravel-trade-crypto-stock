@@ -37,10 +37,32 @@ class WatchlistController extends Controller
                         $result[$key]['symbol'] = $value->symbol;
                         $result[$key]['edge'] = $value->edge;
                         $result[$key]['lasttradedprice'] = $value->lasttradedprice;
-                        $result[$key]['debtequityratio'] = bcdiv($value->totalliabilities, $value->stockholdersequity, 2);
-                        //$result[$key]['priceearningratio'] = bcdiv($value->lasttradedprice, $value->earningspershare, 2);
-                        $result[$key]['netprofitmargin'] = bcmul(bcdiv($value->netincomebeforetax, $value->grossrevenue, 2), 100, 2);
-                        $result[$key]['returnonequity'] = bcdiv($value->grossrevenue, bcdiv($value->stockholdersequity, 2, 2), 2);                  
+                        /** evalaute value is greater than zero. */
+                        if ($value->totalliabilities > 0 && $value->stockholdersequity > 0) {
+                            $result[$key]['debtequityratio'] = bcdiv($value->totalliabilities, $value->stockholdersequity, 2);
+                        }
+                        if ($value->lasttradedprice > 0 && $value->earningspershare > 0) {
+                            $result[$key]['priceearningratio'] = bcdiv($value->lasttradedprice, $value->earningspershare, 2);
+                        }
+                        if ($value->netincomebeforetax > 0 && $value->grossrevenue > 0) {
+                            $result[$key]['netprofitmargin'] = bcmul(bcdiv($value->netincomebeforetax, $value->grossrevenue, 2), 100, 2);
+                        }
+                        if ($value->grossrevenue > 0 && $value->stockholdersequity > 0) {
+                            $result[$key]['returnonequity'] = bcdiv($value->grossrevenue, bcdiv($value->stockholdersequity, 2, 2), 2); 
+                        }
+                        /** evalaute value is equal to zero. */
+                        if ($value->totalliabilities <= 0 || $value->stockholdersequity <= 0) {
+                            $result[$key]['debtequityratio'] = 0.00;
+                        }
+                        if ($value->lasttradedprice <= 0 || $value->earningspershare <= 0) {
+                            $result[$key]['priceearningratio'] = 0.00;
+                        }
+                        if ($value->netincomebeforetax <= 0 || $value->grossrevenue <= 0) {
+                            $result[$key]['netprofitmargin'] = 0.00;
+                        }
+                        if ($value->grossrevenue <= 0 || $value->stockholdersequity <= 0) {
+                            $result[$key]['returnonequity'] = 0.00;
+                        } 
                     }
                 }
                 /** sort data order by debt equity ratio. */
@@ -80,8 +102,7 @@ class WatchlistController extends Controller
                     'earningspershare' => strip_tags($data['input']['earning']),
                     'netincomebeforetax' => strip_tags($data['input']['income']),
                     'grossrevenue' => strip_tags($data['input']['gross']),
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
                 ]);
                 if ($insert) {
                     $stock = DB::table('stock_watchlists')
@@ -92,9 +113,43 @@ class WatchlistController extends Controller
                     return ['status' =>  true, 'sql' => 'select', 'message' => $stock[0]->symbol . ' has been added to the database.', 'stock' => $stock];
                 }
             }  else {
-                return ['status' => false, 'message' => $check[0]->symbol . ' already present in the database.'];
-            }
+                /** forward to update instead. */
+                return $this->update($data);
+          }
         }
+    }
+
+        /**
+     * Update the specified resource in storage.
+     */
+    public function update($data) {
+      if ($data['table'] === 'watchlist') {
+          /** run update query.*/
+          $update = DB::table('stock_watchlists')
+              ->where('symbol', '=', $data['input']['symbol'])
+              ->update([
+                'userid' => Auth::id(),
+                'symbol' => strip_tags($data['input']['symbol']),
+                'edge' => strip_tags($data['input']['edge']),
+                'totalliabilities' => strip_tags($data['input']['liabilities']),
+                'stockholdersequity' => strip_tags($data['input']['equity']),
+                'lasttradedprice' => strip_tags($data['input']['price']),
+                'earningspershare' => strip_tags($data['input']['earning']),
+                'netincomebeforetax' => strip_tags($data['input']['income']),
+                'grossrevenue' => strip_tags($data['input']['gross']),
+                'updated_at' => date('Y-m-d H:i:s'),
+              ]);
+          /** if update not empty.*/
+          if ($update) {
+              $stock = DB::table('stock_watchlists')
+                  ->select('symbol')
+                  ->where('symbol', '=', $data['input']['symbol'])
+                  ->get();
+              return ['status' =>  true, 'sql' => 'select', 'message' => $data['input']['symbol'] . ' successfully updated.', 'stock' => $stock];
+          } else {
+              return ['status' =>  false, 'sql' => 'select', 'message' => $data['input']['sybmol'] . ' no changes made.', 'stock' => '' ];
+          }
+      }
     }
 
     /**
@@ -107,7 +162,7 @@ class WatchlistController extends Controller
                 $result = collect($value);
                 foreach ($value as $k => $v) {
                   if ($k === 'returnonequity') {
-                      $result->put('action', 'Update Destroy');
+                      $result->put('action', 'Show Destroy');
                   }
                 }
                 $return[$key] = $result;

@@ -709,6 +709,10 @@ a:hover {
   background: #F0F0F0;
   border: 1px solid #383838;
 }
+.btn:disabled {
+  background: rgba(128, 128, 128, 0.35);
+  cursor: not-allowed;
+}
 
 .btn-primary {
   color: #F5F5F5;
@@ -719,6 +723,10 @@ a:hover {
   color: #F5F5F5;
   background: #00CC33;
   border: 1px solid rgba(3, 166, 109, 0.25);
+}
+.btn-primary:disabled {
+  background: rgba(128, 128, 128, 0.35);
+  cursor: not-allowed;
 }
 
 .btn-danger {
@@ -766,6 +774,7 @@ a:hover {
 }
 
 .update {
+  display: inline-block;
   color: #F5F5F5;
   cursor: pointer;
   padding: 0.5rem 1rem;
@@ -778,6 +787,7 @@ a:hover {
 }
 
 .destroy {
+  display: inline-block;
   color: #F5F5F5;
   cursor: pointer;
   padding: 0.5rem 1rem;
@@ -790,35 +800,29 @@ a:hover {
 }
 
 .show {
-  color: #808080;
-  background: #F0BA0E;
-  border: 1px solid rgba(3, 166, 109, 0.25);
+  display: inline-block;
+  color: #F5F5F5;
+  cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
-  margin-left: 0.25rem;
-  cursor: pointer;
-  display: inline-block;
+  background: rgba(0, 150, 255, 0.75);
+  margin-right: 0.25rem;
 }
 .show:hover {
-  color: #F5F5F5;
-  background: #03A66D;
-  border: 1px solid rgba(3, 166, 109, 0.25);
+  background: rgba(128, 128, 128, 0.35);
 }
 
 .add {
+  display: inline-block;
   color: #F5F5F5;
-  background: #D0364F;
-  border: 1px solid rgba(0, 204, 51, 0.25);
+  cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
+  background: rgba(208, 54, 79, 0.75);
   margin-left: 0.25rem;
-  cursor: pointer;
-  display: inline-block;
 }
 .add:hover {
-  color: #F5F5F5;
-  background: #FF4500;
-  border: 1px solid rgba(208, 54, 79, 0.25);
+  background: rgba(128, 128, 128, 0.35);
 }
 
 .card {

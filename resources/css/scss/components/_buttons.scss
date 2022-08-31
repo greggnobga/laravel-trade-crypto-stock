@@ -16,6 +16,11 @@
         background: $cl-light;
         border: 1px solid $cl-dark;
     }
+
+    &:disabled {
+        background: rgba($cl-gray, .35);
+        cursor: not-allowed;
+    }
 }
 
 .btn-primary {
@@ -27,6 +32,11 @@
         color: $cl-white;
         background: $cl-lime;
         border: 1px solid rgba($cl-green, .25);
+    }
+
+    &:disabled {
+        background: rgba($cl-gray, .35);
+        cursor: not-allowed;
     }
 }
 
@@ -79,6 +89,7 @@
 }
 
 .update {
+    display: inline-block;
     color: $cl-white;
     cursor: pointer;
     padding: .50rem 1rem;
@@ -92,6 +103,7 @@
 }
 
 .destroy {
+    display: inline-block;
     color: $cl-white;
     cursor: pointer;
     padding: .50rem 1rem;
@@ -105,35 +117,29 @@
 }
 
 .show {
-    color: $cl-gray;
-    background: $cl-gold;
-    border: 1px solid rgba($cl-green, .25);
+    display: inline-block;
+    color: $cl-white;
+    cursor: pointer;
     padding: .50rem 1rem;
     border-radius: .25rem;
-    margin-left: .25rem;
-    cursor: pointer;
-    display: inline-block;
+    background: rgba($cl-blue, .75);
+    margin-right: .25rem;
 
     &:hover {
-        color: $cl-white;
-        background: $cl-green;
-        border: 1px solid rgba($cl-green, .25);
+        background: rgba($cl-gray, .35);
     }
 }
 
 .add {
+    display: inline-block;
     color: $cl-white;
-    background: $cl-red;
-    border: 1px solid rgba($cl-lime, .25);
+    cursor: pointer;
     padding: .50rem 1rem;
     border-radius: .25rem;
+    background: rgba($cl-red, .75);
     margin-left: .25rem;
-    cursor: pointer;
-    display: inline-block;
 
     &:hover {
-        color: $cl-white;
-        background: $cl-orange;
-        border: 1px solid rgba($cl-red, .25);
+        background: rgba($cl-gray, .35);
     }
 }

@@ -6169,9 +6169,9 @@ var stock_trade = /*#__PURE__*/function () {
           var content = _this.template.content.cloneNode(true); // /** query document and do conditional statement base on the result. */
 
 
-          var check = document.querySelector(".stock-trade");
+          var trade = document.querySelector(".stock-trade");
 
-          if (check === null || check === undefined) {
+          if (trade === null || trade === undefined) {
             /** retrieve data .*/
             _this.request({
               method: "GET",
@@ -6191,12 +6191,23 @@ var stock_trade = /*#__PURE__*/function () {
             var fetch = document.querySelector(".card > .header > .meta > .right > .click-trade-fetch");
 
             if (fetch) {
-              fetch.addEventListener("click", function (e) {
+              var callback = function callback() {
                 _this.request({
                   method: "POST",
                   provider: "simple"
                 });
-              });
+                /** remove event listener after firing once. */
+
+
+                fetch.removeEventListener("click", callback);
+                /** disabled when no listener around. */
+
+                fetch.disabled = true;
+              };
+              /** add event listener. */
+
+
+              fetch.addEventListener("click", callback, false);
             }
             /** finance button. */
 
@@ -6204,12 +6215,23 @@ var stock_trade = /*#__PURE__*/function () {
             var finance = document.querySelector(".card > .header > .meta > .right > .click-trade-finance");
 
             if (finance) {
-              finance.addEventListener("click", function (e) {
+              var _callback = function _callback() {
                 _this.request({
                   method: "POST",
                   provider: "reports"
                 });
-              });
+                /** remove event listener after firing once. */
+
+
+                finance.removeEventListener("click", _callback);
+                /** disabled when no listener around. */
+
+                finance.disabled = true;
+              };
+              /** add event listener. */
+
+
+              finance.addEventListener("click", _callback, false);
             }
             /** finance button. */
 
@@ -6217,12 +6239,23 @@ var stock_trade = /*#__PURE__*/function () {
             var price = document.querySelector(".card > .header > .meta > .right > .click-trade-price");
 
             if (price) {
-              price.addEventListener("click", function (e) {
+              var _callback2 = function _callback2() {
                 _this.request({
                   method: "POST",
                   provider: "prices"
                 });
-              });
+                /** remove event listener after firing once. */
+
+
+                price.removeEventListener("click", _callback2);
+                /** disabled when no listener around. */
+
+                price.disabled = true;
+              };
+              /** add event listener. */
+
+
+              price.addEventListener("click", _callback2, false);
             }
             /** add modal code block. */
 
@@ -6249,18 +6282,24 @@ var stock_trade = /*#__PURE__*/function () {
                       el: parent,
                       data: ["id", "symbol", "edge"]
                     });
-                    /** set submit event listener. */
+                    /** set event listener. */
 
 
                     var submit = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
 
                     if (submit) {
-                      submit.addEventListener('click', function () {
+                      var _callback5 = function _callback5() {
                         _this.backdrop({
-                          action: 'insert',
-                          trigger: 'submit'
+                          action: "insert",
+                          mode: "submit",
+                          element: submit,
+                          callback: _callback5
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", _callback5, false);
                     }
                   });
                 };
@@ -6271,28 +6310,36 @@ var stock_trade = /*#__PURE__*/function () {
                 /** query document close button. */
 
 
-                var tradeClose = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-close");
+                var close = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-close");
 
-                if (tradeClose) {
-                  tradeClose.addEventListener("click", function (e) {
+                if (close) {
+                  var _callback3 = function _callback3() {
                     _this.backdrop({
-                      mode: "hide",
-                      action: "insert"
+                      action: "insert",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  close.addEventListener("click", _callback3, false);
                 }
                 /** query document cancel button. */
 
 
-                var tradeCancel = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
+                var cancel = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                if (tradeCancel) {
-                  tradeCancel.addEventListener("click", function (e) {
+                if (cancel) {
+                  var _callback4 = function _callback4() {
                     _this.backdrop({
-                      mode: "hide",
-                      action: "insert"
+                      action: "insert",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  cancel.addEventListener("click", _callback4, false);
                 }
               }
             }, 10000);
@@ -6322,21 +6369,28 @@ var stock_trade = /*#__PURE__*/function () {
         modal.style.display = "block";
         /** insert fetch edge. */
 
-        if (config["provider"] === 'edge') {
+        if (config["provider"] === "edge") {
           var fetch = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-fetch");
-          fetch.addEventListener('click', function () {
-            var edge = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-edge").value;
 
-            if (edge) {
-              /** retrieve data .*/
-              _this2.request({
-                method: 'GET',
-                provider: 'edge',
-                section: "watches",
-                input: edge
-              });
-            }
-          });
+          if (fetch) {
+            var callback = function callback() {
+              var edge = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-edge").value;
+
+              if (edge) {
+                /** retrieve data .*/
+                _this2.request({
+                  method: "GET",
+                  provider: "edge",
+                  section: "watches",
+                  input: edge
+                });
+              }
+            };
+            /** add event listener. */
+
+
+            fetch.addEventListener("click", callback, false);
+          }
         }
       }
 
@@ -6346,7 +6400,7 @@ var stock_trade = /*#__PURE__*/function () {
         modal.style.display = "none";
       }
 
-      if (config["trigger"] === "submit") {
+      if (config["mode"] === "submit") {
         /** collect all input for processing. */
         var collect = this.helper.init({
           type: "input",
@@ -6361,14 +6415,25 @@ var stock_trade = /*#__PURE__*/function () {
           type: "validate",
           data: collect
         });
+        /** clear input. */
+
+        setInterval(function () {
+          _this2.helper.init({
+            type: "input",
+            section: "watchlist",
+            target: "stock-trade-insert",
+            action: "clear",
+            data: ["liabilities", "equity", "price", "earning", "income", "gross"]
+          });
+        }, 10000);
         /** double check and then proceed. */
 
         if (Object.keys(result["error"]).length === 0) {
           /** sanitize input. */
           var sanitize = this.helper.init({
-            type: 'sanitize',
-            action: 'comma',
-            condition: ['symbol', 'edge', 'liabilities', 'equity', 'price', 'earning', 'income', 'gross'],
+            type: "sanitize",
+            action: "comma",
+            condition: ["symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
             data: result.success
           });
           /** request access token and then post to backend. */
@@ -6380,19 +6445,13 @@ var stock_trade = /*#__PURE__*/function () {
             statement: config["action"],
             input: sanitize
           });
-          setInterval(function () {
-            _this2.helper.init({
-              type: "input",
-              section: "watchlist",
-              target: "stock-trade-insert",
-              action: "clear",
-              data: ["liabilities", "equity", "price", "earning", "income", "gross"]
-            });
-          }, 10000);
           /** hide modal. */
 
           modal.classList.remove("backdrop");
           modal.style.display = "none";
+          /** remove listener. */
+
+          config["element"].removeEventListener('click', config['callback']);
         } else {
           /** display error. */
           this.error({
@@ -6415,7 +6474,7 @@ var stock_trade = /*#__PURE__*/function () {
 
       /** retrieve data. */
       if (config["method"] === "GET") {
-        if (config['provider'] === 'local') {
+        if (config["provider"] === "local") {
           axios.get("/sanctum/csrf-cookie").then(function (response) {
             axios.get("/api/stock-trade-retrieve", {
               params: {
@@ -6460,7 +6519,7 @@ var stock_trade = /*#__PURE__*/function () {
         /** fetch stock information. */
 
 
-        if (config['provider'] === "edge") {
+        if (config["provider"] === "edge") {
           axios.get("/sanctum/csrf-cookie").then(function (response) {
             axios.get("/stock-reports-retrieve", {
               params: {
@@ -6472,7 +6531,7 @@ var stock_trade = /*#__PURE__*/function () {
                 /** populate modal. */
                 if (response.data.reports) {
                   for (var x in response.data.reports) {
-                    document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-".concat(x)).value = response.data.reports[x].toLocaleString('en');
+                    document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-".concat(x)).value = response.data.reports[x].toLocaleString("en");
                   }
                 }
               }
@@ -6687,9 +6746,9 @@ var stock_trade = /*#__PURE__*/function () {
         /** post watchlist. */
 
 
-        if (config['provider'] === "watches") {
-          axios.get('/sanctum/csrf-cookie').then(function () {
-            axios.post('/api/stock-watchlist-store', {
+        if (config["provider"] === "watches") {
+          axios.get("/sanctum/csrf-cookie").then(function () {
+            axios.post("/api/stock-watchlist-store", {
               table: config.table,
               statement: config.statement,
               input: config.input
@@ -6698,7 +6757,7 @@ var stock_trade = /*#__PURE__*/function () {
               if (response.data.status === true) {
                 /** display success message. */
                 _this3.helper.init({
-                  type: 'message',
+                  type: "message",
                   status: response.data.status,
                   message: response.data.message
                 });
@@ -6708,7 +6767,7 @@ var stock_trade = /*#__PURE__*/function () {
 
               if (response.data.status === false) {
                 _this3.helper.init({
-                  type: 'message',
+                  type: "message",
                   status: response.data.status,
                   message: response.data.message
                 });
@@ -6724,18 +6783,18 @@ var stock_trade = /*#__PURE__*/function () {
     key: "error",
     value: function error(config) {
       /** run trough it all. */
-      for (var key in config['data']) {
-        var display = document.querySelector(".".concat(config['target'], " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config['data'][key];
+      for (var key in config["data"]) {
+        var display = document.querySelector(".".concat(config["target"], " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
+        display.textContent = config["data"][key];
       }
       /** clear all error messages after five seconds. */
 
 
       setTimeout(function () {
-        for (var _key in config['data']) {
-          var _display = document.querySelector(".".concat(config['target'], " > .modal-form > .modal-group > .modal-").concat(_key, "-error"));
+        for (var _key in config["data"]) {
+          var _display = document.querySelector(".".concat(config["target"], " > .modal-form > .modal-group > .modal-").concat(_key, "-error"));
 
-          _display.textContent = '';
+          _display.textContent = "";
         }
       }, 5000);
     }

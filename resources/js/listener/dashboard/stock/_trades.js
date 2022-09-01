@@ -67,29 +67,26 @@ class stock_trade {
                     }
                     /** add modal code block. */
                     setTimeout(() => {
-                        let add = document.querySelectorAll(".stock-trade > .items > .action > .add");
-                        if (add) {
-                            for (let i = 0; i < add.length; i++) {
-                                add[i].addEventListener("click", () => {
+                        let watch = document.querySelectorAll(".stock-trade > .items > .action > .watch");
+                        if (watch) {
+                            for (let i = 0; i < watch.length; i++) {
+                                watch[i].addEventListener("click", () => {
                                     /** show update modal. */
                                     this.backdrop({
+                                        action: "insert",
                                         mode: "show",
                                         provider: "edge",
                                     });
 
                                     // /** populate modal. */
                                     let parent =
-                                        add[i].parentElement.parentElement;
+                                        watch[i].parentElement.parentElement;
                                     this.helper.init({
                                         type: "input",
                                         action: "populate",
                                         target: "stock-trade-insert",
                                         el: parent,
-                                        data: [
-                                            "id",
-                                            "symbol",
-                                            "edge",
-                                        ],
+                                        data: ["id", "symbol", "edge"],
                                     });
                                     /** set event listener. */
                                     let submit = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
@@ -125,7 +122,7 @@ class stock_trade {
 
                     let info = document.querySelector(".card > .header > .meta > .right > .messenger");
                     info.classList.add("info");
-                    info.textContent = "Add button enabled right after this message disappear.";
+                    info.textContent = "Watch button enabled right after this message disappear.";
                     setTimeout(() => {
                         info.classList.remove("info");
                     }, 9000);
@@ -136,22 +133,31 @@ class stock_trade {
     /** function on how backdrop behaves. */
     backdrop(config) {
         /** query document to pinpoint modal element. */
-        let modal = document.querySelector(".stock-trade-insert");
+        let modal = document.querySelector(`.stock-trade-${config["action"]}`,);
 
         if (config["mode"] === "show") {
             /** show modal. */
             modal.classList.add("backdrop");
             modal.style.display = "block";
 
+            /** clear input. */
+            this.helper.init({
+                type: "input",
+                section: "watchlist",
+                target: `stock-trade-${config["action"]}`,
+                action: "clear",
+                data: ["liabilities", "equity", "price", "earning", "income", "gross"],
+            });
+
             /** insert fetch edge. */
             if (config["provider"] === "edge") {
-                let fetch = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-fetch");
+                let fetch = document.querySelector(`.stock-trade-${config["action"]} > .modal-form > .modal-group > .modal-gecko > .modal-fetch`);
                 if (fetch) {
                     let callback = () => {
-                        let edge = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-edge").value;
+                        let edge = document.querySelector(`.stock-trade-${config["action"]} > .modal-form > .modal-group > .modal-gecko > .modal-edge`).value;
                         if (edge) {
                             /** retrieve data .*/
-                            this.request({ method: "GET", provider: "edge", section: "watches", input: edge });
+                            this.request({ method: "GET", provider: "edge", action: "insert", section: "watches", input: edge });
                         }
                     };
                     /** add event listener. */
@@ -171,45 +177,24 @@ class stock_trade {
             let collect = this.helper.init({
                 type: "input",
                 section: "watchlist",
-                target: "stock-trade-insert",
+                target: `stock-trade-${config["action"]}`,
                 action: "value",
-                data: [
-                    "symbol",
-                    "edge",
-                    "liabilities",
-                    "equity",
-                    "price",
-                    "earning",
-                    "income",
-                    "gross"
-                ],
+                data: ["id", "symbol", "edge", "symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
             });
             /** check if inputs are empty and valid. */
             let result = this.helper.init({
                 type: "validate",
                 data: collect,
             });
-            /** clear input. */
-            setInterval(() => {
-                this.helper.init({
-                    type: "input",
-                    section: "watchlist",
-                    target: "stock-trade-insert",
-                    action: "clear",
-                    data: [
-                        "liabilities",
-                        "equity",
-                        "price",
-                        "earning",
-                        "income",
-                        "gross"
-                    ],
-                });
-            }, 10000)
             /** double check and then proceed. */
             if (Object.keys(result["error"]).length === 0) {
                 /** sanitize input. */
-                let sanitize = this.helper.init({ type: "sanitize", action: "comma", condition: ["symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"], data: result.success });
+                let sanitize = this.helper.init({
+                    type: "sanitize",
+                    action: "comma",
+                    condition: ["symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
+                    data: result["success"]
+                });
                 /** request access token and then post to backend. */
                 this.request({
                     method: "POST",
@@ -218,21 +203,15 @@ class stock_trade {
                     statement: config["action"],
                     input: sanitize,
                 });
-                /** hide modal. */
-                modal.classList.remove("backdrop");
-                modal.style.display = "none";
-                /** remove listener. */
-                config["element"].removeEventListener('click', config['callback']);
             } else {
-                /** display error. */
-                this.error({
-                    target: "stock-trade-insert",
-                    data: result["error"],
-                });
-                /** show modal. */
-                modal.classList.add("backdrop");
-                modal.style.display = "block";
+                /** display user  message. */
+                this.helper.init({ type: "message", status: false, message: result["message"] });
             }
+            /** remove listener. */
+            config["element"].removeEventListener('click', config['callback']);
+            /** hide modal. */
+            modal.classList.remove("backdrop");
+            modal.style.display = "none";
         }
     }
     /** function to process http request. */
@@ -291,7 +270,7 @@ class stock_trade {
                                 /** populate modal. */
                                 if (response.data.reports) {
                                     for (let x in response.data.reports) {
-                                        document.querySelector(`.stock-trade-insert > .modal-form > .modal-group > .modal-${x}`).value = response.data.reports[x].toLocaleString("en");
+                                        document.querySelector(`.stock-trade-${config["action"]} > .modal-form > .modal-group > .modal-${x}`).value = response.data.reports[x].toLocaleString("en");
                                     }
                                 }
                             }
@@ -496,42 +475,16 @@ class stock_trade {
                         statement: config.statement,
                         input: config.input
                     }).then(response => {
-                        /** populate order element with data. */
-                        if (response.data.status === true) {
-                            /** display success message. */
-                            this.helper.init({
-                                type: "message",
-                                status: response.data.status,
-                                message: response.data.message
-                            });
-                        }
-                        /** display error message. */
-                        if (response.data.status === false) {
-                            this.helper.init({
-                                type: "message",
-                                status: response.data.status,
-                                message: response.data.message
-                            });
-                        }
+                        /** display success message. */
+                        this.helper.init({
+                            type: "message",
+                            status: response.data.status,
+                            message: response.data.message
+                        });
                     });
                 });
             }
         }
-    }
-    /** function to display error. */
-    error(config) {
-        /** run trough it all. */
-        for (let key in config["data"]) {
-            let display = document.querySelector(`.${config["target"]} > .modal-form > .modal-group > .modal-${key}-error`);
-            display.textContent = config["data"][key];
-        }
-        /** clear all error messages after five seconds. */
-        setTimeout(() => {
-            for (let key in config["data"]) {
-                let display = document.querySelector(`.${config["target"]} > .modal-form > .modal-group > .modal-${key}-error`);
-                display.textContent = "";
-            }
-        }, 5000);
     }
 }
 export default new stock_trade();

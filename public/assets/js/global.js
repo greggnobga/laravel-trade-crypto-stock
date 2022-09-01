@@ -2527,7 +2527,8 @@ var validator = /*#__PURE__*/function () {
 
       return {
         error: error,
-        success: success
+        success: success,
+        message: 'Unable to proceed, some inputs are required.'
       };
     }
   }]);
@@ -2730,11 +2731,11 @@ var crypto_game = /*#__PURE__*/function () {
 
       /** setup overview listener. */
       this.event.addEventListener("click", function (e) {
-        if (e.target.dataset.sidebar === 'crypto_games') {
+        if (e.target.dataset.sidebar === "crypto_games") {
           /** retrieve data .*/
           _this.request({
-            method: 'GET',
-            table: 'game'
+            method: "GET",
+            table: "game"
           });
           /** clone template. */
 
@@ -2747,7 +2748,7 @@ var crypto_game = /*#__PURE__*/function () {
 
           if (check === null || check === undefined) {
             /** clear element before appending new content. */
-            _this.element.innerHTML = '';
+            _this.element.innerHTML = "";
             /** append template content. */
 
             _this.element.appendChild(content);
@@ -2758,69 +2759,80 @@ var crypto_game = /*#__PURE__*/function () {
 
             if (record) {
               record.addEventListener("click", function (e) {
-                if (e.target.dataset.action === 'crypto') {
+                if (e.target.dataset.action === "crypto") {
                   /** show modal. */
                   _this.backdrop({
-                    mode: 'show',
-                    action: 'insert'
+                    mode: "show",
+                    action: "insert"
                   });
                   /** set submit event listener. */
 
 
-                  var gameSubmit = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
+                  var submit = document.querySelector(".crypto-game-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
 
-                  if (gameSubmit) {
-                    gameSubmit.addEventListener('click', function (e) {
+                  if (submit) {
+                    var callback = function callback() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'insert',
-                        trigger: 'submit',
-                        input: gameSubmit
+                        action: "insert",
+                        mode: "submit",
+                        element: submit,
+                        callback: callback
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    submit.addEventListener("click", callback, false);
                   }
                 }
               });
               /** set close event listener. */
 
-              var gameClose = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-close');
+              var close = document.querySelector(".crypto-game-insert > .modal-form > .modal-group > .modal-close");
 
-              if (gameClose) {
-                gameClose.addEventListener('click', function (e) {
+              if (close) {
+                var callback = function callback() {
                   _this.backdrop({
-                    mode: 'hide',
-                    action: 'insert'
+                    action: "insert",
+                    mode: "hide"
                   });
-                });
+                };
+                /** add event listener. */
+
+
+                close.addEventListener("click", callback, false);
               }
               /** set cancel event listener. */
 
 
-              var gameCancel = document.querySelector('.crypto-game-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+              var cancel = document.querySelector(".crypto-game-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-              if (gameCancel) {
-                gameCancel.addEventListener('click', function (e) {
+              if (cancel) {
+                var _callback = function _callback() {
                   _this.backdrop({
-                    mode: 'hide',
-                    action: 'insert'
+                    action: "insert",
+                    mode: "hide"
                   });
-                });
+                };
+                /** add event listener. */
+
+
+                cancel.addEventListener("click", _callback, false);
               }
             }
             /** update modal code block. */
 
 
             setTimeout(function () {
-              var update = document.querySelectorAll('.crypto-game > .items > .action > .update');
+              var update = document.querySelectorAll(".crypto-game > .items > .action > .update");
 
               if (update) {
                 var _loop = function _loop(i) {
-                  /* jshint -W083 */
                   update[i].addEventListener("click", function () {
                     /** show modal. */
                     _this.backdrop({
-                      mode: 'show',
-                      action: 'update'
+                      mode: "show",
+                      action: "update"
                     });
                     /** populate modal. */
 
@@ -2828,29 +2840,32 @@ var crypto_game = /*#__PURE__*/function () {
                     var parent = update[i].parentElement.parentElement;
 
                     _this.helper.init({
-                      type: 'input',
-                      action: 'populate',
-                      target: 'crypto-game-update',
+                      type: "input",
+                      action: "populate",
+                      target: "crypto-game-update",
                       el: parent,
-                      data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
+                      data: ["id", "title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
                     });
                     /** set submit event listener. */
 
 
-                    var gameSubmit = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
+                    var submit = document.querySelector(".crypto-game-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update");
 
-                    if (gameSubmit) {
-                      gameSubmit.addEventListener('click', function (e) {
+                    if (submit) {
+                      var _callback4 = function _callback4() {
                         _this.backdrop({
-                          mode: 'hide',
-                          action: 'update',
-                          trigger: 'submit',
-                          input: gameSubmit
+                          action: "update",
+                          mode: "submit",
+                          element: submit,
+                          callback: _callback4
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", _callback4, false);
                     }
                   });
-                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < update.length; i++) {
@@ -2859,44 +2874,51 @@ var crypto_game = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var _gameClose = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-close');
+                var _close = document.querySelector(".crypto-game-update > .modal-form > .modal-group > .modal-close");
 
-                if (_gameClose) {
-                  _gameClose.addEventListener('click', function (e) {
+                if (_close) {
+                  var _callback2 = function _callback2() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'update'
+                      action: "update",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  _close.addEventListener("click", _callback2, false);
                 }
                 /** set cancel event listener. */
 
 
-                var _gameCancel = document.querySelector('.crypto-game-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var _cancel = document.querySelector(".crypto-game-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                if (_gameCancel) {
-                  _gameCancel.addEventListener('click', function (e) {
+                if (_cancel) {
+                  var _callback3 = function _callback3() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'update'
+                      action: "update",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  _cancel.addEventListener("click", _callback3, false);
                 }
               }
             }, 10000);
             /** destroy modal code block. */
 
             setTimeout(function () {
-              var destroy = document.querySelectorAll('.crypto-game > .items > .action > .destroy');
+              var destroy = document.querySelectorAll(".crypto-game > .items > .action > .destroy");
 
               if (destroy) {
                 var _loop2 = function _loop2(i) {
-                  /* jshint -W083 */
                   destroy[i].addEventListener("click", function () {
                     /** show modal. */
                     _this.backdrop({
-                      mode: 'show',
-                      action: 'destroy'
+                      mode: "show",
+                      action: "destroy"
                     });
                     /** populate modal. */
 
@@ -2904,29 +2926,32 @@ var crypto_game = /*#__PURE__*/function () {
                     var parent = destroy[i].parentElement.parentElement;
 
                     _this.helper.init({
-                      type: 'input',
-                      action: 'populate',
-                      target: 'crypto-game-destroy',
+                      type: "input",
+                      action: "populate",
+                      target: "crypto-game-destroy",
                       el: parent,
-                      data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
+                      data: ["id", "title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
                     });
                     /** set submit event listener. */
 
 
-                    var gameSubmit = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                    var submit = document.querySelector(".crypto-game-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
 
-                    if (gameSubmit) {
-                      gameSubmit.addEventListener('click', function (e) {
+                    if (submit) {
+                      var _callback7 = function _callback7() {
                         _this.backdrop({
-                          mode: 'hide',
-                          action: 'destroy',
-                          trigger: 'submit',
-                          input: gameSubmit
+                          action: "destroy",
+                          mode: "submit",
+                          element: submit,
+                          callback: _callback7
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", _callback7, false);
                     }
                   });
-                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < destroy.length; i++) {
@@ -2935,36 +2960,44 @@ var crypto_game = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var _gameClose2 = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-close');
+                var _close2 = document.querySelector(".crypto-game-destroy > .modal-form > .modal-group > .modal-close");
 
-                if (_gameClose2) {
-                  _gameClose2.addEventListener('click', function (e) {
+                if (_close2) {
+                  var _callback5 = function _callback5() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'destroy'
+                      action: "destroy",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  _close2.addEventListener("click", _callback5, false);
                 }
                 /** set cancel event listener. */
 
 
-                var _gameCancel2 = document.querySelector('.crypto-game-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var _cancel2 = document.querySelector(".crypto-game-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                if (_gameCancel2) {
-                  _gameCancel2.addEventListener('click', function (e) {
+                if (_cancel2) {
+                  var _callback6 = function _callback6() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'destroy'
+                      action: "destroy",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  _cancel2.addEventListener("click", _callback6, false);
                 }
               }
             }, 10000);
-            var info = document.querySelector('.card > .header > .meta > .right > .messenger');
-            info.classList.add('info');
-            info.textContent = 'Update button enabled right after this message disappear.';
+            var info = document.querySelector(".card > .header > .meta > .right > .messenger");
+            info.classList.add("info");
+            info.textContent = "Update button enabled right after this message disappear.";
             setTimeout(function () {
-              info.classList.remove('info');
+              info.classList.remove("info");
             }, 9000);
           }
         }
@@ -2976,69 +3009,71 @@ var crypto_game = /*#__PURE__*/function () {
     key: "backdrop",
     value: function backdrop(config) {
       /** query modal. */
-      var modal = document.querySelector(".crypto-game-".concat(config.action));
+      var modal = document.querySelector(".crypto-game-".concat(config["action"]));
 
-      if (config.mode === 'show') {
+      if (config["mode"] === "show") {
         /** show backdrop. */
-        modal.classList.add('backdrop');
-        modal.style.display = 'block';
+        modal.classList.add("backdrop");
+        modal.style.display = "block";
       }
 
-      if (config.mode === 'hide') {
+      if (config["mode"] === "hide") {
         /** hide backdrop. */
-        modal.classList.remove('backdrop');
-        modal.style.display = 'none';
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
+      }
 
-        if (config.trigger === 'submit') {
-          /** hide backdrop. */
-          modal.classList.remove('backdrop');
-          modal.style.display = 'none';
-          /** collect all input for processing. */
+      if (config["mode"] === "submit") {
+        /** collect all input for processing. */
+        var collect = this.helper.init({
+          type: "input",
+          target: "crypto-game-".concat(config["action"]),
+          action: "value",
+          data: ["id", "title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
+        });
+        /** check if inputs are empty and valid. */
 
-          var collect = this.helper.init({
-            type: 'input',
-            target: "crypto-game-".concat(config.action),
-            action: 'value',
-            data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
+        var result = this.helper.init({
+          type: "validate",
+          data: collect
+        });
+        /** clear input if insert. */
+
+        if (config["action"] === "insert") {
+          this.helper.init({
+            type: "input",
+            target: "crypto-game-".concat(config["action"]),
+            action: "clear",
+            data: ["id", "title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
           });
-          /** check if inputs are empty and valid. */
-
-          var result = this.helper.init({
-            type: 'validate',
-            data: collect
-          });
-          /** double check and then proceed. */
-
-          if (Object.keys(result.error).length === 0) {
-            /** request access token and then post to backend. */
-            this.request({
-              method: 'POST',
-              table: 'game',
-              statement: "".concat(config.action),
-              input: result.success
-            });
-            /** clear input if insert. */
-
-            if (config.action === 'insert') {
-              this.helper.init({
-                type: 'input',
-                target: "crypto-game-".concat(config.action),
-                action: 'clear',
-                data: ['id', 'title', 'genre', 'platform', 'blockchain', 'status', 'earn', 'free', 'rating']
-              });
-            }
-          } else {
-            /** display error. */
-            this.error({
-              target: "crypto-game-".concat(config.action),
-              data: result.error
-            });
-            /** show backdrop. */
-
-            modal.classList.add('backdrop');
-            modal.style.display = 'block';
-          }
         }
+        /** double check and then proceed. */
+
+
+        if (Object.keys(result.error).length === 0) {
+          /** request access token and then post to backend. */
+          this.request({
+            method: "POST",
+            table: "game",
+            statement: "".concat(config["action"]),
+            input: result["success"]
+          });
+        } else {
+          /** display user  message. */
+          this.helper.init({
+            type: "message",
+            status: false,
+            message: result["message"]
+          });
+        }
+        /** remove listener. */
+
+
+        config["element"].removeEventListener('click', config['callback']);
+        /** hide modal. */
+
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
       }
     }
     /** function to process http request. */
@@ -3049,11 +3084,11 @@ var crypto_game = /*#__PURE__*/function () {
       var _this2 = this;
 
       /** retrieve data. */
-      if (config.method === 'GET') {
-        axios.get('/sanctum/csrf-cookie').then(function (response) {
-          axios.get('/api/crypto-game-retrieve', {
+      if (config.method === "GET") {
+        axios.get("/sanctum/csrf-cookie").then(function (response) {
+          axios.get("/api/crypto-game-retrieve", {
             params: {
-              'table': 'game'
+              "table": "game"
             }
           }).then(function (response) {
             if (response.data.status === true) {
@@ -3061,9 +3096,9 @@ var crypto_game = /*#__PURE__*/function () {
               if (response.data.coin) {
                 for (var i = 0; i < response.data.coin.length; i++) {
                   _this2.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: "".concat(i + 1),
-                    target: 'crypto-game',
+                    target: "crypto-game",
                     statement: response.data.sql,
                     input: response.data.coin[i]
                   });
@@ -3076,9 +3111,9 @@ var crypto_game = /*#__PURE__*/function () {
       /** store data. */
 
 
-      if (config.method === 'POST') {
-        axios.get('/sanctum/csrf-cookie').then(function (response) {
-          axios.post('/api/crypto-game-store', {
+      if (config.method === "POST") {
+        axios.get("/sanctum/csrf-cookie").then(function (response) {
+          axios.post("/api/crypto-game-store", {
             table: config.table,
             statement: config.statement,
             input: config.input
@@ -3086,12 +3121,12 @@ var crypto_game = /*#__PURE__*/function () {
             /** populate order element with data. */
             if (response.data.status === true) {
               /** add or update element in document tree. */
-              if (response.data.sql === 'select') {
+              if (response.data.sql === "select") {
                 for (var key in response.data.coin) {
                   _this2.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: 0,
-                    target: 'crypto-game',
+                    target: "crypto-game",
                     statement: response.data.sql,
                     input: response.data.coin[key]
                   });
@@ -3100,11 +3135,11 @@ var crypto_game = /*#__PURE__*/function () {
               /** add or update element in document tree. */
 
 
-              if (response.data.sql === 'update') {
+              if (response.data.sql === "update") {
                 for (var _key in response.data.coin) {
                   _this2.helper.init({
-                    type: 'node',
-                    target: 'crypto-game',
+                    type: "node",
+                    target: "crypto-game",
                     statement: response.data.sql,
                     input: response.data.coin[_key]
                   });
@@ -3113,10 +3148,10 @@ var crypto_game = /*#__PURE__*/function () {
               /** remove element in document tree. */
 
 
-              if (response.data.sql === 'destroy') {
+              if (response.data.sql === "destroy") {
                 _this2.helper.init({
-                  type: 'node',
-                  target: 'crypto-game',
+                  type: "node",
+                  target: "crypto-game",
                   statement: response.data.sql,
                   input: response.data.coin
                 });
@@ -3125,7 +3160,7 @@ var crypto_game = /*#__PURE__*/function () {
 
 
               _this2.helper.init({
-                type: 'message',
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -3135,7 +3170,7 @@ var crypto_game = /*#__PURE__*/function () {
 
             if (response.data.status === false) {
               _this2.helper.init({
-                type: 'message',
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -3143,27 +3178,6 @@ var crypto_game = /*#__PURE__*/function () {
           });
         });
       }
-    }
-    /** function to display error. */
-
-  }, {
-    key: "error",
-    value: function error(config) {
-      /** run trough it all. */
-      for (var key in config.data) {
-        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config.data[key];
-      }
-      /** clear all error messages after five seconds. */
-
-
-      setTimeout(function () {
-        for (var _key2 in config.data) {
-          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key2, "-error"));
-
-          _display.textContent = '';
-        }
-      }, 5000);
     }
   }]);
 
@@ -3212,11 +3226,11 @@ var crypto_moon = /*#__PURE__*/function () {
 
       /** setup overview listener. */
       this.event.addEventListener("click", function (e) {
-        if (e.target.dataset.sidebar === 'crypto_moons') {
+        if (e.target.dataset.sidebar === "crypto_moons") {
           /** retrieve data .*/
           _this.request({
-            method: 'GET',
-            table: 'moon'
+            method: "GET",
+            table: "moon"
           });
           /** clone template. */
 
@@ -3229,7 +3243,7 @@ var crypto_moon = /*#__PURE__*/function () {
 
           if (check === null || check === undefined) {
             /** clear element before appending new content. */
-            _this.element.innerHTML = '';
+            _this.element.innerHTML = "";
             /** append template content. */
 
             _this.element.appendChild(content);
@@ -3240,69 +3254,80 @@ var crypto_moon = /*#__PURE__*/function () {
 
             if (record) {
               record.addEventListener("click", function (e) {
-                if (e.target.dataset.action === 'crypto') {
+                if (e.target.dataset.action === "crypto") {
                   /** show modal. */
                   _this.backdrop({
-                    mode: 'show',
-                    action: 'insert'
+                    mode: "show",
+                    action: "insert"
                   });
                   /** set submit event listener. */
 
 
-                  var moonSubmit = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
+                  var _submit = document.querySelector(".crypto-moon-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
 
-                  if (moonSubmit) {
-                    moonSubmit.addEventListener('click', function (e) {
+                  if (_submit) {
+                    var callback = function callback() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'insert',
-                        trigger: 'submit',
-                        input: moonSubmit
+                        action: "insert",
+                        mode: "submit",
+                        element: _submit,
+                        callback: callback
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    _submit.addEventListener("click", callback, false);
                   }
                 }
               });
               /** set close event listener. */
 
-              var moonClose = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-close');
+              var close = document.querySelector(".crypto-moon-insert > .modal-form > .modal-group > .modal-close");
 
-              if (moonClose) {
-                moonClose.addEventListener('click', function (e) {
+              if (close) {
+                var callback = function callback() {
                   _this.backdrop({
-                    mode: 'hide',
-                    action: 'insert'
+                    action: "insert",
+                    mode: "hide"
                   });
-                });
+                };
+                /** add event listener. */
+
+
+                close.addEventListener("click", callback, false);
               }
               /** set cancel event listener. */
 
 
-              var moonCancel = document.querySelector('.crypto-moon-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+              var cancel = document.querySelector(".crypto-moon-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-              if (moonCancel) {
-                moonCancel.addEventListener('click', function (e) {
+              if (cancel) {
+                var _callback = function _callback() {
                   _this.backdrop({
-                    mode: 'hide',
-                    action: 'insert'
+                    action: "insert",
+                    mode: "hide"
                   });
-                });
+                };
+                /** add event listener. */
+
+
+                cancel.addEventListener("click", _callback, false);
               }
             }
             /** update modal code block. */
 
 
             setTimeout(function () {
-              var update = document.querySelectorAll('.crypto-moon > .items > .action > .update');
+              var update = document.querySelectorAll(".crypto-moon > .items > .action > .update");
 
               if (update) {
                 var _loop = function _loop(i) {
-                  /* jshint -W083 */
                   update[i].addEventListener("click", function () {
                     /** show modal. */
                     _this.backdrop({
-                      mode: 'show',
-                      action: 'update'
+                      mode: "show",
+                      action: "update"
                     });
                     /** populate modal. */
 
@@ -3310,29 +3335,32 @@ var crypto_moon = /*#__PURE__*/function () {
                     var parent = update[i].parentElement.parentElement;
 
                     _this.helper.init({
-                      type: 'input',
-                      action: 'populate',
-                      target: 'crypto-moon-update',
+                      type: "input",
+                      action: "populate",
+                      target: "crypto-moon-update",
                       el: parent,
-                      data: ['id', 'name', 'coin', 'description', 'zone', 'website']
+                      data: ["id", "name", "coin", "description", "zone", "website"]
                     });
                     /** set submit event listener. */
 
 
-                    var moonSubmit = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
+                    var submit = document.querySelector(".crypto-moon-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update");
 
-                    if (moonSubmit) {
-                      moonSubmit.addEventListener('click', function (e) {
+                    if (submit) {
+                      var _callback4 = function _callback4() {
                         _this.backdrop({
-                          mode: 'hide',
-                          action: 'update',
-                          trigger: 'submit',
-                          input: moonSubmit
+                          action: "update",
+                          mode: "submit",
+                          element: submit,
+                          callback: _callback4
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", _callback4, false);
                     }
                   });
-                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < update.length; i++) {
@@ -3341,44 +3369,51 @@ var crypto_moon = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var updateClose = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-close');
+                var _close = document.querySelector(".crypto-moon-update > .modal-form > .modal-group > .modal-close");
 
-                if (updateClose) {
-                  updateClose.addEventListener('click', function (e) {
+                if (_close) {
+                  var _callback2 = function _callback2() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'update'
+                      action: "update",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  _close.addEventListener("click", _callback2, false);
                 }
                 /** set cancel event listener. */
 
 
-                var updateCancel = document.querySelector('.crypto-moon-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var _cancel = document.querySelector(".crypto-moon-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                if (updateCancel) {
-                  updateCancel.addEventListener('click', function (e) {
+                if (_cancel) {
+                  var _callback3 = function _callback3() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'update'
+                      action: "update",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  _cancel.addEventListener("click", _callback3, false);
                 }
               }
             }, 10000);
             /** destroy modal code block. */
 
             setTimeout(function () {
-              var destroy = document.querySelectorAll('.crypto-moon > .items > .action > .destroy');
+              var destroy = document.querySelectorAll(".crypto-moon > .items > .action > .destroy");
 
               if (destroy) {
                 var _loop2 = function _loop2(i) {
-                  /* jshint -W083 */
                   destroy[i].addEventListener("click", function () {
                     /** show modal. */
                     _this.backdrop({
-                      mode: 'show',
-                      action: 'destroy'
+                      mode: "show",
+                      action: "destroy"
                     });
                     /** populate modal. */
 
@@ -3386,29 +3421,32 @@ var crypto_moon = /*#__PURE__*/function () {
                     var parent = destroy[i].parentElement.parentElement;
 
                     _this.helper.init({
-                      type: 'input',
-                      action: 'populate',
-                      target: 'crypto-moon-destroy',
+                      type: "input",
+                      action: "populate",
+                      target: "crypto-moon-destroy",
                       el: parent,
-                      data: ['id', 'name', 'coin', 'description', 'zone', 'website']
+                      data: ["id", "name", "coin", "description", "zone", "website"]
                     });
                     /** set submit event listener. */
 
 
-                    var moonSubmit = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                    letsubmit = document.querySelector(".crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
 
-                    if (moonSubmit) {
-                      moonSubmit.addEventListener('click', function (e) {
+                    if (submit) {
+                      var _callback7 = function _callback7() {
                         _this.backdrop({
-                          mode: 'hide',
-                          action: 'destroy',
-                          trigger: 'submit',
-                          input: moonSubmit
+                          action: "destroy",
+                          mode: "submit",
+                          element: submit,
+                          callback: _callback7
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", _callback7, false);
                     }
                   });
-                  /* jshint +W083 */
                 };
 
                 for (var i = 0; i < destroy.length; i++) {
@@ -3417,36 +3455,44 @@ var crypto_moon = /*#__PURE__*/function () {
                 /** set close event listener. */
 
 
-                var _moonClose = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-close');
+                var _close2 = document.querySelector(".crypto-moon-destroy > .modal-form > .modal-group > .modal-close");
 
-                if (_moonClose) {
-                  _moonClose.addEventListener('click', function (e) {
+                if (_close2) {
+                  var _callback5 = function _callback5() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'destroy'
+                      action: "destroy",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  _close2.addEventListener("click", _callback5, false);
                 }
                 /** set cancel event listener. */
 
 
-                var _moonCancel = document.querySelector('.crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var _cancel2 = document.querySelector(".crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                if (_moonCancel) {
-                  _moonCancel.addEventListener('click', function (e) {
+                if (_cancel2) {
+                  var _callback6 = function _callback6() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'destroy'
+                      action: "destroy",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  _cancel2.addEventListener("click", _callback6, false);
                 }
               }
             }, 10000);
-            var info = document.querySelector('.card > .header > .meta > .right > .messenger');
-            info.classList.add('info');
-            info.textContent = 'Update button enabled right after this message disappear.';
+            var info = document.querySelector(".card > .header > .meta > .right > .messenger");
+            info.classList.add("info");
+            info.textContent = "Update button enabled right after this message disappear.";
             setTimeout(function () {
-              info.classList.remove('info');
+              info.classList.remove("info");
             }, 9000);
           }
         }
@@ -3458,69 +3504,71 @@ var crypto_moon = /*#__PURE__*/function () {
     key: "backdrop",
     value: function backdrop(config) {
       /** query modal. */
-      var modal = document.querySelector(".crypto-moon-".concat(config.action));
+      var modal = document.querySelector(".crypto-moon-".concat(config["action"]));
 
-      if (config.mode === 'show') {
+      if (config["mode"] === "show") {
         /** show backdrop. */
-        modal.classList.add('backdrop');
-        modal.style.display = 'block';
+        modal.classList.add("backdrop");
+        modal.style.display = "block";
       }
 
-      if (config.mode === 'hide') {
+      if (config["mode"] === "hide") {
         /** hide backdrop. */
-        modal.classList.add('backdrop');
-        modal.style.display = 'none';
+        modal.classList.add("backdrop");
+        modal.style.display = "none";
+      }
 
-        if (config.trigger === 'submit') {
-          /** hide backdrop. */
-          modal.classList.add('backdrop');
-          modal.style.display = 'none';
-          /** collect all input for processing. */
+      if (config["mode"] === "submit") {
+        /** collect all input for processing. */
+        var collect = this.helper.init({
+          type: "input",
+          target: "crypto-moon-".concat(config["action"]),
+          action: "value",
+          data: ["id", "name", "coin", "description", "zone", "website"]
+        });
+        /** check if inputs are empty and valid. */
 
-          var collect = this.helper.init({
-            type: 'input',
-            target: "crypto-moon-".concat(config.action),
-            action: 'value',
-            data: ['id', 'name', 'coin', 'description', 'zone', 'website']
+        var result = this.helper.init({
+          type: "validate",
+          data: collect
+        });
+        /** clear input if insert. */
+
+        if (config["action"] === "insert") {
+          this.helper.init({
+            type: "input",
+            target: "crypto-moon-".concat(config["action"]),
+            action: "clear",
+            data: ["name", "coin", "description", "zone", "website"]
           });
-          /** check if inputs are empty and valid. */
-
-          var result = this.helper.init({
-            type: 'validate',
-            data: collect
-          });
-          /** double check and then proceed. */
-
-          if (Object.keys(result.error).length === 0) {
-            /** request access token and then post to backend. */
-            this.request({
-              method: 'POST',
-              table: 'moon',
-              statement: "".concat(config.action),
-              input: result.success
-            });
-            /** clear input if insert. */
-
-            if (config.action === 'insert') {
-              this.helper.init({
-                type: 'input',
-                target: "crypto-moon-".concat(config.action),
-                action: 'clear',
-                data: ['name', 'coin', 'description', 'zone', 'website']
-              });
-            }
-          } else {
-            /** display error. */
-            this.error({
-              target: "crypto-moon-".concat(config.action),
-              data: result.error
-            });
-            /** show backdrop. */
-
-            modal.classList.add('backdrop');
-            modal.style.display = 'block';
-          }
         }
+        /** double check and then proceed. */
+
+
+        if (Object.keys(result.error).length === 0) {
+          /** request access token and then post to backend. */
+          this.request({
+            method: "POST",
+            table: "moon",
+            statement: "".concat(config["action"]),
+            input: result["success"]
+          });
+        } else {
+          /** display user  message. */
+          this.helper.init({
+            type: "message",
+            status: false,
+            message: result["message"]
+          });
+        }
+        /** remove listener. */
+
+
+        config["element"].removeEventListener('click', config['callback']);
+        /** hide modal. */
+
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
       }
     }
     /** function to process http request. */
@@ -3531,11 +3579,11 @@ var crypto_moon = /*#__PURE__*/function () {
       var _this2 = this;
 
       /** retrieve data. */
-      if (config.method === 'GET') {
-        axios.get('/sanctum/csrf-cookie').then(function (response) {
-          axios.get('/api/crypto-moon-retrieve', {
+      if (config.method === "GET") {
+        axios.get("/sanctum/csrf-cookie").then(function (response) {
+          axios.get("/api/crypto-moon-retrieve", {
             params: {
-              'table': 'moon'
+              "table": "moon"
             }
           }).then(function (response) {
             if (response.data.status === true) {
@@ -3543,9 +3591,9 @@ var crypto_moon = /*#__PURE__*/function () {
               if (response.data.coin) {
                 for (var i = 0; i < response.data.coin.length; i++) {
                   _this2.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: "".concat(i + 1),
-                    target: 'crypto-moon',
+                    target: "crypto-moon",
                     statement: response.data.sql,
                     input: response.data.coin[i]
                   });
@@ -3558,9 +3606,9 @@ var crypto_moon = /*#__PURE__*/function () {
       /** store data. */
 
 
-      if (config.method === 'POST') {
-        axios.get('/sanctum/csrf-cookie').then(function (response) {
-          axios.post('/api/crypto-moon-store', {
+      if (config.method === "POST") {
+        axios.get("/sanctum/csrf-cookie").then(function (response) {
+          axios.post("/api/crypto-moon-store", {
             table: config.table,
             statement: config.statement,
             input: config.input
@@ -3568,12 +3616,12 @@ var crypto_moon = /*#__PURE__*/function () {
             /** populate order element with data. */
             if (response.data.status === true) {
               /** add or update element in document tree. */
-              if (response.data.sql === 'select') {
+              if (response.data.sql === "select") {
                 for (var key in response.data.coin) {
                   _this2.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: 0,
-                    target: 'crypto-moon',
+                    target: "crypto-moon",
                     statement: response.data.sql,
                     input: response.data.coin[key]
                   });
@@ -3582,11 +3630,11 @@ var crypto_moon = /*#__PURE__*/function () {
               /** add or update element in document tree. */
 
 
-              if (response.data.sql === 'update') {
+              if (response.data.sql === "update") {
                 for (var _key in response.data.coin) {
                   _this2.helper.init({
-                    type: 'node',
-                    target: 'crypto-moon',
+                    type: "node",
+                    target: "crypto-moon",
                     statement: response.data.sql,
                     input: response.data.coin[_key]
                   });
@@ -3595,10 +3643,10 @@ var crypto_moon = /*#__PURE__*/function () {
               /** remove element in document tree. */
 
 
-              if (response.data.sql === 'destroy') {
+              if (response.data.sql === "destroy") {
                 _this2.helper.init({
-                  type: 'node',
-                  target: 'crypto-moon',
+                  type: "node",
+                  target: "crypto-moon",
                   statement: response.data.sql,
                   input: response.data.coin
                 });
@@ -3607,7 +3655,7 @@ var crypto_moon = /*#__PURE__*/function () {
 
 
               _this2.helper.init({
-                type: 'message',
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -3617,7 +3665,7 @@ var crypto_moon = /*#__PURE__*/function () {
 
             if (response.data.status === false) {
               _this2.helper.init({
-                type: 'message',
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -3625,27 +3673,6 @@ var crypto_moon = /*#__PURE__*/function () {
           });
         });
       }
-    }
-    /** function to display error. */
-
-  }, {
-    key: "error",
-    value: function error(config) {
-      /** run trough it all. */
-      for (var key in config.data) {
-        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config.data[key];
-      }
-      /** clear all error messages after five seconds. */
-
-
-      setTimeout(function () {
-        for (var _key2 in config.data) {
-          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key2, "-error"));
-
-          _display.textContent = '';
-        }
-      }, 5000);
     }
   }]);
 
@@ -3969,44 +3996,56 @@ var crypto_portfolio = /*#__PURE__*/function () {
                   /** set submit event listener. */
 
 
-                  var portfolioSubmit = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
+                  var submit = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
 
-                  if (portfolioSubmit) {
-                    portfolioSubmit.addEventListener('click', function (e) {
+                  if (submit) {
+                    var callback = function callback() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'insert',
-                        trigger: 'submit',
-                        input: portfolioSubmit
+                        action: "insert",
+                        mode: "submit",
+                        element: submit,
+                        callback: callback
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    submit.addEventListener("click", callback, false);
                   }
                 }
                 /** set insert event listener. */
 
 
-                var portfolioCancel = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-close');
+                var cancel = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-close');
 
-                if (portfolioCancel) {
-                  portfolioCancel.addEventListener('click', function (e) {
+                if (cancel) {
+                  var _callback = function _callback() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'insert'
+                      action: "insert",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  cancel.addEventListener("click", _callback, false);
                 }
                 /** set close event listener. */
 
 
-                var portfolioClose = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var close = document.querySelector('.crypto-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
-                if (portfolioClose) {
-                  portfolioClose.addEventListener('click', function (e) {
+                if (close) {
+                  var _callback2 = function _callback2() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'insert'
+                      action: "insert",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  close.addEventListener("click", _callback2, false);
                 }
               });
             }
@@ -4040,17 +4079,21 @@ var crypto_portfolio = /*#__PURE__*/function () {
                     /** set submit event listener. */
 
 
-                    var portfolioSubmit = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
+                    var submit = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
 
-                    if (portfolioSubmit) {
-                      portfolioSubmit.addEventListener('click', function (e) {
+                    if (submit) {
+                      var _callback4 = function _callback4() {
                         _this.backdrop({
-                          mode: 'hide',
-                          action: 'update',
-                          trigger: 'submit',
-                          input: portfolioSubmit
+                          action: "update",
+                          mode: "submit",
+                          element: submit,
+                          callback: _callback4
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", _callback4, false);
                     }
                   });
                   /* jshint +W083 */
@@ -4062,28 +4105,36 @@ var crypto_portfolio = /*#__PURE__*/function () {
                 /** query document close button. */
 
 
-                var portfolioClose = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-close');
+                var close = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-close');
 
-                if (portfolioClose) {
-                  portfolioClose.addEventListener('click', function (e) {
+                if (close) {
+                  var callback = function callback() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'update'
+                      action: "update",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  close.addEventListener("click", callback, false);
                 }
                 /** query document update button. */
 
 
-                var portfolioCancel = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var cancel = document.querySelector('.crypto-portfolio-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
-                if (portfolioCancel) {
-                  portfolioCancel.addEventListener('click', function (e) {
+                if (cancel) {
+                  var _callback3 = function _callback3() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'update'
+                      action: "update",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  cancel.addEventListener("click", _callback3, false);
                 }
               }
             }, 10000);
@@ -4116,45 +4167,55 @@ var crypto_portfolio = /*#__PURE__*/function () {
                     /** set destroy event listener. */
 
 
-                    var portfolioSubmit = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                    var submit = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
 
-                    if (portfolioSubmit) {
-                      portfolioSubmit.addEventListener('click', function (e) {
+                    if (submit) {
+                      var callback = function callback() {
                         _this.backdrop({
-                          mode: 'hide',
-                          action: 'destroy',
-                          trigger: 'submit',
-                          input: portfolioSubmit
+                          action: "destroy",
+                          mode: "submit",
+                          element: submit,
+                          callback: callback
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", callback, false);
                     }
                   });
-                  /* jshint +W083 */
-
                   /** set cancel event listener. */
 
-                  var portfolioClose = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-close');
+                  var close = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-close');
 
-                  if (portfolioClose) {
-                    portfolioClose.addEventListener('click', function (e) {
+                  if (close) {
+                    var callback = function callback() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'destroy'
+                        action: "destroy",
+                        mode: "hide"
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    close.addEventListener("click", callback, false);
                   }
                   /** set cancel event listener. */
 
 
-                  var portfolioCancel = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                  var cancel = document.querySelector('.crypto-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
 
-                  if (portfolioCancel) {
-                    portfolioCancel.addEventListener('click', function (e) {
+                  if (cancel) {
+                    var _callback5 = function _callback5() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'destroy'
+                        action: "destroy",
+                        mode: "hide"
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    cancel.addEventListener("click", _callback5, false);
                   }
                 };
 
@@ -4181,69 +4242,79 @@ var crypto_portfolio = /*#__PURE__*/function () {
       /** query document to pinpoint modal element. */
       var modal = document.querySelector(".crypto-portfolio-".concat(config.action));
 
-      if (config.mode === 'show') {
+      if (config["mode"] === 'show') {
         /** show modal. */
         modal.classList.add('backdrop');
         modal.style.display = 'block';
       }
 
-      if (config.mode === 'hide') {
+      if (config["mode"] === 'hide') {
         /** hide modal. */
         modal.classList.remove('backdrop');
         modal.style.display = 'none';
+      }
 
-        if (config.trigger === 'submit') {
-          /** collect all input for processing. */
-          var collect = this.helper.init({
+      if (config["mode"] === 'submit') {
+        /** collect all input for processing. */
+        var collect = this.helper.init({
+          type: 'input',
+          section: 'portfolio',
+          target: "crypto-portfolio-".concat(config.action),
+          action: 'value',
+          data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']
+        });
+        /** check if inputs are empty and valid. */
+
+        var result = this.helper.init({
+          type: 'validate',
+          data: collect
+        });
+        /** clear input. */
+
+        if (config["action"] === 'insert') {
+          this.helper.init({
             type: 'input',
             section: 'portfolio',
             target: "crypto-portfolio-".concat(config.action),
-            action: 'value',
-            data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']
+            action: 'clear',
+            data: ['wallet', 'name', 'coin', 'quantity', 'capital']
           });
-          /** check if inputs are empty and valid. */
-
-          var result = this.helper.init({
-            type: 'validate',
-            data: collect
-          });
-          /** double check and then proceed. */
-
-          if (Object.keys(result.error).length === 0) {
-            /** hide modal. */
-            modal.classList.remove('backdrop');
-            modal.style.display = 'none';
-            /** request access token and then post to backend. */
-
-            this.request({
-              method: 'POST',
-              table: 'portfolio',
-              statement: config.action,
-              input: result.success
-            });
-            /** clear input. */
-
-            if (config.action === 'insert') {
-              this.helper.init({
-                type: 'input',
-                section: 'portfolio',
-                target: "crypto-portfolio-".concat(config.action),
-                action: 'clear',
-                data: ['wallet', 'name', 'coin', 'quantity', 'capital']
-              });
-            }
-          } else {
-            /** display error. */
-            this.error({
-              target: "crypto-portfolio-".concat(config.action),
-              data: result.error
-            });
-            /** show modal. */
-
-            modal.classList.add('backdrop');
-            modal.style.display = 'block';
-          }
         }
+        /** double check and then proceed. */
+
+
+        if (Object.keys(result.error).length === 0) {
+          /** sanitize input. */
+          var sanitize = this.helper.init({
+            type: "sanitize",
+            action: "comma",
+            condition: ['wallet', 'name', 'coin', 'quantity', 'capital'],
+            data: result["success"]
+          });
+          /** request access token and then post to backend. */
+
+          this.request({
+            method: 'POST',
+            table: 'portfolio',
+            statement: config["action"],
+            input: sanitize
+          });
+        } else {
+          /** display user  message. */
+          this.helper.init({
+            type: "message",
+            status: false,
+            message: result["message"]
+          });
+        }
+        /** remove listener. */
+
+
+        config["element"].removeEventListener('click', config['callback']);
+        /** hide modal. */
+
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
       }
     }
     /** function to process http request. */
@@ -4376,27 +4447,6 @@ var crypto_portfolio = /*#__PURE__*/function () {
         });
       }
     }
-    /** function to display error. */
-
-  }, {
-    key: "error",
-    value: function error(config) {
-      /** run trough it all. */
-      for (var key in config.data) {
-        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config.data[key];
-      }
-      /** clear all error messages after five seconds. */
-
-
-      setTimeout(function () {
-        for (var _key3 in config.data) {
-          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key3, "-error"));
-
-          _display.textContent = '';
-        }
-      }, 5000);
-    }
   }]);
 
   return crypto_portfolio;
@@ -4444,19 +4494,19 @@ var crypto_screen = /*#__PURE__*/function () {
 
       /** setup overview listener. */
       this.event.addEventListener("click", function (e) {
-        if (e.target.dataset.sidebar === 'crypto_screens') {
+        if (e.target.dataset.sidebar === "crypto_screens") {
           /** retrieve data .*/
           _this.request({
-            method: 'GET',
-            table: 'screen',
-            provider: 'local'
+            method: "GET",
+            table: "screen",
+            provider: "local"
           });
 
           var content = _this.template.content.cloneNode(true);
           /** clear element before appending new content. */
 
 
-          _this.element.innerHTML = '';
+          _this.element.innerHTML = "";
           /** append template content. */
 
           _this.element.appendChild(content);
@@ -4467,71 +4517,80 @@ var crypto_screen = /*#__PURE__*/function () {
 
           if (record) {
             record.addEventListener("click", function (e) {
-              if (e.target.dataset.action === 'crypto') {
+              if (e.target.dataset.action === "crypto") {
                 /** show modal. */
                 _this.backdrop({
-                  mode: 'show',
-                  action: 'insert'
+                  mode: "show",
+                  action: "insert"
                 });
                 /** set submit event listener. */
 
 
-                var screenSubmit = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
+                var submit = document.querySelector(".crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
 
-                if (screenSubmit) {
-                  screenSubmit.addEventListener('click', function (e) {
-                    /** prevent double click. */
-                    if (!e.detail || e.detail == 1) {
-                      _this.backdrop({
-                        mode: 'hide',
-                        action: 'insert',
-                        trigger: 'submit',
-                        input: screenSubmit
-                      });
-                    }
-                  });
+                if (submit) {
+                  var callback = function callback() {
+                    _this.backdrop({
+                      action: "insert",
+                      mode: "submit",
+                      element: submit,
+                      callback: callback
+                    });
+                  };
+                  /** add event listener. */
+
+
+                  submit.addEventListener("click", callback, false);
                 }
               }
             });
             /** set close event listener. */
 
-            var screenClose = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-close');
+            var close = document.querySelector(".crypto-screen-insert > .modal-form > .modal-group > .modal-close");
 
-            if (screenClose) {
-              screenClose.addEventListener('click', function (e) {
+            if (close) {
+              var callback = function callback() {
                 _this.backdrop({
-                  mode: 'hide',
-                  action: 'insert'
+                  action: "insert",
+                  mode: "hide"
                 });
-              });
+              };
+              /** add event listener. */
+
+
+              close.addEventListener("click", callback, false);
             }
             /** set cancel event listener. */
 
 
-            var screenCancel = document.querySelector('.crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+            var cancel = document.querySelector(".crypto-screen-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-            if (screenCancel) {
-              screenCancel.addEventListener('click', function (e) {
+            if (cancel) {
+              var _callback = function _callback() {
                 _this.backdrop({
-                  mode: 'hide',
-                  action: 'insert'
+                  action: "insert",
+                  mode: "hide"
                 });
-              });
+              };
+              /** add event listener. */
+
+
+              cancel.addEventListener("click", _callback, false);
             }
           }
           /** update modal code block. */
 
 
           setTimeout(function () {
-            var update = document.querySelectorAll('.crypto-screen > .items > .action > .update');
+            var update = document.querySelectorAll(".crypto-screen > .items > .action > .update");
 
             if (update) {
               var _loop = function _loop(i) {
                 update[i].addEventListener("click", function () {
                   /** show update modal. */
                   _this.backdrop({
-                    mode: 'show',
-                    action: 'update'
+                    mode: "show",
+                    action: "update"
                   });
                   /** populate modal. */
 
@@ -4539,26 +4598,30 @@ var crypto_screen = /*#__PURE__*/function () {
                   var parent = update[i].parentElement.parentElement;
 
                   _this.helper.init({
-                    type: 'input',
-                    action: 'populate',
-                    target: 'crypto-screen-update',
+                    type: "input",
+                    action: "populate",
+                    target: "crypto-screen-update",
                     el: parent,
-                    data: ['id', 'api', 'coin', 'price', 'market', 'volume', 'change']
+                    data: ["id", "api", "coin", "price", "market", "volume", "change"]
                   });
                   /** set submit event listener. */
 
 
-                  var screenSubmit = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
+                  var submit = document.querySelector(".crypto-screen-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update");
 
-                  if (screenSubmit) {
-                    screenSubmit.addEventListener('click', function (e) {
+                  if (submit) {
+                    var _callback4 = function _callback4() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'update',
-                        trigger: 'submit',
-                        input: screenSubmit
+                        action: "update",
+                        mode: "submit",
+                        element: submit,
+                        callback: _callback4
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    submit.addEventListener("click", _callback4, false);
                   }
                 });
               };
@@ -4569,35 +4632,43 @@ var crypto_screen = /*#__PURE__*/function () {
               /** query document close button. */
 
 
-              var _screenClose = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-close');
+              var _close = document.querySelector(".crypto-screen-update > .modal-form > .modal-group > .modal-close");
 
-              if (_screenClose) {
-                _screenClose.addEventListener('click', function (e) {
+              if (_close) {
+                var _callback2 = function _callback2() {
                   _this.backdrop({
-                    mode: 'hide',
-                    action: 'update'
+                    action: "update",
+                    mode: "hide"
                   });
-                });
+                };
+                /** add event listener. */
+
+
+                _close.addEventListener("click", _callback2, false);
               }
               /** query document update button. */
 
 
-              var _screenCancel = document.querySelector('.crypto-screen-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+              var _cancel = document.querySelector(".crypto-screen-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-              if (_screenCancel) {
-                _screenCancel.addEventListener('click', function (e) {
+              if (_cancel) {
+                var _callback3 = function _callback3() {
                   _this.backdrop({
-                    mode: 'hide',
-                    action: 'update'
+                    action: "update",
+                    mode: "hide"
                   });
-                });
+                };
+                /** add event listener. */
+
+
+                _cancel.addEventListener("click", _callback3, false);
               }
             }
           }, 10000);
           /** destroy modal code block. */
 
           setTimeout(function () {
-            var destroy = document.querySelectorAll('.crypto-screen > .items > .action > .destroy');
+            var destroy = document.querySelectorAll(".crypto-screen > .items > .action > .destroy");
 
             if (destroy) {
               var _loop2 = function _loop2(i) {
@@ -4605,8 +4676,8 @@ var crypto_screen = /*#__PURE__*/function () {
                 destroy[i].addEventListener("click", function () {
                   /** show destroy modal. */
                   _this.backdrop({
-                    mode: 'show',
-                    action: 'destroy'
+                    mode: "show",
+                    action: "destroy"
                   });
                   /** populate modal. */
 
@@ -4614,54 +4685,66 @@ var crypto_screen = /*#__PURE__*/function () {
                   var parent = destroy[i].parentElement.parentElement;
 
                   _this.helper.init({
-                    type: 'input',
-                    action: 'populate',
-                    target: 'crypto-screen-destroy',
+                    type: "input",
+                    action: "populate",
+                    target: "crypto-screen-destroy",
                     el: parent,
-                    data: ['id', 'api', 'coin', 'price', 'market', 'volume', 'change']
+                    data: ["id", "api", "coin", "price", "market", "volume", "change"]
                   });
                   /** set destroy event listener. */
 
 
-                  var screenSubmit = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                  var submit = document.querySelector(".crypto-screen-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
 
-                  if (screenSubmit) {
-                    screenSubmit.addEventListener('click', function (e) {
+                  if (submit) {
+                    var _callback5 = function _callback5() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'destroy',
-                        trigger: 'submit',
-                        input: screenSubmit
+                        action: "destroy",
+                        mode: "submit",
+                        element: submit,
+                        callback: _callback5
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    submit.addEventListener("click", _callback5, false);
                   }
                 });
                 /* jshint +W083 */
 
                 /** set cancel event listener. */
 
-                var screenClose = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-close');
+                var close = document.querySelector(".crypto-screen-destroy > .modal-form > .modal-group > .modal-close");
 
-                if (screenClose) {
-                  screenClose.addEventListener('click', function (e) {
+                if (close) {
+                  var _callback6 = function _callback6() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'destroy'
+                      action: "destroy",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  close.addEventListener("click", _callback6, false);
                 }
                 /** set cancel event listener. */
 
 
-                var screenCancel = document.querySelector('.crypto-screen-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var cancel = document.querySelector(".crypto-screen-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                if (screenCancel) {
-                  screenCancel.addEventListener('click', function (e) {
+                if (cancel) {
+                  var _callback7 = function _callback7() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'destroy'
+                      action: "destroy",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  cancel.addEventListener("click", _callback7, false);
                 }
               };
 
@@ -4670,11 +4753,11 @@ var crypto_screen = /*#__PURE__*/function () {
               }
             }
           }, 10000);
-          var info = document.querySelector('.card > .header > .meta > .right > .messenger');
-          info.classList.add('info');
-          info.textContent = 'Update button enabled right after this message disappear.';
+          var info = document.querySelector(".card > .header > .meta > .right > .messenger");
+          info.classList.add("info");
+          info.textContent = "Update button enabled right after this message disappear.";
           setTimeout(function () {
-            info.classList.remove('info');
+            info.classList.remove("info");
           }, 9000);
         }
       });
@@ -4689,92 +4772,102 @@ var crypto_screen = /*#__PURE__*/function () {
       /** query document to pinpoint modal element. */
       var modal = document.querySelector(".crypto-screen-".concat(config["action"]));
 
-      if (config["mode"] === 'show') {
+      if (config["mode"] === "show") {
         /** show backdrop. */
-        modal.classList.add('backdrop');
-        modal.style.display = 'block';
+        modal.classList.add("backdrop");
+        modal.style.display = "block";
         /** insert fetch gecko. */
 
-        if (config["action"] === 'insert' || config["action"] === 'update') {
+        if (config["action"] === "insert" || config["action"] === "update") {
           var fetch = document.querySelector(".crypto-screen-".concat(config["action"], " > .modal-form > .modal-group > .modal-gecko > .modal-fetch"));
-          fetch.addEventListener('click', function () {
-            var api = document.querySelector(".crypto-screen-".concat(config["action"], " > .modal-form > .modal-group > .modal-gecko > .modal-api")).value;
 
-            if (api) {
-              _this2.request({
-                method: 'GET',
-                provider: 'gecko',
-                action: config["action"],
-                data: api
-              });
-            }
-          });
+          if (fetch) {
+            var callback = function callback() {
+              var api = document.querySelector(".crypto-screen-".concat(config["action"], " > .modal-form > .modal-group > .modal-gecko > .modal-api")).value;
+
+              if (api) {
+                /** retrieve data .*/
+                _this2.request({
+                  method: "GET",
+                  provider: "gecko",
+                  action: config["action"],
+                  data: api
+                });
+              }
+            };
+            /** add event listener. */
+
+
+            fetch.addEventListener("click", callback, false);
+          }
         }
       }
 
-      if (config["mode"] === 'hide') {
+      if (config["mode"] === "hide") {
         /** hide backdrop. */
-        modal.classList.remove('backdrop');
-        modal.style.display = 'none';
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
       }
 
-      if (config["trigger"] === 'submit') {
+      if (config["mode"] === "submit") {
         /** collect all input for processing. */
         var collect = this.helper.init({
-          type: 'input',
+          type: "input",
           target: "crypto-screen-".concat(config["action"]),
-          action: 'value',
-          data: ['id', 'coin', 'api', 'price', 'market', 'volume', 'change']
+          action: "value",
+          data: ["id", "coin", "api", "price", "market", "volume", "change"]
         });
         /** check if inputs are empty and valid. */
 
         var result = this.helper.init({
-          type: 'validate',
+          type: "validate",
           data: collect
         });
+        /** clear input if insert. */
+
+        if (config["action"] === "insert") {
+          this.helper.init({
+            type: "input",
+            target: "crypto-screen-".concat(config["action"]),
+            action: "clear",
+            data: ["coin", "api", "price", "market", "volume", "change"]
+          });
+        }
         /** double check and then proceed. */
 
-        if (Object.keys(result.error).length === 0) {
+
+        if (Object.keys(result["error"]).length === 0) {
           /** sanitize input. */
           var sanitize = this.helper.init({
-            type: 'sanitize',
-            action: 'comma',
-            condition: ['price', 'market', 'volume', 'change'],
-            data: result.success
+            type: "sanitize",
+            action: "comma",
+            condition: ["price", "market", "volume", "change"],
+            data: result["success"]
           });
           /** request access token and then post to backend. */
 
           this.request({
-            method: 'POST',
-            table: 'screen',
+            method: "POST",
+            table: "screen",
             statement: "".concat(config["action"]),
             input: sanitize
           });
-          /** clear input if insert. */
-
-          setInterval(function () {
-            _this2.helper.init({
-              type: 'input',
-              target: "crypto-screen-".concat(config["action"]),
-              action: 'clear',
-              data: ['coin', 'api', 'price', 'market', 'volume', 'change']
-            });
-          }, 10000);
-          /** hide backdrop. */
-
-          modal.classList.remove('backdrop');
-          modal.style.display = 'none';
         } else {
-          /** show backdrop. */
-          modal.classList.add('backdrop');
-          modal.style.display = 'block';
-          /** display backdrop. */
-
-          this.error({
-            target: "crypto-screen-".concat(config["action"]),
-            data: result.error
+          /** display user  message. */
+          this.helper.init({
+            type: "message",
+            status: false,
+            message: result["message"]
           });
         }
+        /** remove listener. */
+
+
+        config["element"].removeEventListener('click', config['callback']);
+        /** hide modal. */
+
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
       }
     }
   }, {
@@ -4782,22 +4875,22 @@ var crypto_screen = /*#__PURE__*/function () {
     value: function request(config) {
       var _this3 = this;
 
-      if (config.method === 'GET') {
+      if (config.method === "GET") {
         /** fetch local data. */
-        if (config.provider === 'local') {
-          axios.get('/sanctum/csrf-cookie').then(function (response) {
-            axios.get('/api/crypto-screen-retrieve', {
+        if (config.provider === "local") {
+          axios.get("/sanctum/csrf-cookie").then(function (response) {
+            axios.get("/api/crypto-screen-retrieve", {
               params: {
-                'table': 'screen'
+                "table": "screen"
               }
             }).then(function (response) {
               /** populate order element with data. */
               if (response.data.coin) {
                 for (var i = 0; i < response.data.coin.length; i++) {
                   _this3.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: "".concat(i + 1),
-                    target: 'crypto-screen',
+                    target: "crypto-screen",
                     statement: response.data.sql,
                     input: response.data.coin[i]
                   });
@@ -4809,14 +4902,14 @@ var crypto_screen = /*#__PURE__*/function () {
         /** fetch coingecko data. */
 
 
-        if (config.provider === 'gecko') {
+        if (config.provider === "gecko") {
           axios.get("https://api.coingecko.com/api/v3/simple/price?ids=".concat(config.data, "&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"), {
             headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json'
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json"
             },
             withCredentials: false,
-            credentials: 'same-origin'
+            credentials: "same-origin"
           }).then(function (response) {
             if (response.status === 200) {
               var coin = [];
@@ -4826,19 +4919,19 @@ var crypto_screen = /*#__PURE__*/function () {
                   for (var val in response.data[key]) {
                     if (response.data[key].hasOwnProperty(val)) {
                       switch (val) {
-                        case 'usd':
+                        case "usd":
                           coin.price = response.data[key][val];
                           break;
 
-                        case 'usd_market_cap':
+                        case "usd_market_cap":
                           coin.market = response.data[key][val];
                           break;
 
-                        case 'usd_24h_vol':
+                        case "usd_24h_vol":
                           coin.volume = response.data[key][val];
                           break;
 
-                        case 'usd_24h_change':
+                        case "usd_24h_change":
                           coin.change = response.data[key][val];
                           break;
 
@@ -4854,7 +4947,7 @@ var crypto_screen = /*#__PURE__*/function () {
 
               if (coin) {
                 for (var x in coin) {
-                  document.querySelector(".crypto-screen-".concat(config["action"], " > .modal-form > .modal-group > .modal-").concat(x)).value = coin[x].toLocaleString('en');
+                  document.querySelector(".crypto-screen-".concat(config["action"], " > .modal-form > .modal-group > .modal-").concat(x)).value = coin[x].toLocaleString("en");
                 }
               }
             }
@@ -4864,9 +4957,9 @@ var crypto_screen = /*#__PURE__*/function () {
       /** store data. */
 
 
-      if (config.method === 'POST') {
-        axios.get('/sanctum/csrf-cookie').then(function (response) {
-          axios.post('/api/crypto-screen-store', {
+      if (config.method === "POST") {
+        axios.get("/sanctum/csrf-cookie").then(function (response) {
+          axios.post("/api/crypto-screen-store", {
             table: config.table,
             statement: config.statement,
             input: config.input
@@ -4874,12 +4967,12 @@ var crypto_screen = /*#__PURE__*/function () {
             /** populate order element with data. */
             if (response.data.status === true) {
               /** add or update element in document tree. */
-              if (response.data.sql === 'select') {
+              if (response.data.sql === "select") {
                 for (var key in response.data.coin) {
                   _this3.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: 0,
-                    target: 'crypto-screen',
+                    target: "crypto-screen",
                     statement: response.data.sql,
                     input: response.data.coin[key]
                   });
@@ -4888,11 +4981,11 @@ var crypto_screen = /*#__PURE__*/function () {
               /** add or update element in document tree. */
 
 
-              if (response.data.sql === 'update') {
+              if (response.data.sql === "update") {
                 for (var _key in response.data.coin) {
                   _this3.helper.init({
-                    type: 'node',
-                    target: 'crypto-screen',
+                    type: "node",
+                    target: "crypto-screen",
                     statement: response.data.sql,
                     input: response.data.coin[_key]
                   });
@@ -4901,10 +4994,10 @@ var crypto_screen = /*#__PURE__*/function () {
               /** remove element in document tree. */
 
 
-              if (response.data.sql === 'destroy') {
+              if (response.data.sql === "destroy") {
                 _this3.helper.init({
-                  type: 'node',
-                  target: 'crypto-screen',
+                  type: "node",
+                  target: "crypto-screen",
                   statement: response.data.sql,
                   input: response.data.coin
                 });
@@ -4913,7 +5006,7 @@ var crypto_screen = /*#__PURE__*/function () {
 
 
               _this3.helper.init({
-                type: 'message',
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -4923,7 +5016,7 @@ var crypto_screen = /*#__PURE__*/function () {
 
             if (response.data.status === false) {
               _this3.helper.init({
-                type: 'message',
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -4931,27 +5024,6 @@ var crypto_screen = /*#__PURE__*/function () {
           });
         });
       }
-    }
-    /** function to display error. */
-
-  }, {
-    key: "error",
-    value: function error(config) {
-      /** run trough it all. */
-      for (var key in config.data) {
-        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config.data[key];
-      }
-      /** clear all error messages after five seconds. */
-
-
-      setTimeout(function () {
-        for (var _key2 in config.data) {
-          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key2, "-error"));
-
-          _display.textContent = '';
-        }
-      }, 5000);
     }
   }]);
 
@@ -5665,11 +5737,11 @@ var stock_portfolio = /*#__PURE__*/function () {
 
       /** setup initial listener. */
       this.event.addEventListener("click", function (e) {
-        if (e.target.dataset.sidebar === 'stock_portfolios') {
+        if (e.target.dataset.sidebar === "stock_portfolios") {
           /** retrieve data .*/
           _this.request({
-            method: 'GET',
-            table: 'portfolio'
+            method: "GET",
+            table: "portfolio"
           });
           /** clone template. */
 
@@ -5677,69 +5749,81 @@ var stock_portfolio = /*#__PURE__*/function () {
           var content = _this.template.content.cloneNode(true); // /** query document and do conditional statement base on the result. */
 
 
-          var check = document.querySelector('.stock-portfolio');
+          var check = document.querySelector(".stock-portfolio");
 
           if (check === null || check === undefined) {
             /** clear element before appending. */
-            _this.element.innerHTML = '';
+            _this.element.innerHTML = "";
             /** append template content. */
 
             _this.element.appendChild(content);
             /** insert modal code block. */
 
 
-            var record = document.querySelector('.click-stock-record');
+            var record = document.querySelector(".click-stock-record");
 
             if (record) {
               record.addEventListener("click", function (e) {
                 /** show insert modal. */
-                if (e.target.dataset.action === 'stock') {
+                if (e.target.dataset.action === "stock") {
                   /** show modal. */
                   _this.backdrop({
-                    mode: 'show',
-                    action: 'insert'
+                    mode: "show",
+                    action: "insert"
                   });
                   /** set submit event listener. */
 
 
-                  var portfolioSubmit = document.querySelector('.stock-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert');
+                  var submit = document.querySelector(".stock-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
 
-                  if (portfolioSubmit) {
-                    portfolioSubmit.addEventListener('click', function (e) {
+                  if (submit) {
+                    var callback = function callback() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'insert',
-                        trigger: 'submit',
-                        input: portfolioSubmit
+                        action: "insert",
+                        mode: "submit",
+                        element: submit,
+                        callback: callback
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    submit.addEventListener("click", callback, false);
                   }
                 }
-                /** set insert event listener. */
+                /** set cancel event listener. */
 
 
-                var portfolioCancel = document.querySelector('.stock-portfolio-insert > .modal-form > .modal-group > .modal-close');
+                var cancel = document.querySelector(".stock-portfolio-insert > .modal-form > .modal-group > .modal-close");
 
-                if (portfolioCancel) {
-                  portfolioCancel.addEventListener('click', function (e) {
+                if (cancel) {
+                  var _callback = function _callback() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'insert'
+                      action: "insert",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  cancel.addEventListener("click", _callback, false);
                 }
                 /** set close event listener. */
 
 
-                var portfolioClose = document.querySelector('.stock-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var close = document.querySelector(".stock-portfolio-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                if (portfolioClose) {
-                  portfolioClose.addEventListener('click', function (e) {
+                if (close) {
+                  var _callback2 = function _callback2() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'insert'
+                      action: "insert",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  close.addEventListener("click", _callback2, false);
                 }
               });
             }
@@ -5747,15 +5831,15 @@ var stock_portfolio = /*#__PURE__*/function () {
 
 
             setTimeout(function () {
-              var update = document.querySelectorAll('.stock-order > .items > .action > .update');
+              var update = document.querySelectorAll(".stock-order > .items > .action > .update");
 
               if (update) {
                 var _loop = function _loop(i) {
                   update[i].addEventListener("click", function () {
                     /** show update modal. */
                     _this.backdrop({
-                      mode: 'show',
-                      action: 'update'
+                      mode: "show",
+                      action: "update"
                     });
                     /** populate modal. */
 
@@ -5763,26 +5847,30 @@ var stock_portfolio = /*#__PURE__*/function () {
                     var parent = update[i].parentElement.parentElement;
 
                     _this.helper.init({
-                      type: 'input',
-                      action: 'populate',
-                      target: 'stock-portfolio-update',
+                      type: "input",
+                      action: "populate",
+                      target: "stock-portfolio-update",
                       el: parent,
-                      data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital']
+                      data: ["id", "order", "symbol", "name", "fee", "share", "capital"]
                     });
                     /** set submit event listener. */
 
 
-                    var portfolioSubmit = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update');
+                    var submit = document.querySelector(".stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-submit > .modal-update");
 
-                    if (portfolioSubmit) {
-                      portfolioSubmit.addEventListener('click', function (e) {
+                    if (submit) {
+                      var _callback4 = function _callback4() {
                         _this.backdrop({
-                          mode: 'hide',
-                          action: 'update',
-                          trigger: 'submit',
-                          input: portfolioSubmit
+                          action: "update",
+                          mode: "submit",
+                          element: submit,
+                          callback: _callback4
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", _callback4, false);
                     }
                   });
                 };
@@ -5793,43 +5881,51 @@ var stock_portfolio = /*#__PURE__*/function () {
                 /** query document close button. */
 
 
-                var portfolioClose = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-close');
+                var close = document.querySelector(".stock-portfolio-update > .modal-form > .modal-group > .modal-close");
 
-                if (portfolioClose) {
-                  portfolioClose.addEventListener('click', function (e) {
+                if (close) {
+                  var callback = function callback() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'update'
+                      action: "update",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  close.addEventListener("click", callback, false);
                 }
                 /** query document update button. */
 
 
-                var portfolioCancel = document.querySelector('.stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                var cancel = document.querySelector(".stock-portfolio-update > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                if (portfolioCancel) {
-                  portfolioCancel.addEventListener('click', function (e) {
+                if (cancel) {
+                  var _callback3 = function _callback3() {
                     _this.backdrop({
-                      mode: 'hide',
-                      action: 'update'
+                      action: "update",
+                      mode: "hide"
                     });
-                  });
+                  };
+                  /** add event listener. */
+
+
+                  cancel.addEventListener("click", _callback3, false);
                 }
               }
             }, 10000);
             /** destroy modal code block. */
 
             setTimeout(function () {
-              var destroy = document.querySelectorAll('.stock-order > .items > .action > .destroy');
+              var destroy = document.querySelectorAll(".stock-order > .items > .action > .destroy");
 
               if (destroy) {
                 var _loop2 = function _loop2(i) {
                   destroy[i].addEventListener("click", function () {
                     /** show destroy modal. */
                     _this.backdrop({
-                      mode: 'show',
-                      action: 'destroy'
+                      mode: "show",
+                      action: "destroy"
                     });
                     /** populate modal. */
 
@@ -5837,52 +5933,64 @@ var stock_portfolio = /*#__PURE__*/function () {
                     var parent = destroy[i].parentElement.parentElement;
 
                     _this.helper.init({
-                      type: 'input',
-                      action: 'populate',
-                      target: 'stock-portfolio-destroy',
+                      type: "input",
+                      action: "populate",
+                      target: "stock-portfolio-destroy",
                       el: parent,
-                      data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital']
+                      data: ["id", "order", "symbol", "name", "fee", "share", "capital"]
                     });
                     /** set destroy event listener. */
 
 
-                    var portfolioSubmit = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy');
+                    var submit = document.querySelector(".stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
 
-                    if (portfolioSubmit) {
-                      portfolioSubmit.addEventListener('click', function (e) {
+                    if (submit) {
+                      var callback = function callback() {
                         _this.backdrop({
-                          mode: 'hide',
-                          action: 'destroy',
-                          trigger: 'submit',
-                          input: portfolioSubmit
+                          action: "destroy",
+                          mode: "submit",
+                          element: submit,
+                          callback: callback
                         });
-                      });
+                      };
+                      /** add event listener. */
+
+
+                      submit.addEventListener("click", callback, false);
                     }
                   });
                   /** set cancel event listener. */
 
-                  var portfolioClose = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-close');
+                  var close = document.querySelector(".stock-portfolio-destroy > .modal-form > .modal-group > .modal-close");
 
-                  if (portfolioClose) {
-                    portfolioClose.addEventListener('click', function (e) {
+                  if (close) {
+                    var callback = function callback() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'destroy'
+                        action: "destroy",
+                        mode: "hide"
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    close.addEventListener("click", callback, false);
                   }
                   /** set cancel event listener. */
 
 
-                  var portfolioCancel = document.querySelector('.stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
+                  var cancel = document.querySelector(".stock-portfolio-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
 
-                  if (portfolioCancel) {
-                    portfolioCancel.addEventListener('click', function (e) {
+                  if (cancel) {
+                    var _callback5 = function _callback5() {
                       _this.backdrop({
-                        mode: 'hide',
-                        action: 'destroy'
+                        action: "destroy",
+                        mode: "hide"
                       });
-                    });
+                    };
+                    /** add event listener. */
+
+
+                    cancel.addEventListener("click", _callback5, false);
                   }
                 };
 
@@ -5891,11 +5999,11 @@ var stock_portfolio = /*#__PURE__*/function () {
                 }
               }
             }, 10000);
-            var info = document.querySelector('.card > .header > .meta > .right > .messenger');
-            info.classList.add('info');
-            info.textContent = 'Update button enabled right after this message disappear.';
+            var info = document.querySelector(".card > .header > .meta > .right > .messenger");
+            info.classList.add("info");
+            info.textContent = "Update button enabled right after this message disappear.";
             setTimeout(function () {
-              info.classList.remove('info');
+              info.classList.remove("info");
             }, 9000);
           }
         }
@@ -5907,72 +6015,74 @@ var stock_portfolio = /*#__PURE__*/function () {
     key: "backdrop",
     value: function backdrop(config) {
       /** query document to pinpoint modal element. */
-      var modal = document.querySelector(".stock-portfolio-".concat(config.action));
+      var modal = document.querySelector(".stock-portfolio-".concat(config["action"]));
 
-      if (config.mode === 'show') {
+      if (config["mode"] === "show") {
         /** show modal. */
-        modal.classList.add('backdrop');
-        modal.style.display = 'block';
+        modal.classList.add("backdrop");
+        modal.style.display = "block";
       }
 
-      if (config.mode === 'hide') {
+      if (config["mode"] === "hide") {
         /** hide modal. */
-        modal.classList.remove('backdrop');
-        modal.style.display = 'none';
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
+      }
 
-        if (config.trigger === 'submit') {
-          /** collect all input for processing. */
-          var collect = this.helper.init({
-            type: 'input',
-            section: 'portfolio',
-            target: "stock-portfolio-".concat(config.action),
-            action: 'value',
-            data: ['id', 'order', 'symbol', 'name', 'fee', 'share', 'capital']
+      if (config["mode"] === "submit") {
+        /** collect all input for processing. */
+        var collect = this.helper.init({
+          type: "input",
+          section: "portfolio",
+          target: "stock-portfolio-".concat(config["action"]),
+          action: "value",
+          data: ["id", "order", "symbol", "name", "fee", "share", "capital"]
+        });
+        /** check if inputs are empty and valid. */
+
+        var result = this.helper.init({
+          type: "validate",
+          data: collect
+        });
+        /** clear input. */
+
+        if (config["action"] === "insert") {
+          this.helper.init({
+            type: "input",
+            section: "portfolio",
+            target: "stock-portfolio-".concat(config["action"]),
+            action: "clear",
+            data: ["order", "symbol", "name", "fee", "share", "capital"]
           });
-          /** check if inputs are empty and valid. */
-
-          var result = this.helper.init({
-            type: 'validate',
-            data: collect
-          });
-          /** double check and then proceed. */
-
-          if (Object.keys(result.error).length === 0) {
-            /** hide modal. */
-            modal.classList.remove('backdrop');
-            modal.style.display = 'none';
-            /** request access token and then post to backend. */
-
-            this.request({
-              method: 'POST',
-              table: 'portfolio',
-              order: result.success.order,
-              statement: config.action,
-              input: result.success
-            });
-            /** clear input. */
-
-            if (config.action === 'insert') {
-              this.helper.init({
-                type: 'input',
-                section: 'portfolio',
-                target: "stock-portfolio-".concat(config.action),
-                action: 'clear',
-                data: ['order', 'symbol', 'name', 'fee', 'share', 'capital']
-              });
-            }
-          } else {
-            /** display error. */
-            this.error({
-              target: "stock-portfolio-".concat(config.action),
-              data: result.error
-            });
-            /** show modal. */
-
-            modal.classList.add('backdrop');
-            modal.style.display = 'block';
-          }
         }
+        /** double check and then proceed. */
+
+
+        if (Object.keys(result.error).length === 0) {
+          /** request access token and then post to backend. */
+          this.request({
+            method: "POST",
+            table: "portfolio",
+            order: result["success"]["order"],
+            statement: config["action"],
+            input: result.success
+          });
+        } else {
+          /** display user  message. */
+          this.helper.init({
+            type: "message",
+            status: false,
+            message: result["message"]
+          });
+        }
+        /** remove listener. */
+
+
+        config["element"].removeEventListener('click', config['callback']);
+        /** hide modal. */
+
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
       }
     }
     /** function to process http request. */
@@ -5983,11 +6093,11 @@ var stock_portfolio = /*#__PURE__*/function () {
       var _this2 = this;
 
       /** retrieve data. */
-      if (config.method === 'GET') {
-        axios.get('/sanctum/csrf-cookie').then(function (response) {
-          axios.get('/api/stock-portfolio-retrieve', {
+      if (config.method === "GET") {
+        axios.get("/sanctum/csrf-cookie").then(function (response) {
+          axios.get("/api/stock-portfolio-retrieve", {
             params: {
-              table: 'portfolio'
+              table: "portfolio"
             }
           }).then(function (response) {
             if (response.data.status === true) {
@@ -5995,9 +6105,9 @@ var stock_portfolio = /*#__PURE__*/function () {
               if (response.data.order) {
                 for (var i = 0; i < response.data.order.length; i++) {
                   _this2.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: "".concat(i + 1),
-                    target: 'stock-order',
+                    target: "stock-order",
                     statement: response.data.sql,
                     input: response.data.order[i]
                   });
@@ -6009,9 +6119,9 @@ var stock_portfolio = /*#__PURE__*/function () {
               if (response.data.hold.total) {
                 for (var _i = 0; _i < response.data.hold.total.length; _i++) {
                   _this2.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: "".concat(_i + 1),
-                    target: 'stock-hold',
+                    target: "stock-hold",
                     statement: response.data.sql,
                     input: response.data.hold.total[_i]
                   });
@@ -6024,9 +6134,9 @@ var stock_portfolio = /*#__PURE__*/function () {
       /** store data. */
 
 
-      if (config.method === 'POST') {
-        axios.get('/sanctum/csrf-cookie').then(function () {
-          axios.post('/api/stock-portfolio-store', {
+      if (config.method === "POST") {
+        axios.get("/sanctum/csrf-cookie").then(function () {
+          axios.post("/api/stock-portfolio-store", {
             table: config.table,
             order: config.input.order.toLowerCase(),
             statement: config.statement,
@@ -6035,12 +6145,12 @@ var stock_portfolio = /*#__PURE__*/function () {
             /** populate order element with data. */
             if (response.data.status === true) {
               /** add or update element in document tree. */
-              if (response.data.sql === 'select') {
+              if (response.data.sql === "select") {
                 for (var key in response.data.stock) {
                   _this2.helper.init({
-                    type: 'node',
+                    type: "node",
                     id: 0,
-                    target: 'stock-order',
+                    target: "stock-order",
                     statement: response.data.sql,
                     input: response.data.stock[key]
                   });
@@ -6049,11 +6159,11 @@ var stock_portfolio = /*#__PURE__*/function () {
               /** add or update element in document tree. */
 
 
-              if (response.data.sql === 'update') {
+              if (response.data.sql === "update") {
                 for (var _key in response.data.stock) {
                   _this2.helper.init({
-                    type: 'node',
-                    target: 'stock-order',
+                    type: "node",
+                    target: "stock-order",
                     statement: response.data.sql,
                     input: response.data.stock[_key]
                   });
@@ -6062,10 +6172,10 @@ var stock_portfolio = /*#__PURE__*/function () {
               /** remove element in document tree. */
 
 
-              if (response.data.sql === 'destroy') {
+              if (response.data.sql === "destroy") {
                 _this2.helper.init({
-                  type: 'node',
-                  target: 'stock-order',
+                  type: "node",
+                  target: "stock-order",
                   statement: response.data.sql,
                   input: response.data.stock
                 });
@@ -6074,7 +6184,7 @@ var stock_portfolio = /*#__PURE__*/function () {
 
 
               _this2.helper.init({
-                type: 'message',
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -6084,7 +6194,7 @@ var stock_portfolio = /*#__PURE__*/function () {
 
             if (response.data.status === false) {
               _this2.helper.init({
-                type: 'message',
+                type: "message",
                 status: response.data.status,
                 message: response.data.message
               });
@@ -6092,27 +6202,6 @@ var stock_portfolio = /*#__PURE__*/function () {
           });
         });
       }
-    }
-    /** function to display error. */
-
-  }, {
-    key: "error",
-    value: function error(config) {
-      /** run trough it all. */
-      for (var key in config.data) {
-        var display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config.data[key];
-      }
-      /** clear all error messages after five seconds. */
-
-
-      setTimeout(function () {
-        for (var _key2 in config.data) {
-          var _display = document.querySelector(".".concat(config.target, " > .modal-form > .modal-group > .modal-").concat(_key2, "-error"));
-
-          _display.textContent = '';
-        }
-      }, 5000);
     }
   }]);
 
@@ -6261,19 +6350,20 @@ var stock_trade = /*#__PURE__*/function () {
 
 
             setTimeout(function () {
-              var add = document.querySelectorAll(".stock-trade > .items > .action > .add");
+              var watch = document.querySelectorAll(".stock-trade > .items > .action > .watch");
 
-              if (add) {
+              if (watch) {
                 var _loop = function _loop(i) {
-                  add[i].addEventListener("click", function () {
+                  watch[i].addEventListener("click", function () {
                     /** show update modal. */
                     _this.backdrop({
+                      action: "insert",
                       mode: "show",
                       provider: "edge"
                     }); // /** populate modal. */
 
 
-                    var parent = add[i].parentElement.parentElement;
+                    var parent = watch[i].parentElement.parentElement;
 
                     _this.helper.init({
                       type: "input",
@@ -6304,7 +6394,7 @@ var stock_trade = /*#__PURE__*/function () {
                   });
                 };
 
-                for (var i = 0; i < add.length; i++) {
+                for (var i = 0; i < watch.length; i++) {
                   _loop(i);
                 }
                 /** query document close button. */
@@ -6345,7 +6435,7 @@ var stock_trade = /*#__PURE__*/function () {
             }, 10000);
             var info = document.querySelector(".card > .header > .meta > .right > .messenger");
             info.classList.add("info");
-            info.textContent = "Add button enabled right after this message disappear.";
+            info.textContent = "Watch button enabled right after this message disappear.";
             setTimeout(function () {
               info.classList.remove("info");
             }, 9000);
@@ -6361,26 +6451,36 @@ var stock_trade = /*#__PURE__*/function () {
       var _this2 = this;
 
       /** query document to pinpoint modal element. */
-      var modal = document.querySelector(".stock-trade-insert");
+      var modal = document.querySelector(".stock-trade-".concat(config["action"]));
 
       if (config["mode"] === "show") {
         /** show modal. */
         modal.classList.add("backdrop");
         modal.style.display = "block";
+        /** clear input. */
+
+        this.helper.init({
+          type: "input",
+          section: "watchlist",
+          target: "stock-trade-".concat(config["action"]),
+          action: "clear",
+          data: ["liabilities", "equity", "price", "earning", "income", "gross"]
+        });
         /** insert fetch edge. */
 
         if (config["provider"] === "edge") {
-          var fetch = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-fetch");
+          var fetch = document.querySelector(".stock-trade-".concat(config["action"], " > .modal-form > .modal-group > .modal-gecko > .modal-fetch"));
 
           if (fetch) {
             var callback = function callback() {
-              var edge = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-gecko > .modal-edge").value;
+              var edge = document.querySelector(".stock-trade-".concat(config["action"], " > .modal-form > .modal-group > .modal-gecko > .modal-edge")).value;
 
               if (edge) {
                 /** retrieve data .*/
                 _this2.request({
                   method: "GET",
                   provider: "edge",
+                  action: "insert",
                   section: "watches",
                   input: edge
                 });
@@ -6405,9 +6505,9 @@ var stock_trade = /*#__PURE__*/function () {
         var collect = this.helper.init({
           type: "input",
           section: "watchlist",
-          target: "stock-trade-insert",
+          target: "stock-trade-".concat(config["action"]),
           action: "value",
-          data: ["symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"]
+          data: ["id", "symbol", "edge", "symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"]
         });
         /** check if inputs are empty and valid. */
 
@@ -6415,17 +6515,6 @@ var stock_trade = /*#__PURE__*/function () {
           type: "validate",
           data: collect
         });
-        /** clear input. */
-
-        setInterval(function () {
-          _this2.helper.init({
-            type: "input",
-            section: "watchlist",
-            target: "stock-trade-insert",
-            action: "clear",
-            data: ["liabilities", "equity", "price", "earning", "income", "gross"]
-          });
-        }, 10000);
         /** double check and then proceed. */
 
         if (Object.keys(result["error"]).length === 0) {
@@ -6434,7 +6523,7 @@ var stock_trade = /*#__PURE__*/function () {
             type: "sanitize",
             action: "comma",
             condition: ["symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
-            data: result.success
+            data: result["success"]
           });
           /** request access token and then post to backend. */
 
@@ -6445,24 +6534,22 @@ var stock_trade = /*#__PURE__*/function () {
             statement: config["action"],
             input: sanitize
           });
-          /** hide modal. */
-
-          modal.classList.remove("backdrop");
-          modal.style.display = "none";
-          /** remove listener. */
-
-          config["element"].removeEventListener('click', config['callback']);
         } else {
-          /** display error. */
-          this.error({
-            target: "stock-trade-insert",
-            data: result["error"]
+          /** display user  message. */
+          this.helper.init({
+            type: "message",
+            status: false,
+            message: result["message"]
           });
-          /** show modal. */
-
-          modal.classList.add("backdrop");
-          modal.style.display = "block";
         }
+        /** remove listener. */
+
+
+        config["element"].removeEventListener('click', config['callback']);
+        /** hide modal. */
+
+        modal.classList.remove("backdrop");
+        modal.style.display = "none";
       }
     }
     /** function to process http request. */
@@ -6531,7 +6618,7 @@ var stock_trade = /*#__PURE__*/function () {
                 /** populate modal. */
                 if (response.data.reports) {
                   for (var x in response.data.reports) {
-                    document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-".concat(x)).value = response.data.reports[x].toLocaleString("en");
+                    document.querySelector(".stock-trade-".concat(config["action"], " > .modal-form > .modal-group > .modal-").concat(x)).value = response.data.reports[x].toLocaleString("en");
                   }
                 }
               }
@@ -6753,50 +6840,16 @@ var stock_trade = /*#__PURE__*/function () {
               statement: config.statement,
               input: config.input
             }).then(function (response) {
-              /** populate order element with data. */
-              if (response.data.status === true) {
-                /** display success message. */
-                _this3.helper.init({
-                  type: "message",
-                  status: response.data.status,
-                  message: response.data.message
-                });
-              }
-              /** display error message. */
-
-
-              if (response.data.status === false) {
-                _this3.helper.init({
-                  type: "message",
-                  status: response.data.status,
-                  message: response.data.message
-                });
-              }
+              /** display success message. */
+              _this3.helper.init({
+                type: "message",
+                status: response.data.status,
+                message: response.data.message
+              });
             });
           });
         }
       }
-    }
-    /** function to display error. */
-
-  }, {
-    key: "error",
-    value: function error(config) {
-      /** run trough it all. */
-      for (var key in config["data"]) {
-        var display = document.querySelector(".".concat(config["target"], " > .modal-form > .modal-group > .modal-").concat(key, "-error"));
-        display.textContent = config["data"][key];
-      }
-      /** clear all error messages after five seconds. */
-
-
-      setTimeout(function () {
-        for (var _key in config["data"]) {
-          var _display = document.querySelector(".".concat(config["target"], " > .modal-form > .modal-group > .modal-").concat(_key, "-error"));
-
-          _display.textContent = "";
-        }
-      }, 5000);
     }
   }]);
 

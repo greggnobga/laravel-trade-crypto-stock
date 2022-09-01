@@ -1,7 +1,7 @@
 <div class="stock-trade-insert">
     <div class="modal-form">
         <div class="modal-group">
-            <h2 class="modal-header">Add Record</h2>
+            <h2 class="modal-header">Watch Stock</h2>
             <span class="modal-buffer"></span>
             <span class="modal-close">X</span>
         </div>
@@ -59,7 +59,7 @@
                     <button class="btn btn-danger modal-cancel" type="submit">Cancel</button>
                 </div>
                 <div class="button-submit">
-                    <button class="btn btn-primary modal-insert" type="submit">Add</button>
+                    <button class="btn btn-primary modal-insert" type="submit">Watch</button>
                 </div>
             </div>
         </div>

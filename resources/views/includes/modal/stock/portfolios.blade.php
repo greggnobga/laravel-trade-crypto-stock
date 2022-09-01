@@ -35,7 +35,7 @@
         </div>
         <div class="modal-group">
             <label class="modal-sharel-label" for="sharel">Share</label>
-            <input id="share" class="modal-share" name="share" type="number" placeholder="0.00" required/>
+            <input id="share" class="modal-share" name="share" type="text" placeholder="0.00" required/>
             <span class="modal-error modal-share-error"></span>
         </div>
         <div class="modal-group">
@@ -94,7 +94,7 @@
         </div>
         <div class="modal-group">
             <label class="modal-sharel-label" for="sharel">Share</label>
-            <input id="share" class="modal-share" name="share" type="number" placeholder="0.00" required/>
+            <input id="share" class="modal-share" name="share" type="text" placeholder="0.00" required/>
             <span class="modal-error modal-share-error"></span>
         </div>
         <div class="modal-group">
@@ -153,7 +153,7 @@
         </div>
         <div class="modal-group">
             <label class="modal-sharel-label" for="sharel">Share</label>
-            <input id="share" class="modal-share" name="share" type="number" placeholder="0.00" disabled/>
+            <input id="share" class="modal-share" name="share" type="text" placeholder="0.00" disabled/>
             <span class="modal-error modal-share-error"></span>
         </div>
         <div class="modal-group">

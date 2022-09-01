@@ -196,7 +196,7 @@ class TradeController extends Controller {
                   if ($k === 'volume') {
                       $result->forget('volume');
                       $result->put('volume', number_format($v, 2, ".", ","));
-                      $result->put('action', 'Show Add');
+                      $result->put('action', 'Show Watch');
                   }
                 }
                 $return[$key] = $result;

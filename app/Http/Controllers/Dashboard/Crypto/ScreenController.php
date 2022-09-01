@@ -49,7 +49,7 @@ class ScreenController extends Controller {
     public function store($data) {
         if ($data['table'] === 'screen') {
             $check = DB::table('crypto_screens')
-                ->select('id', 'api', 'coin', 'price', 'market', 'volume', 'change')
+                ->select('coin')
                 ->where('api', '=', $data['input']['api'])
                 ->where('userid', '=', Auth::id())
                 ->first();
@@ -84,7 +84,7 @@ class ScreenController extends Controller {
                 }
             } else {
                 /** return if false. */
-                return ['status' =>  false, 'sql' => 'select', 'message' => 'Duplicate entry, check your screen list.', 'coin' => '' ];
+                return ['status' =>  false, 'sql' => 'select', 'message' => $check->coin . ' already recorded in the database.', 'coin' => '' ];
             }
         }
         /** return. */

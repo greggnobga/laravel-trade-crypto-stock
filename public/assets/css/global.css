@@ -773,32 +773,7 @@ a:hover {
   border: 1px solid rgba(255, 69, 0, 0.25);
 }
 
-.update {
-  display: inline-block;
-  color: #F5F5F5;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  background: rgba(0, 150, 255, 0.75);
-  margin-right: 0.25rem;
-}
-.update:hover {
-  background: rgba(128, 128, 128, 0.35);
-}
-
-.destroy {
-  display: inline-block;
-  color: #F5F5F5;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  background: rgba(208, 54, 79, 0.75);
-  margin-left: 0.25rem;
-}
-.destroy:hover {
-  background: rgba(128, 128, 128, 0.35);
-}
-
+.update,
 .show {
   display: inline-block;
   color: #F5F5F5;
@@ -808,11 +783,13 @@ a:hover {
   background: rgba(0, 150, 255, 0.75);
   margin-right: 0.25rem;
 }
+.update:hover,
 .show:hover {
   background: rgba(128, 128, 128, 0.35);
 }
 
-.add {
+.destroy,
+.watch {
   display: inline-block;
   color: #F5F5F5;
   cursor: pointer;
@@ -821,7 +798,8 @@ a:hover {
   background: rgba(208, 54, 79, 0.75);
   margin-left: 0.25rem;
 }
-.add:hover {
+.destroy:hover,
+.watch:hover {
   background: rgba(128, 128, 128, 0.35);
 }
 

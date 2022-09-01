@@ -88,34 +88,7 @@
     }
 }
 
-.update {
-    display: inline-block;
-    color: $cl-white;
-    cursor: pointer;
-    padding: .50rem 1rem;
-    border-radius: .25rem;
-    background: rgba($cl-blue, .75);
-    margin-right: .25rem;
-
-    &:hover {
-        background: rgba($cl-gray, .35);
-    }
-}
-
-.destroy {
-    display: inline-block;
-    color: $cl-white;
-    cursor: pointer;
-    padding: .50rem 1rem;
-    border-radius: .25rem;
-    background: rgba($cl-red, .75);
-    margin-left: .25rem;
-
-    &:hover {
-        background: rgba($cl-gray, .35);
-    }
-}
-
+.update,
 .show {
     display: inline-block;
     color: $cl-white;
@@ -130,7 +103,8 @@
     }
 }
 
-.add {
+.destroy,
+.watch {
     display: inline-block;
     color: $cl-white;
     cursor: pointer;

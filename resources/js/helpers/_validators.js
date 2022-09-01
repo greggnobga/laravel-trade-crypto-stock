@@ -9,7 +9,7 @@ class validator {
                 if (key === 'quantity' || key === 'capital') {
                     config.data[key] = config.data[key].replace(',', '');
                 }
-                if (typeof(key) === 'string') {
+                if (typeof (key) === 'string') {
                     if (/^[a-zA-Z0-9\-&,. ]*$/i.test(config.data[key]) === true) {
                         success[key] = config.data[key];
                     } else {
@@ -18,7 +18,7 @@ class validator {
                 }
             }
         }
-        return {error: error, success: success};
+        return { error: error, success: success, message: 'Unable to proceed, some inputs are required.' };
     }
 }
 export default new validator();

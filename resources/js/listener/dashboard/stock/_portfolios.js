@@ -176,6 +176,16 @@ class stock_portfolio {
             /** show modal. */
             modal.classList.add("backdrop");
             modal.style.display = "block";
+            /** clear input. */
+            if (config["action"] === "insert") {
+                this.helper.init({
+                    type: "input",
+                    section: "portfolio",
+                    target: `stock-portfolio-${config["action"]}`,
+                    action: "clear",
+                    data: ["order", "symbol", "name", "fee", "share", "capital"]
+                });
+            }
         }
 
         if (config["mode"] === "hide") {
@@ -198,16 +208,6 @@ class stock_portfolio {
                 type: "validate",
                 data: collect
             });
-            /** clear input. */
-            if (config["action"] === "insert") {
-                this.helper.init({
-                    type: "input",
-                    section: "portfolio",
-                    target: `stock-portfolio-${config["action"]}`,
-                    action: "clear",
-                    data: ["order", "symbol", "name", "fee", "share", "capital"]
-                });
-            }
             /** double check and then proceed. */
             if (Object.keys(result.error).length === 0) {
                 /** request access token and then post to backend. */

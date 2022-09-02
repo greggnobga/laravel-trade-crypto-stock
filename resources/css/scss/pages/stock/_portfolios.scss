@@ -1,4 +1,4 @@
-.stock-hold > .items {
+.stock-hold>.items {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: repeat(5, 1fr);
@@ -11,7 +11,7 @@
     }
 }
 
-.stock-order > .items {
+.stock-order>.items {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 5rem repeat(8, 1fr);

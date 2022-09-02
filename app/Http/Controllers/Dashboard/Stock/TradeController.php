@@ -160,13 +160,6 @@ class TradeController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {
-        //
-    }
-
-    /**
      * Helper function.
      */
     private function helpers($data) {

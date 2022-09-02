@@ -169,7 +169,15 @@ class crypto_screen {
             /** show backdrop. */
             modal.classList.add("backdrop");
             modal.style.display = "block";
-
+            /** clear input if insert. */
+            if (config["action"] === "insert") {
+                this.helper.init({
+                    type: "input",
+                    target: `crypto-screen-${config["action"]}`,
+                    action: "clear",
+                    data: ["coin", "api", "price", "market", "volume", "change"]
+                });
+            }
             /** insert fetch gecko. */
             if (config["action"] === "insert" || config["action"] === "update") {
                 let fetch = document.querySelector(`.crypto-screen-${config["action"]} > .modal-form > .modal-group > .modal-gecko > .modal-fetch`);
@@ -206,15 +214,6 @@ class crypto_screen {
                 type: "validate",
                 data: collect
             });
-            /** clear input if insert. */
-            if (config["action"] === "insert") {
-                this.helper.init({
-                    type: "input",
-                    target: `crypto-screen-${config["action"]}`,
-                    action: "clear",
-                    data: ["coin", "api", "price", "market", "volume", "change"]
-                });
-            }
             /** double check and then proceed. */
             if (Object.keys(result["error"]).length === 0) {
                 /** sanitize input. */

@@ -166,6 +166,15 @@ class crypto_game {
             /** show backdrop. */
             modal.classList.add("backdrop");
             modal.style.display = "block";
+            /** clear input if insert. */
+            if (config["action"] === "insert") {
+                this.helper.init({
+                    type: "input",
+                    target: `crypto-game-${config["action"]}`,
+                    action: "clear",
+                    data: ["id", "title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
+                });
+            }
         }
 
         if (config["mode"] === "hide") {
@@ -187,15 +196,6 @@ class crypto_game {
                 type: "validate",
                 data: collect
             });
-            /** clear input if insert. */
-            if (config["action"] === "insert") {
-                this.helper.init({
-                    type: "input",
-                    target: `crypto-game-${config["action"]}`,
-                    action: "clear",
-                    data: ["id", "title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
-                });
-            }
             /** double check and then proceed. */
             if (Object.keys(result.error).length === 0) {
                 /** request access token and then post to backend. */

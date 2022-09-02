@@ -44,6 +44,7 @@
 
     <template class="stage-stock-watchlists">
         @include('includes.template.stock.watchlists')
+        @include('includes.modal.stock.watchlists')
     </template>
 
     <template class="stage-stock-portfolios">

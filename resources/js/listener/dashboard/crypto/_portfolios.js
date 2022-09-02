@@ -174,6 +174,16 @@ class crypto_portfolio {
             /** show modal. */
             modal.classList.add('backdrop');
             modal.style.display = 'block';
+            /** clear input. */
+            if (config["action"] === 'insert') {
+                this.helper.init({
+                    type: 'input',
+                    section: 'portfolio',
+                    target: `crypto-portfolio-${config.action}`,
+                    action: 'clear',
+                    data: ['wallet', 'name', 'coin', 'quantity', 'capital']
+                });
+            }
         }
 
         if (config["mode"] === 'hide') {
@@ -196,16 +206,6 @@ class crypto_portfolio {
                 type: 'validate',
                 data: collect
             });
-            /** clear input. */
-            if (config["action"] === 'insert') {
-                this.helper.init({
-                    type: 'input',
-                    section: 'portfolio',
-                    target: `crypto-portfolio-${config.action}`,
-                    action: 'clear',
-                    data: ['wallet', 'name', 'coin', 'quantity', 'capital']
-                });
-            }
             /** double check and then proceed. */
             if (Object.keys(result.error).length === 0) {
                 /** sanitize input. */

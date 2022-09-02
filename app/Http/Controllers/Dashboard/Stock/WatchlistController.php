@@ -18,6 +18,10 @@ class WatchlistController extends Controller
             if ($request->input('table') === 'watchlist' && $request->input('statement') === 'insert') {
                 return $this->store(['table' => 'watchlist', 'input' => $request->input('input')]);
             }
+            /** forward destroy command. */
+            if ($request->input('table') === 'watchlist' && $request->input('statement') === 'destroy') {
+                return $this->destroy(['table' => 'watchlist', 'input' => $request->input('input')]);
+            }
         }
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
@@ -150,6 +154,23 @@ class WatchlistController extends Controller
               return ['status' =>  false, 'sql' => 'select', 'message' => $data['input']['sybmol'] . ' no changes made.', 'stock' => '' ];
           }
       }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($data) {
+        if ($data['table'] === 'watchlist') {
+            $delete = DB::table('stock_watchlists')
+                ->where('symbol', '=', $data['input']['symbol'])
+                ->where('userid', '=', Auth::id())
+                ->delete();
+            if ($delete) {
+                return ['status' =>  true, 'sql' => 'destroy', 'message' => $data['input']['symbol'] . ' has been deleted.', 'stock' => $data['input']['id']];
+            } else {
+                return ['status' =>  false, 'sql' => 'destroy', 'message' => 'Your attempt to delete ' . $data['input']['symbol'] . ' could not be completed.' , 'stock' => '' ];
+            }
+        }
     }
 
     /**

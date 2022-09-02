@@ -171,6 +171,16 @@ class crypto_moon {
             /** show backdrop. */
             modal.classList.add("backdrop");
             modal.style.display = "block";
+
+            /** clear input if insert. */
+            if (config["action"] === "insert") {
+                this.helper.init({
+                    type: "input",
+                    target: `crypto-moon-${config["action"]}`,
+                    action: "clear",
+                    data: ["name", "coin", "description", "zone", "website"]
+                });
+            }
         }
 
         if (config["mode"] === "hide") {
@@ -193,15 +203,6 @@ class crypto_moon {
                 type: "validate",
                 data: collect
             });
-            /** clear input if insert. */
-            if (config["action"] === "insert") {
-                this.helper.init({
-                    type: "input",
-                    target: `crypto-moon-${config["action"]}`,
-                    action: "clear",
-                    data: ["name", "coin", "description", "zone", "website"]
-                });
-            }
             /** double check and then proceed. */
             if (Object.keys(result.error).length === 0) {
                 /** request access token and then post to backend. */

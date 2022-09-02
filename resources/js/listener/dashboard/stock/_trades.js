@@ -9,7 +9,6 @@ class stock_trade {
         this.element = document.querySelector(".perform");
         this.helper = helpers;
     }
-
     /** fire it on. */
     init() {
         /** setup initial listener. */
@@ -139,16 +138,16 @@ class stock_trade {
             /** show modal. */
             modal.classList.add("backdrop");
             modal.style.display = "block";
-
-            /** clear input. */
-            this.helper.init({
-                type: "input",
-                section: "watchlist",
-                target: `stock-trade-${config["action"]}`,
-                action: "clear",
-                data: ["liabilities", "equity", "price", "earning", "income", "gross"],
-            });
-
+            /** clear input if insert. */
+            if (config["action"] === "insert") {
+                this.helper.init({
+                    type: "input",
+                    section: "watchlist",
+                    target: `stock-trade-${config["action"]}`,
+                    action: "clear",
+                    data: ["liabilities", "equity", "price", "earning", "income", "gross"],
+                });
+            }
             /** insert fetch edge. */
             if (config["provider"] === "edge") {
                 let fetch = document.querySelector(`.stock-trade-${config["action"]} > .modal-form > .modal-group > .modal-gecko > .modal-fetch`);

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -43,7 +44,7 @@ class PSEController extends Controller {
       }
       /** forward watchlist command. */
       if ($request->input('section') === 'watches') {
-        return $this->stockwatches($request->input('id'));
+        return $this->stockwatches($request->all());
       }
     }
   }
@@ -216,7 +217,7 @@ class PSEController extends Controller {
     $financialreports;
     $result;
     /** fetch and crawl document element. */
-    $financial = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data);
+    $financial = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id']);
     $finance = $financial->filter('tr > td')->each(function ($node) { return $node->text(); });
     if (count($finance) != 0) {
       /** mapping total liabilities. */
@@ -259,6 +260,8 @@ class PSEController extends Controller {
 
       /** mapping stock holder equity. */
       $annualincomestatement['CurrentEarningsLossPerShareBasic'] = $finance['26'];
+      /** remove rouge space. */
+      $annualincomestatement['CurrentEarningsLossPerShareBasic'] = str_replace(' ', '', $annualincomestatement['CurrentEarningsLossPerShareBasic']);
       /** check if key exist in array. */
       if (array_key_exists("CurrentEarningsLossPerShareBasic", $annualincomestatement)) {
         /** match string if has number and comma. */
@@ -309,14 +312,14 @@ class PSEController extends Controller {
           $result['grossrevenue'] = -abs($result['grossrevenue']);
         }
         /** match string if has no value. */
-        if ($annualincomestatement['CurrentGrossRevenue'] == '') {
+        if ($annualincomestatement['CurrentGrossRevenue'] == '' || $annualincomestatement['CurrentGrossRevenue'] == '-') {
           $result['grossrevenue'] = 0.00;
         }
       }
     }
 
     /** fetch and crawl document element. */
-    $prices = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data);
+    $prices = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id']);
     $price = $prices->filter('tr > td')->each(function ($node) { return $node->text(); });
 
     if (count($price) != 0) {
@@ -348,8 +351,58 @@ class PSEController extends Controller {
         'income' => number_format($result['incomebeforetax'], 2, '.', ','),
         'gross' => number_format($result['grossrevenue'], 2, '.', ','),
       ];
+
+      if ($data['caller'] == 'trade') {
+         return ['status' => true, 'message' => 'Infomation has been fetched.', 'reports' => $financialreports];
+      }
+
+      if ($data['caller'] == 'watchlist') {
+        $symbol = DB::table('stock_watchlists')
+          ->select('symbol')
+          ->where('symbol', $data['symbol'])
+          ->get();
+
+        if ($symbol->isEmpty()) {
+            $insert = DB::table('stock_watchlists')
+                ->insertGetId([
+                    'userid' => Auth::id(),
+                    'symbol' => strip_tags($data['symbol']),
+                    'edge' => strip_tags($data['id']),
+                    'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
+                    'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
+                    'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),
+                    'earningspershare' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['earning'])),
+                    'netincomebeforetax' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['income'])),
+                    'grossrevenue' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['gross'])),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+            /** if insert not empty.*/
+            if ($insert) {
+                return ['status' =>  true, 'sql' => 'select', 'message' => $data['symbol'] . ' has been added to the database.', 'reports' => $insert];
+            }
+        } else {
+            $update = DB::table('stock_watchlists')
+              ->where('userid', '=', Auth::id())
+              ->where('symbol', '=', $data['symbol'])
+              ->update([
+                'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
+                'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
+                'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),
+                'earningspershare' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['earning'])),
+                'netincomebeforetax' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['income'])),
+                'grossrevenue' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['gross'])),
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+              ]);
+            /** if update not empty.*/
+            if ($update) {
+                return ['status' =>  true, 'sql' => 'select', 'message' => $data['symbol'] . ' successfully updated.', 'reports' => $update];
+          }
+        }    
+      }
       /** return something. */
-      return ['status' => true, 'message' => 'Infomation has been fetched.', 'reports' => $financialreports];
+      return ['status' => false, 'message' => 'Infomation has been fetched.', 'reports' => ''];
   }
 }
 

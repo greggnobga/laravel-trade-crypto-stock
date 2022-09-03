@@ -156,7 +156,7 @@ class stock_trade {
                         let edge = document.querySelector(`.stock-trade-${config["action"]} > .modal-form > .modal-group > .modal-gecko > .modal-edge`).value;
                         if (edge) {
                             /** retrieve data .*/
-                            this.request({ method: "GET", provider: "edge", action: "insert", section: "watches", input: edge });
+                            this.request({ method: "GET", provider: "edge", action: "insert", section: "watches", caller: "trade", input: edge });
                             /** disable after clicked. */
                             fetch.disabled = true;
                             /** remove event listener. */
@@ -272,7 +272,7 @@ class stock_trade {
                 axios.get("/sanctum/csrf-cookie").then((response) => {
                     axios
                         .get("/stock-reports-retrieve", {
-                            params: { section: config["section"], id: config["input"] }
+                            params: { section: config["section"], id: config["input"], caller: config["caller"] }
                         })
                         .then((response) => {
                             if (response.data.status === true) {
@@ -480,9 +480,9 @@ class stock_trade {
             if (config["provider"] === "watches") {
                 axios.get("/sanctum/csrf-cookie").then(() => {
                     axios.post("/api/stock-watchlist-store", {
-                        table: config.table,
-                        statement: config.statement,
-                        input: config.input
+                        table: config["table"],
+                        statement: config["statement"],
+                        input: config["input"]
                     }).then(response => {
                         /** display success message. */
                         this.helper.init({

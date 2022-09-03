@@ -78,6 +78,24 @@ class WatchlistController extends Controller
                 /** return something. */
                 return ['status' => true, 'sql' => 'select', 'message' => 'Watchlist ready to be served.', 'watchlist' => $watchlist];
             }
+            /** forward destroy command. */
+            if ($request->input('table') === 'watchlist' && $request->input('statement') === 'build') {
+                $trades = DB::table('stock_trades')
+                    ->select('edge', 'symbol')
+                    ->where('incomeaftertax', '>', '0')
+                    ->where('edge', '>', 0)
+                    ->orderBy('incomeaftertax')
+                    ->get();
+
+                if ($trades->isNotEmpty()) {
+                    /** resequence array keys. */
+                    $stocks = $trades->toArray();
+                    /** return something. */
+                    return ['status' => true, 'message' => 'this is test response.', 'stocks' => $stocks];
+                } 
+                /** return something. */
+                return ['status' => false, 'message' => 'No record found, go to trade page and run fetch data.', 'stocks' => ''];
+            }
             
       }
     }

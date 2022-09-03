@@ -25,7 +25,7 @@
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <button class="btn btn-primary click-watchlist-record" data-action="stock">More</button>
+                <button class="btn btn-primary click-watchlist-build" data-action="stock">Build</button>
             </div>
         </div>
     </div>

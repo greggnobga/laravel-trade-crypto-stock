@@ -15,7 +15,7 @@ class stock_watchlist {
         this.event.addEventListener("click", (e) => {
             if (e.target.dataset.sidebar === "stock_watchlists") {
                 /** retrieve data .*/
-                this.request({ method: "GET", table: "watchlist", statement: "select" });
+                this.request({ method: "GET", provider: "local", table: "watchlist", statement: "select" });
                 /** clone template. */
                 let content = this.template.content.cloneNode(true);
                 // /** query document and do conditional statement base on the result. */
@@ -25,6 +25,17 @@ class stock_watchlist {
                     this.element.innerHTML = "";
                     /** append template content. */
                     this.element.appendChild(content);
+                    /** auto build watchlist. */
+                    let build = document.querySelector(".card > .header > .meta > .right > .click-watchlist-build");
+                    if (build) {
+                        let callback = () => {
+                            this.request({ method: "GET", provider: "edge", statement: "build", table: "watchlist" });
+                            /** remove event listener after firing once. */
+                            build.removeEventListener("click", callback);
+                        };
+                        /** add event listener. */
+                        build.addEventListener("click", callback, false);
+                    }
                     /** destroy modal code block. */
                     setTimeout(() => {
                         let destroy = document.querySelectorAll(".stock-watchlist > .items > .action > .destroy");
@@ -33,11 +44,9 @@ class stock_watchlist {
                                 destroy[i].addEventListener("click", () => {
                                     /** show destroy modal. */
                                     this.backdrop({ mode: "show", action: "destroy" });
-
                                     /** populate modal. */
                                     let parent = destroy[i].parentElement.parentElement;
                                     this.helper.init({ type: "input", action: "destroy", target: "stock-watchlist-destroy", section: 'populate', el: parent, data: ["id", "symbol"] });
-
                                     /** set destroy event listener. */
                                     let submit = document.querySelector(".stock-watchlist-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
                                     if (submit) {
@@ -69,14 +78,12 @@ class stock_watchlist {
                             }
                         }
                     }, 10000);
-
                     let info = document.querySelector(".card > .header > .meta > .right > .messenger");
                     info.classList.add("info");
                     info.textContent = "Destroy button enabled right after this message disappear.";
                     setTimeout(() => { info.classList.remove("info"); }, 9000);
                 }
             }
-
         });
     }
     /** function on how backdrop behaves. */
@@ -116,6 +123,7 @@ class stock_watchlist {
                 /** request access token and then post to backend. */
                 this.request({
                     method: "POST",
+                    provider: "local",
                     table: "watchlist",
                     statement: config["action"],
                     input: result["success"]
@@ -135,46 +143,98 @@ class stock_watchlist {
     request(config) {
         /** retrieve data. */
         if (config["method"] === "GET") {
-            axios.get("/sanctum/csrf-cookie").then(response => {
-                axios.get("/api/stock-watchlist-retrieve", {
-                    params: { table: config["table"], statement: config["statement"] }
-                }).then(response => {
-                    if (response.data.status === true) {
-                        /** populate order element with data. */
-                        if (response.data.watchlist) {
-                            /** sort debt equity ratio. */
-                            let watchlist = response.data.watchlist.sort((a, b) => {
-                                return a.debtequityratio - b.debtequityratio;
-                            })
-                            /** loop me up. */
-                            for (let i = 0; i < watchlist.length; i++) {
-                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-${config["table"]}`, statement: response.data.sql, input: watchlist[i] });
+            if (config['provider'] === 'local') {
+                axios.get("/sanctum/csrf-cookie").then(response => {
+                    axios.get("/api/stock-watchlist-retrieve", {
+                        params: { table: config["table"], statement: config["statement"] }
+                    }).then(response => {
+                        if (response.data.status === true) {
+                            /** populate order element with data. */
+                            if (response.data.watchlist) {
+                                /** sort debt equity ratio. */
+                                let watchlist = response.data.watchlist.sort((a, b) => {
+                                    return a.debtequityratio - b.debtequityratio;
+                                })
+                                /** loop me up. */
+                                for (let i = 0; i < watchlist.length; i++) {
+                                    this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-${config["table"]}`, statement: response.data.sql, input: watchlist[i] });
+                                }
                             }
                         }
-                    }
+                    });
                 });
-            });
+            }
+            if (config["provider"] === "edge") {
+                axios.get("/sanctum/csrf-cookie").then(() => {
+                    axios.get("/api/stock-watchlist-retrieve", {
+                        params: { table: config["table"], statement: config["statement"] }
+                    }).then(response => {
+                        if (response.data.status === true) {
+                            if (response.data.stocks.length !== 0) {
+                                let stocks = setInterval(() => {
+                                    /** remove first array element. */
+                                    let stock = response.data.stocks[0];
+                                    /** get csrf token and send post request. */
+                                    axios.get("/sanctum/csrf-cookie").then((response) => {
+                                        axios
+                                            .get("/stock-reports-retrieve", {
+                                                params: { section: 'watches', id: stock["edge"], symbol: stock["symbol"], caller: "watchlist" }
+                                            })
+                                            .then((response) => {
+                                                /** send user a message. */
+                                                this.helper.init({
+                                                    type: "message",
+                                                    status: response.data.status,
+                                                    message: response.data.message,
+                                                });
+                                            });
+                                    });
+                                    /** remove first array element. */
+                                    response.data.stocks.shift();
+                                    /** clear interval when array reach zero. */
+                                    if (response.data.stocks.length === 0) {
+                                        /** send user a message. */
+                                        this.helper.init({
+                                            type: "message",
+                                            status: true,
+                                            message: "Processed completed.",
+                                        });
+                                        /** clear interval. */
+                                        clearInterval(stocks);
+                                        /** chat console. */
+                                        console.log("Processed completed.");
+                                    }
+                                }, 10000);
+                            } else {
+                                console.log("All records are up to date.");
+                            }
+                        }
+                    })
+                });
+            }
         }
 
         /** store data. */
         if (config["method"] === "POST") {
-            axios.get("/sanctum/csrf-cookie").then(() => {
-                axios.post("/api/stock-watchlist-store", {
-                    table: config["table"],
-                    statement: config["statement"],
-                    input: config["input"]
-                }).then(response => {
-                    /** populate order element with data. */
-                    if (response.data.status === true) {
-                        /** remove element in document tree. */
-                        if (response.data.sql === "destroy") {
-                            this.helper.init({ type: "node", target: "stock-watchlist", statement: response.data.sql, input: response.data.stock });
+            if (config["provider"] === "local") {
+                axios.get("/sanctum/csrf-cookie").then(() => {
+                    axios.post("/api/stock-watchlist-store", {
+                        table: config["table"],
+                        statement: config["statement"],
+                        input: config["input"]
+                    }).then(response => {
+                        /** populate order element with data. */
+                        if (response.data.status === true) {
+                            /** remove element in document tree. */
+                            if (response.data.sql === "destroy") {
+                                this.helper.init({ type: "node", target: "stock-watchlist", statement: response.data.sql, input: response.data.stock });
+                            }
                         }
-                    }
-                    /** display  message. */
-                    this.helper.init({ type: "message", status: response.data.status, message: response.data.message });
-                })
-            });
+                        /** display  message. */
+                        this.helper.init({ type: "message", status: response.data.status, message: response.data.message });
+                    })
+                });
+            }
         }
     }
 }

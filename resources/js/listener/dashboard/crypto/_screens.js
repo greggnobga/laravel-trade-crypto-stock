@@ -34,11 +34,14 @@ class crypto_screen {
                                     this.backdrop({ action: "insert", mode: "submit", element: submit, callback: callback });
                                 };
                                 /** add event listener. */
-                                submit.addEventListener("click", callback, false);
+                                submit.addEventListener("click", callback, { once: true });
+                                /** disable after clicked. */
+                                submit.disabled = true;
                             }
+                            /** disable after clicked. */
+                            submit.disabled = false;
                         }
                     });
-
                     /** set close event listener. */
                     let close = document.querySelector(".crypto-screen-insert > .modal-form > .modal-group > .modal-close");
                     if (close) {
@@ -76,10 +79,14 @@ class crypto_screen {
                                 if (submit) {
                                     let callback = () => {
                                         this.backdrop({ action: "update", mode: "submit", element: submit, callback: callback });
+                                        /** disable after clicked. */
+                                        submit.disabled = true;
                                     };
                                     /** add event listener. */
-                                    submit.addEventListener("click", callback, false);
+                                    submit.addEventListener("click", callback, { once: true });
                                 }
+                                /** disable after clicked. */
+                                submit.disabled = false;
                             });
                         }
                         /** query document close button. */
@@ -103,7 +110,6 @@ class crypto_screen {
                         }
                     }
                 }, 10000);
-
                 /** destroy modal code block. */
                 setTimeout(() => {
                     let destroy = document.querySelectorAll(".crypto-screen > .items > .action > .destroy");
@@ -187,11 +193,17 @@ class crypto_screen {
                         if (api) {
                             /** retrieve data .*/
                             this.request({ method: "GET", provider: "gecko", action: config["action"], data: api });
+                            /** disable after clicked. */
+                            fetch.disabled = true;
+                            /** remove event listener. */
+                            fetch.removeEventListener("click", callback);
                         }
                     };
                     /** add event listener. */
-                    fetch.addEventListener("click", callback, false);
+                    fetch.addEventListener("click", callback, { once: true });
                 }
+                /** disable after clicked. */
+                fetch.disabled = false;
             }
         }
 
@@ -202,6 +214,8 @@ class crypto_screen {
         }
 
         if (config["mode"] === "submit") {
+            /** disable after clicked. */
+            config["element"].disabled = true;
             /** collect all input for processing. */
             let collect = this.helper.init({
                 type: "input",
@@ -230,6 +244,8 @@ class crypto_screen {
                     statement: `${config["action"]}`,
                     input: sanitize
                 });
+                /** disable after clicked. */
+                config["element"].disabled = false;
             } else {
                 /** display user  message. */
                 this.helper.init({ type: "message", status: false, message: result["message"] });

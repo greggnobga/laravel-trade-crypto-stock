@@ -94,7 +94,7 @@ class stock_trade {
                                             this.backdrop({ action: "insert", mode: "submit", element: submit, callback: callback });
                                         };
                                         /** add event listener. */
-                                        submit.addEventListener("click", callback, false);
+                                        submit.addEventListener("click", callback, { once: true });
                                     }
                                 });
                             }
@@ -157,11 +157,17 @@ class stock_trade {
                         if (edge) {
                             /** retrieve data .*/
                             this.request({ method: "GET", provider: "edge", action: "insert", section: "watches", input: edge });
+                            /** disable after clicked. */
+                            fetch.disabled = true;
+                            /** remove event listener. */
+                            fetch.removeEventListener("click", callback);
                         }
                     };
                     /** add event listener. */
-                    fetch.addEventListener("click", callback, false);
+                    fetch.addEventListener("click", callback, { once: true });
                 }
+                /** disable after clicked. */
+                fetch.disabled = false;
             }
         }
 
@@ -172,6 +178,8 @@ class stock_trade {
         }
 
         if (config["mode"] === "submit") {
+            /** disable after clicked. */
+            config["element"].disabled = true;
             /** collect all input for processing. */
             let collect = this.helper.init({
                 type: "input",
@@ -202,9 +210,11 @@ class stock_trade {
                     statement: config["action"],
                     input: sanitize,
                 });
+                /** disable after clicked. */
+                config["element"].disabled = false;
             } else {
-                /** display user  message. */
-                this.helper.init({ type: "message", status: false, message: result["message"] });
+                /** remove listener. */
+                config["element"].removeEventListener('click', config['callback']);
             }
             /** remove listener. */
             config["element"].removeEventListener('click', config['callback']);

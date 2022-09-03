@@ -142,8 +142,13 @@ class stock_watchlist {
                     if (response.data.status === true) {
                         /** populate order element with data. */
                         if (response.data.watchlist) {
-                            for (let i = 0; i < response.data.watchlist.length; i++) {
-                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-${config["table"]}`, statement: response.data.sql, input: response.data.watchlist[i] });
+                            /** sort debt equity ratio. */
+                            let watchlist = response.data.watchlist.sort((a, b) => {
+                                return a.debtequityratio - b.debtequityratio;
+                            })
+                            /** loop me up. */
+                            for (let i = 0; i < watchlist.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-${config["table"]}`, statement: response.data.sql, input: watchlist[i] });
                             }
                         }
                     }
@@ -159,14 +164,12 @@ class stock_watchlist {
                     statement: config["statement"],
                     input: config["input"]
                 }).then(response => {
-                    console.log(response.data)
                     /** populate order element with data. */
                     if (response.data.status === true) {
                         /** remove element in document tree. */
                         if (response.data.sql === "destroy") {
                             this.helper.init({ type: "node", target: "stock-watchlist", statement: response.data.sql, input: response.data.stock });
                         }
-
                     }
                     /** display  message. */
                     this.helper.init({ type: "message", status: response.data.status, message: response.data.message });

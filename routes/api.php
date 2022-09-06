@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
-    Route::post('/pse-reports-store', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'init']);
-    Route::get('/pse-reports-retrieve', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'init']);
-
     Route::post('/crypto-portfolio-store', [App\Http\Controllers\Dashboard\Crypto\PortfolioController::class, 'init']);
     Route::get('/crypto-portfolio-retrieve', [App\Http\Controllers\Dashboard\Crypto\PortfolioController::class, 'init']);
 

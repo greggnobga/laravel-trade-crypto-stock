@@ -158,7 +158,7 @@ class WatchlistController extends Controller
             /** forward destroy command. */
             if ($request->input('table') === 'watchlist' && $request->input('statement') === 'build') {
                 $trades = DB::table('stock_trades')
-                    ->select('edge', 'symbol')
+                    ->select('edge', 'symbol', 'sector')
                     ->where('edge', '>', 0)
                     ->where('earningpershare', '>', 0)
                     ->where('incomeaftertax', '>', 10000)

@@ -410,6 +410,7 @@ class PSEController extends Controller {
                 ->insertGetId([
                     'userid' => Auth::id(),
                     'symbol' => strip_tags($data['symbol']),
+                    'sector' => strip_tags($data['sector']),
                     'edge' => strip_tags($data['id']),
                     'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
                     'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),

@@ -257,7 +257,7 @@ class stock_watchlist {
                                     axios.get("/sanctum/csrf-cookie").then((response) => {
                                         axios
                                             .get("/stock-reports-retrieve", {
-                                                params: { section: 'watches', id: stock["edge"], symbol: stock["symbol"], caller: "watchlist" }
+                                                params: { section: 'watches', id: stock["edge"], symbol: stock["symbol"], sector: stock["sector"], caller: "watchlist" }
                                             })
                                             .then((response) => {
                                                 /** send user a message. */

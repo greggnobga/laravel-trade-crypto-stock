@@ -508,7 +508,7 @@ class stock_trade {
                                             .then((response) => {
                                                 axios
                                                     .post("/stock-reports-store", {
-                                                        section: "sectors",
+                                                        section: "sectors", 
                                                         id: stock.edge,
                                                     })
                                                     .then((response) => {

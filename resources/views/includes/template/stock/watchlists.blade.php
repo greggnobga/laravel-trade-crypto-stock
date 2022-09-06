@@ -29,7 +29,106 @@
             </div>
         </div>
     </div>
-    <div class="stock-watchlist">
+    <div class="buffer"><h4>Mining and Oil</h4></div>
+    <div class="stock-minings">
+        <div class="items">
+            <div class="id">ID</div>
+            <div class="date">Date</div>
+            <div class="symbol">Symbol</div>
+             <div class="lasttradedprice">Last Traded Price</div>
+            <div class="debtequityratio">Debt Equity Ratio</div>
+            <div class="priceearningratio">Price Earning Ratio</div>
+            <div class="netprofitmargin">Net Profit Margin</div>
+            <div class="returnonequity">Retrun On Equity</div>
+            <div class="action">Action</div>
+        </div>
+    </div>
+    <div class="buffer"><h4>Holding Firms</h4></div>
+    <div class="stock-holdings">
+        <div class="items">
+            <div class="id">ID</div>
+            <div class="date">Date</div>
+            <div class="symbol">Symbol</div>
+             <div class="lasttradedprice">Last Traded Price</div>
+            <div class="debtequityratio">Debt Equity Ratio</div>
+            <div class="priceearningratio">Price Earning Ratio</div>
+            <div class="netprofitmargin">Net Profit Margin</div>
+            <div class="returnonequity">Retrun On Equity</div>
+            <div class="action">Action</div>
+        </div>
+    </div>
+    <div class="buffer"><h4>Services</h4></div>
+    <div class="stock-services">
+        <div class="items">
+            <div class="id">ID</div>
+            <div class="date">Date</div>
+            <div class="symbol">Symbol</div>
+             <div class="lasttradedprice">Last Traded Price</div>
+            <div class="debtequityratio">Debt Equity Ratio</div>
+            <div class="priceearningratio">Price Earning Ratio</div>
+            <div class="netprofitmargin">Net Profit Margin</div>
+            <div class="returnonequity">Retrun On Equity</div>
+            <div class="action">Action</div>
+        </div>
+    </div>
+    <div class="buffer"><h4>Industrial</h4></div>
+    <div class="stock-industrials">
+        <div class="items">
+            <div class="id">ID</div>
+            <div class="date">Date</div>
+            <div class="symbol">Symbol</div>
+             <div class="lasttradedprice">Last Traded Price</div>
+            <div class="debtequityratio">Debt Equity Ratio</div>
+            <div class="priceearningratio">Price Earning Ratio</div>
+            <div class="netprofitmargin">Net Profit Margin</div>
+            <div class="returnonequity">Retrun On Equity</div>
+            <div class="action">Action</div>
+        </div>
+    </div>
+    <div class="buffer"><h4>Property</h4></div>
+    <div class="stock-properties">
+        <div class="items">
+            <div class="id">ID</div>
+            <div class="date">Date</div>
+            <div class="symbol">Symbol</div>
+             <div class="lasttradedprice">Last Traded Price</div>
+            <div class="debtequityratio">Debt Equity Ratio</div>
+            <div class="priceearningratio">Price Earning Ratio</div>
+            <div class="netprofitmargin">Net Profit Margin</div>
+            <div class="returnonequity">Retrun On Equity</div>
+            <div class="action">Action</div>
+        </div>
+    </div>
+    <div class="buffer"><h4>Financials</h4></div>
+    <div class="stock-financials">
+        <div class="items">
+            <div class="id">ID</div>
+            <div class="date">Date</div>
+            <div class="symbol">Symbol</div>
+             <div class="lasttradedprice">Last Traded Price</div>
+            <div class="debtequityratio">Debt Equity Ratio</div>
+            <div class="priceearningratio">Price Earning Ratio</div>
+            <div class="netprofitmargin">Net Profit Margin</div>
+            <div class="returnonequity">Retrun On Equity</div>
+            <div class="action">Action</div>
+        </div>
+    </div>
+    <div class="buffer"><h4>Small Medium Emerging Board</h4></div>
+    <div class="stock-boards">
+        <div class="items">
+            <div class="id">ID</div>
+            <div class="date">Date</div>
+            <div class="symbol">Symbol</div>
+             <div class="lasttradedprice">Last Traded Price</div>
+            <div class="debtequityratio">Debt Equity Ratio</div>
+            <div class="priceearningratio">Price Earning Ratio</div>
+            <div class="netprofitmargin">Net Profit Margin</div>
+            <div class="returnonequity">Retrun On Equity</div>
+            <div class="action">Action</div>
+        </div>
+    </div>
+    <div class="buffer"><h4>Exchange Traded Funds</h4></div>
+    <div class="stock-funds">
         <div class="items">
             <div class="id">ID</div>
             <div class="date">Date</div>

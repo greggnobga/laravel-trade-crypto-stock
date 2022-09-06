@@ -149,18 +149,97 @@ class stock_watchlist {
                         params: { table: config["table"], statement: config["statement"] }
                     }).then(response => {
                         if (response.data.status === true) {
-                            /** populate order element with data. */
-                            if (response.data.watchlist) {
+                            /** populate holdings element with data. */
+                            if (response.data.sectors.miningandoil) {
                                 /** sort debt equity ratio. */
-                                let watchlist = response.data.watchlist.sort((a, b) => {
+                                let minings = response.data.sectors.miningandoil.sort((a, b) => {
                                     return a.debtequityratio - b.debtequityratio;
                                 })
                                 /** loop me up. */
-                                for (let i = 0; i < watchlist.length; i++) {
-                                    this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-${config["table"]}`, statement: response.data.sql, input: watchlist[i] });
+                                for (let i = 0; i < minings.length; i++) {
+                                    this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-minings`, statement: response.data.sql, input: minings[i] });
                                 }
                             }
                         }
+                        /** populate holdings element with data. */
+                        if (response.data.sectors.holdingfirms) {
+                            /** sort debt equity ratio. */
+                            let holdings = response.data.sectors.holdingfirms.sort((a, b) => {
+                                return a.debtequityratio - b.debtequityratio;
+                            })
+                            /** loop me up. */
+                            for (let i = 0; i < holdings.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-holdings`, statement: response.data.sql, input: holdings[i] });
+                            }
+                        }
+                        /** populate holdings element with data. */
+                        if (response.data.sectors.services) {
+                            /** sort debt equity ratio. */
+                            let services = response.data.sectors.services.sort((a, b) => {
+                                return a.debtequityratio - b.debtequityratio;
+                            })
+                            /** loop me up. */
+                            for (let i = 0; i < services.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-services`, statement: response.data.sql, input: services[i] });
+                            }
+                        }
+                        /** populate holdings element with data. */
+                        if (response.data.sectors.industrial) {
+                            /** sort debt equity ratio. */
+                            let industrials = response.data.sectors.industrial.sort((a, b) => {
+                                return a.debtequityratio - b.debtequityratio;
+                            })
+                            /** loop me up. */
+                            for (let i = 0; i < industrials.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-industrials`, statement: response.data.sql, input: industrials[i] });
+                            }
+                        }
+                        /** populate holdings element with data. */
+                        if (response.data.sectors.property) {
+                            /** sort debt equity ratio. */
+                            let properties = response.data.sectors.property.sort((a, b) => {
+                                return a.debtequityratio - b.debtequityratio;
+                            })
+                            /** loop me up. */
+                            for (let i = 0; i < properties.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-properties`, statement: response.data.sql, input: properties[i] });
+                            }
+                        }
+                        /** populate holdings element with data. */
+                        if (response.data.sectors.financials) {
+                            /** sort debt equity ratio. */
+                            let financials = response.data.sectors.financials.sort((a, b) => {
+                                return a.debtequityratio - b.debtequityratio;
+                            })
+                            /** loop me up. */
+                            for (let i = 0; i < financials.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-financials`, statement: response.data.sql, input: financials[i] });
+                            }
+                        }
+                        /** populate holdings element with data. */
+                        if (response.data.sectors.smallmediumemergingboard) {
+                            /** sort debt equity ratio. */
+                            let boards = response.data.sectors.smallmediumemergingboard.sort((a, b) => {
+                                return a.debtequityratio - b.debtequityratio;
+                            })
+                            /** loop me up. */
+                            for (let i = 0; i < boards.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-boards`, statement: response.data.sql, input: boards[i] });
+                            }
+                        }
+                        /** populate holdings element with data. */
+                        if (response.data.sectors.funds) {
+                            /** sort debt equity ratio. */
+                            let funds = response.data.sectors.funds.sort((a, b) => {
+                                return a.debtequityratio - b.debtequityratio;
+                            })
+                            /** loop me up. */
+                            for (let i = 0; i < funds.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-funds`, statement: response.data.sql, input: funds[i] });
+                            }
+                        }
+                        /** display  message. */
+                        this.helper.init({ type: "message", status: response.data.status, message: response.data.message });
                     });
                 });
             }
@@ -205,9 +284,9 @@ class stock_watchlist {
                                         console.log("Processed completed.");
                                     }
                                 }, 10000);
-                            } else {
-                                console.log("All records are up to date.");
                             }
+                            /** display  message. */
+                            this.helper.init({ type: "message", status: response.data.status, message: response.data.message });
                         }
                     })
                 });

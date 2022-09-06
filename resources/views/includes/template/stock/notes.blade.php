@@ -10,7 +10,5 @@
             </div>
         </div>
     </div>
-    <div class="stock-note">
-        <h1>Stock Note</h1>
-    </div>
+    <div class="stock-note"></div>
 </div>

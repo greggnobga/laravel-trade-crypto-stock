@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('symbol');
+            $table->string('sector')->default('kolurum');
             $table->integer('edge')->default(0);
             $table->decimal('price', 24, 2)->signed()->default(0.00);
             $table->decimal('change', 24, 2)->signed()->default(0.00);

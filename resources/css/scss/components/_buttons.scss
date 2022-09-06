@@ -14,7 +14,7 @@
     &:hover {
         color: $cl-dark;
         background: $cl-light;
-        border: 1px solid $cl-dark;
+        border: 1px solid rgba($cl-white, .50);
     }
 
     &:disabled {
@@ -23,68 +23,45 @@
     }
 }
 
+.btn-info,
 .btn-primary {
-    color: $cl-white;
     background: $cl-green;
     border: 1px solid rgba($cl-lime, .25);
 
     &:hover {
-        color: $cl-white;
         background: $cl-lime;
         border: 1px solid rgba($cl-green, .25);
     }
-
-    &:disabled {
-        background: rgba($cl-gray, .35);
-        cursor: not-allowed;
-    }
 }
 
+.btn-stock,
 .btn-danger {
-    color: $cl-gray;
-    background: $cl-gold;
-    border: 1px solid rgba($cl-green, .25);
+    background: $cl-orange;
+    border: 1px solid rgba($cl-red, .25);
 
     &:hover {
-        color: $cl-white;
-        background: $cl-green;
-        border: 1px solid rgba($cl-green, .25);
+        background: $cl-red;
+        border: 1px solid rgba($cl-orange, .25);
     }
 }
 
 .btn-warning {
-    color: $cl-white;
     background: $cl-red;
-    border: 1px solid rgba($cl-lime, .25);
+    border: 1px solid rgba($cl-orange, .25);
 
     &:hover {
-        color: $cl-white;
         background: $cl-orange;
         border: 1px solid rgba($cl-red, .25);
     }
 }
 
 .btn-crypto {
-    color: $cl-white;
     background: $cl-lime;
     border: 1px solid rgba($cl-green, .25);
 
     &:hover {
-        color: $cl-white;
         background: $cl-green;
         border: 1px solid rgba($cl-lime, .25);
-    }
-}
-
-.btn-stock {
-    color: $cl-white;
-    background: $cl-orange;
-    border: 1px solid rgba($cl-red, .25);
-
-    &:hover {
-        color: $cl-white;
-        background: $cl-red;
-        border: 1px solid rgba($cl-orange, .25);
     }
 }
 
@@ -93,13 +70,14 @@
     display: inline-block;
     color: $cl-white;
     cursor: pointer;
-    padding: .50rem 1rem;
     border-radius: .25rem;
     background: rgba($cl-blue, .75);
     margin-right: .25rem;
+    width: 6rem;
+    text-align: center;
 
     &:hover {
-        background: rgba($cl-gray, .35);
+        background: rgba($cl-gray, .25);
     }
 }
 
@@ -108,12 +86,14 @@
     display: inline-block;
     color: $cl-white;
     cursor: pointer;
-    padding: .50rem 1rem;
     border-radius: .25rem;
     background: rgba($cl-red, .75);
     margin-left: .25rem;
+    padding: .5rem .5rem;
+    width: 6rem;
+    text-align: center;
 
     &:hover {
-        background: rgba($cl-gray, .35);
+        background: rgba($cl-gray, .25);
     }
 }

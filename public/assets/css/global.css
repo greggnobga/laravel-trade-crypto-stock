@@ -711,70 +711,51 @@ a:hover {
 .btn:hover {
   color: #383838;
   background: #F0F0F0;
-  border: 1px solid #383838;
+  border: 1px solid rgba(245, 245, 245, 0.5);
 }
 .btn:disabled {
   background: rgba(128, 128, 128, 0.35);
   cursor: not-allowed;
 }
 
+.btn-info,
 .btn-primary {
-  color: #F5F5F5;
   background: #03A66D;
   border: 1px solid rgba(0, 204, 51, 0.25);
 }
+.btn-info:hover,
 .btn-primary:hover {
-  color: #F5F5F5;
   background: #00CC33;
   border: 1px solid rgba(3, 166, 109, 0.25);
 }
-.btn-primary:disabled {
-  background: rgba(128, 128, 128, 0.35);
-  cursor: not-allowed;
-}
 
+.btn-stock,
 .btn-danger {
-  color: #808080;
-  background: #F0BA0E;
-  border: 1px solid rgba(3, 166, 109, 0.25);
+  background: #FF4500;
+  border: 1px solid rgba(208, 54, 79, 0.25);
 }
+.btn-stock:hover,
 .btn-danger:hover {
-  color: #F5F5F5;
-  background: #03A66D;
-  border: 1px solid rgba(3, 166, 109, 0.25);
+  background: #D0364F;
+  border: 1px solid rgba(255, 69, 0, 0.25);
 }
 
 .btn-warning {
-  color: #F5F5F5;
   background: #D0364F;
-  border: 1px solid rgba(0, 204, 51, 0.25);
+  border: 1px solid rgba(255, 69, 0, 0.25);
 }
 .btn-warning:hover {
-  color: #F5F5F5;
   background: #FF4500;
   border: 1px solid rgba(208, 54, 79, 0.25);
 }
 
 .btn-crypto {
-  color: #F5F5F5;
   background: #00CC33;
   border: 1px solid rgba(3, 166, 109, 0.25);
 }
 .btn-crypto:hover {
-  color: #F5F5F5;
   background: #03A66D;
   border: 1px solid rgba(0, 204, 51, 0.25);
-}
-
-.btn-stock {
-  color: #F5F5F5;
-  background: #FF4500;
-  border: 1px solid rgba(208, 54, 79, 0.25);
-}
-.btn-stock:hover {
-  color: #F5F5F5;
-  background: #D0364F;
-  border: 1px solid rgba(255, 69, 0, 0.25);
 }
 
 .update,
@@ -782,14 +763,15 @@ a:hover {
   display: inline-block;
   color: #F5F5F5;
   cursor: pointer;
-  padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   background: rgba(0, 150, 255, 0.75);
   margin-right: 0.25rem;
+  width: 6rem;
+  text-align: center;
 }
 .update:hover,
 .show:hover {
-  background: rgba(128, 128, 128, 0.35);
+  background: rgba(128, 128, 128, 0.25);
 }
 
 .destroy,
@@ -797,14 +779,16 @@ a:hover {
   display: inline-block;
   color: #F5F5F5;
   cursor: pointer;
-  padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   background: rgba(208, 54, 79, 0.75);
   margin-left: 0.25rem;
+  padding: 0.5rem 0.5rem;
+  width: 6rem;
+  text-align: center;
 }
 .destroy:hover,
 .watch:hover {
-  background: rgba(128, 128, 128, 0.35);
+  background: rgba(128, 128, 128, 0.25);
 }
 
 .card {
@@ -817,7 +801,7 @@ a:hover {
 .card .header .meta {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 2fr;
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
 }
 .card .header .meta .left {
@@ -840,6 +824,21 @@ a:hover {
   width: 10rem;
   padding: 0.45rem;
   display: inline-block;
+}
+.card .header .meta:first-child {
+  border-bottom: none;
+}
+.card .buffer {
+  height: 4rem;
+  width: 100%;
+  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+}
+.card .buffer h4 {
+  padding: 1rem;
+}
+.card .buffer:second-child {
+  border-top: none;
 }
 
 .form-auth {
@@ -1293,7 +1292,15 @@ sup {
   border-bottom: none;
 }
 
-.stock-watchlist > .items {
+.stock-minings > .items,
+.stock-holdings > .items,
+.stock-services > .items,
+.stock-holdings > .items,
+.stock-industrials > .items,
+.stock-properties > .items,
+.stock-financials > .items,
+.stock-boards > .items,
+.stock-funds > .items {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 5rem repeat(8, 1fr);
@@ -1301,7 +1308,26 @@ sup {
   padding: 1rem;
   vertical-align: top;
 }
-.stock-watchlist > .items:last-child {
+.stock-minings > .items:first-child,
+.stock-holdings > .items:first-child,
+.stock-services > .items:first-child,
+.stock-holdings > .items:first-child,
+.stock-industrials > .items:first-child,
+.stock-properties > .items:first-child,
+.stock-financials > .items:first-child,
+.stock-boards > .items:first-child,
+.stock-funds > .items:first-child {
+  border-top: none;
+}
+.stock-minings > .items:last-child,
+.stock-holdings > .items:last-child,
+.stock-services > .items:last-child,
+.stock-holdings > .items:last-child,
+.stock-industrials > .items:last-child,
+.stock-properties > .items:last-child,
+.stock-financials > .items:last-child,
+.stock-boards > .items:last-child,
+.stock-funds > .items:last-child {
   border-bottom: none;
 }
 

@@ -6,12 +6,10 @@
             <span class="modal-close">X</span>
         </div>
         <div class="modal-group">
-            <label class="modal-id-label" for="id">ID</label>
-            <input id="id" class="modal-id" name="id" type="number" placeholder="ID" value="0" disabled/>
-        </div>
-        <div class="modal-group">
             <label class="modal-label" for="symbol">Symbol</label>
-            <input id="symbol" class="modal-symbol" name="symbol" type="text" placeholder="0.00" disabled/>
+            <input id="id" class="modal-id" name="id" type="hidden" disabled/>
+            <input id="sector" class="modal-sector" name="sector" type="hidden" disabled/>
+            <input id="symbol" class="modal-symbol" name="symbol" type="text" disabled/>
             <span class="modal-error modal-symbol-error"></span>
         </div>
         <div class="modal-group">

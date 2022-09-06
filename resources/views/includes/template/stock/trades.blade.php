@@ -29,9 +29,10 @@
             </div>
             <div class="right">
                 <span class="messenger"></span>
-                <a class="btn btn-primary click-trade-fetch" data-action="stock">Fetch</a>
-                <a class="btn btn-primary click-trade-price"data-action="stock">Stock Data</a>
-                <a class="btn btn-primary click-trade-finance" data-action="stock">Finance Data</a>
+                <a class="btn show click-trade-fetch" data-action="stock">Start</a>
+                <a class="btn watch click-trade-price"data-action="stock">Price</a>
+                <a class="btn show click-trade-finance" data-action="stock">Finance</a>
+                <a class="btn watch click-trade-sector" data-action="stock">Sector</a>
             </div>
         </div>
     </div>

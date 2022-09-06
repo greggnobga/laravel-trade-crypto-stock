@@ -29,23 +29,27 @@ class PSEController extends Controller {
     if ($request->method() === 'POST') {
         /** forward update command. */
         if ($request->input('section') === 'reports') {
-          return $this->stockreports($request->input('id'));
+          return $this->stockreports($request->all());
         }
         /** forward update command. */
         if ($request->input('section') === 'prices') {
-          return $this->stockprices($request->input('id'));
+          return $this->stockprices($request->all());
+        }
+        /** forward watchlist command. */
+        if ($request->input('section') === 'sectors') {
+            return $this->stocksectors($request->all());
         }
     }
     /** check if request contains method equal to post. */
     if ($request->method() === 'GET') {
-      /** forward financials command. */
-      if ($request->input('section') === 'stocks') {
-        return $this->stocktrades();
-      }
-      /** forward watchlist command. */
-      if ($request->input('section') === 'watches') {
-        return $this->stockwatches($request->all());
-      }
+        /** forward financials command. */
+        if ($request->input('section') === 'stocks') {
+            return $this->stocktrades();
+        }
+        /** forward watchlist command. */
+        if ($request->input('section') === 'watches') {
+            return $this->stockwatches($request->all());
+        }
     }
   }
 
@@ -57,7 +61,7 @@ class PSEController extends Controller {
     $financialreports;
     $result;
     /** fetch and crawl document element. */
-    $financial = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data);
+    $financial = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id']);
     $finance = $financial->filter('tr > td')->each(function ($node) { return $node->text(); });
     if (count($finance) != 0) {
       /** mapping net after tax . */
@@ -109,7 +113,7 @@ class PSEController extends Controller {
       $result['income']['balance'] = floatval(bcsub($result['income']['current'], $result['income']['previous'], 2));
       /** save to database.. */
       DB::table('stock_trades')
-        ->where('edge', '=', $data)
+        ->where('edge', '=', $data['id'])
         ->update([
           'incomeaftertax' => strip_tags($result['income']['balance']),
         ]);
@@ -147,14 +151,14 @@ class PSEController extends Controller {
       $result['earning']['balance'] =  floatval(bcsub($result['earning']['current'], $result['earning']['previous'], 2));
       /** save to database.. */
       DB::table('stock_trades')
-        ->where('edge', '=', $data)
+        ->where('edge', '=', $data['id'])
         ->update([
           'earningpershare' => strip_tags($result['earning']['balance']),
         ]);
       /** search database.. */
       $financialreports =   DB::table('stock_trades')
         ->select('name')
-        ->where('edge', '=', $data)
+        ->where('edge', '=', $data['id'])
         ->first();
       /** return something. */
       return ['status' => true, 'message' => $financialreports->name . ' has been successfully updated.', 'reports' => $financialreports];
@@ -169,7 +173,7 @@ class PSEController extends Controller {
     $stockreports;
     $result;
     /** fetch and crawl document element. */
-    $stockprices = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data);
+    $stockprices = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id']);
     $stockprice = $stockprices->filter('tr > td')->each(function ($node) { return $node->text(); });
     if (count($stockprice) != 0) {
       /** mapping year high price. */
@@ -182,7 +186,7 @@ class PSEController extends Controller {
         $result['high'] = floatval($price['high']);
         /** save to database. */
         DB::table('stock_trades')
-          ->where('edge', '=', $data)
+          ->where('edge', '=', $data['id'])
           ->update(['yearhighprice' => strip_tags($result['high']),
         ]);
       }
@@ -196,14 +200,54 @@ class PSEController extends Controller {
         $result['average'] = floatval($average['average']);
         /** save to database. */
         DB::table('stock_trades')
-          ->where('edge', '=', $data)
+          ->where('edge', '=', $data['id'])
           ->update(['average' => strip_tags($result['average']),
         ]);
       }
     }
     $stockreports =   DB::table('stock_trades')
       ->select('name')
-      ->where('edge', '=', $data)
+      ->where('edge', '=', $data['id'])
+      ->first();
+    /** return something. */
+    return ['status' => true, 'message' => $stockreports->name . ' has been successfully updated.', 'reports' => $stockreports];
+  }
+
+    /**
+    * Declare stocks function.
+    */
+    public function stocksectors($data) {
+    /** repository. */
+    $stockreports;
+    $result;
+    /** fetch and crawl document element. */
+    $stocksectors = $this->client->request('GET', 'https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=' . $data['id']);
+    $stocksector = $stocksectors->filter('tr > td')->each(function ($node) { return $node->text(); });
+    if (count($stocksector) != 0) {
+      /** mapping year high price. */
+      $stockdata['sector'] = $stocksector['1'];
+      /** save to database.. */
+      if (array_key_exists("sector", $stockdata)) {
+        /** replace comma with nothing. */
+        $sector['sector'] = str_replace([' ', '&', ','], '', $stockdata['sector']);
+        /** match string if has number and comma and parentheses. */  
+        if (preg_match('/^.*$/', $sector['sector'])) {
+            $result['sector'] = strtolower($sector['sector']);
+        }
+        /** match string if has no value. */
+        if ($sector['sector'] == '') {
+            $result['sector'] = 'kolorum';
+        }
+        /** save to database. */
+        DB::table('stock_trades')
+          ->where('edge', '=', $data['id'])
+          ->update(['sector' => strip_tags($result['sector']),
+        ]);
+      }
+    }
+    $stockreports =   DB::table('stock_trades')
+      ->select('name')
+      ->where('edge', '=', $data['id'])
       ->first();
     /** return something. */
     return ['status' => true, 'message' => $stockreports->name . ' has been successfully updated.', 'reports' => $stockreports];
@@ -321,7 +365,6 @@ class PSEController extends Controller {
     /** fetch and crawl document element. */
     $prices = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id']);
     $price = $prices->filter('tr > td')->each(function ($node) { return $node->text(); });
-
     if (count($price) != 0) {
       /** mapping net after tax . */
       $annualincomestatement['LastTradedPrice'] = $price['12'];

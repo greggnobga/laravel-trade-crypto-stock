@@ -41,7 +41,7 @@ class TradeController extends Controller {
 
               /** create stock list. */
               $items = DB::table('stock_trades')
-                ->select('id', 'edge', 'symbol' , 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
+                ->select('id', 'edge', 'symbol' , 'sector', 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
                 ->orderBy('incomeaftertax', 'desc')
                 ->get();
 

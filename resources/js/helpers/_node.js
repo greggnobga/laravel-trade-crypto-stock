@@ -18,6 +18,11 @@ class node {
                     child.style.display = 'none';
                 }
 
+                /** set style display to none. */
+                if (key === "sector") {
+                    child.style.display = 'none';
+                }
+
                 /** restructure id content. */
                 if (key === "id") {
                     child.classList.add(key);

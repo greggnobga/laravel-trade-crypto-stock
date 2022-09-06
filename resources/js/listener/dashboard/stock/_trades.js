@@ -25,18 +25,31 @@ class stock_trade {
                     this.element.innerHTML = "";
                     /** append template content. */
                     this.element.appendChild(content);
-                    /** fetch button. */
-                    let fetch = document.querySelector(".card > .header > .meta > .right > .click-trade-fetch");
-                    if (fetch) {
+                    /** start button. */
+                    let start = document.querySelector(".card > .header > .meta > .right > .click-trade-fetch");
+                    if (start) {
                         let callback = () => {
-                            this.request({ method: "POST", provider: "simple" });
+                            this.request({ method: "POST", provider: "start" });
                             /** remove event listener after firing once. */
-                            fetch.removeEventListener("click", callback);
+                            start.removeEventListener("click", callback);
                             /** disabled when no listener around. */
-                            fetch.disabled = true;
+                            start.disabled = true;
                         };
                         /** add event listener. */
-                        fetch.addEventListener("click", callback, false);
+                        start.addEventListener("click", callback, false);
+                    }
+                    /** price button. */
+                    let price = document.querySelector(".card > .header > .meta > .right > .click-trade-price");
+                    if (price) {
+                        let callback = () => {
+                            this.request({ method: "POST", provider: "prices" });
+                            /** remove event listener after firing once. */
+                            price.removeEventListener("click", callback);
+                            /** disabled when no listener around. */
+                            price.disabled = true;
+                        };
+                        /** add event listener. */
+                        price.addEventListener("click", callback, false);
                     }
                     /** finance button. */
                     let finance = document.querySelector(".card > .header > .meta > .right > .click-trade-finance");
@@ -52,17 +65,17 @@ class stock_trade {
                         finance.addEventListener("click", callback, false);
                     }
                     /** finance button. */
-                    let price = document.querySelector(".card > .header > .meta > .right > .click-trade-price");
-                    if (price) {
+                    let sector = document.querySelector(".card > .header > .meta > .right > .click-trade-sector");
+                    if (sector) {
                         let callback = () => {
-                            this.request({ method: "POST", provider: "prices" });
+                            this.request({ method: "POST", provider: "sector" });
                             /** remove event listener after firing once. */
-                            price.removeEventListener("click", callback);
+                            sector.removeEventListener("click", callback);
                             /** disabled when no listener around. */
-                            price.disabled = true;
+                            sector.disabled = true;
                         };
                         /** add event listener. */
-                        price.addEventListener("click", callback, false);
+                        sector.addEventListener("click", callback, false);
                     }
                     /** add modal code block. */
                     setTimeout(() => {
@@ -78,14 +91,13 @@ class stock_trade {
                                     });
 
                                     // /** populate modal. */
-                                    let parent =
-                                        watch[i].parentElement.parentElement;
+                                    let parent = watch[i].parentElement.parentElement;
                                     this.helper.init({
                                         type: "input",
                                         action: "populate",
                                         target: "stock-trade-insert",
                                         el: parent,
-                                        data: ["id", "symbol", "edge"],
+                                        data: ["id", "symbol", "sector", "edge"],
                                     });
                                     /** set event listener. */
                                     let submit = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
@@ -186,7 +198,7 @@ class stock_trade {
                 section: "watchlist",
                 target: `stock-trade-${config["action"]}`,
                 action: "value",
-                data: ["id", "symbol", "edge", "symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
+                data: ["id", "symbol", "sector", "edge", "symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
             });
             /** check if inputs are empty and valid. */
             let result = this.helper.init({
@@ -199,7 +211,7 @@ class stock_trade {
                 let sanitize = this.helper.init({
                     type: "sanitize",
                     action: "comma",
-                    condition: ["symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
+                    condition: ["symbol", "sector", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
                     data: result["success"]
                 });
                 /** request access token and then post to backend. */
@@ -291,7 +303,7 @@ class stock_trade {
         /** store data. */
         if (config["method"] === "POST") {
             /** fetch stock list. */
-            if (config["provider"] === "simple") {
+            if (config["provider"] === "start") {
                 axios
                     .get("https://phisix-api4.appspot.com/stocks.json", {
                         headers: {
@@ -435,6 +447,68 @@ class stock_trade {
                                                 axios
                                                     .post("/stock-reports-store", {
                                                         section: "prices",
+                                                        id: stock.edge,
+                                                    })
+                                                    .then((response) => {
+                                                        /** send user a message. */
+                                                        this.helper.init({
+                                                            type: "message",
+                                                            status: response.data.status,
+                                                            message: response.data.message,
+                                                        });
+                                                    });
+                                            });
+                                        /** remove first array element. */
+                                        response.data.stocks.shift();
+                                        /** clear interval when array reach zero. */
+                                        if (response.data.stocks.length === 0) {
+                                            /** send user a message. */
+                                            this.helper.init({
+                                                type: "message",
+                                                status: true,
+                                                message: "Processed completed.",
+                                            });
+                                            /** clear interval. */
+                                            clearInterval(stocks);
+                                            /** chat console. */
+                                            console.log("Processed completed.");
+                                        }
+                                    }, 5000);
+                                } else {
+                                    console.log("All records are up to date.");
+                                }
+                            }
+
+                            /** send user a message. */
+                            this.helper.init({
+                                type: "message",
+                                status: response.data.status,
+                                message: response.data.message,
+                            });
+                        });
+                });
+            }
+
+            /** fetch financial information */
+            if (config["provider"] === "sector") {
+                axios.get("/sanctum/csrf-cookie").then((response) => {
+                    axios
+                        .get("/stock-reports-retrieve", {
+                            params: { section: "stocks" },
+                        })
+                        .then((response) => {
+                            if (response.data.status === true) {
+                                if (response.data.stocks.length !== 0) {
+                                    let stocks = setInterval(() => {
+                                        /** get first array element. */
+                                        let stock = response.data.stocks[0];
+                                        /** get csrf token and send post request. */
+                                        axios
+                                            .get("/sanctum/csrf-cookie")
+                                            .then((response) => {
+                                                axios
+                                                    .post("/stock-reports-store", {
+                                                        section: "sectors",
                                                         id: stock.edge,
                                                     })
                                                     .then((response) => {

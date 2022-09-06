@@ -2326,6 +2326,12 @@ var node = /*#__PURE__*/function () {
           if (key === "edge") {
             child.style.display = 'none';
           }
+          /** set style display to none. */
+
+
+          if (key === "sector") {
+            child.style.display = 'none';
+          }
           /** restructure id content. */
 
 
@@ -5149,6 +5155,29 @@ var stock_note = /*#__PURE__*/function () {
       this.event.addEventListener("click", function (e) {
         if (e.target.dataset.sidebar === 'stock_notes') {
           console.log('Clicked Stock Notes');
+          axios.get("/sanctum/csrf-cookie").then(function (response) {
+            axios.get("/api/stock-trade-retrieve", {
+              params: {
+                table: 'note',
+                statement: 'select'
+              }
+            }).then(function (response) {
+              if (response.data.status === true) {
+                console.log(response.data);
+                /** populate order element with data. */
+                // if (response.data.watchlist) {
+                //     /** sort debt equity ratio. */
+                //     let watchlist = response.data.watchlist.sort((a, b) => {
+                //         return a.debtequityratio - b.debtequityratio;
+                //     })
+                //     /** loop me up. */
+                //     for (let i = 0; i < watchlist.length; i++) {
+                //         this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-${config["table"]}`, statement: response.data.sql, input: watchlist[i] });
+                //     }
+                // }
+              }
+            });
+          });
           /** retrieve data .*/
           // this.request({method: 'GET', table:'portfolio'});
 
@@ -6345,61 +6374,37 @@ var stock_trade = /*#__PURE__*/function () {
             /** append template content. */
 
             _this.element.appendChild(content);
-            /** fetch button. */
+            /** start button. */
 
 
-            var fetch = document.querySelector(".card > .header > .meta > .right > .click-trade-fetch");
+            var start = document.querySelector(".card > .header > .meta > .right > .click-trade-fetch");
 
-            if (fetch) {
+            if (start) {
               var callback = function callback() {
                 _this.request({
                   method: "POST",
-                  provider: "simple"
+                  provider: "start"
                 });
                 /** remove event listener after firing once. */
 
 
-                fetch.removeEventListener("click", callback);
+                start.removeEventListener("click", callback);
                 /** disabled when no listener around. */
 
-                fetch.disabled = true;
+                start.disabled = true;
               };
               /** add event listener. */
 
 
-              fetch.addEventListener("click", callback, false);
+              start.addEventListener("click", callback, false);
             }
-            /** finance button. */
-
-
-            var finance = document.querySelector(".card > .header > .meta > .right > .click-trade-finance");
-
-            if (finance) {
-              var _callback = function _callback() {
-                _this.request({
-                  method: "POST",
-                  provider: "reports"
-                });
-                /** remove event listener after firing once. */
-
-
-                finance.removeEventListener("click", _callback);
-                /** disabled when no listener around. */
-
-                finance.disabled = true;
-              };
-              /** add event listener. */
-
-
-              finance.addEventListener("click", _callback, false);
-            }
-            /** finance button. */
+            /** price button. */
 
 
             var price = document.querySelector(".card > .header > .meta > .right > .click-trade-price");
 
             if (price) {
-              var _callback2 = function _callback2() {
+              var _callback = function _callback() {
                 _this.request({
                   method: "POST",
                   provider: "prices"
@@ -6407,7 +6412,7 @@ var stock_trade = /*#__PURE__*/function () {
                 /** remove event listener after firing once. */
 
 
-                price.removeEventListener("click", _callback2);
+                price.removeEventListener("click", _callback);
                 /** disabled when no listener around. */
 
                 price.disabled = true;
@@ -6415,7 +6420,55 @@ var stock_trade = /*#__PURE__*/function () {
               /** add event listener. */
 
 
-              price.addEventListener("click", _callback2, false);
+              price.addEventListener("click", _callback, false);
+            }
+            /** finance button. */
+
+
+            var finance = document.querySelector(".card > .header > .meta > .right > .click-trade-finance");
+
+            if (finance) {
+              var _callback2 = function _callback2() {
+                _this.request({
+                  method: "POST",
+                  provider: "reports"
+                });
+                /** remove event listener after firing once. */
+
+
+                finance.removeEventListener("click", _callback2);
+                /** disabled when no listener around. */
+
+                finance.disabled = true;
+              };
+              /** add event listener. */
+
+
+              finance.addEventListener("click", _callback2, false);
+            }
+            /** finance button. */
+
+
+            var sector = document.querySelector(".card > .header > .meta > .right > .click-trade-sector");
+
+            if (sector) {
+              var _callback3 = function _callback3() {
+                _this.request({
+                  method: "POST",
+                  provider: "sector"
+                });
+                /** remove event listener after firing once. */
+
+
+                sector.removeEventListener("click", _callback3);
+                /** disabled when no listener around. */
+
+                sector.disabled = true;
+              };
+              /** add event listener. */
+
+
+              sector.addEventListener("click", _callback3, false);
             }
             /** add modal code block. */
 
@@ -6441,7 +6494,7 @@ var stock_trade = /*#__PURE__*/function () {
                       action: "populate",
                       target: "stock-trade-insert",
                       el: parent,
-                      data: ["id", "symbol", "edge"]
+                      data: ["id", "symbol", "sector", "edge"]
                     });
                     /** set event listener. */
 
@@ -6449,18 +6502,18 @@ var stock_trade = /*#__PURE__*/function () {
                     var submit = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
 
                     if (submit) {
-                      var _callback5 = function _callback5() {
+                      var _callback6 = function _callback6() {
                         _this.backdrop({
                           action: "insert",
                           mode: "submit",
                           element: submit,
-                          callback: _callback5
+                          callback: _callback6
                         });
                       };
                       /** add event listener. */
 
 
-                      submit.addEventListener("click", _callback5, {
+                      submit.addEventListener("click", _callback6, {
                         once: true
                       });
                     }
@@ -6476,23 +6529,6 @@ var stock_trade = /*#__PURE__*/function () {
                 var close = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-close");
 
                 if (close) {
-                  var _callback3 = function _callback3() {
-                    _this.backdrop({
-                      action: "insert",
-                      mode: "hide"
-                    });
-                  };
-                  /** add event listener. */
-
-
-                  close.addEventListener("click", _callback3, false);
-                }
-                /** query document cancel button. */
-
-
-                var cancel = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
-
-                if (cancel) {
                   var _callback4 = function _callback4() {
                     _this.backdrop({
                       action: "insert",
@@ -6502,7 +6538,24 @@ var stock_trade = /*#__PURE__*/function () {
                   /** add event listener. */
 
 
-                  cancel.addEventListener("click", _callback4, false);
+                  close.addEventListener("click", _callback4, false);
+                }
+                /** query document cancel button. */
+
+
+                var cancel = document.querySelector(".stock-trade-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
+
+                if (cancel) {
+                  var _callback5 = function _callback5() {
+                    _this.backdrop({
+                      action: "insert",
+                      mode: "hide"
+                    });
+                  };
+                  /** add event listener. */
+
+
+                  cancel.addEventListener("click", _callback5, false);
                 }
               }
             }, 10000);
@@ -6600,7 +6653,7 @@ var stock_trade = /*#__PURE__*/function () {
           section: "watchlist",
           target: "stock-trade-".concat(config["action"]),
           action: "value",
-          data: ["id", "symbol", "edge", "symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"]
+          data: ["id", "symbol", "sector", "edge", "symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"]
         });
         /** check if inputs are empty and valid. */
 
@@ -6615,7 +6668,7 @@ var stock_trade = /*#__PURE__*/function () {
           var sanitize = this.helper.init({
             type: "sanitize",
             action: "comma",
-            condition: ["symbol", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
+            condition: ["symbol", "sector", "edge", "liabilities", "equity", "price", "earning", "income", "gross"],
             data: result["success"]
           });
           /** request access token and then post to backend. */
@@ -6724,7 +6777,7 @@ var stock_trade = /*#__PURE__*/function () {
 
       if (config["method"] === "POST") {
         /** fetch stock list. */
-        if (config["provider"] === "simple") {
+        if (config["provider"] === "start") {
           axios.get("https://phisix-api4.appspot.com/stocks.json", {
             headers: {
               "Access-Control-Allow-Origin": "*",
@@ -6877,6 +6930,72 @@ var stock_trade = /*#__PURE__*/function () {
                     axios.get("/sanctum/csrf-cookie").then(function (response) {
                       axios.post("/stock-reports-store", {
                         section: "prices",
+                        id: stock.edge
+                      }).then(function (response) {
+                        /** send user a message. */
+                        _this3.helper.init({
+                          type: "message",
+                          status: response.data.status,
+                          message: response.data.message
+                        });
+                      });
+                    });
+                    /** remove first array element. */
+
+                    response.data.stocks.shift();
+                    /** clear interval when array reach zero. */
+
+                    if (response.data.stocks.length === 0) {
+                      /** send user a message. */
+                      _this3.helper.init({
+                        type: "message",
+                        status: true,
+                        message: "Processed completed."
+                      });
+                      /** clear interval. */
+
+
+                      clearInterval(stocks);
+                      /** chat console. */
+
+                      console.log("Processed completed.");
+                    }
+                  }, 5000);
+                } else {
+                  console.log("All records are up to date.");
+                }
+              }
+              /** send user a message. */
+
+
+              _this3.helper.init({
+                type: "message",
+                status: response.data.status,
+                message: response.data.message
+              });
+            });
+          });
+        }
+        /** fetch financial information */
+
+
+        if (config["provider"] === "sector") {
+          axios.get("/sanctum/csrf-cookie").then(function (response) {
+            axios.get("/stock-reports-retrieve", {
+              params: {
+                section: "stocks"
+              }
+            }).then(function (response) {
+              if (response.data.status === true) {
+                if (response.data.stocks.length !== 0) {
+                  var stocks = setInterval(function () {
+                    /** get first array element. */
+                    var stock = response.data.stocks[0];
+                    /** get csrf token and send post request. */
+
+                    axios.get("/sanctum/csrf-cookie").then(function (response) {
+                      axios.post("/stock-reports-store", {
+                        section: "sectors",
                         id: stock.edge
                       }).then(function (response) {
                         /** send user a message. */
@@ -7221,25 +7340,173 @@ var stock_watchlist = /*#__PURE__*/function () {
               }
             }).then(function (response) {
               if (response.data.status === true) {
-                /** populate order element with data. */
-                if (response.data.watchlist) {
+                /** populate holdings element with data. */
+                if (response.data.sectors.miningandoil) {
                   /** sort debt equity ratio. */
-                  var watchlist = response.data.watchlist.sort(function (a, b) {
+                  var minings = response.data.sectors.miningandoil.sort(function (a, b) {
                     return a.debtequityratio - b.debtequityratio;
                   });
                   /** loop me up. */
 
-                  for (var i = 0; i < watchlist.length; i++) {
+                  for (var i = 0; i < minings.length; i++) {
                     _this2.helper.init({
                       type: "node",
                       id: "".concat(i + 1),
-                      target: "stock-".concat(config["table"]),
+                      target: "stock-minings",
                       statement: response.data.sql,
-                      input: watchlist[i]
+                      input: minings[i]
                     });
                   }
                 }
               }
+              /** populate holdings element with data. */
+
+
+              if (response.data.sectors.holdingfirms) {
+                /** sort debt equity ratio. */
+                var holdings = response.data.sectors.holdingfirms.sort(function (a, b) {
+                  return a.debtequityratio - b.debtequityratio;
+                });
+                /** loop me up. */
+
+                for (var _i = 0; _i < holdings.length; _i++) {
+                  _this2.helper.init({
+                    type: "node",
+                    id: "".concat(_i + 1),
+                    target: "stock-holdings",
+                    statement: response.data.sql,
+                    input: holdings[_i]
+                  });
+                }
+              }
+              /** populate holdings element with data. */
+
+
+              if (response.data.sectors.services) {
+                /** sort debt equity ratio. */
+                var services = response.data.sectors.services.sort(function (a, b) {
+                  return a.debtequityratio - b.debtequityratio;
+                });
+                /** loop me up. */
+
+                for (var _i2 = 0; _i2 < services.length; _i2++) {
+                  _this2.helper.init({
+                    type: "node",
+                    id: "".concat(_i2 + 1),
+                    target: "stock-services",
+                    statement: response.data.sql,
+                    input: services[_i2]
+                  });
+                }
+              }
+              /** populate holdings element with data. */
+
+
+              if (response.data.sectors.industrial) {
+                /** sort debt equity ratio. */
+                var industrials = response.data.sectors.industrial.sort(function (a, b) {
+                  return a.debtequityratio - b.debtequityratio;
+                });
+                /** loop me up. */
+
+                for (var _i3 = 0; _i3 < industrials.length; _i3++) {
+                  _this2.helper.init({
+                    type: "node",
+                    id: "".concat(_i3 + 1),
+                    target: "stock-industrials",
+                    statement: response.data.sql,
+                    input: industrials[_i3]
+                  });
+                }
+              }
+              /** populate holdings element with data. */
+
+
+              if (response.data.sectors.property) {
+                /** sort debt equity ratio. */
+                var properties = response.data.sectors.property.sort(function (a, b) {
+                  return a.debtequityratio - b.debtequityratio;
+                });
+                /** loop me up. */
+
+                for (var _i4 = 0; _i4 < properties.length; _i4++) {
+                  _this2.helper.init({
+                    type: "node",
+                    id: "".concat(_i4 + 1),
+                    target: "stock-properties",
+                    statement: response.data.sql,
+                    input: properties[_i4]
+                  });
+                }
+              }
+              /** populate holdings element with data. */
+
+
+              if (response.data.sectors.financials) {
+                /** sort debt equity ratio. */
+                var financials = response.data.sectors.financials.sort(function (a, b) {
+                  return a.debtequityratio - b.debtequityratio;
+                });
+                /** loop me up. */
+
+                for (var _i5 = 0; _i5 < financials.length; _i5++) {
+                  _this2.helper.init({
+                    type: "node",
+                    id: "".concat(_i5 + 1),
+                    target: "stock-financials",
+                    statement: response.data.sql,
+                    input: financials[_i5]
+                  });
+                }
+              }
+              /** populate holdings element with data. */
+
+
+              if (response.data.sectors.smallmediumemergingboard) {
+                /** sort debt equity ratio. */
+                var boards = response.data.sectors.smallmediumemergingboard.sort(function (a, b) {
+                  return a.debtequityratio - b.debtequityratio;
+                });
+                /** loop me up. */
+
+                for (var _i6 = 0; _i6 < boards.length; _i6++) {
+                  _this2.helper.init({
+                    type: "node",
+                    id: "".concat(_i6 + 1),
+                    target: "stock-boards",
+                    statement: response.data.sql,
+                    input: boards[_i6]
+                  });
+                }
+              }
+              /** populate holdings element with data. */
+
+
+              if (response.data.sectors.funds) {
+                /** sort debt equity ratio. */
+                var funds = response.data.sectors.funds.sort(function (a, b) {
+                  return a.debtequityratio - b.debtequityratio;
+                });
+                /** loop me up. */
+
+                for (var _i7 = 0; _i7 < funds.length; _i7++) {
+                  _this2.helper.init({
+                    type: "node",
+                    id: "".concat(_i7 + 1),
+                    target: "stock-funds",
+                    statement: response.data.sql,
+                    input: funds[_i7]
+                  });
+                }
+              }
+              /** display  message. */
+
+
+              _this2.helper.init({
+                type: "message",
+                status: response.data.status,
+                message: response.data.message
+              });
             });
           });
         }
@@ -7297,9 +7564,15 @@ var stock_watchlist = /*#__PURE__*/function () {
                       console.log("Processed completed.");
                     }
                   }, 10000);
-                } else {
-                  console.log("All records are up to date.");
                 }
+                /** display  message. */
+
+
+                _this2.helper.init({
+                  type: "message",
+                  status: response.data.status,
+                  message: response.data.message
+                });
               }
             });
           });

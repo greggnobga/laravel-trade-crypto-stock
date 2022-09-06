@@ -11,13 +11,25 @@
     }
 }
 
-.stock-watchlist>.items {
+.stock-minings>.items,
+.stock-holdings>.items,
+.stock-services>.items,
+.stock-holdings>.items,
+.stock-industrials>.items,
+.stock-properties>.items,
+.stock-financials>.items,
+.stock-boards>.items,
+.stock-funds>.items {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 5rem repeat(8, 1fr);
     border-bottom: 1px solid rgba($cl-gray, .15);
     padding: 1rem;
     vertical-align: top;
+
+    &:first-child {
+        border-top: none;
+    }
 
     &:last-child {
         border-bottom: none;

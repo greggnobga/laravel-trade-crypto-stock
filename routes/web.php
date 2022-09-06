@@ -27,4 +27,4 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/stock-reports-retrieve', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
 });
 
-Route::get('/test', [App\Http\Controllers\Dashboard\DashboardController::class, 'stockreports']);
+Route::get('/test', [App\Http\Controllers\Dashboard\DashboardController::class, 'stocksectors']);

@@ -15,7 +15,29 @@ class stock_note {
         /** setup initial listener. */
         this.event.addEventListener("click", (e) => {
             if (e.target.dataset.sidebar === 'stock_notes') {
-              console.log('Clicked Stock Notes');
+                console.log('Clicked Stock Notes');
+
+                axios.get("/sanctum/csrf-cookie").then(response => {
+                    axios.get("/api/stock-trade-retrieve", {
+                        params: { table: 'note', statement: 'select' }
+                    }).then(response => {
+                        if (response.data.status === true) {
+                            console.log(response.data);
+                            /** populate order element with data. */
+                            // if (response.data.watchlist) {
+                            //     /** sort debt equity ratio. */
+                            //     let watchlist = response.data.watchlist.sort((a, b) => {
+                            //         return a.debtequityratio - b.debtequityratio;
+                            //     })
+                            //     /** loop me up. */
+                            //     for (let i = 0; i < watchlist.length; i++) {
+                            //         this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-${config["table"]}`, statement: response.data.sql, input: watchlist[i] });
+                            //     }
+                            // }
+                        }
+                    });
+                });
+
                 /** retrieve data .*/
                 // this.request({method: 'GET', table:'portfolio'});
                 /** clone template. */

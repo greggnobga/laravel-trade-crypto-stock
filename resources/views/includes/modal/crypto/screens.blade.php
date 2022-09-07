@@ -8,7 +8,7 @@
 
         <div class="modal-group">
             <label class="modal-label" for="id">ID</label>
-            <input id="id" class="modal-id" name="id" type="number" value="0" placeholder="ID" disabled/>
+            <input id="id" class="modal-id" name="id" type="number" value="0" placeholder="0" disabled/>
             <span class="modal-error modal-id-error"></span>
         </div>
 

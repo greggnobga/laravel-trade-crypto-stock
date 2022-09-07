@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Dashboard\Stock;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class WatchlistController extends Controller
 {
@@ -41,7 +41,8 @@ class WatchlistController extends Controller
                             /** fetch stocks. */
                             $sector['miningandoil'] = DB::table('stock_watchlists')
                                 ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                                ->where('sector', '=',$value->sector)
+                                ->where('userid', '=', Auth::id())
+                                ->where('sector', '=', $value->sector)
                                 ->get()
                                 ->toArray();
                             /** resequence array keys. */
@@ -55,6 +56,7 @@ class WatchlistController extends Controller
                             /** fetch stocks. */
                             $sector['holdingfirms'] = DB::table('stock_watchlists')
                                 ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
                                 ->toArray();
@@ -69,6 +71,7 @@ class WatchlistController extends Controller
                             /** fetch stocks. */
                             $sector['services'] = DB::table('stock_watchlists')
                                 ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
                                 ->toArray();
@@ -83,6 +86,7 @@ class WatchlistController extends Controller
                             /** fetch stocks. */
                             $sector['industrial'] = DB::table('stock_watchlists')
                                 ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
                                 ->toArray();
@@ -97,6 +101,7 @@ class WatchlistController extends Controller
                             /** fetch stocks. */
                             $sector['property'] = DB::table('stock_watchlists')
                                 ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
                                 ->toArray();
@@ -111,6 +116,7 @@ class WatchlistController extends Controller
                             /** fetch stocks. */
                             $sector['financials'] = DB::table('stock_watchlists')
                                 ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
                                 ->toArray();
@@ -124,7 +130,8 @@ class WatchlistController extends Controller
                         if ($value->sector == 'smallmediumemergingboard') {
                             /** fetch stocks. */
                             $sector['smallmediumemergingboard'] = DB::table('stock_watchlists')
-                                ->select('id', 'updated_at as date', 'edge', 'symbol' , 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
+                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
                                 ->toArray();
@@ -137,8 +144,9 @@ class WatchlistController extends Controller
                         }
                         if ($value->sector == 'etf') {
                             $sector['funds'] = DB::table('stock_watchlists')
-                                ->select('id', 'updated_at as date', 'edge', 'symbol' , 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
-                                ->where('sector', '=', $value->sector)
+                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->where('userid', '=', Auth::id())
+                                 ->where('sector', '=', $value->sector)
                                 ->get()
                                 ->toArray();
                             /** resequence array keys. */

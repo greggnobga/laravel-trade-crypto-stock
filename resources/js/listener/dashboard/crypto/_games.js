@@ -172,7 +172,7 @@ class crypto_game {
                     type: "input",
                     target: `crypto-game-${config["action"]}`,
                     action: "clear",
-                    data: ["id", "title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
+                    data: ["title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
                 });
             }
         }
@@ -189,7 +189,7 @@ class crypto_game {
                 type: "input",
                 target: `crypto-game-${config["action"]}`,
                 action: "value",
-                data: ["id", "title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
+                data: ["title", "genre", "platform", "blockchain", "status", "earn", "free", "rating"]
             });
             /** check if inputs are empty and valid. */
             let result = this.helper.init({

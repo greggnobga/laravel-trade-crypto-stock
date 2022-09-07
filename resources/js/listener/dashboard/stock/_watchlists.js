@@ -38,45 +38,51 @@ class stock_watchlist {
                     }
                     /** destroy modal code block. */
                     setTimeout(() => {
-                        let destroy = document.querySelectorAll(".stock-watchlist > .items > .action > .destroy");
-                        if (destroy) {
-                            for (let i = 0; i < destroy.length; i++) {
-                                destroy[i].addEventListener("click", () => {
-                                    /** show destroy modal. */
-                                    this.backdrop({ mode: "show", action: "destroy" });
-                                    /** populate modal. */
-                                    let parent = destroy[i].parentElement.parentElement;
-                                    this.helper.init({ type: "input", action: "destroy", target: "stock-watchlist-destroy", section: 'populate', el: parent, data: ["id", "symbol"] });
-                                    /** set destroy event listener. */
-                                    let submit = document.querySelector(".stock-watchlist-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
-                                    if (submit) {
+                        /** define sectors. */
+                        let sectors = ["minings", "holdings", "services", "industrials", "properties", "financials", "boards", "funds"]
+                        /** run through each. */
+                        sectors.forEach(sector => {
+                            /** define modal. */
+                            let index = document.querySelectorAll(`.stock-${sector} > .items > .action > .destroy`);
+                            if (index) {
+                                for (let i = 0; i < index.length; i++) {
+                                    index[i].addEventListener("click", () => {
+                                        /** show destroy modal. */
+                                        this.backdrop({ mode: "show", action: "destroy" });
+                                        /** populate modal. */
+                                        let parent = index[i].parentElement.parentElement;
+                                        this.helper.init({ type: "input", action: "destroy", target: "stock-watchlist-destroy", section: 'populate', el: parent, data: ["id", "symbol"] });
+                                        /** set event listener. */
+                                        let submit = document.querySelector(".stock-watchlist-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
+                                        if (submit) {
+                                            let callback = () => {
+                                                this.backdrop({ action: "destroy", mode: "submit", sector: `${sector}`, element: submit, callback: callback });
+                                            };
+                                            /** add event listener. */
+                                            submit.addEventListener("click", callback, false);
+                                        }
+                                    });
+                                    /** set cancel event listener. */
+                                    let close = document.querySelector(".stock-watchlist-destroy > .modal-form > .modal-group > .modal-close");
+                                    if (close) {
                                         let callback = () => {
-                                            this.backdrop({ action: "destroy", mode: "submit", element: submit, callback: callback });
+                                            this.backdrop({ action: "destroy", mode: "hide" });
                                         };
                                         /** add event listener. */
-                                        submit.addEventListener("click", callback, false);
+                                        close.addEventListener("click", callback, false);
                                     }
-                                });
-                                /** set cancel event listener. */
-                                let close = document.querySelector(".stock-watchlist-destroy > .modal-form > .modal-group > .modal-close");
-                                if (close) {
-                                    let callback = () => {
-                                        this.backdrop({ action: "destroy", mode: "hide" });
-                                    };
-                                    /** add event listener. */
-                                    close.addEventListener("click", callback, false);
-                                }
-                                /** set cancel event listener. */
-                                let cancel = document.querySelector(".stock-watchlist-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
-                                if (cancel) {
-                                    let callback = () => {
-                                        this.backdrop({ action: "destroy", mode: "hide" });
-                                    };
-                                    /** add event listener. */
-                                    cancel.addEventListener("click", callback, false);
+                                    /** set cancel event listener. */
+                                    let cancel = document.querySelector(".stock-watchlist-destroy > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
+                                    if (cancel) {
+                                        let callback = () => {
+                                            this.backdrop({ action: "destroy", mode: "hide" });
+                                        };
+                                        /** add event listener. */
+                                        cancel.addEventListener("click", callback, false);
+                                    }
                                 }
                             }
-                        }
+                        });
                     }, 10000);
                     let info = document.querySelector(".card > .header > .meta > .right > .messenger");
                     info.classList.add("info");
@@ -125,6 +131,7 @@ class stock_watchlist {
                     method: "POST",
                     provider: "local",
                     table: "watchlist",
+                    sector: config["sector"],
                     statement: config["action"],
                     input: result["success"]
                 });
@@ -306,7 +313,7 @@ class stock_watchlist {
                         if (response.data.status === true) {
                             /** remove element in document tree. */
                             if (response.data.sql === "destroy") {
-                                this.helper.init({ type: "node", target: "stock-watchlist", statement: response.data.sql, input: response.data.stock });
+                                this.helper.init({ type: "node", target: `stock-${config["sector"]}`, statement: response.data.sql, input: response.data.stock });
                             }
                         }
                         /** display  message. */

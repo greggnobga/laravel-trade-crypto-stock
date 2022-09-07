@@ -7,7 +7,7 @@
         </div>
         <div class="modal-group">
             <label class="modal-id-label" for="id">ID</label>
-            <input id="id" class="modal-id" name="id" type="number" placeholder="ID" value="0" disabled/>
+            <input id="id" class="modal-id" name="id" type="number" placeholder="0" value="0" disabled/>
         </div>
         <div class="modal-group">
             <label class="modal-order-label" for="id">Order</label>

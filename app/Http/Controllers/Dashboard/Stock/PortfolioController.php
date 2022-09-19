@@ -200,6 +200,9 @@ class PortfolioController extends Controller {
         }
     }
 
+    /**
+     * Helper function,.
+     */
     private function helpers($data) {
         if ($data['purpose'] === 'format' && $data['source'] === 'order') {
             $return = [];

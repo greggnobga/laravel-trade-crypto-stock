@@ -15,31 +15,8 @@ class stock_note {
         /** setup initial listener. */
         this.event.addEventListener("click", (e) => {
             if (e.target.dataset.sidebar === 'stock_notes') {
-                console.log('Clicked Stock Notes');
-
-                axios.get("/sanctum/csrf-cookie").then(response => {
-                    axios.get("/api/stock-trade-retrieve", {
-                        params: { table: 'note', statement: 'select' }
-                    }).then(response => {
-                        if (response.data.status === true) {
-                            console.log(response.data);
-                            /** populate order element with data. */
-                            // if (response.data.watchlist) {
-                            //     /** sort debt equity ratio. */
-                            //     let watchlist = response.data.watchlist.sort((a, b) => {
-                            //         return a.debtequityratio - b.debtequityratio;
-                            //     })
-                            //     /** loop me up. */
-                            //     for (let i = 0; i < watchlist.length; i++) {
-                            //         this.helper.init({ type: "node", id: `${i + 1}`, target: `stock-${config["table"]}`, statement: response.data.sql, input: watchlist[i] });
-                            //     }
-                            // }
-                        }
-                    });
-                });
-
                 /** retrieve data .*/
-                // this.request({method: 'GET', table:'portfolio'});
+                this.request({ method: 'GET', table: 'note', statement: 'select' });
                 /** clone template. */
                 let content = this.template.content.cloneNode(true);
                 // /** query document and do conditional statement base on the result. */
@@ -50,40 +27,46 @@ class stock_note {
                     /** append template content. */
                     this.element.appendChild(content);
                     /** insert modal code block. */
-                    // let record = document.querySelector('.click-order-record');
-                    // if (record) {
-                    //     record.addEventListener("click", (e) => {
-                    //         /** show insert modal. */
-                    //         if (e.target.dataset.action === 'crypto') {
-                    //             /** show modal. */
-                    //             this.backdrop({mode:'show', action:'insert'});
-                    //
-                    //             /** set submit event listener. */
-                    //             let portfolioSubmit = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-submit > .modal-insert');
-                    //             if (portfolioSubmit) {
-                    //                 portfolioSubmit.addEventListener('click', (e) => {
-                    //                     this.backdrop({mode:'hide', action:'insert', trigger: 'submit', input: portfolioSubmit});
-                    //                 });
-                    //             }
-                    //         }
-                    //
-                    //         /** set insert event listener. */
-                    //         let portfolioCancel = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-close');
-                    //         if (portfolioCancel) {
-                    //             portfolioCancel.addEventListener('click', (e) => {
-                    //                 this.backdrop({mode:'hide', action:'insert'});
-                    //             });
-                    //         }
-                    //
-                    //         /** set close event listener. */
-                    //         let portfolioClose = document.querySelector('.crypto-portfolio-insert > .crypto-modal > .modal-group > .modal-button > .button-dismiss > .modal-cancel');
-                    //         if (portfolioClose) {
-                    //             portfolioClose.addEventListener('click', (e) => {
-                    //                 this.backdrop({mode:'hide', action:'insert'});
-                    //             });
-                    //         }
-                    //     });
-                    // }
+                    let record = document.querySelector(".click-note-record");
+                    if (record) {
+                        record.addEventListener("click", (e) => {
+                            /** show insert modal. */
+                            if (e.target.dataset.action === "stock") {
+                                /** show modal. */
+                                this.backdrop({ mode: "show", action: "insert" });
+
+                                /** set submit event listener. */
+                                let submit = document.querySelector(".stock-note-insert > .modal-form > .modal-group > .modal-button > .button-submit > .modal-insert");
+                                if (submit) {
+                                    let callback = () => {
+                                        this.backdrop({ action: "insert", mode: "submit", element: submit, callback: callback });
+                                    };
+                                    /** add event listener. */
+                                    submit.addEventListener("click", callback, false);
+                                }
+                            }
+
+                            /** set cancel event listener. */
+                            let cancel = document.querySelector(".stock-note-insert > .modal-form > .modal-group > .modal-close");
+                            if (cancel) {
+                                let callback = () => {
+                                    this.backdrop({ action: "insert", mode: "hide" });
+                                };
+                                /** add event listener. */
+                                cancel.addEventListener("click", callback, false);
+                            }
+
+                            /** set close event listener. */
+                            let close = document.querySelector(".stock-note-insert > .modal-form > .modal-group > .modal-button > .button-dismiss > .modal-cancel");
+                            if (close) {
+                                let callback = () => {
+                                    this.backdrop({ action: "insert", mode: "hide" });
+                                };
+                                /** add event listener. */
+                                close.addEventListener("click", callback, false);
+                            }
+                        });
+                    }
                     /** update modal code block. */
                     // setTimeout( () => {
                     //     let update = document.querySelectorAll('.crypto-order > .items > .action > .update');
@@ -174,138 +157,110 @@ class stock_note {
         });
     }
     /** function on how backdrop behaves. */
-    // backdrop(config) {
-    //     /** query document to pinpoint modal element. */
-    //     let modal = document.querySelector(`.crypto-portfolio-${config['action']}`);
-    //
-    //     if (config['mode'] === 'show') {
-    //         /** show modal. */
-    //         modal.classList.add('backdrop');
-    //         modal.style.display = 'block';
-    //     }
-    //
-    //     if (config['mode'] === 'hide') {
-    //         /** hide modal. */
-    //         modal.classList.remove('backdrop');
-    //         modal.style.display = 'none';
-    //
-    //         if (config['trigger'] === 'submit') {
-    //             /** collect all input for processing. */
-    //             let collect = this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'value', data: ['id', 'wallet', 'order', 'name', 'coin', 'quantity', 'capital']});
-    //
-    //             /** check if inputs are empty and valid. */
-    //             let result = this.helper.init({type: 'validate', data: collect});
-    //
-    //             /** double check and then proceed. */
-    //             if (Object.keys(result['error']).length === 0) {
-    //                 /** hide modal. */
-    //                 modal.classList.remove('backdrop');
-    //                 modal.style.display = 'none';
-    //
-    //                 /** request access token and then post to backend. */
-    //                 this.request({method: 'POST', table:'portfolio', statement:config['action'], input:result['success']});
-    //
-    //                 /** clear input. */
-    //                 if (config['action'] === 'insert') {
-    //                     this.helper.init({type:'input', section: 'portfolio', target: `crypto-portfolio-${config['action']}`, action: 'clear', data: ['wallet', 'name', 'coin', 'quantity', 'capital']});
-    //                 }
-    //             } else {
-    //                 /** display error. */
-    //                 this.error({target: `crypto-portfolio-${config['action']}`, data:result['error']});
-    //
-    //                 /** show modal. */
-    //                 modal.classList.add('backdrop');
-    //                 modal.style.display = 'block';
-    //             }
-    //         }
-    //     }
-    // }
+    backdrop(config) {
+        /** query document to pinpoint modal element. */
+        let modal = document.querySelector(`.stock-note-${config["action"]}`);
+
+        if (config["mode"] === "show") {
+            /** show modal. */
+            modal.classList.add("backdrop");
+            modal.style.display = "block";
+            /** clear input. */
+            if (config["action"] === "insert") {
+                this.helper.init({
+                    type: "input",
+                    section: "note",
+                    target: `stock-note-${config["action"]}`,
+                    action: "clear",
+                    data: ["note"]
+                });
+            }
+        }
+
+        if (config["mode"] === "hide") {
+            /** hide modal. */
+            modal.classList.remove("backdrop");
+            modal.style.display = "none";
+        }
+
+        if (config["mode"] === "submit") {
+            /** collect all input for processing. */
+            let collect = this.helper.init({
+                type: "input",
+                section: "portfolio",
+                target: `stock-note-${config["action"]}`,
+                action: "value",
+                data: ["id", "status", "note"]
+            });
+            /** check if inputs are empty and valid. */
+            let result = this.helper.init({
+                type: "validate",
+                data: collect
+            });
+            /** double check and then proceed. */
+            if (Object.keys(result.error).length === 0) {
+                /** request access token and then post to backend. */
+                this.request({
+                    method: "POST",
+                    table: "note",
+                    statement: config["action"],
+                    input: result["success"]
+                });
+            } else {
+                /** display user  message. */
+                this.helper.init({ type: "message", status: false, message: result["message"] });
+            }
+            /** remove listener. */
+            config["element"].removeEventListener('click', config['callback']);
+            /** hide modal. */
+            modal.classList.remove("backdrop");
+            modal.style.display = "none";
+        }
+    }
     /** function to process http request. */
-    // request(config) {
-    //     /** retrieve data. */
-    //     if (config['method'] === 'GET') {
-    //         axios.get('/sanctum/csrf-cookie').then(response => {
-    //             axios.get('/api/crypto-portfolio-retrieve', {
-    //                 params: {table: 'portfolio'}
-    //             }).then(response => {
-    //                 if (response.data.status === true) {
-    //                     /** populate order element with data. */
-    //                     if (response.data.order) {
-    //                         for (let i=0; i<response.data.order.length; i++) {
-    //                             this.helper.init({type:'node', id:`${i+1}`, target:'crypto-order', statement: response.data.sql, input: response.data.order[i]});
-    //                         }
-    //                     }
-    //                     /** populate hold element with data. */
-    //                     if (response.data.hold.total) {
-    //                         for (let key in response.data.hold.total) {
-    //                             this.helper.init({type:'node', target:'crypto-hold', statement: response.data.sql, input: response.data.hold.total[key]});
-    //                         }
-    //                     }
-    //                     /** populate fund element with data. */
-    //                     if (response.data.fund.total) {
-    //                         for (let key in response.data.fund.total) {
-    //                             this.helper.init({type:'node', target:'crypto-fund', statement: response.data.sql, input: response.data.fund.total[key]});
-    //                         }
-    //                     }
-    //                 }
-    //             });
-    //         });
-    //     }
-    //
-    //     /** store data. */
-    //     if (config['method'] === 'POST') {
-    //         axios.get('/sanctum/csrf-cookie').then( () => {
-    //             axios.post('/api/crypto-portfolio-store', {
-    //                 table: config['table'],
-    //                 order: config['input']['order'].toLowerCase(),
-    //                 statement: config['statement'],
-    //                 input: config['input']
-    //             }).then(response => {
-    //                 /** populate order element with data. */
-    //                 if (response.data.status === true) {
-    //                     /** add or update element in document tree. */
-    //                     if (response.data.sql === 'select') {
-    //                         for (let key in response.data.coin) {
-    //                             this.helper.init({type:'node', id: 0, target:'crypto-order', statement: response.data.sql, input: response.data.coin[key]});
-    //                         }
-    //                     }
-    //                     /** add or update element in document tree. */
-    //                     if (response.data.sql === 'update') {
-    //                         for (let key in response.data.coin) {
-    //                             this.helper.init({type:'node', target:'crypto-order', statement: response.data.sql, input: response.data.coin[key]});
-    //                         }
-    //                     }
-    //                     /** remove element in document tree. */
-    //                     if (response.data.sql === 'destroy') {
-    //                         this.helper.init({type:'node', target:'crypto-order', statement: response.data.sql, input: response.data.coin});
-    //                     }
-    //
-    //                     /** display success message. */
-    //                     this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
-    //                 }
-    //
-    //                 /** display error message. */
-    //                 if (response.data.status === false) {
-    //                     this.helper.init({type: 'message', status: response.data.status, message: response.data.message});
-    //                 }
-    //             })
-    //         });
-    //     }
-    // }
-    /** function to display error. */
-    // error(config) {
-    //     /** run trough it all. */
-    //     for (let key in config['data']) {
-    //         let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-    //         display.textContent = config['data'][key];
-    //     }
-    //     /** clear all error messages after five seconds. */
-    //     setTimeout( () => {
-    //         for (let key in config['data']) {
-    //             let display = document.querySelector(`.${config['target']} > .crypto-modal > .modal-group > .modal-${key}-error`);
-    //             display.textContent = '';
-    //         }
-    //     }, 5000);
-    // }
+    request(config) {
+        /** retrieve data. */
+        if (config['method'] === 'GET') {
+            axios.get("/sanctum/csrf-cookie").then(response => {
+                axios.get("/api/stock-note-retrieve", {
+                    params: { table: config['table'], statement: config['statement'] }
+                }).then(response => {
+                    if (response.data.status === true) {
+                        /** populate notes element with data. */
+                        if (response.data.notes) {
+                            for (let i = 0; i < response.data.notes.length; i++) {
+                                this.helper.init({ type: "node", id: `${i + 1}`, target: "stock-note", statement: response.data.sql, input: response.data.notes[i] });
+                            }
+                        }
+                    }
+                    /** display  message. */
+                    this.helper.init({ type: 'message', status: response.data.status, message: response.data.message });
+                });
+
+            });
+        }
+        /** store data. */
+        if (config['method'] === 'POST') {
+            axios.get('/sanctum/csrf-cookie').then(() => {
+                axios.post('/api/stock-note-store', {
+                    table: config['table'],
+                    statement: config['statement'],
+                    input: config['input']
+                }).then(response => {
+                    /** populate order element with data. */
+                    if (response.data.status === true) {
+                        /** add or update element in document tree. */
+                        if (response.data.sql === 'select') {
+                            for (let key in response.data.notes) {
+                                this.helper.init({ type: 'node', id: 0, target: 'stock-note', statement: response.data.sql, input: response.data.notes[key] });
+                            }
+                        }
+                    }
+                    /** display  message. */
+                    this.helper.init({ type: 'message', status: response.data.status, message: response.data.message });
+                })
+            });
+        }
+    }
 }
 export default new stock_note();

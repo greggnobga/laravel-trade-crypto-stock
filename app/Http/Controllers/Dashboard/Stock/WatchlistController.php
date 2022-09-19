@@ -40,7 +40,7 @@ class WatchlistController extends Controller
                         if ($value->sector == 'miningandoil') {
                             /** fetch stocks. */
                             $sector['miningandoil'] = DB::table('stock_watchlists')
-                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
@@ -55,7 +55,7 @@ class WatchlistController extends Controller
                         if ($value->sector == 'holdingfirms') {
                             /** fetch stocks. */
                             $sector['holdingfirms'] = DB::table('stock_watchlists')
-                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
@@ -70,7 +70,7 @@ class WatchlistController extends Controller
                         if ($value->sector == 'services') {
                             /** fetch stocks. */
                             $sector['services'] = DB::table('stock_watchlists')
-                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
@@ -85,7 +85,7 @@ class WatchlistController extends Controller
                         if ($value->sector == 'industrial') {
                             /** fetch stocks. */
                             $sector['industrial'] = DB::table('stock_watchlists')
-                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
@@ -100,7 +100,7 @@ class WatchlistController extends Controller
                         if ($value->sector == 'property') {
                             /** fetch stocks. */
                             $sector['property'] = DB::table('stock_watchlists')
-                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
@@ -115,7 +115,7 @@ class WatchlistController extends Controller
                         if ($value->sector == 'financials') {
                             /** fetch stocks. */
                             $sector['financials'] = DB::table('stock_watchlists')
-                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                  ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
@@ -130,7 +130,7 @@ class WatchlistController extends Controller
                         if ($value->sector == 'smallmediumemergingboard') {
                             /** fetch stocks. */
                             $sector['smallmediumemergingboard'] = DB::table('stock_watchlists')
-                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
                                 ->get()
@@ -144,7 +144,7 @@ class WatchlistController extends Controller
                         }
                         if ($value->sector == 'etf') {
                             $sector['funds'] = DB::table('stock_watchlists')
-                                ->select('id', 'created_at as date', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                                ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                  ->where('sector', '=', $value->sector)
                                 ->get()
@@ -166,7 +166,7 @@ class WatchlistController extends Controller
             /** forward destroy command. */
             if ($request->input('table') === 'watchlist' && $request->input('statement') === 'build') {
                 $trades = DB::table('stock_trades')
-                    ->select('edge', 'symbol', 'sector')
+                    ->select('edge', 'volume', 'symbol', 'sector')
                     ->where('edge', '>', 0)
                     ->where('earningpershare', '>', 0)
                     ->where('incomeaftertax', '>', 10000)
@@ -303,7 +303,7 @@ class WatchlistController extends Controller
         if ($data['purpose'] === 'iterate' && $data['source'] === 'watchlists') {
             foreach($data['stocks'] as $key => $value) {
                 $return[$key]['id'] = $value->id;
-                $return[$key]['date'] = $value->date;
+                $return[$key]['volume'] = number_format($value->volume, 2,'.', ',');
                 $return[$key]['symbol'] = $value->symbol;
                 $return[$key]['sector'] = $value->sector;
                 $return[$key]['edge'] = $value->edge;

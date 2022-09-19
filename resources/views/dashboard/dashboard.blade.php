@@ -59,5 +59,6 @@
 
     <template class="stage-stock-notes">
         @include('includes.template.stock.notes')
+        @include('includes.modal.stock.notes')
     </template>
 @stop

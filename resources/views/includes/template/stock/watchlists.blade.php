@@ -33,7 +33,7 @@
     <div class="stock-minings">
         <div class="items">
             <div class="id">ID</div>
-            <div class="date">Date</div>
+            <div class="volume">Volume</div>
             <div class="symbol">Symbol</div>
              <div class="lasttradedprice">Last Traded Price</div>
             <div class="debtequityratio">Debt Equity Ratio</div>
@@ -47,7 +47,7 @@
     <div class="stock-holdings">
         <div class="items">
             <div class="id">ID</div>
-            <div class="date">Date</div>
+            <div class="volume">Volume</div>
             <div class="symbol">Symbol</div>
              <div class="lasttradedprice">Last Traded Price</div>
             <div class="debtequityratio">Debt Equity Ratio</div>
@@ -61,7 +61,7 @@
     <div class="stock-services">
         <div class="items">
             <div class="id">ID</div>
-            <div class="date">Date</div>
+            <div class="volume">Volume</div>
             <div class="symbol">Symbol</div>
              <div class="lasttradedprice">Last Traded Price</div>
             <div class="debtequityratio">Debt Equity Ratio</div>
@@ -75,7 +75,7 @@
     <div class="stock-industrials">
         <div class="items">
             <div class="id">ID</div>
-            <div class="date">Date</div>
+            <div class="volume">Volume</div>
             <div class="symbol">Symbol</div>
              <div class="lasttradedprice">Last Traded Price</div>
             <div class="debtequityratio">Debt Equity Ratio</div>
@@ -89,7 +89,7 @@
     <div class="stock-properties">
         <div class="items">
             <div class="id">ID</div>
-            <div class="date">Date</div>
+            <div class="volume">Volume</div>
             <div class="symbol">Symbol</div>
              <div class="lasttradedprice">Last Traded Price</div>
             <div class="debtequityratio">Debt Equity Ratio</div>
@@ -103,7 +103,7 @@
     <div class="stock-financials">
         <div class="items">
             <div class="id">ID</div>
-            <div class="date">Date</div>
+            <div class="volume">Volume</div>
             <div class="symbol">Symbol</div>
              <div class="lasttradedprice">Last Traded Price</div>
             <div class="debtequityratio">Debt Equity Ratio</div>
@@ -117,7 +117,7 @@
     <div class="stock-boards">
         <div class="items">
             <div class="id">ID</div>
-            <div class="date">Date</div>
+            <div class="volume">Volume</div>
             <div class="symbol">Symbol</div>
              <div class="lasttradedprice">Last Traded Price</div>
             <div class="debtequityratio">Debt Equity Ratio</div>
@@ -131,7 +131,7 @@
     <div class="stock-funds">
         <div class="items">
             <div class="id">ID</div>
-            <div class="date">Date</div>
+            <div class="volume">Volume</div>
             <div class="symbol">Symbol</div>
              <div class="lasttradedprice">Last Traded Price</div>
             <div class="debtequityratio">Debt Equity Ratio</div>

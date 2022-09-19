@@ -235,9 +235,7 @@ class stock_portfolio {
         if (config.method === "GET") {
             axios.get("/sanctum/csrf-cookie").then(response => {
                 axios.get("/api/stock-portfolio-retrieve", {
-                    params: {
-                        table: "portfolio"
-                    }
+                    params: { table: "portfolio" }
                 }).then(response => {
                     if (response.data.status === true) {
                         /** populate order element with data. */

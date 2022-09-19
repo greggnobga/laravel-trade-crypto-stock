@@ -412,6 +412,7 @@ class PSEController extends Controller {
                     'symbol' => strip_tags($data['symbol']),
                     'sector' => strip_tags($data['sector']),
                     'edge' => strip_tags($data['id']),
+                    'volume' => strip_tags($data['volume']),
                     'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
                     'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
                     'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),

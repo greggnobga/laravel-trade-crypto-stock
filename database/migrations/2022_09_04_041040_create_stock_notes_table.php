@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('stock_notes', function (Blueprint $table) {
             $table->id();
             $table->integer('userid');
-            $table->longText('notes');
-            $table->boolean('status')->default(0);
+            $table->longText('note');
+            $table->string('section')->default('note');
             $table->timestamps();
         });
     }

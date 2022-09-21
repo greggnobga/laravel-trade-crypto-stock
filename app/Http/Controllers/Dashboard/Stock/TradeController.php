@@ -83,6 +83,9 @@ class TradeController extends Controller {
 
                   /** return something. */
                 return array('status' => true, 'sql' => 'select', 'message' => 'All possible stocks listed on PSE are processed and displayed.', 'indexes' => $result['indexes'], 'stocks' => $result['stocks']);
+              } else {
+                /** return something. */
+                return array('status' => false, 'sql' => 'select', 'message' => 'No record found in the database.', 'indexes' => [], 'stocks' => []);
               }
             }
         }

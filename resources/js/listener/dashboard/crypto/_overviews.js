@@ -12,19 +12,15 @@ class crypto_overview {
     init() {
         /** fetch data. */
         this.request();
-
         /** setup overview listener. */
         this.event.addEventListener("click", (e) => {
             if (e.target.dataset.sidebar === 'crypto_overviews') {
                 /** clone template. */
                 let content = this.template.content.cloneNode(true);
-
                 /** clear content. */
                 this.element.innerHTML = '';
-
                 /** inject content. */
                 this.element.appendChild(content);
-
                 /** fetch data. */
                 this.request();
             }

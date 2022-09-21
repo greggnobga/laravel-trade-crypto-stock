@@ -241,10 +241,7 @@ class stock_trade {
         if (config["method"] === "GET") {
             if (config["provider"] === "local") {
                 axios.get("/sanctum/csrf-cookie").then((response) => {
-                    axios
-                        .get("/api/stock-trade-retrieve", {
-                            params: { table: config["table"] },
-                        })
+                    axios.get("/api/stock-trade-retrieve", { params: { table: config["table"] } })
                         .then((response) => {
                             if (response.data.status === true) {
                                 if (response.data.indexes.length != 0) {
@@ -252,50 +249,38 @@ class stock_trade {
                                     if (response.data.indexes) {
                                         for (let i = 0; i < response.data.indexes.length; i++) {
                                             /** add item to document. */
-                                            this.helper.init({
-                                                type: "node",
-                                                id: `${i + 1}`,
-                                                target: "stock-index",
-                                                statement: response.data.sql,
-                                                input: response.data.indexes[i],
-                                            });
+                                            this.helper.init({ type: "node", id: `${i + 1}`, target: "stock-index", statement: response.data.sql, input: response.data.indexes[i] });
                                         }
                                     }
                                     /** populate trade element with data. */
                                     if (response.data.stocks) {
                                         for (let x = 0; x < response.data.stocks.length; x++) {
                                             /** add item to document. */
-                                            this.helper.init({
-                                                type: "node",
-                                                id: `${x + 1}`,
-                                                target: "stock-trade",
-                                                statement: response.data.sql,
-                                                input: response.data.stocks[x],
-                                            });
+                                            this.helper.init({ type: "node", id: `${x + 1}`, target: "stock-trade", statement: response.data.sql, input: response.data.stocks[x] });
                                         }
                                     }
                                 }
                             }
+                            /** display success message. */
+                            this.helper.init({ type: "message", status: response.data.status, message: response.data.message });
                         });
                 });
             }
             /** fetch stock information. */
             if (config["provider"] === "edge") {
                 axios.get("/sanctum/csrf-cookie").then((response) => {
-                    axios
-                        .get("/stock-reports-retrieve", {
-                            params: { section: config["section"], id: config["input"], caller: config["caller"] }
-                        })
-                        .then((response) => {
-                            if (response.data.status === true) {
-                                /** populate modal. */
-                                if (response.data.reports) {
-                                    for (let x in response.data.reports) {
-                                        document.querySelector(`.stock-trade-${config["action"]} > .modal-form > .modal-group > .modal-${x}`).value = response.data.reports[x].toLocaleString("en");
-                                    }
+                    axios.get("/stock-reports-retrieve", {
+                        params: { section: config["section"], id: config["input"], caller: config["caller"] }
+                    }).then((response) => {
+                        if (response.data.status === true) {
+                            /** populate modal. */
+                            if (response.data.reports) {
+                                for (let x in response.data.reports) {
+                                    document.querySelector(`.stock-trade-${config["action"]} > .modal-form > .modal-group > .modal-${x}`).value = response.data.reports[x].toLocaleString("en");
                                 }
                             }
-                        });
+                        }
+                    });
                 });
             }
         }
@@ -508,7 +493,7 @@ class stock_trade {
                                             .then((response) => {
                                                 axios
                                                     .post("/stock-reports-store", {
-                                                        section: "sectors", 
+                                                        section: "sectors",
                                                         id: stock.edge,
                                                     })
                                                     .then((response) => {

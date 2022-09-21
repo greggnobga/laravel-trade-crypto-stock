@@ -45,23 +45,19 @@ class input {
             for (let i = 0; i < config.data.length; i++) {
                 /** scavenge content. */
                 let content = config.el.querySelector(`.${config.data[i]}`).textContent;
-
                 /** set id value. */
                 if (config.data[i] === 'id') {
                     let id = config.el.querySelector(`.${config.data[i]}`).dataset.id;
                     document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}`).setAttribute('value', id);
                 }
-
                 /** set api value. */
                 else if (config.data[i] === 'api') {
                     document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[i]}`).value = content;
                 }
-
                 /** set edge value. */
                 else if (config.data[i] === 'edge') {
                     document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-gecko > .modal-${config.data[i]}`).value = content;
                 }
-
                 /** the rest. */
                 else {
                     document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}`).value = content;
@@ -74,34 +70,34 @@ class input {
             /** declare repository. */
             let content = [];
             /** if to set content. */
-            if (config['section'] === 'populate') {
+            if (config['section'] === 'watchlist') {
                 /** loop through keys */
                 for (let i = 0; i < config.data.length; i++) {
                     /** set id value. */
                     if (config.data[i] === 'id') {
                         let id = config.el.querySelector(`.${config.data[i]}`).dataset.id;
                         document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}`).setAttribute('value', id);
-                    } else {
+                    } else if (config.data[i] === 'symbol') {
                         let text = config.el.querySelector(`.${config.data[i]}`).textContent;
+                        document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}`).setAttribute('value', text);
                         document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}-question > .modal-${config.data[i]}`).textContent = text;
                     }
                 }
             }
             /** if to get content. */
-            if (config['section'] === 'content') {
+            if (config['section'] === 'note') {
                 /** loop through keys */
                 for (let i = 0; i < config.data.length; i++) {
+                    let id = config.el.querySelector(`.${config.data[i]}`).dataset.id;
                     if (config.data[i] === 'id') {
-                        content[config.data[i]] = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}`).value;
-                    }
-                    /** the rest. */
-                    else {
-                        content[config.data[i]] = document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}-question > .modal-${config.data[i]}`).textContent;
+                        document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}`).value = id;
+                        document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}-question > .modal-${config.data[i]}`).textContent = id;
+                    } else {
+                        let text = config.el.querySelector(`.${config.data[i]}`).textContent;
+                        document.querySelector(`.${config.target} > .modal-form > .modal-group > .modal-${config.data[i]}`).value = text;
                     }
                 }
             }
-            /** return something. */
-            return content;
         }
     }
 }

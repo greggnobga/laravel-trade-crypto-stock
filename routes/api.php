@@ -40,4 +40,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::post('/stock-note-store', [App\Http\Controllers\Dashboard\Stock\NoteController::class, 'init']);
     Route::get('/stock-note-retrieve', [App\Http\Controllers\Dashboard\Stock\NoteController::class, 'init']);
+
+    Route::post('/stock-overview-store', [App\Http\Controllers\Dashboard\Stock\OverviewController::class, 'init']);
+    Route::get('/stock-overview-retrieve', [App\Http\Controllers\Dashboard\Stock\OverviewController::class, 'init']);
+
 });

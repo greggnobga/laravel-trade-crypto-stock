@@ -121,7 +121,7 @@ class crypto_moon {
                                     this.helper.init({ type: "input", action: "populate", target: "crypto-moon-destroy", el: parent, data: ["id", "name", "coin", "description", "zone", "website"] });
 
                                     /** set submit event listener. */
-                                    letsubmit = document.querySelector(".crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
+                                    let submit = document.querySelector(".crypto-moon-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
                                     if (submit) {
                                         let callback = () => {
                                             this.backdrop({ action: "destroy", mode: "submit", element: submit, callback: callback });

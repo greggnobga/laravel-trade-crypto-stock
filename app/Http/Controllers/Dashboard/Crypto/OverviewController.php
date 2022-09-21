@@ -11,9 +11,7 @@ class OverviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function init(Request $request)
-    {
-
+    public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
 
@@ -53,65 +51,7 @@ class OverviewController extends Controller
                 ->count('coin');
             $screen['section'] = 'screen';
 
-            return array('status' => true, 'message' => 'Test response.', 'coin' => ['portfolios' => $portfolio, 'moons' => $moon, 'games' => $game, 'screens' => $screen]);
-
-            //            if ($request->input('table') === 'overview' && $request->input('statement') === 'insert') {
-//                return $this->store(['table' => 'overview', 'input' => $request->input('input')]);
-//            }
-//            if ($request->input('table') === 'overview' && $request->input('statement') === 'update') {
-//                return $this->update(['table' => 'overview', 'input' => $request->input('input')]);
-//            }
-//            if ($request->input('table') === 'overview' && $request->input('statement') === 'destroy') {
-//                return $this->destroy(['table' => 'overview', 'input' => $request->input('input')]);
-//            }
+            return ['status' => true, 'message' => 'Summary of account records.', 'coin' => ['portfolios' => $portfolio, 'moons' => $moon, 'games' => $game, 'screens' => $screen]];
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

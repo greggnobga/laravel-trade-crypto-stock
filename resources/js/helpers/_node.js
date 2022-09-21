@@ -1,4 +1,5 @@
 class node {
+    /** fire it on. */
     init(config) {
         /** create base element. */
         if (config.statement === "select") {
@@ -65,14 +66,15 @@ class node {
         }
         /** update element. */
         if (config.statement === "update") {
-            let element = document.querySelector(
-                `.${config.target} > .items > [data-id='${config.input.id}']`
-            ).parentElement;
+            let element = document.querySelector(`.${config.target} > .items > [data-id='${config.input.id}']`).parentElement;
             /** run trough it all. */
             for (let key in config.input) {
+                /** ignore this key. */
                 if (key === "edge") continue;
                 if (key === "action") continue;
                 if (key === "id") continue;
+
+                /** fetch element. */
                 let child = element.querySelector(`.${key}`);
                 child.textContent = config.input[key];
             }

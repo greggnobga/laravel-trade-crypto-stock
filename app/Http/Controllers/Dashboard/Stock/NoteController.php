@@ -17,6 +17,14 @@ class NoteController extends Controller {
             if ($request->input('table') === 'note' && $request->input('statement') === 'insert') {
                 return $this->store(['table' => 'note', 'input' => $request->input('input')]);
             }
+            /** forward insert command. */
+            if ($request->input('table') === 'note' && $request->input('statement') === 'update') {
+                return $this->update(['table' => 'note', 'input' => $request->input('input')]);
+            }
+            /** forward destroy command. */
+            if ($request->input('table') === 'note' && $request->input('statement') === 'destroy') {
+                return $this->destroy(['table' => 'note', 'input' => $request->input('input')]);
+            }
         }
 
          /** check if request contains method equal to get. */
@@ -33,7 +41,7 @@ class NoteController extends Controller {
                     ->unique();
                 if ($note->isNotEmpty()) {   
                     $notes = DB::table('stock_notes')
-                        ->select('id', 'created_at as date', 'notes', 'status')
+                        ->select('id', 'created_at as date', 'note', 'section')
                         ->where('userid', '=', Auth::id())
                         ->get();
                     $result = $this->helpers(['purpose' => 'format', 'source' => 'note', 'notes' => $notes]);
@@ -45,7 +53,7 @@ class NoteController extends Controller {
         }
     }
 
-          /**
+    /**
      * Store a newly created resource in storage.
      */
     public function store($data) {
@@ -61,13 +69,13 @@ class NoteController extends Controller {
                 $insert = DB::table('stock_notes')
                 ->insertGetId([
                     'userid' => Auth::id(),
-                    'notes' => strip_tags($data['input']['note']),
-                    'status' => strip_tags($data['input']['status']),
+                    'note' => strip_tags($data['input']['note']),
+                    'section' => strip_tags($data['input']['section']),
                     'created_at' => date('Y-m-d H:i:s')
                 ]);
                 if ($insert) {
                     $note = DB::table('stock_notes')
-                        ->select('id', 'created_at as date', 'notes', 'status')
+                        ->select('id', 'created_at as date', 'note', 'section')
                         ->where('id', '=', $insert)
                         ->where('userid', '=', Auth::id())
                         ->get();
@@ -85,26 +93,43 @@ class NoteController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($data) {
-      if ($data['table'] === 'watchlist') {
+      if ($data['table'] === 'note') {
           /** run update query.*/
           $update = DB::table('stock_notes')
               ->where('id', '=', $data['input']['id'])
               ->update([
                 'userid' => Auth::id(),
-                'notes' => strip_tags($data['input']['note']),
-                'status' => strip_tags($data['input']['status']),
+                'note' => strip_tags($data['input']['note']),
+                'section' => strip_tags($data['input']['section']),
                 'updated_at' => date('Y-m-d H:i:s'),
               ]);
             /** if update not empty.*/
             if ($update) {
                 $note = DB::table('stock_notes')
-                    ->select('id', 'created_at as date', 'notes', 'status')
+                    ->select('id', 'created_at as date', 'note', 'section')
                     ->where('id', '=', $data['input']['id'])
                     ->get();
                 $result = $this->helpers(['purpose' => 'format', 'source' => 'note', 'notes' => $note]);
-                return ['status' =>  true, 'sql' => 'select', 'message' => ' Note has been  successfully updated.', 'notes' => $result];
+                return ['status' =>  true, 'sql' => 'update', 'message' => 'Note has been  successfully updated.', 'notes' => $result];
           }
       }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($data) {
+        if ($data['table'] === 'note') {
+            $delete = DB::table('stock_notes')
+                ->where('id', '=', $data['input']['id'])
+                ->where('userid', '=', Auth::id())
+                ->delete();
+            if ($delete) {
+                return ['status' =>  true, 'sql' => 'destroy', 'message' => 'Note with ID #' . $data['input']['id'] . ' has been deleted.', 'notes' => $data['input']['id']];
+            } else {
+                return ['status' =>  false, 'sql' => 'destroy', 'message' => 'Your attempt to delete ' . $data['input']['id'] . ' could not be completed.' , 'notes' => '' ];
+            }
+        }
     }
 
     /**
@@ -116,9 +141,9 @@ class NoteController extends Controller {
             foreach ($data['notes'] as $key => $value) {
                 $result = collect($value);
                 foreach ($value as $k => $v) {
-                    if ($k === 'status') {
-                        $result->forget('status');
-                        $result->put('status', $v);
+                    if ($k === 'section') {
+                        $result->forget('section');
+                        $result->put('section', ucwords($v));
                         $result->put('action', 'Update Destroy');
                     }
                 }

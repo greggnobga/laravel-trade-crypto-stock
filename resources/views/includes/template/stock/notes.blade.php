@@ -15,7 +15,7 @@
             <div class="id">ID</div>
             <div class="date">Date</div>
             <div class="notes">Note</div>
-            <div class="status">Status</div>
+            <div class="section">Section</div>
             <div class="action">Action</div>
         </div>
     </div>

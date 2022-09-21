@@ -10,77 +10,44 @@ class OverviewController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+    public function init(Request $request) {
+        /** check if request contains method equal to post. */
+        if ($request->method() === 'GET') {
+            /** count portfolio record. */
+            $portfolio['hold'] = DB::table('stock_portfolios')->select('symbol')
+                ->where('order', '=', 'buy')
+                ->where('userid', '=', Auth::id())
+                ->distinct()
+                ->count('symbol');
+            $portfolio['capital'] = DB::table('stock_portfolios')->select('capital')
+                ->where('userid', '=', Auth::id())
+                ->get()
+                ->sum('capital');
+            $portfolio['section'] = 'portfolio';
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+            /** count watchlist record. */
+            $watchlist['count'] = DB::table('stock_watchlists')->select('symbol')
+                ->where('userid', '=', Auth::id())
+                ->distinct()
+                ->count('symbol');
+            $watchlist['section'] = 'watchlist';
+            
+            /** count trade record. */
+            $trade['count'] = DB::table('stock_trades')->select('symbol')
+                ->distinct()
+                ->count('symbol');
+            $trade['section'] = 'trade';
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            /** count note record. */
+            $note['count'] = DB::table('stock_notes')->select('note')
+                ->where('userid', '=', Auth::id())
+                ->distinct()
+                ->count('note');
+            $note['section'] = 'note';
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            /** return something. */
+            return ['status' => true, 'message' => 'Summary of account records.', 'stock' => ['portfolios' => $portfolio, 'watchlists' => $watchlist, 'trades' => $trade, 'notes' => $note]];
+        }
     }
 }

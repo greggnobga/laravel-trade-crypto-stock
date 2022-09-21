@@ -51,7 +51,7 @@ class stock_watchlist {
                                         this.backdrop({ mode: "show", action: "destroy" });
                                         /** populate modal. */
                                         let parent = index[i].parentElement.parentElement;
-                                        this.helper.init({ type: "input", action: "destroy", target: "stock-watchlist-destroy", section: 'populate', el: parent, data: ["id", "symbol"] });
+                                        this.helper.init({ type: "input", action: "destroy", target: "stock-watchlist-destroy", section: 'watchlist', el: parent, data: ["id", "symbol"] });
                                         /** set event listener. */
                                         let submit = document.querySelector(".stock-watchlist-destroy > .modal-form > .modal-group > .modal-button > .button-submit > .modal-destroy");
                                         if (submit) {
@@ -113,10 +113,8 @@ class stock_watchlist {
             /** collect all input for processing. */
             let collect = this.helper.init({
                 type: "input",
-                section: "watchlist",
+                action: "value",
                 target: `stock-watchlist-${config["action"]}`,
-                action: "destroy",
-                section: 'content',
                 data: ["id", "symbol"]
             });
             /** check if inputs are empty and valid. */

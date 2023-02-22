@@ -10,11 +10,14 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21",
+        "@babel/preset-react": "^7.18.6",
+        "axios": "^1.1.2",
         "laravel-mix": "^6.0.6",
-        "postcss": "^8.1.14",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.8.0",
         "resolve-url-loader": "^5.0.0",
-        "sass": "^1.43.3",
-        "sass-loader": "^12.2.0"
+        "sass": "^1.57.1",
+        "sass-loader": "^12.6.0"
     }
 }

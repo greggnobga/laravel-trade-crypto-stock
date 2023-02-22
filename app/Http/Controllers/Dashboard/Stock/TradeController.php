@@ -516,6 +516,7 @@ class TradeController extends Controller {
             ['symbol' => 'BNCOM', 'edge' => 692],
             ['symbol' => 'HTI', 'edge' => 690],
             ['symbol' => 'ACEN', 'edge' => 233],
+            ['symbol' => 'KPPI', 'edge' => 672],    
           ];
      }
 }

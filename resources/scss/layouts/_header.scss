@@ -1,0 +1,49 @@
+#header {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 2fr 1fr 2fr;
+    border-bottom: 1px solid rgba($cl-gray, 0.15);
+    padding: 0.25rem;
+    position: fixed;
+    top: 0;
+    height: auto;
+    z-index: 100;
+    background: rgba($cl-gray, 0.5);
+    width: 100%;
+
+    .explorer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: start;
+        column-gap: 1rem;
+        padding-left: 0.25rem;
+    }
+
+    .brand {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        column-gap: 0.5rem;
+        font-size: 2rem;
+
+        #sprite {
+            color: orange;
+
+            .icon {
+                width: 4rem;
+                height: 4rem;
+            }
+        }
+    }
+
+    .auth {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: end;
+        column-gap: 1rem;
+        padding-right: 0.25rem;
+    }
+}

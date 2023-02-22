@@ -1,4 +1,6 @@
 {
-    "/assets/js/global.js": "/assets/js/global.js",
-    "/assets/css/global.css": "/assets/css/global.css"
+    "/js/main.js": "/js/main.js",
+    "/css/main.css": "/css/main.css",
+    "/icons/favicon.ico": "/icons/favicon.ico",
+    "/icons/sprite.svg": "/icons/sprite.svg"
 }

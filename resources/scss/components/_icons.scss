@@ -1,0 +1,11 @@
+#sprite {
+    display: inline-block;
+    color: $cl-light;
+
+    .icon {
+        width: 25px;
+        height: 25px;
+        fill: $cl-light;
+        display: inline-block;
+    }
+}

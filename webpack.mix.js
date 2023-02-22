@@ -6,26 +6,21 @@ const mix = require('laravel-mix');
  |--------------------------------------------------------------------------
  |
  | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel applications. By default, we are compiling the CSS
+ | for your Laravel application. By default, we are compiling the Sass
  | file for the application as well as bundling up all the JS files.
  |
  */
 
-/**
- * Compile scss styles.
- */
-mix.sass('resources/css/scss/global.scss', 'public/assets/css/global.css');
+/** bundle javascript and sass. */
+mix.js('resources/js/boot.js', 'public/js/main.js')
+    .sass('resources/scss/global.scss', 'public/css/main.css')
+    .react();
 
-/**
- * Compile javascript codes.
- */
-mix.js('resources/js/global.js', 'public/assets/js');
+/** create source maps. */
+mix.sourceMaps(true);
 
-/** copy image to public folder.
-    mix.copy('resources/img', 'public/assets/img');
- */
-/** compile glider and copy to public folder.
-    mix.js('resources/vendor/glider/glider.js', 'public/assets/vendor/glider')
-       .postCss('resources/vendor/glider/glider.css', 'public/assets/vendor/glider', [ ]);
- */
+/** copy svg sprite. */
+mix.copy('resources/icons', 'public/icons');
 
+/** copy images. */
+mix.copy('resources/images', 'public/images');

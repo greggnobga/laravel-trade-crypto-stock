@@ -3,27 +3,42 @@ $mini: 320px;
 $small: 768px;
 $compact: 1024px;
 
-/** Color Scheme */
-$cl-black: #000000;
-$cl-white: #F5F5F5;
-$cl-light: #F0F0F0;
-$cl-dark: #383838;
-$cl-gray: #808080;
-$cl-gold: #F0BA0E;
-$cl-blue: #0096FF;
-$cl-green: #03A66D;
-$cl-lime: #00CC33;
-$cl-red: #D0364F;
-$cl-orange: #FF4500;
-
 /** Font Size */
 $fz-mini: 1.25rem;
-$fz-small: 1.50rem;
+$fz-small: 1.5rem;
 $fz-compact: 1.75rem;
 $fz-medium: 2.25rem;
-$fz-large:  3.25rem;
+$fz-large: 3.25rem;
 
 /** Font Weight */
 $fw-normal: normal;
 $fw-lighter: lighter;
 $fw-bolder: bolder;
+
+/** Color Scheme */
+$cl-red: #dc3545;
+$cl-pink: #d63384;
+$cl-green: #198754;
+$cl-lime: #00cc33;
+$cl-teal: #20c997;
+$cl-blue: #0d6efd;
+$cl-cyan: #0dcaf0;
+$cl-indigo: #6610f2;
+$cl-purple: #6f42c1;
+$cl-gold: #f0ba0e;
+$cl-yellow: #ffc107;
+$cl-orange: #fd7e14;
+$cl-black: #000000;
+$cl-white: #f5f5f5;
+$cl-light: #f0f0f0;
+$cl-dark: #383838;
+$cl-gray: #808080;
+$cl-gray-100: #f8f9fa;
+$cl-gray-200: #e9ecef;
+$cl-gray-300: #dee2e6;
+$cl-gray-400: #ced4da;
+$cl-gray-500: #adb5bd;
+$cl-gray-600: #6c757d;
+$cl-gray-700: #495057;
+$cl-gray-800: #343a40;
+$cl-gray-900: #212529;

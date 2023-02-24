@@ -24,3 +24,10 @@ mix.copy('resources/icons', 'public/icons');
 
 /** copy images. */
 mix.copy('resources/images', 'public/images');
+
+
+mix.webpackConfig({
+    stats: {
+        children: true,
+    },
+});

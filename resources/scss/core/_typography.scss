@@ -24,34 +24,3 @@ h5 {
     font-weight: $fw-bolder;
     padding-bottom: 1rem;
 }
-/** List */
-ul {
-    list-style-type: none;
-}
-/** Section. */
-section {
-    padding: 4rem 0;
-}
-/** User define style. */
-.exclaim {
-    display: inline-block;
-    background: $cl-gold;
-    height: 2rem;
-    width: 2rem;
-    border-radius: 50%;
-    padding-top: .25rem;
-    text-align: center;
-}
-.more {
-    color: $cl-gold;
-    font-weight: $fw-bolder;
-}
-.close {
-    cursor: pointer;
-}
-.pump {
-    color: $cl-green;
-}
-.dump {
-    color: $cl-red;
-}

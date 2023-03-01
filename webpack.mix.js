@@ -12,7 +12,7 @@ const mix = require('laravel-mix');
  */
 
 /** bundle javascript and sass. */
-mix.js('resources/js/boot.js', 'public/js/main.js')
+mix.js('resources/js/main.js', 'public/js/main.js')
     .sass('resources/scss/global.scss', 'public/css/main.css')
     .react();
 

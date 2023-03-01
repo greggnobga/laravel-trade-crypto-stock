@@ -4,6 +4,7 @@ import { useState, useContext } from 'react';
 const useHttp = (reqConfig, applyData) => {
     /** declare local state. */
     const [isLoading, setLoading] = useState(false);
+    const [hasError, setError] = useState(false);
 
     /** declare send request aysnc function. */
     const sendRequest = async () => {
@@ -25,6 +26,7 @@ const useHttp = (reqConfig, applyData) => {
         /** catch thrown error. */
         catch (error) {
             /** set error message. */
+            setError(true);
             console.log(error);
         }
         /** change state. */
@@ -35,6 +37,7 @@ const useHttp = (reqConfig, applyData) => {
     return {
         isLoading,
         sendRequest,
+        hasError,
     }
 }
 

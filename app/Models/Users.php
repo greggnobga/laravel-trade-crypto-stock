@@ -27,6 +27,7 @@ class Users extends Authenticatable
         'email',
         'password',
         'role',
+        'email_verified_at',
     ];
 
     /**
@@ -41,7 +42,7 @@ class Users extends Authenticatable
      * The attributes that should be cast.
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'boolean',
     ];
 
     /**

@@ -1,9 +1,35 @@
-.form-auth {
-    width: 50%;
-    padding: 2rem;
-}
-.form-error {
-    color: $cl-red;
-    font-size: $fz-mini;
-    font-weight: $fw-lighter;
+#form {
+    padding: 1rem;
+
+    .heading {
+        text-align: center;
+    }
+    .group {
+        padding-bottom: 1rem;
+
+        .error {
+            color: $cl-red;
+        }
+    }
+
+    .reset {
+        padding-top: 0.25rem;
+        text-align: right;
+
+        p > a > span {
+            color: $cl-gold;
+        }
+    }
+
+    .valid {
+        border: 1px solid rgba($cl-green, 0.5);
+    }
+
+    .invalid {
+        border: 1px solid rgba($cl-red, 0.5);
+    }
+
+    .button {
+        text-align: center;
+    }
 }

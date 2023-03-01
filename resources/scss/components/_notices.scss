@@ -1,42 +1,44 @@
-.messenger {
-    display: none;
-}
+#notice {
+    .messenger {
+        display: none;
+    }
 
-.error {
-    display: block;
-    position: fixed;
-    z-index: 103;
-    top: 7rem;
-    right: 2rem;
-    color: $cl-white;
-    padding: 1rem;
-    border-radius: .35rem;
-    border: 1px solid rgba($cl-gray, .25);
-    background: rgba($cl-red, .75);
-}
+    .error {
+        display: block;
+        position: fixed;
+        z-index: 103;
+        top: 7rem;
+        right: 2rem;
+        color: $cl-white;
+        padding: 1rem;
+        border-radius: 0.35rem;
+        border: 1px solid rgba($cl-gray, 0.25);
+        background: rgba($cl-red, 0.75);
+    }
 
-.success {
-    display: block;
-    position: fixed;
-    z-index: 103;
-    top: 7rem;
-    right: 2rem;
-    color: $cl-white;
-    padding: 1rem;
-    border-radius: .35rem;
-    border: 1px solid rgba($cl-gray, .25);
-    background: rgba($cl-green, .75);
-}
+    .success {
+        display: block;
+        position: fixed;
+        z-index: 103;
+        top: 7rem;
+        right: 2rem;
+        color: $cl-white;
+        padding: 1rem;
+        border-radius: 0.35rem;
+        border: 1px solid rgba($cl-gray, 0.25);
+        background: rgba($cl-green, 0.75);
+    }
 
-.info {
-    display: block;
-    position: fixed;
-    z-index: 103;
-    top: 7rem;
-    right: 2rem;
-    color: $cl-dark;
-    padding: 1rem;
-    border-radius: .35rem;
-    border: 1px solid rgba($cl-gray, .25);
-    background: rgba($cl-gold, .75);
+    .info {
+        display: block;
+        position: fixed;
+        z-index: 103;
+        top: 7rem;
+        right: 2rem;
+        color: $cl-dark;
+        padding: 1rem;
+        border-radius: 0.35rem;
+        border: 1px solid rgba($cl-gray, 0.25);
+        background: rgba($cl-gold, 0.75);
+    }
 }

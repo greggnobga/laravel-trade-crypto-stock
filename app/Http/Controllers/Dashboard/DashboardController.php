@@ -3,12 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-use Carbon\Carbon;
-use Goutte\Client;
 
 class DashboardController extends Controller
 {
@@ -19,11 +14,6 @@ class DashboardController extends Controller
     {
         return response(['input' => 'Test response from api call.'], 200);
         // return View::make('dashboard.dashboard');
-    }
-
-    public function login()
-    {
-        return response(['input' => 'Test response from unauthenticated call.'], 200);
     }
 
     /**
@@ -39,7 +29,6 @@ class DashboardController extends Controller
             ->get()
             ->unique()
             ->toArray();
-        dd($sectors);
         /** resequence array keys. */
         $sector['sector'] = array_values($sectors);
         /** search record by sector. */

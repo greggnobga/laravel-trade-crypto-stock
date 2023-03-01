@@ -1,12 +1,5 @@
 /** Anchors */
-a {
-    color: $cl-dark;
+#anchor {
     display: inline-block;
-    cursor: pointer;
-    padding: 0.5rem 0;
     text-decoration: none;
-
-    &:hover {
-        color: $cl-white;
-    }
 }

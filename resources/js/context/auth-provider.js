@@ -9,7 +9,7 @@ const AuthProvider = (props) => {
     const initialToken = localStorage.getItem('token');
     /** Use state. */
     const [token, setToken] = useState(initialToken);
-    const [message, setMessage] = useState(null);
+    const [message, setMessage] = useState('');
     const [valid, setValid] = useState(true);
     const [verified, setVerified] = useState(true);
 
@@ -37,8 +37,8 @@ const AuthProvider = (props) => {
         localStorage.removeItem('token');
     }
 
-    /** Notifier handler. */
-    const notifierHandler = (text) => {
+    /** Messenger handler. */
+    const messengerHandler = (text) => {
         setMessage(text);
     }
 
@@ -61,7 +61,7 @@ const AuthProvider = (props) => {
         authenticated: isAuthenticated,
         login: loginHandler,
         logout: logoutHandler,
-        notifier: notifierHandler,
+        messenger: messengerHandler,
         validifier: validifierHandler,
         verifier: verifierHandler
     }

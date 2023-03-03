@@ -19,8 +19,8 @@ const Desktop = () => {
 
     /** Callback http hook. */
     const logoutResponse = (data) => {
-        /** Set reponse validity. */
-        console.log(data);
+        /** Set sucess message. */
+        authCtx.messenger(data.message);
     };
 
     /** Use http hook. */

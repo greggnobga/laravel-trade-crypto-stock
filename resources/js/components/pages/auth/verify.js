@@ -1,8 +1,11 @@
 /** React. */
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 
 /** Vendor. */
 import { useParams, useNavigate } from 'react-router-dom';
+
+/** Context. */
+import AuthContext from '../../../context/auth-context';
 
 /** Hook. */
 import useHttp from '../../../hooks/use-http';
@@ -11,12 +14,16 @@ const Verify = () => {
     /** Use navigate. */
     const navigate = useNavigate();
 
+    /** Use context. */
+    const authCtx = useContext(AuthContext);
+
     const verifyResponse = (data) => {
-        console.log(data);
-        /** Navigate out. */
-        setTimeout(() => {
-            navigate('/')
-        }, 2000);
+        /** set valid to false. */
+        authCtx.validifier(true);
+        /** set error message. */
+        authCtx.messenger(data.message);
+        /** Navigate out if done loading. */
+        navigate('/');
     };
 
     /** Use params. */
@@ -38,6 +45,6 @@ const Verify = () => {
             <div style={{ textAlign: 'center' }}>Request being process, just sit and wait for response from the server!</div>
         </form>
     );
-} 
+}
 
 export default Verify;

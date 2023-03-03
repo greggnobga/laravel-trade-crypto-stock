@@ -1,8 +1,11 @@
 /** React. */
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 
 /** Vendor. */
 import { Link, useNavigate } from "react-router-dom";
+
+/** Context. */
+import AuthContext from '../../../context/auth-context';
 
 /** Component. */
 import Loader from '../../icons/loader.js';
@@ -33,9 +36,16 @@ const Forgot = () => {
     /** Use navigate. */
     const navigate = useNavigate();
 
+    /** Use context. */
+    const authCtx = useContext(AuthContext);
+
     const forgotResponse = (data) => {
-        /** Console log response.*/
-        console.log(data);
+        /** set valid to false. */
+        authCtx.validifier(true);
+        /** set error message. */
+        authCtx.messenger(data.message);
+        /** Navigate out if done loading. */
+        navigate('/');
     };
 
     /** Use http hook. */
@@ -63,13 +73,6 @@ const Forgot = () => {
 
         /** Reset input. */
         emailInputReset();
-
-        /** Navigate out if done loading. */
-        setTimeout(() => {
-            if (!isLoading && !hasError) {
-                navigate('/auth/login');
-            }
-        }, 5000);
     }
     /** Cancel handler. */
     const cancelHandler = () => {

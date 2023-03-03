@@ -1,10 +1,16 @@
 /** React. */
 import { useState, useContext } from 'react';
 
+/** Store. */
+import AuthContext from '../context/auth-context';
+
 const useHttp = (reqConfig, applyData) => {
     /** declare local state. */
     const [isLoading, setLoading] = useState(false);
     const [hasError, setError] = useState(false);
+
+    /** Use context. */
+    const authCtx = useContext(AuthContext);
 
     /** declare send request aysnc function. */
     const sendRequest = async () => {
@@ -25,9 +31,12 @@ const useHttp = (reqConfig, applyData) => {
         }
         /** catch thrown error. */
         catch (error) {
+            /** set valid to false. */
+            authCtx.validifier(false);
             /** set error message. */
+            authCtx.messenger(error.response.data.message);
+            /** set error true. */
             setError(true);
-            console.log(error);
         }
         /** change state. */
         setLoading(false);

@@ -1,8 +1,11 @@
 /** React. */
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useContext } from 'react';
 
 /** Vendor. */
 import { Link, useNavigate } from "react-router-dom";
+
+/** Context. */
+import AuthContext from '../../../context/auth-context';
 
 /** Component. */
 import Loader from '../../icons/loader.js';
@@ -97,8 +100,16 @@ const Register = () => {
     /** Use navigate. */
     const navigate = useNavigate();
 
+    /** Use context. */
+    const authCtx = useContext(AuthContext);
+
     const regResponse = (data) => {
-        console.log(data);
+        /** set valid to false. */
+        authCtx.validifier(true);
+        /** set error message. */
+        authCtx.messenger(data.message);
+        /** Navigate out if done loading. */
+        navigate('/');
     };
 
     const { isLoading, sendRequest, hasError } = useHttp({
@@ -135,13 +146,6 @@ const Register = () => {
         emailInputReset();
         passwordInputReset();
         confirmInputReset();
-
-        /** Navigate out if done loading. */
-        setTimeout(() => {
-            if (!isLoading && !hasError) {
-                navigate('/');
-            }
-        }, 5000);
     }
 
     /** Cancel handler. */

@@ -4,6 +4,9 @@ import { Fragment, useState, useEffect, useContext } from 'react';
 /** Vendor. */
 import { useParams, useNavigate } from 'react-router-dom';
 
+/** Context. */
+import AuthContext from '../../../context/auth-context';
+
 /** Hook. */
 import useValidate from '../../../hooks/use-validate';
 import useHttp from '../../../hooks/use-http';
@@ -70,9 +73,16 @@ const Reset = () => {
     /** Use navigate. */
     const navigate = useNavigate();
 
+    /** Use context. */
+    const authCtx = useContext(AuthContext);
+
     const resetResponse = (data) => {
-        /** Set reponse validity. */
-        console.log(data);
+        /** set valid to false. */
+        authCtx.validifier(true);
+        /** set error message. */
+        authCtx.messenger(data.message);
+        /** Navigate out if done loading. */
+        navigate('/');
     };
 
     /** Use params. */
@@ -106,13 +116,6 @@ const Reset = () => {
         emailInputReset();
         passwordInputReset();
         confirmInputReset();
-
-        /** Navigate out if done loading. */
-        setTimeout(() => {
-            if (!isLoading && !hasError) {
-                navigate('/');
-            }
-        }, 5000);
     }
     /** Cancel handler. */
     const cancelHandler = () => {

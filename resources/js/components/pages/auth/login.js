@@ -51,9 +51,14 @@ const Login = () => {
     const loginResponse = (data) => {
         /** Set token. */
         authCtx.login(data.access_token);
-
-        /** Console log response.*/
-        console.log(data);
+        /** Set verifier. */
+        authCtx.verifier(data.email_verified);
+        /** set valid to false. */
+        authCtx.validifier(true);
+        /** set error message. */
+        authCtx.messenger(data.message);
+        /** Navigate out if done loading. */
+        navigate('/profile');
     };
 
     /** Use http hook. */
@@ -83,13 +88,6 @@ const Login = () => {
         /** Reset input. */
         emailInputReset();
         passwordInputReset();
-
-        /** Navigate out if done loading. */
-        setTimeout(() => {
-            if (!isLoading && !hasError) {
-                navigate('/profile');
-            }
-        }, 5000);
     }
     /** Cancel handler. */
     const cancelHandler = () => {

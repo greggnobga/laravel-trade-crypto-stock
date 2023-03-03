@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         /** Validate request data */
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
+            'username' => 'required|string|unique:users|max:255',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
@@ -42,14 +42,14 @@ class AuthController extends Controller
         /** Return errors if validation error occured. */
         if ($validator->fails()) {
             /** Return. */
-            return response(['message' => 'Something went wrong kindly check your inputs and email in which must be unique.'], 400);
+            return response(['message' => 'Something went wrong kindly check your email or username in which must be unique.'], 400);
         }
 
         /** Check if validation pass then create Users and auth token. */
         $url = '';
         if ($validator->passes()) {
             $Users = Users::create([
-                'username' => strip_tags($request->firstname),
+                'username' => strip_tags($request->username),
                 'firstname' => strip_tags($request->firstname),
                 'lastname' => strip_tags($request->lastname),
                 'email' => strip_tags($request->email),
@@ -108,7 +108,7 @@ class AuthController extends Controller
             'email_verified' => $user->email_verified_at,
             'role' => $user->role,
             'access_token' => $token,
-            'message' => 'Welcome, ' . $name->firstname  . '! We are glad you are back and hope you will have a good time with us!'
+            'message' => $name->firstname  . ', we are glad you are back and hope you will have a good time with us!'
         ]);
     }
 
@@ -226,7 +226,7 @@ class AuthController extends Controller
             /** Check if Users alredy verified. */
             $verified = Users::where('id', $person->userid)->select('email_verified_at')->first();
             if ($verified->email_verified_at === true) {
-                return response(['message' => 'The Users has already been verified.'], 401);
+                return response(['message' => 'The email has already been verified.'], 401);
             }
 
             /** If not then go ahead. */
@@ -236,14 +236,20 @@ class AuthController extends Controller
             Verification::where('token', $request->token)->delete();
 
             /** Return sucess message. */
-            return response(['message' => 'The users has successfully been verified.'], 200);
+            return response(['message' => 'The email has successfully been verified.'], 200);
         }
     }
 
-    public function resend(Request $request)
+    public function resend()
     {
         /** Get Users id. */
         $id = Auth::id();
+
+        /** Check if Users alredy verified. */
+        $verified = Users::where('id', $id)->select('email_verified_at')->first();
+        if ($verified->email_verified_at === true) {
+            return response(['message' => 'The email has already been verified.'], 401);
+        }
 
         /** Get Users information. */
         $user = Users::where('id', $id)->select('id', 'email', 'firstname', 'lastname')->first();
@@ -290,5 +296,11 @@ class AuthController extends Controller
 
         /** Return something. */
         return response(['message' => 'We are hoping to see you any time soon!'], 200);
+    }
+
+    public function protect()
+    {
+        /** Return something. */
+        return response(['status' => true], 200);
     }
 }

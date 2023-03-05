@@ -58,18 +58,21 @@ const Desktop = () => {
             </div>
             <div className="auth">
                 {authCtx.authenticated ? <Fragment>
+                    <Link to="/dashboard">
+                        <span><Icon id="menu" /> Dashboard</span>
+                    </Link>
                     <Link to="/profile">
                         <span><Icon id="profile" /> Profile</span>
                     </Link>
                     <Link to="/" onClick={logoutHandler}>
-                        <span><Icon id="login" /> Logout</span>
+                        <span><Icon id="logout" /> Logout</span>
                     </Link>
                 </Fragment> : <Fragment>
                     <Link to="/auth/login">
-                        <span><Icon id="profile" /> Login</span>
+                        <span><Icon id="login" /> Login</span>
                     </Link>
                     <Link to="/auth/register">
-                        <span><Icon id="login" /> Register</span>
+                        <span><Icon id="register" /> Register</span>
                     </Link>
                 </Fragment>
                 }

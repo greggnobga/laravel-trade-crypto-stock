@@ -1,9 +1,10 @@
-#form {
+.form {
     padding: 1rem;
 
     .heading {
         text-align: center;
     }
+
     .group {
         padding-bottom: 1rem;
 
@@ -27,9 +28,5 @@
 
     .invalid {
         border: 1px solid rgba($cl-red, 0.5);
-    }
-
-    .button {
-        text-align: center;
     }
 }

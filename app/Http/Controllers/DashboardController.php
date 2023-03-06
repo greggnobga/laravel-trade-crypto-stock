@@ -1,23 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Declare init function.
      */
     public function init()
     {
-        return response(['input' => 'Test response from api call.'], 200);
-        // return View::make('dashboard.dashboard');
+        return response(['response' => 'Test init response.']);
     }
-
     /**
-     * Declare stocks function.
+     * Declare stock sector function.
      */
     public function stocksectors()
     {

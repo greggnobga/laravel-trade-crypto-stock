@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/resend', [App\Http\Controllers\AuthController::class, 'resend'])->name('resend');
     Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
     Route::get('/protect', [App\Http\Controllers\AuthController::class, 'protect'])->name('protect');
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'init'])->name('init');
 });
 
 

@@ -95,7 +95,7 @@ const Login = () => {
     }
 
     return (
-        <form method="post" id="form" onSubmit={submitHandler}>
+        <form method="post" className="form" onSubmit={submitHandler}>
             {isLoading ? <Loader /> : <Fragment>
                 <div className="heading">
                     <h4>Login</h4>
@@ -127,7 +127,7 @@ const Login = () => {
                 <div className="reset">
                     <p>Password forgotten? Click this <Link id="anchor" to="/auth/forgot"><span>link</span></Link> to reset it.</p>
                 </div>
-                <div id="button">
+                <div className="button">
                     <button className="btn btn-primary" type="submit" disabled={!formIsValid}>Login</button>
                     <button className="btn btn-secondary" type="button" onClick={cancelHandler}>Cancel</button>
                     {/* <button className={submitHover} onMouseEnter={submitMouseEnter} onMouseLeave={submitMouseLeave} type="submit" disabled={!formIsValid}>Submit</button> */}

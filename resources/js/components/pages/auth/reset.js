@@ -123,7 +123,7 @@ const Reset = () => {
     }
 
     return (
-        <form method="POST" id="form" onSubmit={submitHandler}>
+        <form method="POST" className="form" onSubmit={submitHandler}>
             {isLoading ? <Loader /> : <Fragment>
                 <div className="heading">
                     <h4>Reset Password</h4>
@@ -164,7 +164,7 @@ const Reset = () => {
                     />
                     {confirmHasError ? <p className="error">Please enter a valid confirm password.</p> : passwordMatched ? <p className="error">Password and confirm password do not match.</p> : ''}
                 </div>
-                <div id="button">
+                <div className="button">
                     <button className="btn btn-primary" type="submit" disabled={!formIsValid}>Reset</button>
                     <button className="btn btn-secondary" type="button" onClick={cancelHandler}>Cancel</button>
                     {/* <button className={submitHover} onMouseEnter={submitMouseEnter} onMouseLeave={submitMouseLeave} type="submit" disabled={!formIsValid}>Submit</button>

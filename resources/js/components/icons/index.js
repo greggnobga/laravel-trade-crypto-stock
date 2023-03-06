@@ -1,10 +1,10 @@
 const Icon = (props) => {
     return (
-        <div id="sprite">
+        <span className="sprite">
             <svg className="icon">
                 <use href={`/public/icons/sprite.svg#${props.id}`} />
             </svg>
-        </div>
+        </span>
     );
 }
 

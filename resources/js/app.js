@@ -15,7 +15,7 @@ import Forgot from './components/pages/auth/forgot';
 import Reset from './components/pages/auth/reset';
 import Verify from './components/pages/auth/verify';
 
-import Client from './components/pages/client';
+import Profile from './components/pages/profile';
 
 import Dashboard from './components/pages/dashboard';
 
@@ -51,7 +51,7 @@ const App = () => {
                     <Route path="/auth/verify/:token" element={<Verify />} />
                 </Route>
                 <Route path="/profile" element={<SinglePublic />}>
-                    <Route path="/profile" element={<Client />} />
+                    <Route path="/profile" element={<Profile />} />
                 </Route>
                 <Route path="/dashboard" element={<SingleDashboard />}>
                     <Route path="/dashboard" element={<Dashboard />} />

@@ -24,3 +24,13 @@ h5 {
     font-weight: $fw-normal;
     padding-bottom: 1rem;
 }
+
+/** Lists */
+ul {
+    list-style-type: none;
+}
+
+/** Anchor */
+a {
+    text-decoration: none;
+}

@@ -6,10 +6,10 @@ import Summary from '../../ui/summary';
 
 const Home = () => {
     return (
-        <div id="wrapper">
+        <Fragment>
             <Summary />
             <h1>Home explorer page.</h1>
-        </div>
+        </Fragment>
     );
 }
 

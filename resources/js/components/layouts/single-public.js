@@ -9,7 +9,9 @@ const Single = () => {
     return (
         <section id="single">
             <Header />
-            <Outlet />
+            <div id="wrapper">
+                <Outlet />
+            </div>
         </section>
     );
 }

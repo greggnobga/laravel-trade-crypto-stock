@@ -1,25 +1,102 @@
-.stock-hold>.items {
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: repeat(5, 1fr);
-    border-bottom: 1px solid rgba($cl-gray, .15);
-    padding: 1rem;
-    vertical-align: top;
+#stock-portfolio {
+    min-height: 100vh;
+    margin-top: 0.5rem;
+    color: rgba($cl-gray, 1);
 
-    &:last-child {
-        border-bottom: none;
+    .hold {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: 2rem 1fr;
+
+        .board {
+            grid-column: 1;
+            grid-row: 1;
+
+            .items {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto;
+
+                .record {
+                    text-align: end;
+
+                    .add {
+                        color: $cl-light;
+                        background: rgba($cl-gold, 0.75);
+                        border: rgba($cl-gray, 0.75);
+                        border-radius: 5px;
+
+                        &:hover {
+                            background: rgba($cl-gold, 1);
+                            border: rgba($cl-gray, 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        .content {
+            grid-column: 1;
+            grid-row: 2;
+            background: $box-background;
+            border: $box-border;
+            box-shadow: $box-shadow;
+            border-radius: 5px;
+            padding: 0.25rem 0.5rem;
+
+            .items {
+                display: grid;
+                grid-template-rows: 1fr;
+                grid-template-columns: repeat(5, 1fr);
+                border-bottom: 1px solid rgba($cl-gray, 0.15);
+                padding: 0.25rem 0.5rem;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            .color {
+                color: rgba($cl-teal, 0.75);
+            }
+        }
     }
-}
 
-.stock-order>.items {
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 5rem repeat(8, 1fr);
-    border-bottom: 1px solid rgba($cl-gray, .15);
-    padding: 1rem;
-    vertical-align: top;
+    .order {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: 2rem 1fr;
+        margin-top: 0.5rem;
 
-    &:last-child {
-        border-bottom: none;
+        .board {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .content {
+            grid-column: 1;
+            grid-row: 2;
+            background: $box-background;
+            border: $box-border;
+            box-shadow: $box-shadow;
+            border-radius: 5px;
+            padding: 0.25rem 0.5rem;
+
+            .items {
+                display: grid;
+                grid-template-rows: 1fr;
+                grid-template-columns: 5rem repeat(8, 1fr);
+                border-bottom: 1px solid rgba($cl-gray, 0.15);
+                padding: 0.25rem 0.5rem;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            .color {
+                color: rgba($cl-teal, 0.75);
+            }
+        }
     }
 }

@@ -4,9 +4,9 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    background: rgba($cl-gray-200, 0.75);
     border-radius: 5px;
-    border: 1px solid rgba($cl-gray-300, 0.75);
+    background: $box-background;
+    border: $box-border;
     box-shadow: $box-shadow;
 
     .items {

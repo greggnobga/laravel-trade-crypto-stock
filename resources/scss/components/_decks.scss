@@ -1,16 +1,16 @@
 .deck {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     column-gap: 0.5rem;
     row-gap: 0.5rem;
-    position: relative;
-    top: 1rem;
+    margin-top: 1rem;
 
     .card {
         border-radius: 5px;
         box-shadow: $box-shadow;
         font-weight: $fw-lighter;
+        background: $box-background;
 
         .title {
             margin-bottom: 0;

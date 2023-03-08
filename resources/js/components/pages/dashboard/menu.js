@@ -79,7 +79,7 @@ const Menu = () => {
     }
 
     return (
-        <div className="dashboard-menu" onClick={menuHandler}>
+        <div id="menu" onClick={menuHandler}>
             <span className="logo">
                 <Icon id="menu" />
             </span>

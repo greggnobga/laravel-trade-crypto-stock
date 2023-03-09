@@ -1,19 +1,17 @@
-@import "app/register";
-@import "app/login";
-@import "app/games.scss";
-@import "app/moons.scss";
-@import "app/screens.scss";
 @import "dashboard.scss";
 @import "index.scss";
 
-@import "crypto/overviews.scss";
+@import "app/crypto-explorer.scss";
+@import "app/stock-explorer.scss";
+
 @import "crypto/screens.scss";
 @import "crypto/games.scss";
 @import "crypto/moons.scss";
+@import "crypto/nfts.scss";
 @import "crypto/portfolios.scss";
 
-@import "stock/overviews.scss";
+@import "stock/chart.scss";
+@import "stock/notes.scss";
 @import "stock/portfolios.scss";
 @import "stock/trades.scss";
 @import "stock/watchlists.scss";
-@import "stock/notes.scss";

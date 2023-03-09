@@ -37,11 +37,6 @@ const Menu = () => {
                         <span><Icon id="chart" /> Chart</span>
                     </Link>
                 </li>
-                <li className="item">
-                    <Link to="/dashboard/stock-note">
-                        <span><Icon id="note" /> Note</span>
-                    </Link>
-                </li>
             </ul>
             <li className="sector">Crypto</li>
             <ul className="list">
@@ -51,22 +46,30 @@ const Menu = () => {
                     </Link>
                 </li>
                 <li className="item">
-                    <Link to="/dashboard/crypto-watchlist">
-                        <span><Icon id="watchlist" /> Watchlist</span>
-                    </Link>
-                </li>
-                <li className="item">
                     <Link to="/dashboard/crypto-screen">
                         <span><Icon id="screen" /> Screen</span>
                     </Link>
                 </li>
                 <li className="item">
-                    <Link to="/dashboard/crypto-fund">
-                        <span><Icon id="fund" /> Fund</span>
+                    <Link to="/dashboard/crypto-moon">
+                        <span><Icon id="fund" /> Moon</span>
                     </Link>
                 </li>
                 <li className="item">
-                    <Link to="/dashboard/crypto-note">
+                    <Link to="/dashboard/crypto-game">
+                        <span><Icon id="note" /> Game</span>
+                    </Link>
+                </li>
+                <li className="item">
+                    <Link to="/dashboard/crypto-nft">
+                        <span><Icon id="note" /> NFT</span>
+                    </Link>
+                </li>
+            </ul>
+            <li className="sector">Extra</li>
+            <ul className="list">
+                <li className="item">
+                    <Link to="/dashboard/extra-note">
                         <span><Icon id="note" /> Note</span>
                     </Link>
                 </li>

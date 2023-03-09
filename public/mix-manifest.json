@@ -1,6 +1,6 @@
 {
     "/js/main.js": "/js/main.js",
+    "/css/main.css": "/css/main.css",
     "/icons/favicon.ico": "/icons/favicon.ico",
-    "/icons/sprite.svg": "/icons/sprite.svg",
-    "/css/main.css": "/css/main.css"
+    "/icons/sprite.svg": "/icons/sprite.svg"
 }

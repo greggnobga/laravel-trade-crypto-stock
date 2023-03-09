@@ -23,13 +23,14 @@ import StockPortfolio from './components/pages/dashboard/stock-portfolio';
 import StockWatchlist from './components/pages/dashboard/stock-watchlist';
 import StockTrade from './components/pages/dashboard/stock-trade';
 import StockChart from './components/pages/dashboard/stock-chart';
-import StockNote from './components/pages/dashboard/stock-note';
 
 import CryptoPortfolio from './components/pages/dashboard/crypto-portfolio';
-import CryptoWatchlist from './components/pages/dashboard/crypto-watchlist';
 import CryptoScreen from './components/pages/dashboard/crypto-screen';
-import CryptoFund from './components/pages/dashboard/crypto-fund';
-import CryptoNote from './components/pages/dashboard/crypto-note';
+import CryptoMoon from './components/pages/dashboard/crypto-moon';
+import CryptoGame from './components/pages/dashboard/crypto-game';
+import CryptoNft from './components/pages/dashboard/crypto-nft';
+
+import Note from './components/pages/extra/note';
 
 import Uncharted from './components/pages/error/uncharted';
 
@@ -59,12 +60,12 @@ const App = () => {
                     <Route path="/dashboard/stock-watchlist" element={<StockWatchlist />} />
                     <Route path="/dashboard/stock-trade" element={<StockTrade />} />
                     <Route path="/dashboard/stock-chart" element={<StockChart />} />
-                    <Route path="/dashboard/stock-note" element={<StockNote />} />
                     <Route path="/dashboard/crypto-portfolio" element={<CryptoPortfolio />} />
-                    <Route path="/dashboard/crypto-watchlist" element={<CryptoWatchlist />} />
                     <Route path="/dashboard/crypto-screen" element={<CryptoScreen />} />
-                    <Route path="/dashboard/crypto-fund" element={<CryptoFund />} />
-                    <Route path="/dashboard/crypto-note" element={<CryptoNote />} />
+                    <Route path="/dashboard/crypto-moon" element={<CryptoMoon />} />
+                    <Route path="/dashboard/crypto-game" element={<CryptoGame />} />
+                    <Route path="/dashboard/crypto-nft" element={<CryptoNft />} />
+                    <Route path="/dashboard/extra-note" element={<Note />} />
                 </Route>
                 <Route path="/" element={<SinglePublic />}>
                     <Route path="*" element={<Navigate replace to="/uncharted" />} />

@@ -1354,137 +1354,6 @@ select:invalid {
 
 /** ---------- Vendors ---------- */
 /** ---------- Pages Structure ---------- */
-#register {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  justify-items: center;
-  align-items: center;
-}
-#register .form-register {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  justify-items: center;
-  align-items: center;
-  padding: 1rem;
-}
-
-#login {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  justify-items: center;
-  align-items: center;
-}
-#login .form-remember {
-  display: grid;
-  grid-template-columns: 2rem 1fr 1fr;
-  grid-template-rows: 1fr;
-  justify-items: start;
-  align-items: center;
-  padding: 1rem;
-}
-#login .form-remember .form-forgot {
-  align-self: end;
-  justify-self: end;
-}
-#login .form-login {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  justify-items: center;
-  align-items: center;
-}
-#login .form-login .btn {
-  width: 50%;
-}
-#login .form-login .btn:hover {
-  background: #f0ba0e;
-}
-
-#game {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 4rem 1fr;
-}
-#game .crypto {
-  padding: 1rem 2rem;
-}
-#game .meta {
-  padding: 1rem 2rem;
-}
-#game .meta .head {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 5rem 20rem repeat(10, 1fr);
-  border-top: 1px solid #EAECEF;
-  border-bottom: 1px solid #EAECEF;
-  padding: 1rem 2rem;
-}
-#game .meta .data {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 5rem 20rem repeat(10, 1fr);
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #EAECEF;
-}
-
-/** public style.*/
-#moon {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 4rem 1fr;
-}
-#moon .crypto {
-  padding: 1rem 2rem;
-}
-#moon .stone {
-  padding: 1rem 2rem;
-}
-#moon .stone .head {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 5rem 10rem 20rem repeat(8, 1fr);
-  border-top: 1px solid #EAECEF;
-  border-bottom: 1px solid #EAECEF;
-  padding: 1rem 2rem;
-}
-#moon .stone .data {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 5rem 10rem 20rem repeat(8, 1fr);
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #EAECEF;
-}
-
-#screen {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 4rem 1fr;
-}
-#screen .crypto {
-  padding: 1rem 2rem;
-}
-#screen .assets {
-  padding: 1rem 2rem;
-}
-#screen .assets .head {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 5rem 10rem 20rem repeat(8, 1fr);
-  border-top: 1px solid #EAECEF;
-  border-bottom: 1px solid #EAECEF;
-  padding: 1rem 2rem;
-}
-#screen .assets .data {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 5rem 10rem 20rem repeat(8, 1fr);
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #EAECEF;
-}
-
 #dashboard {
   min-height: 100vh;
 }
@@ -1563,132 +1432,95 @@ select:invalid {
   padding: 0.5rem;
 }
 
-.crypto-overview {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  row-gap: 2rem;
-  -moz-column-gap: 2rem;
-       column-gap: 2rem;
-  padding: 1rem;
+#game {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 4rem 1fr;
 }
-
-.crypto-screen > .items {
+#game .crypto {
+  padding: 1rem 2rem;
+}
+#game .meta {
+  padding: 1rem 2rem;
+}
+#game .meta .head {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 2rem repeat(7, 1fr);
-  grid-column-gap: 2rem;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
+  grid-template-columns: 5rem 20rem repeat(10, 1fr);
+  border-top: 1px solid #EAECEF;
+  border-bottom: 1px solid #EAECEF;
+  padding: 1rem 2rem;
 }
-.crypto-screen > .items:last-child {
-  border-bottom: none;
-}
-
-.crypto-game > .items {
+#game .meta .data {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 2rem repeat(9, 1fr);
-  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
-}
-.crypto-game > .items:last-child {
-  border-bottom: none;
+  grid-template-columns: 5rem 20rem repeat(10, 1fr);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #EAECEF;
 }
 
-.crypto-moon > .items {
+/** public style.*/
+#moon {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 4rem 1fr;
+}
+#moon .crypto {
+  padding: 1rem 2rem;
+}
+#moon .stone {
+  padding: 1rem 2rem;
+}
+#moon .stone .head {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 3rem repeat(6, 1fr);
-  grid-column-gap: 1rem;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
+  grid-template-columns: 5rem 10rem 20rem repeat(8, 1fr);
+  border-top: 1px solid #EAECEF;
+  border-bottom: 1px solid #EAECEF;
+  padding: 1rem 2rem;
 }
-.crypto-moon > .items:last-child {
-  border-bottom: none;
-}
-
-.crypto-hold > .items {
+#moon .stone .data {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: repeat(4, 1fr);
-  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
-  vertical-align: top;
-}
-.crypto-hold > .items:last-child {
-  border-bottom: none;
+  grid-template-columns: 5rem 10rem 20rem repeat(8, 1fr);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #EAECEF;
 }
 
-.crypto-fund > .items {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: repeat(2, 1fr);
-  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
-}
-.crypto-fund > .items:last-child {
-  border-bottom: none;
-}
-
-.crypto-order > .items {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 3rem repeat(8, 1fr);
-  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
-}
-.crypto-order > .items:last-child {
-  border-bottom: none;
-}
-
-.stock-overview {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  row-gap: 2rem;
-  -moz-column-gap: 2rem;
-       column-gap: 2rem;
-  padding: 1rem;
-}
-
-#stock-portfolio {
+#crypto-screen {
   min-height: 100vh;
   margin-top: 0.5rem;
   color: gray;
 }
-#stock-portfolio .hold {
+#crypto-screen .screen {
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
 }
-#stock-portfolio .hold .board {
+#crypto-screen .screen .board {
   grid-column: 1;
   grid-row: 1;
 }
-#stock-portfolio .hold .board .items {
+#crypto-screen .screen .board .items {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
 }
-#stock-portfolio .hold .board .items .record {
+#crypto-screen .screen .board .items .record {
   text-align: end;
 }
-#stock-portfolio .hold .board .items .record .add {
+#crypto-screen .screen .board .items .record .add {
   color: #f0f0f0;
   background: rgba(240, 186, 14, 0.75);
   border: rgba(128, 128, 128, 0.75);
   border-radius: 5px;
 }
-#stock-portfolio .hold .board .items .record .add:hover {
+#crypto-screen .screen .board .items .record .add:hover {
   background: #f0ba0e;
   border: gray;
 }
-#stock-portfolio .hold .content {
+#crypto-screen .screen .content {
   grid-column: 1;
   grid-row: 2;
   background: rgba(233, 236, 239, 0.5);
@@ -1697,17 +1529,447 @@ select:invalid {
   border-radius: 5px;
   padding: 0.25rem 0.5rem;
 }
-#stock-portfolio .hold .content .items {
+#crypto-screen .screen .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5rem repeat(7, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 0.25rem 0.5rem;
+}
+#crypto-screen .screen .content .items:last-child {
+  border-bottom: none;
+}
+#crypto-screen .screen .content .color {
+  color: rgba(32, 201, 151, 0.75);
+}
+
+#crypto-game {
+  min-height: 100vh;
+  margin-top: 0.5rem;
+  color: gray;
+}
+#crypto-game .game {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
+}
+#crypto-game .game .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#crypto-game .game .board .items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+}
+#crypto-game .game .board .items .record {
+  text-align: end;
+}
+#crypto-game .game .board .items .record .add {
+  color: #f0f0f0;
+  background: rgba(240, 186, 14, 0.75);
+  border: rgba(128, 128, 128, 0.75);
+  border-radius: 5px;
+}
+#crypto-game .game .board .items .record .add:hover {
+  background: #f0ba0e;
+  border: gray;
+}
+#crypto-game .game .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#crypto-game .game .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5rem repeat(7, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 0.25rem 0.5rem;
+}
+#crypto-game .game .content .items:last-child {
+  border-bottom: none;
+}
+#crypto-game .game .content .color {
+  color: rgba(32, 201, 151, 0.75);
+}
+
+#crypto-moon {
+  min-height: 100vh;
+  margin-top: 0.5rem;
+  color: gray;
+}
+#crypto-moon .moon {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
+}
+#crypto-moon .moon .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#crypto-moon .moon .board .items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+}
+#crypto-moon .moon .board .items .record {
+  text-align: end;
+}
+#crypto-moon .moon .board .items .record .add {
+  color: #f0f0f0;
+  background: rgba(240, 186, 14, 0.75);
+  border: rgba(128, 128, 128, 0.75);
+  border-radius: 5px;
+}
+#crypto-moon .moon .board .items .record .add:hover {
+  background: #f0ba0e;
+  border: gray;
+}
+#crypto-moon .moon .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#crypto-moon .moon .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5rem repeat(7, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 0.25rem 0.5rem;
+}
+#crypto-moon .moon .content .items:last-child {
+  border-bottom: none;
+}
+#crypto-moon .moon .content .color {
+  color: rgba(32, 201, 151, 0.75);
+}
+
+#crypto-nft {
+  min-height: 100vh;
+  margin-top: 0.5rem;
+  color: gray;
+}
+#crypto-nft .nft {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
+}
+#crypto-nft .nft .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#crypto-nft .nft .board .items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+}
+#crypto-nft .nft .board .items .record {
+  text-align: end;
+}
+#crypto-nft .nft .board .items .record .add {
+  color: #f0f0f0;
+  background: rgba(240, 186, 14, 0.75);
+  border: rgba(128, 128, 128, 0.75);
+  border-radius: 5px;
+}
+#crypto-nft .nft .board .items .record .add:hover {
+  background: #f0ba0e;
+  border: gray;
+}
+#crypto-nft .nft .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#crypto-nft .nft .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5rem repeat(7, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 0.25rem 0.5rem;
+}
+#crypto-nft .nft .content .items:last-child {
+  border-bottom: none;
+}
+#crypto-nft .nft .content .color {
+  color: rgba(32, 201, 151, 0.75);
+}
+
+#crypto-portfolio {
+  min-height: 100vh;
+  margin-top: 0.5rem;
+  color: gray;
+}
+#crypto-portfolio .asset {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+}
+#crypto-portfolio .asset .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#crypto-portfolio .asset .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#crypto-portfolio .asset .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 0.25rem 0.5rem;
+}
+#crypto-portfolio .asset .content .items:last-child {
+  border-bottom: none;
+}
+#crypto-portfolio .asset .content .color {
+  color: rgba(32, 201, 151, 0.75);
+}
+#crypto-portfolio .fund {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
+}
+#crypto-portfolio .fund .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#crypto-portfolio .fund .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#crypto-portfolio .fund .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(2, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 0.25rem 0.5rem;
+}
+#crypto-portfolio .fund .content .items:last-child {
+  border-bottom: none;
+}
+#crypto-portfolio .fund .content .color {
+  color: rgba(32, 201, 151, 0.75);
+}
+#crypto-portfolio .order {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
+}
+#crypto-portfolio .order .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#crypto-portfolio .order .board .items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+}
+#crypto-portfolio .order .board .items .record {
+  text-align: end;
+}
+#crypto-portfolio .order .board .items .record .add {
+  color: #f0f0f0;
+  background: rgba(240, 186, 14, 0.75);
+  border: rgba(128, 128, 128, 0.75);
+  border-radius: 5px;
+}
+#crypto-portfolio .order .board .items .record .add:hover {
+  background: #f0ba0e;
+  border: gray;
+}
+#crypto-portfolio .order .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#crypto-portfolio .order .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5rem repeat(8, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 0.25rem 0.5rem;
+}
+#crypto-portfolio .order .content .items:last-child {
+  border-bottom: none;
+}
+#crypto-portfolio .order .content .color {
+  color: rgba(32, 201, 151, 0.75);
+}
+
+#stock-chart {
+  min-height: 100vh;
+  margin-top: 0.5rem;
+  color: gray;
+}
+#stock-chart .chart {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
+}
+#stock-chart .chart .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#stock-chart .chart .board .items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+#stock-chart .chart .board .items .record {
+  text-align: end;
+}
+#stock-chart .chart .board .items .record .search {
+  color: #f0f0f0;
+  background: rgba(240, 186, 14, 0.75);
+  border: rgba(128, 128, 128, 0.75);
+  border-radius: 5px;
+}
+#stock-chart .chart .board .items .record .search:hover {
+  background: #f0ba0e;
+  border: gray;
+}
+#stock-chart .chart .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#stock-chart .chart .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  padding: 0.25rem 0.5rem;
+  min-height: 50vh;
+}
+
+#stock-note {
+  min-height: 100vh;
+  margin-top: 0.5rem;
+  color: gray;
+}
+#stock-note .note {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
+}
+#stock-note .note .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#stock-note .note .board .items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+#stock-note .note .board .items .record {
+  text-align: end;
+}
+#stock-note .note .board .items .record .search {
+  color: #f0f0f0;
+  background: rgba(240, 186, 14, 0.75);
+  border: rgba(128, 128, 128, 0.75);
+  border-radius: 5px;
+}
+#stock-note .note .board .items .record .search:hover {
+  background: #f0ba0e;
+  border: gray;
+}
+#stock-note .note .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#stock-note .note .content .items {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5rem repeat(8, 1fr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  padding: 0.25rem 0.5rem;
+}
+#stock-note .note .content .items:last-child {
+  border-bottom: none;
+}
+#stock-note .note .content .color {
+  color: rgba(32, 201, 151, 0.75);
+}
+
+#stock-portfolio {
+  min-height: 100vh;
+  margin-top: 0.5rem;
+  color: gray;
+}
+#stock-portfolio .asset {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+}
+#stock-portfolio .asset .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#stock-portfolio .asset .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#stock-portfolio .asset .content .items {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: repeat(5, 1fr);
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   padding: 0.25rem 0.5rem;
 }
-#stock-portfolio .hold .content .items:last-child {
+#stock-portfolio .asset .content .items:last-child {
   border-bottom: none;
 }
-#stock-portfolio .hold .content .color {
+#stock-portfolio .asset .content .color {
   color: rgba(32, 201, 151, 0.75);
 }
 #stock-portfolio .order {
@@ -1719,6 +1981,24 @@ select:invalid {
 #stock-portfolio .order .board {
   grid-column: 1;
   grid-row: 1;
+}
+#stock-portfolio .order .board .items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+#stock-portfolio .order .board .items .record {
+  text-align: end;
+}
+#stock-portfolio .order .board .items .record .add {
+  color: #f0f0f0;
+  background: rgba(240, 186, 14, 0.75);
+  border: rgba(128, 128, 128, 0.75);
+  border-radius: 5px;
+}
+#stock-portfolio .order .board .items .record .add:hover {
+  background: #f0ba0e;
+  border: gray;
 }
 #stock-portfolio .order .content {
   grid-column: 1;
@@ -1743,28 +2023,60 @@ select:invalid {
   color: rgba(32, 201, 151, 0.75);
 }
 
-.stock-index > .items {
+#stock-trade {
+  min-height: 100vh;
+  margin-top: 0.5rem;
+  color: gray;
+}
+#stock-trade .trade {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem 1fr;
+  margin-top: 0.5rem;
+}
+#stock-trade .trade .board {
+  grid-column: 1;
+  grid-row: 1;
+}
+#stock-trade .trade .board .items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+#stock-trade .trade .board .items .record {
+  text-align: end;
+}
+#stock-trade .trade .board .items .record .search {
+  color: #f0f0f0;
+  background: rgba(240, 186, 14, 0.75);
+  border: rgba(128, 128, 128, 0.75);
+  border-radius: 5px;
+}
+#stock-trade .trade .board .items .record .search:hover {
+  background: #f0ba0e;
+  border: gray;
+}
+#stock-trade .trade .content {
+  grid-column: 1;
+  grid-row: 2;
+  background: rgba(233, 236, 239, 0.5);
+  border: 1px solid rgba(222, 226, 230, 0.75);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+}
+#stock-trade .trade .content .items {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 5rem 2fr repeat(4, 1fr);
+  grid-template-columns: 5rem repeat(8, 1fr);
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
-  vertical-align: top;
+  padding: 0.25rem 0.5rem;
 }
-.stock-index > .items:last-child {
+#stock-trade .trade .content .items:last-child {
   border-bottom: none;
 }
-
-.stock-trade > .items {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 5rem repeat(9, 1fr);
-  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
-  vertical-align: top;
-}
-.stock-trade > .items:last-child {
-  border-bottom: none;
+#stock-trade .trade .content .color {
+  color: rgba(32, 201, 151, 0.75);
 }
 
 #stock-watchlist {
@@ -1783,8 +2095,21 @@ select:invalid {
 }
 #stock-watchlist .cheat .board .items {
   display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+#stock-watchlist .cheat .board .items .build {
+  text-align: end;
+}
+#stock-watchlist .cheat .board .items .build .run {
+  color: #f0f0f0;
+  background: rgba(32, 201, 151, 0.75);
+  border: rgba(25, 135, 84, 0.75);
+  border-radius: 5px;
+}
+#stock-watchlist .cheat .board .items .build .run:hover {
+  background: #198754;
+  border: #20c997;
 }
 #stock-watchlist .cheat .content {
   grid-column: 1;
@@ -1805,17 +2130,38 @@ select:invalid {
 #stock-watchlist .cheat .content .items:last-child {
   border-bottom: none;
 }
-#stock-watchlist .order {
+#stock-watchlist .minings,
+#stock-watchlist .holdings,
+#stock-watchlist .services,
+#stock-watchlist .industrials,
+#stock-watchlist .properties,
+#stock-watchlist .financials,
+#stock-watchlist .boards,
+#stock-watchlist .funds {
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: 2rem 1fr;
   margin-top: 0.5rem;
 }
-#stock-watchlist .order .board {
+#stock-watchlist .minings .board,
+#stock-watchlist .holdings .board,
+#stock-watchlist .services .board,
+#stock-watchlist .industrials .board,
+#stock-watchlist .properties .board,
+#stock-watchlist .financials .board,
+#stock-watchlist .boards .board,
+#stock-watchlist .funds .board {
   grid-column: 1;
   grid-row: 1;
 }
-#stock-watchlist .order .content {
+#stock-watchlist .minings .content,
+#stock-watchlist .holdings .content,
+#stock-watchlist .services .content,
+#stock-watchlist .industrials .content,
+#stock-watchlist .properties .content,
+#stock-watchlist .financials .content,
+#stock-watchlist .boards .content,
+#stock-watchlist .funds .content {
   grid-column: 1;
   grid-row: 2;
   background: rgba(233, 236, 239, 0.5);
@@ -1824,30 +2170,39 @@ select:invalid {
   border-radius: 5px;
   padding: 0.25rem 0.5rem;
 }
-#stock-watchlist .order .content .items {
+#stock-watchlist .minings .content .items,
+#stock-watchlist .holdings .content .items,
+#stock-watchlist .services .content .items,
+#stock-watchlist .industrials .content .items,
+#stock-watchlist .properties .content .items,
+#stock-watchlist .financials .content .items,
+#stock-watchlist .boards .content .items,
+#stock-watchlist .funds .content .items {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 5rem repeat(8, 1fr);
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   padding: 0.25rem 0.5rem;
 }
-#stock-watchlist .order .content .items:last-child {
+#stock-watchlist .minings .content .items:last-child,
+#stock-watchlist .holdings .content .items:last-child,
+#stock-watchlist .services .content .items:last-child,
+#stock-watchlist .industrials .content .items:last-child,
+#stock-watchlist .properties .content .items:last-child,
+#stock-watchlist .financials .content .items:last-child,
+#stock-watchlist .boards .content .items:last-child,
+#stock-watchlist .funds .content .items:last-child {
   border-bottom: none;
 }
-#stock-watchlist .order .content .color {
+#stock-watchlist .minings .content .color,
+#stock-watchlist .holdings .content .color,
+#stock-watchlist .services .content .color,
+#stock-watchlist .industrials .content .color,
+#stock-watchlist .properties .content .color,
+#stock-watchlist .financials .content .color,
+#stock-watchlist .boards .content .color,
+#stock-watchlist .funds .content .color {
   color: rgba(32, 201, 151, 0.75);
-}
-
-.stock-note > .items {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 5rem 1fr 3fr 1fr 1fr;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
-  padding: 1rem;
-  vertical-align: top;
-}
-.stock-note > .items:last-child {
-  border-bottom: none;
 }
 
 /** ---------- Animate Structure ---------- */

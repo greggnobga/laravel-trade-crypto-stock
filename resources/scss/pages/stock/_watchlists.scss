@@ -14,8 +14,24 @@
 
             .items {
                 display: grid;
-                grid-template-rows: 1fr;
-                grid-template-columns: auto;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto;
+
+                .build {
+                    text-align: end;
+
+                    .run {
+                        color: $cl-light;
+                        background: rgba($cl-teal, 0.75);
+                        border: rgba($cl-green, 0.75);
+                        border-radius: 5px;
+
+                        &:hover {
+                            background: rgba($cl-green, 1);
+                            border: rgba($cl-teal, 1);
+                        }
+                    }
+                }
             }
         }
 
@@ -42,7 +58,14 @@
         }
     }
 
-    .order {
+    .minings,
+    .holdings,
+    .services,
+    .industrials,
+    .properties,
+    .financials,
+    .boards,
+    .funds {
         display: grid;
         grid-template-columns: auto;
         grid-template-rows: 2rem 1fr;
@@ -80,40 +103,3 @@
         }
     }
 }
-
-// .stock-cheat>.items {
-//     display: grid;
-//     grid-template-rows: 1fr;
-//     grid-template-columns: 1fr;
-//     border-bottom: 1px solid rgba($cl-gray, .15);
-//     padding: 1rem;
-//     vertical-align: top;
-
-//     &:last-child {
-//         border-bottom: none;
-//     }
-// }
-
-// .stock-minings>.items,
-// .stock-holdings>.items,
-// .stock-services>.items,
-// .stock-industrials>.items,
-// .stock-properties>.items,
-// .stock-financials>.items,
-// .stock-boards>.items,
-// .stock-funds>.items {
-//     display: grid;
-//     grid-template-rows: 1fr;
-//     grid-template-columns: 5rem repeat(8, 1fr);
-//     border-bottom: 1px solid rgba($cl-gray, .15);
-//     padding: 1rem;
-//     vertical-align: top;
-
-//     &:first-child {
-//         border-top: none;
-//     }
-
-//     &:last-child {
-//         border-bottom: none;
-//     }
-// }

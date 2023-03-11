@@ -2,9 +2,13 @@
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 2fr 1fr 2fr;
+    background: linear-gradient(
+        125deg,
+        rgba($cl-green, 0.85),
+        rgba($cl-green, 0.75),
+        rgba($cl-green, 0.95)
+    );
     padding: 0 0.25rem;
-    z-index: 100;
-    background: rgba($cl-gray, 0.5);
     width: 100%;
 
     .explorer {

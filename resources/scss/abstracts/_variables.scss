@@ -18,7 +18,7 @@ $fw-bolder: bolder;
 /** Color Scheme */
 $cl-red: #dc3545;
 $cl-pink: #d63384;
-$cl-green: #198754;
+$cl-green: #368727;
 $cl-lime: #00cc33;
 $cl-teal: #20c997;
 $cl-blue: #0d6efd;
@@ -45,4 +45,6 @@ $cl-gray-900: #212529;
 
 $box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 $box-border: 1px solid rgba($cl-gray-300, 0.75);
-$box-background: rgba($cl-gray-200, 0.5);
+$box-background: rgba($cl-gray-200, 0.75);
+
+$gd-green: linear-gradient(to top, #368727 0%, #00cc33 100%);

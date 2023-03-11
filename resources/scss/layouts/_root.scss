@@ -1,4 +1,9 @@
 #root {
-    background-color: $cl-gray-100;
+    background: radial-gradient(
+        circle,
+        rgba(#368727, 0.15) 10%,
+        transparent 11%
+    );
+    background-size: 1em 1em;
     min-height: 100vh;
 }

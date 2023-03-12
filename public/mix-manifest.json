@@ -3,5 +3,9 @@
     "/css/main.css": "/css/main.css",
     "/icons/favicon.ico": "/icons/favicon.ico",
     "/icons/sprite.svg": "/icons/sprite.svg",
-    "/images/background.svg": "/images/background.svg"
+    "/images/hexagon.svg": "/images/hexagon.svg",
+    "/images/price.jpeg": "/images/price.jpeg",
+    "/images/support.jpeg": "/images/support.jpeg",
+    "/images/tools.jpeg": "/images/tools.jpeg",
+    "/images/world-map.svg": "/images/world-map.svg"
 }

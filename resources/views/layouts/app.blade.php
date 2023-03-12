@@ -9,7 +9,7 @@
     <!-- Title -->
     <title>{{ config('app.name', 'Discover Your Ideal Work From Home Opportunities') }}</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="48x48" href="/public/favicon.ico">
+    <link rel="icon" type="image/png" sizes="48x48" href="/public/icons/favicon.ico">
     <!-- Pure CSS -->
     <link href="/public/css/main.css" rel="stylesheet" type="text/css">
 </head>

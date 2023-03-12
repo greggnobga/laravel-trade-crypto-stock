@@ -1,0 +1,28 @@
+.compare {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    place-items: center;
+    margin-top: 1rem;
+    background: url("/public/images/hexagon.svg"),
+        linear-gradient(
+            170deg,
+            rgba(247, 247, 247, 0.35),
+            rgba(211, 211, 211, 0.35)
+        );
+    background-size: cover;
+    border-radius: 5px;
+    padding: 1rem;
+
+    .query {
+        color: rgba($cl-red, 0.75);
+        font-size: 3rem;
+        padding: 1rem;
+    }
+
+    .response {
+        color: rgba($cl-green, 0.75);
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
+}

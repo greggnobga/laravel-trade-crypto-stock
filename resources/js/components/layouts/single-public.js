@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 /** Component. */
 import Header from '../headers'
+import Footer from '../footer'
 
 const Single = () => {
     /** Return something. */
@@ -12,6 +13,7 @@ const Single = () => {
             <div id="wrapper">
                 <Outlet />
             </div>
+            <Footer />
         </section>
     );
 }

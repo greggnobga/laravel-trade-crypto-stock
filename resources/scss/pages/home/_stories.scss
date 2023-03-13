@@ -1,0 +1,39 @@
+.stories {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5rem 1fr;
+    margin-top: 1rem;
+    color: rgba($cl-gray, 0.85);
+
+    .title {
+        text-align: center;
+        font-size: 2rem;
+    }
+    .story {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-row-gap: 1rem;
+
+        .items {
+            display: grid;
+            grid-template-columns: 0.5fr 1fr;
+            grid-template-rows: auto;
+            grid-column-gap: 1rem;
+
+            .thumbnail {
+                padding: 0.5rem;
+
+                img {
+                    border-radius: 5px;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            .content {
+                padding: 0.5rem;
+            }
+        }
+    }
+}

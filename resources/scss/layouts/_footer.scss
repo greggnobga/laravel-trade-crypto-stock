@@ -1,0 +1,19 @@
+#footer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-column-gap: 1rem;
+    min-height: 25vh;
+    margin-top: 1rem;
+    padding: 1rem;
+    color: $cl-light;
+    background: linear-gradient(0deg, rgb(0, 0, 0), rgb(35, 225, 105));
+
+    .resource ul {
+        padding: 0;
+    }
+
+    .contact ul {
+        padding: 0;
+    }
+}

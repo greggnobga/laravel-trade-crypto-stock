@@ -1,6 +1,78 @@
+/** React. */
+import { Fragment, useState } from 'react';
+
+/** Vendor. */
+import { Link } from "react-router-dom";
+
+/** Helper. */
+import useNavigation from '../../helpers/help-navigation';
+
+/** Component. */
+import Icon from '../icons';
+
 const Mobile = () => {
+    /** Use helper. */
+    const { authenticated, requestHandler } = useNavigation();
+
+    /** Use state. */
+    const [isActive, setIsActive] = useState(false);
+
+    /** Hamburger handler. */
+    const hamburgerHandler = () => {
+        console.log('Hamburger clicked.');
+        setIsActive(!isActive);
+    }
+
+    /** Hamburger classes. */
+    const hamburgerClasses = isActive ? 'hamburger hamburger-elastic is-active' : 'hamburger hamburger-elastic';
+
     return (
-        <h1>Mobile section.</h1>
+        <div id="mobile">
+            <div className="brand">
+                <Link className="items" to="/">
+                    <span><Icon id="logo" /> Orion</span>
+                </Link>
+            </div>
+            <div className="burger">
+                <button className={hamburgerClasses} type="button"
+                    aria-label="Menu" aria-controls="navigation" onClick={hamburgerHandler}>
+                    <span className="hamburger-box">
+                        <span className="hamburger-inner"></span>
+                    </span>
+                </button>
+            </div>
+            {isActive ?
+                <div className="menu" onClick={hamburgerHandler}>
+                    <nav className="navigation">
+                        <Link className="items" to="/stock-explorer">
+                            <span><Icon id="stock" /> Stock Explorer</span>
+                        </Link>
+                        <Link className="items" to="/crypto-explorer">
+                            <span><Icon id="crypto" /> Crypto Explorer</span>
+                        </Link>
+                        {authenticated ? <Fragment>
+                            <Link className="items" to="/dashboard">
+                                <span><Icon id="menu" /> Dashboard</span>
+                            </Link>
+                            <Link className="items" to="/profile">
+                                <span><Icon id="profile" /> Profile</span>
+                            </Link>
+                            <Link className="items" to="/" onClick={requestHandler}>
+                                <span><Icon id="logout" /> Logout</span>
+                            </Link>
+                        </Fragment> : <Fragment>
+                            <Link className="items" to="/auth/login">
+                                <span><Icon id="login" /> Login</span>
+                            </Link>
+                            <Link className="items" to="/auth/register">
+                                <span><Icon id="register" /> Register</span>
+                            </Link>
+                        </Fragment>
+                        }
+                    </nav>
+                </div> : ''}
+        </div>
+
     );
 }
 

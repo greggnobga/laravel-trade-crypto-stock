@@ -1,45 +1,18 @@
 /** React. */
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 
 /** Vendor. */
 import { Link } from "react-router-dom";
 
-/** Context. */
-import AuthContext from '../../context/auth-context';
-
-/** Hook. */
-import useHttp from '../../hooks/use-http';
+/** Helper. */
+import useNavigation from '../../helpers/help-navigation';
 
 /** Component. */
 import Icon from '../icons';
 
 const Desktop = () => {
-    /** Use context. */
-    const authCtx = useContext(AuthContext);
-
-    /** Callback http hook. */
-    const logoutResponse = (data) => {
-        /** Set sucess message. */
-        authCtx.messenger(data.message);
-    };
-
-    /** Use http hook. */
-    const { isLoading, sendRequest } = useHttp({
-        url: '/api/logout',
-        method: 'POST',
-        params: { token: localStorage.getItem('token') },
-        headers: {
-            authorization: `Bearer ${localStorage.getItem('token' || null)}`
-        }
-    }, logoutResponse);
-
-    /** Logout handler. */
-    const logoutHandler = () => {
-        /** Send http request. */
-        sendRequest();
-        /** Clear token. */
-        authCtx.logout();
-    }
+    /** Use helper. */
+    const { authenticated, requestHandler } = useNavigation();
 
     return (
         <div id="header">
@@ -57,14 +30,14 @@ const Desktop = () => {
                 </Link>
             </div>
             <div className="auth">
-                {authCtx.authenticated ? <Fragment>
+                {authenticated ? <Fragment>
                     <Link to="/dashboard">
                         <span><Icon id="menu" /> Dashboard</span>
                     </Link>
                     <Link to="/profile">
                         <span><Icon id="profile" /> Profile</span>
                     </Link>
-                    <Link to="/" onClick={logoutHandler}>
+                    <Link to="/" onClick={requestHandler}>
                         <span><Icon id="logout" /> Logout</span>
                     </Link>
                 </Fragment> : <Fragment>

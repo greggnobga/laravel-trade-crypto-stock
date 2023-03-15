@@ -1,29 +1,49 @@
 .summary {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto;
+    place-items: center;
+    border-radius: 3px;
     background: $box-background;
     border: $box-border;
     box-shadow: $box-shadow;
 
     .items {
-        padding: 0.5rem;
-        width: 10rem;
+        padding: 1rem;
 
         .title {
             font-size: 0.75rem;
-            margin-bottom: 0;
             text-align: center;
             color: rgba($cl-gray-600, 0.85);
+            margin-bottom: 0;
         }
 
         .value {
-            margin-bottom: 0.5rem;
             text-align: center;
             color: rgba($cl-gray, 0.75);
+            margin-bottom: 0;
         }
+    }
+}
+
+/**
+ * ----------------------------------------
+ *  Media Query Phones
+ * ----------------------------------------
+ */
+@media only screen and (min-device-width: 280px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 2) {
+    .summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/**
+ * ----------------------------------------
+ *  Media Query Tablets
+ * ----------------------------------------
+ */
+@media (min-device-width: 768px) and (max-device-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) {
+    .summary {
+        grid-template-columns: repeat(4, 1fr);
     }
 }

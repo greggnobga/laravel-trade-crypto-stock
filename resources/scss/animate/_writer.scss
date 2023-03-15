@@ -31,3 +31,25 @@
         border-color: transparent;
     }
 }
+
+/**
+ * ----------------------------------------
+ *  Media Query Phones
+ * ----------------------------------------
+ */
+@media only screen and (min-device-width: 280px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 2) {
+    .writer {
+        white-space: normal;
+    }
+}
+
+/**
+ * ----------------------------------------
+ *  Media Query Tablets
+ * ----------------------------------------
+ */
+@media (min-device-width: 768px) and (max-device-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) {
+    .writer {
+        white-space: normal;
+    }
+}

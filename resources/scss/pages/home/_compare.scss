@@ -25,3 +25,49 @@
         padding: 1rem;
     }
 }
+
+/**
+ * ----------------------------------------
+ *  Media Query Phones
+ * ----------------------------------------
+ */
+@media only screen and (min-device-width: 280px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 2) {
+    .compare {
+        background-size: 100% 100%;
+        padding: 0.25rem;
+
+        .query {
+            color: rgba($cl-red, 0.75);
+            font-size: 1.5rem;
+            padding: 0.25em;
+        }
+
+        .response {
+            color: rgba($cl-green, 0.75);
+            padding: 0.25rem;
+        }
+    }
+}
+
+/**
+ * ----------------------------------------
+ *  Media Query Tablets
+ * ----------------------------------------
+ */
+@media (min-device-width: 768px) and (max-device-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) {
+    .compare {
+        background-size: 100% 100%;
+        padding: 0.25rem;
+
+        .query {
+            color: rgba($cl-red, 0.75);
+            font-size: 2.25rem;
+            padding: 0.5em;
+        }
+
+        .response {
+            color: rgba($cl-green, 0.75);
+            padding: 0.5rem;
+        }
+    }
+}

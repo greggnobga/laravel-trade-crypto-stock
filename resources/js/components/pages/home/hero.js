@@ -1,4 +1,5 @@
 const Hero = () => {
+    /** Return something.. */
     return (
         <div className="hero">
             <div className="headline"><p className="writer">At little cost, you can accomplish more.</p></div>

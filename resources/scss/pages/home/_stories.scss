@@ -37,3 +37,14 @@
         }
     }
 }
+
+/**
+ * ----------------------------------------
+ *  Media Query Phones
+ * ----------------------------------------
+ */
+@media only screen and (min-device-width: 280px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 2) {
+    .stories > .story > .items {
+        grid-template-columns: 1fr;
+    }
+}

@@ -11,7 +11,7 @@ const Single = () => {
         <section id="single">
             <Header />
             <div id="wrapper">
-                {/* <Outlet /> */}
+                <Outlet />
             </div>
             <Footer />
         </section>

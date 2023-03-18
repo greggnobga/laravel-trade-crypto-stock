@@ -13,6 +13,8 @@ import Loader from '../../icons/loader.js';
 /** Hook. */
 import useValidate from '../../../hooks/use-validate';
 import useHttp from '../../../hooks/use-http';
+import useMouse from '../../../hooks/use-mouse';
+import useDelay from '../../../hooks/use-delay';
 
 const Forgot = () => {
     /** Map html element to validate hook. */
@@ -74,13 +76,26 @@ const Forgot = () => {
         /** Reset input. */
         emailInputReset();
     }
-    /** Cancel handler. */
-    const cancelHandler = () => {
-        navigate('/');
-    }
+
+    /** Use delay hook. */
+    const { isClass, onDelay } = useDelay({ default: true, enter: 'form fade-in-bottom', exit: 'form fade-out-bottom' });
+
+    /** Map animate hook submit button. */
+    const {
+        mouseHover: submitHover,
+        mouseEnter: submitMouseEnter,
+        mouseLeave: submitMouseLeave
+    } = useMouse({ default: 'btn btn-primary', enter: 'pulsate-forward' });
+
+    /** Map animate hook cancel button. */
+    const {
+        mouseHover: cancelHover,
+        mouseEnter: cancelMouseEnter,
+        mouseLeave: cancelMouseLeave
+    } = useMouse({ default: 'btn btn-secondary', enter: 'pulsate-forward' });
 
     return (
-        <form method="post" className="form" onSubmit={submitHandler}>
+        <form method="post" className={isClass} onSubmit={submitHandler}>
             {isLoading ? <Loader /> : <Fragment>
                 <div className="heading">
                     <h4>Forgot Password</h4>
@@ -98,10 +113,8 @@ const Forgot = () => {
                     {emailHasError ? <p className="error">Please enter a valid email.</p> : ''}
                 </div>
                 <div className="button">
-                    <button className="btn btn-primary" type="submit" disabled={!formIsValid}>Submit</button>
-                    <button className="btn btn-secondary" type="button" onClick={cancelHandler}>Cancel</button>
-                    {/* <button className={submitHover} onMouseEnter={submitMouseEnter} onMouseLeave={submitMouseLeave} type="submit" disabled={!formIsValid}>Submit</button> */}
-                    {/* <button className={cancelHover} onMouseEnter={cancelMouseEnter} onMouseLeave={cancelMouseLeave} type="button" onClick={onDelay}>Cancel</button> */}
+                    <button className={submitHover} onMouseEnter={submitMouseEnter} onMouseLeave={submitMouseLeave} className="btn btn-primary" type="submit" disabled={!formIsValid}>Submit</button>
+                    <button className={cancelHover} onMouseEnter={cancelMouseEnter} onMouseLeave={cancelMouseLeave} className="btn btn-secondary" type="button" onClick={onDelay}>Cancel</button>
                 </div>
             </Fragment>}
         </form>

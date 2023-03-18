@@ -35,7 +35,7 @@ const Single = () => {
 
     /** Return something. */
     return (
-        <section id="single">
+        <section id="single" className="fade-in-bottom">
             <Header />
             {check ? <Loader /> : token ?
                 <div id="wrapper">

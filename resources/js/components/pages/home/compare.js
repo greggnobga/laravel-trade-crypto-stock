@@ -1,6 +1,13 @@
+/** Hook. */
+import useFocus from '../../../hooks/use-focus';
+
 const Compare = () => {
+    /** Use focus hook. */
+    const [refer, animate, effect] = useFocus({ default: 'compare', animate: 'fade-in-right' });
+
+    /** Return something. */
     return (
-        <div className="compare">
+        <div ref={refer} className={effect}>
             <div className="query">
                 <p className="writer">Traditional Finance VS Cryptocurrency?</p>
             </div>

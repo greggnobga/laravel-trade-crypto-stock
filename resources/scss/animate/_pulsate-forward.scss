@@ -1,0 +1,38 @@
+/**
+ * ----------------------------------------
+ * Pulsate Forward
+ * ----------------------------------------
+ */
+
+.pulsate-forward {
+    animation: pulsate-forward 1.5s ease-in-out infinite both;
+}
+
+@-webkit-keyframes pulsate-forward {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@keyframes pulsate-forward {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}

@@ -4,15 +4,18 @@ import { Fragment, useState } from 'react';
 /** Vendor. */
 import { Link } from "react-router-dom";
 
+/** Hook. */
+import useSticky from '../../hooks/use-sticky';
+
 /** Helper. */
-import useNavigation from '../../helpers/help-navigation';
+import helpNavigation from '../../helpers/help-navigation';
 
 /** Component. */
 import Icon from '../icons';
 
 const Mobile = () => {
     /** Use helper. */
-    const { authenticated, requestHandler } = useNavigation();
+    const { authenticated, requestHandler } = helpNavigation();
 
     /** Use state. */
     const [isActive, setIsActive] = useState(false);
@@ -26,8 +29,11 @@ const Mobile = () => {
     /** Hamburger classes. */
     const hamburgerClasses = isActive ? 'hamburger hamburger-elastic is-active' : 'hamburger hamburger-elastic';
 
+    /** Use hook sticky. */
+    const sticky = useSticky();
+
     return (
-        <div id="mobile">
+        <div id="mobile" className={sticky ? "sticky fade-in-bottom" : "fade-in-top"}>
             <div className="brand">
                 <Link className="items" to="/">
                     <span><Icon id="logo" /> Orion</span>
@@ -45,27 +51,41 @@ const Mobile = () => {
                 <div className="menu" onClick={hamburgerHandler}>
                     <nav className="navigation">
                         <Link className="items" to="/stock-explorer">
-                            <span><Icon id="stock" /> Stock Explorer</span>
+                            <span>
+                                <Icon id="stock" /> Stock Explorer
+                            </span>
                         </Link>
                         <Link className="items" to="/crypto-explorer">
-                            <span><Icon id="crypto" /> Crypto Explorer</span>
+                            <span>
+                                <Icon id="crypto" /> Crypto Explorer
+                            </span>
                         </Link>
                         {authenticated ? <Fragment>
                             <Link className="items" to="/dashboard">
-                                <span><Icon id="menu" /> Dashboard</span>
+                                <span>
+                                    <Icon id="menu" /> Dashboard
+                                </span>
                             </Link>
                             <Link className="items" to="/profile">
-                                <span><Icon id="profile" /> Profile</span>
+                                <span>
+                                    <Icon id="profile" /> Profile
+                                </span>
                             </Link>
                             <Link className="items" to="/" onClick={requestHandler}>
-                                <span><Icon id="logout" /> Logout</span>
+                                <span>
+                                    <Icon id="logout" /> Logout
+                                </span>
                             </Link>
                         </Fragment> : <Fragment>
                             <Link className="items" to="/auth/login">
-                                <span><Icon id="login" /> Login</span>
+                                <span>
+                                    <Icon id="login" /> Login
+                                </span>
                             </Link>
                             <Link className="items" to="/auth/register">
-                                <span><Icon id="register" /> Register</span>
+                                <span>
+                                    <Icon id="register" /> Register
+                                </span>
                             </Link>
                         </Fragment>
                         }

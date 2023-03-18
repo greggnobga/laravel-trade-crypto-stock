@@ -1,9 +1,16 @@
+/** Hook. */
+import useFocus from '../../../hooks/use-focus';
+
 /** Component. */
 import Icon from '../../icons';
 
 const Reason = () => {
+    /** Use focus hook. */
+    const [refer, animate, effect] = useFocus({ default: 'reason', animate: 'fade-in-right' });
+
+    /** Return something. */
     return (
-        <div className="reason">
+        <div ref={refer} className={effect}>
             <div className="title">
                 <h1>Why Orion Trade?</h1>
             </div>

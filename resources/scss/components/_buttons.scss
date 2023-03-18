@@ -4,13 +4,15 @@
     border: none;
 
     .btn {
-        display: inline-block;
+        display: block;
         padding: 1rem;
         border: 1px solid rgba($cl-white, 0.5);
         cursor: pointer;
         color: $cl-white;
         border-radius: 0.25rem;
         text-align: center;
+        width: 100%;
+        margin-bottom: 1rem;
 
         &:hover {
             color: $cl-dark;
@@ -72,47 +74,16 @@
         }
     }
 
-    .btn-crypto {
-        background: $cl-lime;
-        border: 1px solid rgba($cl-green, 0.25);
+    .btn-outline {
+        border: 1px solid rgba($cl-green, 0.75);
+        background: transparent;
+        color: $cl-green;
+        width: 15%;
 
         &:hover {
-            background: $cl-green;
-            border: 1px solid rgba($cl-lime, 0.25);
-        }
-    }
-
-    .update,
-    .show {
-        display: inline-block;
-        color: $cl-white;
-        cursor: pointer;
-        border-radius: 0.25rem;
-        background: rgba($cl-blue, 0.75);
-        margin-right: 0.25rem;
-        padding: 0.5rem 0.5rem;
-        width: 6rem;
-        text-align: center;
-
-        &:hover {
-            background: rgba($cl-gray, 0.25);
-        }
-    }
-
-    .destroy,
-    .watch {
-        display: inline-block;
-        color: $cl-white;
-        cursor: pointer;
-        border-radius: 0.25rem;
-        background: rgba($cl-red, 0.75);
-        margin-left: 0.25rem;
-        padding: 0.5rem 0.5rem;
-        width: 6rem;
-        text-align: center;
-
-        &:hover {
-            background: rgba($cl-gray, 0.25);
+            border: 1px solid rgba($cl-green, 0.75);
+            background: rgba($cl-green, 0.75);
+            color: $cl-light;
         }
     }
 }

@@ -5,47 +5,126 @@ import { Fragment } from 'react';
 import { Link } from "react-router-dom";
 
 /** Helper. */
-import useNavigation from '../../helpers/help-navigation';
+import helpNavigation from '../../helpers/help-navigation';
+
+/** Hook. */
+import useMouse from '../../hooks/use-mouse';
+import useSticky from '../../hooks/use-sticky';
 
 /** Component. */
 import Icon from '../icons';
 
 const Desktop = () => {
     /** Use helper. */
-    const { authenticated, requestHandler } = useNavigation();
+    const { authenticated, requestHandler } = helpNavigation();
+
+    /** Map mouse hook stock explorer button. */
+    const {
+        mouseHover: stockExplorerHover,
+        mouseEnter: stockExplorerMouseEnter,
+        mouseLeave: stockExplorerMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
+    /** Map mouse hook crypto explorer button. */
+    const {
+        mouseHover: cryptoExplorerHover,
+        mouseEnter: cryptoExplorerMouseEnter,
+        mouseLeave: cryptoExplorerMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
+    /** Map mouse hook brand button. */
+    const {
+        mouseHover: brandHover,
+        mouseEnter: brandMouseEnter,
+        mouseLeave: brandMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
+    /** Map mouse hook login button. */
+    const {
+        mouseHover: loginHover,
+        mouseEnter: loginMouseEnter,
+        mouseLeave: loginMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
+    /** Map mouse hook register button. */
+    const {
+        mouseHover: registerHover,
+        mouseEnter: registerMouseEnter,
+        mouseLeave: registerMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
+    /** Map mouse hook dashboard button. */
+    const {
+        mouseHover: dashboardHover,
+        mouseEnter: dashboardMouseEnter,
+        mouseLeave: dashboardMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
+    /** Map mouse hook profile button. */
+    const {
+        mouseHover: profileHover,
+        mouseEnter: profileMouseEnter,
+        mouseLeave: profileMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
+    /** Map mouse hook logout button. */
+    const {
+        mouseHover: logoutHover,
+        mouseEnter: logoutMouseEnter,
+        mouseLeave: logoutMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
+    /** Use hook sticky. */
+    const sticky = useSticky();
 
     return (
-        <div id="header">
+        <div id="header" className={sticky ? "sticky fade-in-bottom" : "fade-in-top"}>
             <div className="explorer">
                 <Link to="/stock-explorer">
-                    <span><Icon id="stock" /> Stock Explorer</span>
+                    <span className={stockExplorerHover} onMouseEnter={stockExplorerMouseEnter} onMouseLeave={stockExplorerMouseLeave}>
+                        <Icon id="stock" /> Stock Explorer
+                    </span>
                 </Link>
                 <Link to="/crypto-explorer">
-                    <span><Icon id="crypto" /> Crypto Explorer</span>
+                    <span className={cryptoExplorerHover} onMouseEnter={cryptoExplorerMouseEnter} onMouseLeave={cryptoExplorerMouseLeave}>
+                        <Icon id="crypto" /> Crypto Explorer
+                    </span>
                 </Link>
             </div>
             <div className="brand">
                 <Link to="/">
-                    <span><Icon id="logo" /> Orion Trade</span>
+                    <span className={brandHover} onMouseEnter={brandMouseEnter} onMouseLeave={brandMouseLeave}>
+                        <Icon id="logo" /> Orion Trade
+                    </span>
                 </Link>
             </div>
             <div className="auth">
                 {authenticated ? <Fragment>
                     <Link to="/dashboard">
-                        <span><Icon id="menu" /> Dashboard</span>
+                        <span className={dashboardHover} onMouseEnter={dashboardMouseEnter} onMouseLeave={dashboardMouseLeave}>
+                            <Icon id="menu" /> Dashboard
+                        </span>
                     </Link>
                     <Link to="/profile">
-                        <span><Icon id="profile" /> Profile</span>
+                        <span className={profileHover} onMouseEnter={profileMouseEnter} onMouseLeave={profileMouseLeave}>
+                            <Icon id="profile" /> Profile
+                        </span>
                     </Link>
                     <Link to="/" onClick={requestHandler}>
-                        <span><Icon id="logout" /> Logout</span>
+                        <span className={logoutHover} onMouseEnter={brandMouseEnter} onMouseLeave={brandMouseLeave}>
+                            <Icon id="logout" /> Logout
+                        </span>
                     </Link>
                 </Fragment> : <Fragment>
                     <Link to="/auth/login">
-                        <span><Icon id="login" /> Login</span>
+                        <span className={loginHover} onMouseEnter={loginMouseEnter} onMouseLeave={loginMouseLeave}>
+                            <Icon id="login" /> Login
+                        </span>
                     </Link>
                     <Link to="/auth/register">
-                        <span><Icon id="register" /> Register</span>
+                        <span className={registerHover} onMouseEnter={registerMouseEnter} onMouseLeave={registerMouseLeave}>
+                            <Icon id="register" /> Register
+                        </span>
                     </Link>
                 </Fragment>
                 }

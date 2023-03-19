@@ -20,8 +20,7 @@ const Header = () => {
     /** Use notice helper. */
     const { isMobile } = useScreen();
 
-    console.log(isMobile);
-
+    /** Return something. */
     return (
         <Fragment>
             {notified && <Messenger onShow={setNotified} />}

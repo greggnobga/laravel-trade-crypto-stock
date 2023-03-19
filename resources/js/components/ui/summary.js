@@ -1,23 +1,58 @@
+/** React. */
+import { useEffect, useState } from 'react';
+
+/** Hook. */
+import useHttp from '../../hooks/use-http';
+
 const Summary = () => {
+    /** Use state. */
+    const [result, setResult] = useState([]);
 
-    const summaryItems = [
-        { title: 'PSE Index', value: '6,724.62' },
-        { title: 'All Shares', value: '3,591.67' },
-        { title: 'Financials', value: '1,851.39' },
-        { title: 'Industrial', value: '9,604.93' },
-        { title: 'Holding Firms', value: '6,482.10' },
-        { title: 'Services', value: '1,649.72' },
-        { title: 'Mining and Oil', value: '11,103.17' },
-        { title: 'Property', value: '2,894.60' }
-    ];
+    /** Philippine stock exchange index symbols. */
+    const symbol = ['PSEi', 'ALL', 'FIN', 'IND', 'HDG', 'PRO', 'SVC', 'M-O'];
 
+    /** Callback function for http hooks. */
+    const requestResponse = (data) => {
+        /** Declare an variable array. */
+        let reMap = [];
+
+        /** Loop through symbol array and match with the api result.. */
+        for (let index of symbol) {
+            for (let stock of data.stock) {
+                if (stock.symbol === index) {
+                    reMap.push({
+                        'name': stock['name'],
+                        'volume': stock['volume'].toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+                    });
+                }
+            }
+        }
+
+        /** Set state value. */
+        setResult(reMap);
+    };
+
+    /** Use http hook. */
+    const { isLoading, sendRequest, hasError } = useHttp({
+        url: 'https://phisix-api4.appspot.com/stocks.json',
+        method: 'GET',
+        params: {}
+    }, requestResponse);
+
+    /** Use effect. */
+    useEffect(() => {
+        /** Send http request. */
+        sendRequest();
+    }, []);
+
+    /** Return something.. */
     return (
         <div className="summary">
-            {summaryItems.map(item => {
-                return <div className="items" key={item['title']}>
-                    <p className="title">{item['title']}</p>
-                    <p className="value">{item['value']}</p>
-                </div>;
+            {result.map((item, key) => {
+                return <div className="items" key={key}>
+                    <p className="title">{item['name']}</p>
+                    <p className="value">{item['volume']}</p>
+                </div>
             })}
         </div>
     );

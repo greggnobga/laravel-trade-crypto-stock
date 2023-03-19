@@ -246,7 +246,7 @@ const Register = () => {
                     {confirmHasError ? <p className="error">Please enter a valid confirm password.</p> : passwordMatched ? <p className="error">Password and confirm password do not match.</p> : ''}
                 </div>
                 <div className="reset">
-                    <p>Password forgotten? Click this <Link id="anchor" to="/auth/forgot"><span>link</span></Link> to reset it.</p>
+                    <p>Password forgotten? Click this <Link to="/auth/forgot">link</Link> to reset it.</p>
                 </div>
                 <div className="button">
                     <button className={submitHover} onMouseEnter={submitMouseEnter} onMouseLeave={submitMouseLeave} type="submit" disabled={!formIsValid}>Register</button>

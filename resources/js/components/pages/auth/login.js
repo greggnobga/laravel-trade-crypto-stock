@@ -140,12 +140,12 @@ const Login = () => {
                     {passwordHasError && <p className="error">Please enter a valid password.</p>}
                 </div>
                 <div className="reset">
-                    <p>Password forgotten? Click this <Link id="anchor" to="/auth/forgot"><span>link</span></Link> to reset it.</p>
+                    <p>Password forgotten? Click this <Link to="/auth/forgot">link</Link> to reset it.</p>
                 </div>
                 <div className="button">
                     <button className={submitHover} onMouseEnter={submitMouseEnter} onMouseLeave={submitMouseLeave} type="submit" disabled={!formIsValid}>Login</button>
                     <button className={cancelHover} onMouseEnter={cancelMouseEnter} onMouseLeave={cancelMouseLeave} type="button" onClick={onDelay}>Cancel</button>
-                 </div>
+                </div>
             </Fragment>}
         </form>
     );

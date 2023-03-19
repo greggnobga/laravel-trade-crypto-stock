@@ -40,8 +40,7 @@ const Mobile = () => {
                 </Link>
             </div>
             <div className="burger">
-                <button className={hamburgerClasses} type="button"
-                    aria-label="Menu" aria-controls="navigation" onClick={hamburgerHandler}>
+                <button className={hamburgerClasses} type="button" onClick={hamburgerHandler}>
                     <span className="hamburger-box">
                         <span className="hamburger-inner"></span>
                     </span>
@@ -92,7 +91,6 @@ const Mobile = () => {
                     </nav>
                 </div> : ''}
         </div>
-
     );
 }
 

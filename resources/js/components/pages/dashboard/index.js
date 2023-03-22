@@ -14,15 +14,21 @@ const Dashboad = () => {
     return (
         <div id="dashboard">
             <div className="deck">
-                <Card items={cardItems} />
+                <div className="board"><p>Asset Allocation</p></div>
+                <div className="cards">
+                    <div className="card">
+                        <Card items={cardItems} />
+                    </div>
+                </div>
             </div>
             <div className="chart">
+                <div className="board"><p>Graphical Representation</p></div>
                 <div className="account">Account</div>
                 <div className="offer">Offers</div>
                 <div className="graph">Main Chart</div>
             </div>
             <div className="rank">
-                <div className="board">Philippine Stock Exchange</div>
+                <div className="board"><p>Philippine Stock Exchange</p></div>
                 <div className="gainer">Top Gainers</div>
                 <div className="losser">Top Lossers</div>
             </div>

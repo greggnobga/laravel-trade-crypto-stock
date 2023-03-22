@@ -1,5 +1,5 @@
 /** React */
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 /** Hook. */
 import useScreen from '../../hooks/use-screen';
@@ -17,16 +17,22 @@ const Header = () => {
     /** Use notice helper. */
     const { notified, setNotified } = helpNotice();
 
-    /** Use notice helper. */
+    /** Use screen helper. */
     const { isMobile } = useScreen();
 
+    /** Use state. */
+    const [menu, setMenu] = useState();
+
+    /** Dashboard menu. */
+    const menuHandler = () => {
+        setMenu(!menu);
+    }
     /** Return something. */
     return (
         <Fragment>
             {notified && <Messenger onShow={setNotified} />}
-            {isMobile ? <Mobile /> : <Desktop />}
+            {isMobile ? <Mobile menu={menu} onMenu={menuHandler} /> : <Desktop menu={menu} onMenu={menuHandler} />}
         </Fragment>
-
     );
 }
 

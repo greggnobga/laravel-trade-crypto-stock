@@ -12,7 +12,7 @@ const Card = (props) => {
     return (
         <Fragment>
             {props.items.map((item) => {
-                return <div className={`card ${item['color']}`} key={item['id']}>
+                return <div className={`items ${item['color']}`} key={item['id']}>
                     <p className="title"><Icon id={item['id']} /> {item['title']}</p>
                     <p className="value">{item['value']}</p>
                     <p className="link"><Link to={item['link']}>more</Link></p>

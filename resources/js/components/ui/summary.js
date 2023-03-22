@@ -1,8 +1,11 @@
 /** React. */
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 /** Hook. */
 import useHttp from '../../hooks/use-http';
+
+/** Component. */
+import Loader from '../icons';
 
 const Summary = () => {
     /** Use state. */
@@ -45,16 +48,19 @@ const Summary = () => {
         sendRequest();
     }, []);
 
+    /** Build document node. */
+    const resultElements = result.map((item, key) => {
+        return <div className="items" key={key}>
+            <p className="title">{item['name']}</p>
+            <p className="value">{item['volume']}</p>
+        </div>
+    });
+
     /** Return something.. */
     return (
-        <div className="summary">
-            {result.map((item, key) => {
-                return <div className="items" key={key}>
-                    <p className="title">{item['name']}</p>
-                    <p className="value">{item['volume']}</p>
-                </div>
-            })}
-        </div>
+        <Fragment>
+            {isLoading ? <Loader /> : <div className="summary">{resultElements}</div>}
+        </Fragment>
     );
 }
 

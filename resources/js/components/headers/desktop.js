@@ -13,8 +13,9 @@ import useSticky from '../../hooks/use-sticky';
 
 /** Component. */
 import Icon from '../icons';
+import Menu from '../headers/menu';
 
-const Desktop = () => {
+const Desktop = (props) => {
     /** Use helper. */
     const { authenticated, requestHandler } = helpNavigation();
 
@@ -53,6 +54,13 @@ const Desktop = () => {
         mouseLeave: registerMouseLeave
     } = useMouse({ default: '', enter: 'pulsate-forward' });
 
+    /** Map mouse hook stock explorer button. */
+    const {
+        mouseHover: controlHover,
+        mouseEnter: controlMouseEnter,
+        mouseLeave: controlMouseLeave
+    } = useMouse({ default: '', enter: 'pulsate-forward' });
+
     /** Map mouse hook dashboard button. */
     const {
         mouseHover: dashboardHover,
@@ -77,6 +85,7 @@ const Desktop = () => {
     /** Use hook sticky. */
     const sticky = useSticky();
 
+    /** Return something. */
     return (
         <div id="header" className={sticky ? "sticky fade-in-bottom" : "fade-in-top"}>
             <div className="explorer">
@@ -100,6 +109,12 @@ const Desktop = () => {
             </div>
             <div className="auth">
                 {authenticated ? <Fragment>
+                    <Link to="#">
+                        <span onClick={props.onMenu} className={controlHover} onMouseEnter={controlMouseEnter} onMouseLeave={controlMouseLeave}>
+                            <Icon id="control" /> Control Panel
+                        </span>
+                    </Link>
+                    {props.menu && <Menu onControl={props.onMenu} />}
                     <Link to="/dashboard">
                         <span className={dashboardHover} onMouseEnter={dashboardMouseEnter} onMouseLeave={dashboardMouseLeave}>
                             <Icon id="menu" /> Dashboard

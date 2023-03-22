@@ -12,8 +12,9 @@ import helpNavigation from '../../helpers/help-navigation';
 
 /** Component. */
 import Icon from '../icons';
+import Menu from '../headers/menu';
 
-const Mobile = () => {
+const Mobile = (props) => {
     /** Use helper. */
     const { authenticated, requestHandler } = helpNavigation();
 
@@ -40,6 +41,12 @@ const Mobile = () => {
                 </Link>
             </div>
             <div className="burger">
+                {authenticated ?
+                    <Fragment>
+                        <span onClick={props.onMenu} className="control"><Icon id="control" /></span>
+                        {props.menu && <Menu onControl={props.onMenu} />}
+                    </Fragment>
+                    : ''}
                 <button className={hamburgerClasses} type="button" onClick={hamburgerHandler}>
                     <span className="hamburger-box">
                         <span className="hamburger-inner"></span>

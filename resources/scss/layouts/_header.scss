@@ -73,8 +73,9 @@
 }
 
 .sticky {
-   position: sticky; top: 0;
-   z-index: 200;
+    position: sticky;
+    top: 0;
+    z-index: 200;
 }
 
 #mobile {
@@ -105,6 +106,17 @@
 
     .burger {
         place-self: end;
+
+        .control {
+            display: inline-block;
+            position: relative;
+            top: -0.45rem;
+
+            .sprite > .icon {
+                height: 2.5rem;
+                width: 2.5rem;
+            }
+        }
     }
 
     .menu {

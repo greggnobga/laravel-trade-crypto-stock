@@ -1,5 +1,5 @@
 /** React. */
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 
 /** Vendor. */
 import { Outlet } from 'react-router-dom';
@@ -14,7 +14,6 @@ import helpProtect from '../../helpers/help-protect';
 import Loader from '../icons/loader';
 import Header from '../headers';
 import Summary from '../ui/summary';
-import Menu from '../pages/dashboard/menu';
 import Footer from '../footer';
 
 
@@ -37,13 +36,15 @@ const Single = () => {
     return (
         <section id="single" className="fade-in-bottom">
             <Header />
-            {check ? <Loader /> : token ?
-                <div id="wrapper">
-                    <Summary />
-                    <Menu />
-                    <Outlet />
-                    <Footer />
-                </div> : ''}
+            <div id="wrapper">
+                {check ? <Loader /> : token ?
+                    <Fragment>
+                        <Summary />
+                        <Outlet />
+                    </Fragment>
+                    : ''}
+            </div>
+            <Footer />
         </section>
     );
 }

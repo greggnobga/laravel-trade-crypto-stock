@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Goutte\Client;
+
+use App\Http\Controllers\Controller;
 
 class PSEController extends Controller
 {
@@ -30,11 +32,11 @@ class PSEController extends Controller
     {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
-            /** forward update command. */
+            /** forward reports command. */
             if ($request->input('section') === 'reports') {
                 return $this->stockreports($request->all());
             }
-            /** forward update command. */
+            /** forward prices command. */
             if ($request->input('section') === 'prices') {
                 return $this->stockprices($request->all());
             }
@@ -45,7 +47,7 @@ class PSEController extends Controller
         }
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
-            /** forward financials command. */
+            /** forward trades command. */
             if ($request->input('section') === 'stocks') {
                 return $this->stocktrades();
             }
@@ -167,7 +169,7 @@ class PSEController extends Controller
                 ->where('edge', '=', $data['id'])
                 ->first();
             /** return something. */
-            return ['status' => true, 'message' => $financialreports->name . ' has been successfully updated.', 'reports' => $financialreports];
+            return ['message' => 'The ' . $financialreports->name . ' information was successfully updated.'];
         }
     }
 
@@ -221,7 +223,8 @@ class PSEController extends Controller
             ->where('edge', '=', $data['id'])
             ->first();
         /** return something. */
-        return ['status' => true, 'message' => $stockreports->name . ' has been successfully updated.', 'reports' => $stockreports];
+        //'The ' . $stockreports->name . ' information was successfully updated.'
+        return ['message' => 'The ' . $stockreports->name . ' information was successfully updated.'];
     }
 
     /**
@@ -265,7 +268,7 @@ class PSEController extends Controller
             ->where('edge', '=', $data['id'])
             ->first();
         /** return something. */
-        return ['status' => true, 'message' => $stockreports->name . ' has been successfully updated.', 'reports' => $stockreports];
+        return ['message' => 'The ' . $stockreports->name . ' information was successfully updated.'];
     }
 
     /**
@@ -416,7 +419,7 @@ class PSEController extends Controller
             ];
 
             if ($data['caller'] == 'trade') {
-                return ['status' => true, 'message' => 'Infomation has been fetched.', 'reports' => $financialreports];
+                return ['message' => 'Data has been retrieved.', 'reports' => $financialreports];
             }
 
             if ($data['caller'] == 'watchlist') {
@@ -444,7 +447,7 @@ class PSEController extends Controller
                         ]);
                     /** if insert not empty.*/
                     if ($insert) {
-                        return ['status' =>  true, 'sql' => 'select', 'message' => $data['symbol'] . ' has been added to the database.', 'reports' => $insert];
+                        return ['status' =>  true, 'sql' => 'select', 'message' => $data['symbol'] . ' has been added to the database.'];
                     }
                 } else {
                     $update = DB::table('stock_watchlists')
@@ -462,12 +465,12 @@ class PSEController extends Controller
                         ]);
                     /** if update not empty.*/
                     if ($update) {
-                        return ['status' =>  true, 'sql' => 'select', 'message' => $data['symbol'] . ' successfully updated.', 'reports' => $update];
+                        return ['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'];
                     }
                 }
             }
             /** return something. */
-            return ['status' => false, 'message' => 'Infomation has been fetched.', 'reports' => ''];
+            return ['message' => 'Data has been retrieved.'];
         }
     }
 
@@ -480,17 +483,17 @@ class PSEController extends Controller
         $stocks = DB::table('stock_trades')
             ->select('edge')
             ->where('edge', '>', '0')
-            ->where('updated_at', '<', Carbon::now()->subHour(.10))
+            ->where('updated_at', '<', Carbon::now()->subHour(0))
             ->get()
             ->toArray();
         if (count($stocks)) {
             /** resequence array keys. */
             $stocks = array_values($stocks);
             /** return something. */
-            return ['status' => true, 'message' => 'Start crawling PSE website for stocks information.', 'stocks' => $stocks];
+            return ['message' => 'Start crawling the PSE website for stock information.', 'stocks' => $stocks];
         } else {
             /** return something. */
-            return ['status' => true, 'message' => 'All records are up to date.', 'stocks' => $stocks];
+            return ['message' => 'All records are up to date.'];
         }
     }
 }

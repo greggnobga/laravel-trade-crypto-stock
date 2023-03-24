@@ -1,7 +1,7 @@
 /** React. */
 import { Fragment, useContext } from 'react';
 
-/** Store. */
+/** Context. */
 import AuthContext from '../../context/auth-context';
 
 /** Component. */

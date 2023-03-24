@@ -1,13 +1,13 @@
 #stock-trade {
     min-height: 100vh;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     color: rgba($cl-gray, 1);
 
     .trade {
         display: grid;
         grid-template-columns: auto;
         grid-template-rows: 2rem 1fr;
-        margin-top: 0.5rem;
+        grid-row-gap: 0.25rem;
 
         .board {
             grid-column: 1;
@@ -21,14 +21,61 @@
                 .record {
                     text-align: end;
 
-                    .search {
+                    .btn {
                         color: $cl-light;
+                        border-radius: 3px;
+                        margin: 0 0 0 0.25rem;
+                        padding: 0.25rem;
+                        width: 5rem;
+                    }
+
+                    .btn-search {
                         background: rgba($cl-gold, 0.75);
                         border: rgba($cl-gray, 0.75);
-                        border-radius: 5px;
 
                         &:hover {
                             background: rgba($cl-gold, 1);
+                            border: rgba($cl-gray, 1);
+                        }
+                    }
+
+                    .btn-start {
+                        background: rgba($cl-green, 0.75);
+                        border: rgba($cl-gray, 0.75);
+
+                        &:hover {
+                            background: rgba($cl-green, 1);
+                            border: rgba($cl-gray, 1);
+                        }
+                    }
+
+                    .btn-report {
+                        background: rgba($cl-red, 0.75);
+                        border: rgba($cl-gray, 0.75);
+                        color: $cl-light;
+
+                        &:hover {
+                            background: rgba($cl-red, 1);
+                            border: rgba($cl-gray, 1);
+                        }
+                    }
+
+                    .btn-price {
+                        background: rgba($cl-blue, 0.75);
+                        border: rgba($cl-gray, 0.75);
+
+                        &:hover {
+                            background: rgba($cl-blue, 1);
+                            border: rgba($cl-gray, 1);
+                        }
+                    }
+
+                    .btn-sector {
+                        background: rgba($cl-purple, 0.75);
+                        border: rgba($cl-gray, 0.75);
+
+                        &:hover {
+                            background: rgba($cl-purple, 1);
                             border: rgba($cl-gray, 1);
                         }
                     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Dashboard\Stock;
 
 use App\Http\Controllers\Controller;
@@ -6,87 +7,89 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class TradeController extends Controller {
-  /**
-   * Display a listing of the resource.
-   */
-    public function init(Request $request) {
+class TradeController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function init(Request $request)
+    {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
-        /** forward insert command. */
-            if ($request->input('table') === 'trade' && $request->input('statement') === 'fetch') {
-                return $this->store(['table' => 'trade', 'input' => $request->input('input')]);
+            /** forward insert command. */
+            if ($request->input('table') === 'trade' && $request->input('statement') === 'store') {
+                return $this->store(['table' => $request->input('table'), 'input' => $request->input('input')]);
             }
         }
         /** check if request contains method equal to get. */
-      if ($request->method() === 'GET') {
-        if ($request->input('table') === 'trade') {
-          /** repository. */
-          $result = [];
-          /** check record. */
-          $check = DB::table('stock_trades')
-            ->select('symbol')
-            ->where('symbol', '=', 'PSEi')
-            ->get();
+        if ($request->method() === 'GET') {
+            if ($request->input('table') === 'trade') {
+                /** repository. */
+                $result = [];
+                /** check record. */
+                $check = DB::table('stock_trades')
+                    ->select('symbol')
+                    ->where('symbol', '=', 'PSEi')
+                    ->get();
 
-            if ($check->isNotEmpty()) {
-              /** create stock indexes. */
-              $indexs = ['PSEi', 'ALL', 'FIN', 'IND', 'HDG', 'PRO', 'SVC', 'M-O'];
-              foreach($indexs as $key => $value) {
-                $result['indexes'][$key] = DB::table('stock_trades')
-                    ->select('id', 'name', 'symbol', 'price', 'change', 'volume')
-                    ->where('symbol', '=', $value)
-                    ->first();
-               }
+                if ($check->isNotEmpty()) {
+                    /** create stock indexes. */
+                    $indexs = ['PSEi', 'ALL', 'FIN', 'IND', 'HDG', 'PRO', 'SVC', 'M-O'];
+                    foreach ($indexs as $key => $value) {
+                        $result['indexes'][$key] = DB::table('stock_trades')
+                            ->select('id', 'name', 'symbol', 'price', 'change', 'volume')
+                            ->where('symbol', '=', $value)
+                            ->first();
+                    }
 
-              /** create stock list. */
-              $items = DB::table('stock_trades')
-                ->select('id', 'edge', 'symbol' , 'sector', 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
-                ->orderBy('incomeaftertax', 'desc')
-                ->get();
+                    /** create stock list. */
+                    $items = DB::table('stock_trades')
+                        ->select('id', 'edge', 'symbol', 'sector', 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
+                        ->orderBy('incomeaftertax', 'desc')
+                        ->get();
 
-                /** ignore indexes. */
-                foreach($items as $key => $value) {
-                  switch ($value->symbol) {
-                    case 'PSEi':
-                      break;
-                    case 'ALL':
-                      break;
-                    case 'FIN':
-                      break;
-                    case 'IND':
-                      break;
-                    case 'HDG':
-                      break;
-                    case 'PRO':
-                      break;
-                    case 'SVC':
-                      break;
-                    case 'M-O':
-                      break;
-                    default:
-                      $result['stocks'][$key] = $value;
-                  }
+                    /** ignore indexes. */
+                    foreach ($items as $key => $value) {
+                        switch ($value->symbol) {
+                            case 'PSEi':
+                                break;
+                            case 'ALL':
+                                break;
+                            case 'FIN':
+                                break;
+                            case 'IND':
+                                break;
+                            case 'HDG':
+                                break;
+                            case 'PRO':
+                                break;
+                            case 'SVC':
+                                break;
+                            case 'M-O':
+                                break;
+                            default:
+                                $result['stocks'][$key] = $value;
+                        }
+                    }
+
+                    /** sort data order by volume. */
+                    collect($result['indexes'])->sortByDesc('volume');
+                    collect($result['stocks'])->sortByDesc('incomeaftertax');
+
+                    /** add button array keys. */
+                    $result['indexes'] = $this->helpers(['purpose' => 'format', 'source' => 'indexes', 'index' => $result['indexes']]);
+                    $result['stocks'] = $this->helpers(['purpose' => 'format', 'source' => 'stocks', 'stock' => $result['stocks']]);
+
+                    /** resequence array keys. */
+                    $result['indexes'] = array_values($result['indexes']);
+                    $result['stocks'] = array_values($result['stocks']);
+
+                    /** return something. */
+                    return array('message' => 'All possible stocks listed on the PSE are processed and displayed.', 'indexes' => $result['indexes'], 'stocks' => $result['stocks']);
+                } else {
+                    /** return something. */
+                    return array('message' => 'There was no entry in the database.', 'indexes' => [], 'stocks' => []);
                 }
-
-                /** sort data order by volume. */
-                collect($result['indexes'])->sortByDesc('volume');
-                collect($result['stocks'])->sortByDesc('incomeaftertax');
-
-                /** add button array keys. */
-                $result['indexes'] = $this->helpers(['purpose' => 'format', 'source' => 'indexes', 'index' => $result['indexes']]);
-                $result['stocks'] = $this->helpers(['purpose' => 'format', 'source' => 'stocks', 'stock' => $result['stocks']]);
-
-                /** resequence array keys. */
-                $result['indexes'] = array_values($result['indexes']);
-                $result['stocks'] = array_values($result['stocks']);
-
-                  /** return something. */
-                return array('status' => true, 'sql' => 'select', 'message' => 'All possible stocks listed on PSE are processed and displayed.', 'indexes' => $result['indexes'], 'stocks' => $result['stocks']);
-              } else {
-                /** return something. */
-                return array('status' => false, 'sql' => 'select', 'message' => 'No record found in the database.', 'indexes' => [], 'stocks' => []);
-              }
             }
         }
     }
@@ -94,28 +97,30 @@ class TradeController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store($data) {
-      $symbol = DB::table('stock_trades')
-          ->select('symbol', 'name')
-          ->where('symbol', $data['input']['symbol'])
-          ->get();
+    public function store($data)
+    {
+        /** fetch symbol and name. */
+        $symbol = DB::table('stock_trades')
+            ->select('symbol', 'name')
+            ->where('symbol', $data['input'][0]['symbol'])
+            ->get();
 
-          /** fetch edge id. */
-          $id = collect($this->edge())->firstWhere('symbol', $data['input']['symbol']);
-          if ($id == null) {
-                $id['edge'] = 0;
-          }
+        /** fetch edge id. */
+        $id = collect($this->edge())->firstWhere('symbol', $data['input'][0]['symbol']);
+        if (is_null($id)) {
+            $id['edge'] = 0;
+        }
 
-          /** insert with appropriate data. */
-          if ($symbol->isEmpty()) {
+        /** insert with appropriate data. */
+        if ($symbol->isEmpty()) {
             $insert = DB::table('stock_trades')
                 ->insertGetId([
-                    'name' => strip_tags($data['input']['name']),
-                    'symbol' => strip_tags($data['input']['symbol']),
+                    'name' => strip_tags($data['input'][0]['name']),
+                    'symbol' => strip_tags($data['input'][0]['symbol']),
                     'edge' => strip_tags($id['edge']),
-                    'price' => strip_tags($data['input']['price']),
-                    'change' => strip_tags($data['input']['change']),
-                    'volume' => strip_tags($data['input']['volume']),
+                    'price' => strip_tags($data['input'][0]['price']),
+                    'change' => strip_tags($data['input'][0]['change']),
+                    'volume' => strip_tags($data['input'][0]['volume']),
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
@@ -124,59 +129,61 @@ class TradeController extends Controller {
                     ->select('id', 'edge', 'created_at as date', 'name', 'symbol', 'price', 'change', 'volume')
                     ->where('id', '=', $insert)
                     ->get();
-                return ['status' =>  true, 'sql' => 'select', 'message' => $data['input']['name'] . ' has been added to the database.', 'stock' => $stock];
+                return ['message' => $data['input'][0]['name'] . ' has been added to the database.'];
             }
-          } else {
+        } else {
             /** forward to update instead. */
-              return $this->update($data, $id);
-          }
+            return $this->update($data, $id);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update($data, $id) {
-      if ($data['table'] === 'trade') {
-          /** run update query.*/
-          $update = DB::table('stock_trades')
-              ->where('symbol', '=', $data['input']['symbol'])
-              ->update([
-                'name' => strip_tags($data['input']['name']),
-                'symbol' => strip_tags($data['input']['symbol']),
-                'edge' => strip_tags($id['edge']),
-                'price' => strip_tags($data['input']['price']),
-                'change' => strip_tags($data['input']['change']),
-                'volume' => strip_tags($data['input']['volume']),
-                'updated_at' => date('Y-m-d H:i:s'),
-              ]);
-          /** if update not empty.*/
-          if ($update) {
-              $stock = DB::table('stock_trades')
-                  ->select('id', 'edge', 'created_at as date', 'name', 'symbol', 'price', 'change', 'volume')
-                  ->where('symbol', '=', $data['input']['symbol'])
-                  ->get();
-              return ['status' =>  true, 'sql' => 'select', 'message' => $data['input']['name'] . ' successfully updated.', 'stock' => $stock];
-          } else {
-              return ['status' =>  false, 'sql' => 'select', 'message' => $data['input']['name'] . ' no changes made.', 'stock' => '' ];
-          }
-      }
+    public function update($data, $id)
+    {
+        if ($data['table'] === 'trade') {
+            /** run update query.*/
+            $update = DB::table('stock_trades')
+                ->where('symbol', '=', $data['input'][0]['symbol'])
+                ->update([
+                    'name' => strip_tags($data['input'][0]['name']),
+                    'symbol' => strip_tags($data['input'][0]['symbol']),
+                    'edge' => strip_tags($id['edge']),
+                    'price' => strip_tags($data['input'][0]['price']),
+                    'change' => strip_tags($data['input'][0]['change']),
+                    'volume' => strip_tags($data['input'][0]['volume']),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+            /** if update not empty.*/
+            if ($update) {
+                $stock = DB::table('stock_trades')
+                    ->select('id', 'edge', 'created_at as date', 'name', 'symbol', 'price', 'change', 'volume')
+                    ->where('symbol', '=', $data['input'][0]['symbol'])
+                    ->get();
+                return ['message' => 'The ' . $data['input'][0]['name'] . ' information was successfully updated.'];
+            } else {
+                return ['message' => 'No modifications were made to the' . $data['input'][0]['name'] . ' data.'];
+            }
+        }
     }
 
     /**
      * Helper function.
      */
-    private function helpers($data) {
-      if ($data['purpose'] === 'format' && $data['source'] === 'indexes') {
-          $return = [];
-          foreach ($data['index'] as $key => $value) {
-              $result = collect($value);
-              foreach ($value as $k => $v) {
-                if ($k === 'volume') {
-                    $result->forget('volume');
-                    $result->put('volume', number_format($v, 2, ".", ","));
+    private function helpers($data)
+    {
+        if ($data['purpose'] === 'format' && $data['source'] === 'indexes') {
+            $return = [];
+            foreach ($data['index'] as $key => $value) {
+                $result = collect($value);
+                foreach ($value as $k => $v) {
+                    if ($k === 'volume') {
+                        $result->forget('volume');
+                        $result->put('volume', number_format($v, 2, ".", ","));
+                    }
                 }
-              }
-              $return[$key] = $result;
+                $return[$key] = $result;
             }
             return $return;
         }
@@ -185,26 +192,27 @@ class TradeController extends Controller {
             foreach ($data['stock'] as $key => $value) {
                 $result = collect($value);
                 foreach ($value as $k => $v) {
-                  if ($k === 'incomeaftertax') {
-                      $result->forget('incomeaftertax');
-                      $result->put('incomeaftertax', number_format($v, 2, ".", ","));
-                  }
-                  if ($k === 'volume') {
-                      $result->forget('volume');
-                      $result->put('volume', number_format($v, 2, ".", ","));
-                      $result->put('action', 'Show Watch');
-                  }
+                    if ($k === 'incomeaftertax') {
+                        $result->forget('incomeaftertax');
+                        $result->put('incomeaftertax', number_format($v, 2, ".", ","));
+                    }
+                    if ($k === 'volume') {
+                        $result->forget('volume');
+                        $result->put('volume', number_format($v, 2, ".", ","));
+                        $result->put('action', 'Show Watch');
+                    }
                 }
                 $return[$key] = $result;
-              }
-              return $return;
-          }
+            }
+            return $return;
+        }
     }
     /**
      * Edge function.
      */
-     private function edge() {
-          return [
+    private function edge()
+    {
+        return [
             ['symbol' => '2GO', 'edge' => 29],
             ['symbol' => 'HOUSE', 'edge' => 626],
             ['symbol' => 'BRN', 'edge' => 13],
@@ -337,10 +345,8 @@ class TradeController extends Controller {
             ['symbol' => 'LBC', 'edge' => 236],
             ['symbol' => 'LMG', 'edge' => 205],
             ['symbol' => 'LTG', 'edge' => 12],
-            ['symbol' => 'LR', 'edge' => 96],
             ['symbol' => 'LC', 'edge' => 98],
             ['symbol' => 'LFM', 'edge' => 227],
-            ['symbol' => 'LIHC', 'edge' => 37],
             ['symbol' => 'LPZ', 'edge' => 61],
             ['symbol' => 'LSC', 'edge' => 115],
             ['symbol' => 'MED', 'edge' => 126],
@@ -489,7 +495,7 @@ class TradeController extends Controller {
             ['symbol' => 'CREIT', 'edge' => 691],
             ['symbol' => 'ALLDY', 'edge' => 686],
             ['symbol' => 'BALAI', 'edge' => 697],
-            ['symbol' => 'CTS', 'edge' =>693],
+            ['symbol' => 'CTS', 'edge' => 693],
             ['symbol' => 'FCG', 'edge' => 689],
             ['symbol' => 'CNVRG', 'edge' => 680],
             ['symbol' => 'DITO', 'edge' => 36],
@@ -516,7 +522,9 @@ class TradeController extends Controller {
             ['symbol' => 'BNCOM', 'edge' => 692],
             ['symbol' => 'HTI', 'edge' => 690],
             ['symbol' => 'ACEN', 'edge' => 233],
-            ['symbol' => 'KPPI', 'edge' => 672],    
-          ];
-     }
+            ['symbol' => 'KPPI', 'edge' => 672],
+            ['symbol' => 'LODE', 'edge' => 37],
+            ['symbol' => 'PLUS', 'edge' => 96],
+        ];
+    }
 }

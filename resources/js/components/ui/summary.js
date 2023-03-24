@@ -20,13 +20,15 @@ const Summary = () => {
         let reMap = [];
 
         /** Loop through symbol array and match with the api result.. */
-        for (let index of symbol) {
-            for (let stock of data.stock) {
-                if (stock.symbol === index) {
-                    reMap.push({
-                        'name': stock['name'],
-                        'volume': stock['volume'].toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-                    });
+        if (data.hasOwnProperty('stock')) {
+            for (let index of symbol) {
+                for (let stock of data.stock) {
+                    if (stock.symbol === index) {
+                        reMap.push({
+                            'name': stock['name'],
+                            'volume': stock['volume'].toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+                        });
+                    }
                 }
             }
         }

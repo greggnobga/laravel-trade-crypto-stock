@@ -13,7 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['middleware' => 'auth'], function() {
+    Route::post('/stock-reports-store', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
+    Route::get('/stock-reports-retrieve', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
+});
+
 Route::view('{catchall}', 'app')->where('catchall', '.*');
+
+
 
 // Route::group(['middleware' => 'web'], function() {
 //     Route::get('/', [App\Http\Controllers\App\AppController::class, 'init']);

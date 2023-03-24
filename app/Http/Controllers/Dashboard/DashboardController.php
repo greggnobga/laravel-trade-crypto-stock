@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Support\Facades\DB;
+
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {

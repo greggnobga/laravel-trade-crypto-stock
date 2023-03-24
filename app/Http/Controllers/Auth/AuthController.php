@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -16,6 +15,7 @@ use App\Mail\Reset;
 use App\Mail\Verify;
 use App\Models\Users;
 use App\Models\Verification;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {

@@ -33,18 +33,9 @@ class TradeController extends Controller
                     ->get();
 
                 if ($check->isNotEmpty()) {
-                    /** create stock indexes. */
-                    $indexs = ['PSEi', 'ALL', 'FIN', 'IND', 'HDG', 'PRO', 'SVC', 'M-O'];
-                    foreach ($indexs as $key => $value) {
-                        $result['indexes'][$key] = DB::table('stock_trades')
-                            ->select('id', 'name', 'symbol', 'price', 'change', 'volume')
-                            ->where('symbol', '=', $value)
-                            ->first();
-                    }
-
                     /** create stock list. */
                     $items = DB::table('stock_trades')
-                        ->select('id', 'edge', 'symbol', 'sector', 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
+                        ->select('edge', 'symbol', 'sector', 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
                         ->orderBy('incomeaftertax', 'desc')
                         ->get();
 
@@ -73,22 +64,19 @@ class TradeController extends Controller
                     }
 
                     /** sort data order by volume. */
-                    collect($result['indexes'])->sortByDesc('volume');
                     collect($result['stocks'])->sortByDesc('incomeaftertax');
 
                     /** add button array keys. */
-                    $result['indexes'] = $this->helpers(['purpose' => 'format', 'source' => 'indexes', 'index' => $result['indexes']]);
                     $result['stocks'] = $this->helpers(['purpose' => 'format', 'source' => 'stocks', 'stock' => $result['stocks']]);
 
                     /** resequence array keys. */
-                    $result['indexes'] = array_values($result['indexes']);
                     $result['stocks'] = array_values($result['stocks']);
 
                     /** return something. */
-                    return array('message' => 'All possible stocks listed on the PSE are processed and displayed.', 'indexes' => $result['indexes'], 'stocks' => $result['stocks']);
+                    return array('message' => 'Processed and displayed are all potential stocks that could be listed on the PSE.', 'data' => $result['stocks']);
                 } else {
                     /** return something. */
-                    return array('message' => 'There was no entry in the database.', 'indexes' => [], 'stocks' => []);
+                    return array('message' => 'There was no entry in the database.');
                 }
             }
         }
@@ -173,20 +161,6 @@ class TradeController extends Controller
      */
     private function helpers($data)
     {
-        if ($data['purpose'] === 'format' && $data['source'] === 'indexes') {
-            $return = [];
-            foreach ($data['index'] as $key => $value) {
-                $result = collect($value);
-                foreach ($value as $k => $v) {
-                    if ($k === 'volume') {
-                        $result->forget('volume');
-                        $result->put('volume', number_format($v, 2, ".", ","));
-                    }
-                }
-                $return[$key] = $result;
-            }
-            return $return;
-        }
         if ($data['purpose'] === 'format' && $data['source'] === 'stocks') {
             $return = [];
             foreach ($data['stock'] as $key => $value) {
@@ -199,7 +173,6 @@ class TradeController extends Controller
                     if ($k === 'volume') {
                         $result->forget('volume');
                         $result->put('volume', number_format($v, 2, ".", ","));
-                        $result->put('action', 'Show Watch');
                     }
                 }
                 $return[$key] = $result;

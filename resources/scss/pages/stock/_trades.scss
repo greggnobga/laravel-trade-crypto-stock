@@ -7,7 +7,7 @@
         display: grid;
         grid-template-columns: auto;
         grid-template-rows: 2rem 1fr;
-        grid-row-gap: 0.25rem;
+        grid-row-gap: 0.5rem;
 
         .board {
             grid-column: 1;
@@ -22,61 +22,101 @@
                     text-align: end;
 
                     .btn {
-                        color: $cl-light;
+                        display: inline-block;
                         border-radius: 3px;
                         margin: 0 0 0 0.25rem;
                         padding: 0.25rem;
-                        width: 5rem;
+                        width: 7.5rem;
+                        text-align: center;
                     }
 
                     .btn-search {
-                        background: rgba($cl-gold, 0.75);
-                        border: rgba($cl-gray, 0.75);
+                        color: rgba($cl-gold, 0.75);
+                        border: rgba($cl-gold, 0.75);
+                        border: 1px solid transparent;
 
+                        .sprite > .icon {
+                            fill: rgba($cl-gold, 0.75);
+
+                            &:hover {
+                                fill: rgba($cl-gold, 1);
+                            }
+                        }
                         &:hover {
-                            background: rgba($cl-gold, 1);
-                            border: rgba($cl-gray, 1);
+                            color: rgba($cl-gold, 1);
+                            border: 1px solid rgba($cl-gold, 0.5);
                         }
                     }
 
                     .btn-start {
-                        background: rgba($cl-green, 0.75);
+                        color: rgba($cl-green, 0.75);
                         border: rgba($cl-gray, 0.75);
+                        border: 1px solid transparent;
 
+                        .sprite > .icon {
+                            fill: rgba($cl-green, 0.75);
+
+                            &:hover {
+                                fill: rgba($cl-green, 1);
+                            }
+                        }
                         &:hover {
-                            background: rgba($cl-green, 1);
-                            border: rgba($cl-gray, 1);
+                            color: rgba($cl-green, 1);
+                            border: 1px solid rgba($cl-green, 0.5);
                         }
                     }
 
                     .btn-report {
-                        background: rgba($cl-red, 0.75);
-                        border: rgba($cl-gray, 0.75);
-                        color: $cl-light;
+                        color: rgba($cl-red, 0.75);
+                        border: rgba($cl-red, 0.75);
+                        border: 1px solid transparent;
 
+                        .sprite > .icon {
+                            fill: rgba($cl-red, 0.75);
+
+                            &:hover {
+                                fill: rgba($cl-red, 1);
+                            }
+                        }
                         &:hover {
-                            background: rgba($cl-red, 1);
-                            border: rgba($cl-gray, 1);
+                            color: rgba($cl-red, 1);
+                            border: 1px solid rgba($cl-red, 0.5);
                         }
                     }
 
                     .btn-price {
-                        background: rgba($cl-blue, 0.75);
-                        border: rgba($cl-gray, 0.75);
+                        color: rgba($cl-blue, 0.75);
+                        border: rgba($cl-blue, 0.75);
+                        border: 1px solid transparent;
 
+                        .sprite > .icon {
+                            fill: rgba($cl-blue, 0.75);
+
+                            &:hover {
+                                fill: rgba($cl-blue, 1);
+                            }
+                        }
                         &:hover {
-                            background: rgba($cl-blue, 1);
-                            border: rgba($cl-gray, 1);
+                            color: rgba($cl-blue, 1);
+                            border: 1px solid rgba($cl-blue, 0.5);
                         }
                     }
 
                     .btn-sector {
-                        background: rgba($cl-purple, 0.75);
-                        border: rgba($cl-gray, 0.75);
+                        color: rgba($cl-purple, 0.75);
+                        border: rgba($cl-purple, 0.75);
+                        border: 1px solid transparent;
 
+                        .sprite > .icon {
+                            fill: rgba($cl-purple, 0.75);
+
+                            &:hover {
+                                fill: rgba($cl-purple, 1);
+                            }
+                        }
                         &:hover {
-                            background: rgba($cl-purple, 1);
-                            border: rgba($cl-gray, 1);
+                            color: rgba($cl-purple, 1);
+                            border: 1px solid rgba($cl-purple, 0.5);
                         }
                     }
                 }
@@ -90,12 +130,51 @@
             border: $box-border;
             box-shadow: $box-shadow;
             border-radius: 5px;
-            padding: 0.25rem 0.5rem;
+            margin-top: 0.25rem;
 
+            .search {
+                display: grid;
+                grid-template-columns: 1fr 20rem;
+                grid-template-rows: auto;
+                column-gap: 1rem;
+                border-bottom: 1px solid rgba($cl-gray, 0.15);
+
+                .form {
+                    background: none;
+                    color: rgba($cl-green, 0.75);
+                    padding: 0.5rem 1rem;
+
+                    .group > label > .sprite > .icon {
+                        fill: $cl-green;
+                    }
+
+                    .group > .valid {
+                        padding: 0.5rem 1rem;
+                        margin-top: 0.25rem;
+                    }
+                }
+
+                .button {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-rows: auto;
+                    column-gap: 0.25rem;
+                    place-items: center;
+                    width: 100%;
+
+                    .btn {
+                        width: 90%;
+                        padding: 0.5rem 1rem;
+                        margin-top: 2rem;
+                        display: inline-block;
+                    }
+                }
+            }
             .items {
                 display: grid;
                 grid-template-rows: 1fr;
-                grid-template-columns: 5rem repeat(8, 1fr);
+                grid-template-columns: repeat(9, 1fr);
+                column-gap: 0.5rem;
                 border-bottom: 1px solid rgba($cl-gray, 0.15);
                 padding: 0.25rem 0.5rem;
 

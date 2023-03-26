@@ -1,5 +1,5 @@
 /** React. */
-import { useState, useEffect, useContext } from 'react';
+import { Fragment, useState, useEffect, useContext } from 'react';
 
 /** Context. */
 import AuthContext from '../../../context/auth-context';
@@ -9,6 +9,7 @@ import useHttp from '../../../hooks/use-http';
 
 /** Component. */
 import Messenger from '../../messenger';
+import Icon from '../../icons';
 
 const StockTrade = () => {
     /** Declare result and disabled state. */
@@ -187,6 +188,51 @@ const StockTrade = () => {
         setDisabled(true);
     }
 
+    /** Declare stocks state. */
+    const [stocks, setStocks] = useState([]);
+
+    /** Use http hook reponse callback. */
+    const stocksResponse = (data) => {
+        console.log(data);
+        /** Check if data is not empty. */
+        if (data) {
+            /** Render reponse message. */
+            authCtx.messenger(data.message);
+            /** Assign data to stocks state. */
+            setStocks(data['data']);
+        }
+    }
+    /** Prepare request to local api using http hook. */
+    const { sendRequest: stocksRequest } = useHttp({
+        url: '/api/stock-trade-retrieve',
+        method: 'GET',
+        params: { table: 'trade' }
+    }, stocksResponse);
+
+    useEffect(() => {
+        /** Send request. */
+        stocksRequest();
+    }, []);
+
+    /** Define update handler. */
+    const updateHandler = (idx, edge) => {
+        // const newData = [...data];
+        // newData[index].title = 'Edited Title';
+        // newData[index].description = 'Edited Description';
+        // setData(newData);
+
+        console.log('index: ' + idx + ' edge id: ' + edge);
+    }
+
+    /** Define destroy handler. */
+    const destroyHandler = (idx, edge) => {
+        // const newData = [...data];
+        // newData.splice(index, 1);
+        // setData(newData);
+
+        console.log('index: ' + idx + ' edge id: ' + edge);
+    }
+
     /** Declare search state. */
     const [search, setSearch] = useState(false);
 
@@ -204,45 +250,51 @@ const StockTrade = () => {
                     <div className="items">
                         <div className="name">Trade</div>
                         <div className="record">
-                            <button onClick={startHandler} className="btn btn-start" type="button" disabled={disabled}>Start</button>
-                            <button onClick={reportHandler} className="btn btn-report" type="button" disabled={disabled}>Report</button>
-                            <button onClick={priceHandler} className="btn btn-price" type="button" disabled={disabled}>Price</button>
-                            <button onClick={sectorHandler} className="btn btn-sector" type="button" disabled={disabled}>Sector</button>
-                            <button onClick={searchHandler} className="btn btn-search" type="button">Search</button>
+                            <span onClick={startHandler} className="btn btn-start" type="button" disabled={disabled}><Icon id="start" /> Start</span>
+                            <span onClick={reportHandler} className="btn btn-report" type="button" disabled={disabled}><Icon id="report" /> Report</span>
+                            <span onClick={priceHandler} className="btn btn-price" type="button" disabled={disabled}><Icon id="price" /> Price</span>
+                            <span onClick={sectorHandler} className="btn btn-sector" type="button" disabled={disabled}><Icon id="sector" /> Sector</span>
+                            <span onClick={searchHandler} className="btn btn-search" type="button"><Icon id="search" /> Search</span>
                         </div>
                     </div>
                 </div>
                 <div className="content">
-                    {search && <div className="items">
-                        <div className="item"><input /></div>
-                        <div className="item"><input /></div>
-                        <div className="item"><input /></div>
-                        <div className="item"><input /></div>
-                        <div className="item"><input /></div>
-                        <div className="item"><input /></div>
-                        <div className="item"><input /></div>
-                        <div className="item"><button type="button">Submit</button> <button type="button">Cancel</button></div>
+                    {search && <div className="search">
+                        <div className="form">
+                            <div className="group">
+                                <label htmlFor="search"><Icon id="search" /> Search</label>
+                                <input name="search" type="text" className="valid" />
+                            </div>
+                        </div>
+                        <div className="button">
+                            <button className="btn btn-primary" type="button">Search</button>
+                            <button className="btn btn-secondary" type="button" onClick={searchHandler}>Cancel</button>
+                        </div>
                     </div>}
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
                     <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
+                        <div className="item">Symbol</div>
+                        <div className="item">Price</div>
+                        <div className="item">Change</div>
+                        <div className="item">Eearning Per Share</div>
+                        <div className="item">Average Price</div>
+                        <div className="item">Year High Price</div>
+                        <div className="item">Income After Tax</div>
+                        <div className="item">Volume</div>
+                        <div className="item">Action</div>
                     </div>
+                    {stocks.map((item, index) => {
+                        return <div className="items" key={index}>
+                            <div className="item">{item.symbol}</div>
+                            <div className="item">{item.price}</div>
+                            <div className="item">{item.change}</div>
+                            <div className="item">{item.earningpershare}</div>
+                            <div className="item">{item.average}</div>
+                            <div className="item">{item.yearhighprice}</div>
+                            <div className="item">{item.incomeaftertax}</div>
+                            <div className="item">{item.volume}</div>
+                            <div className="item"><button className="btn btn-primary" type="button" onClick={() => updateHandler(index, item.edge)}>Update</button> <button className="btn btn-primary" type="button" onClick={() => destroyHandler(index, item.edge)}>Destroy</button> <button className="btn btn-primary" type="button" onClick={() => console.log('Cancel action')}>Cancel</button></div>
+                        </div>
+                    })}
                 </div>
             </div>
 

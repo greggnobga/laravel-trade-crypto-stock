@@ -56,12 +56,12 @@ const Menu = (props) => {
                     </li>
                     <li className="item">
                         <Link to="/dashboard/crypto-game">
-                            <span><Icon id="note" /> Game</span>
+                            <span><Icon id="game" /> Game</span>
                         </Link>
                     </li>
                     <li className="item">
                         <Link to="/dashboard/crypto-nft">
-                            <span><Icon id="note" /> NFT</span>
+                            <span><Icon id="nft" /> NFT</span>
                         </Link>
                     </li>
                 </ul>

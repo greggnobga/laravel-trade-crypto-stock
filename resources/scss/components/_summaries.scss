@@ -16,12 +16,14 @@
             text-align: center;
             color: rgba($cl-gray-600, 0.85);
             margin-bottom: 0;
+            font-weight: $fw-normal;
         }
 
         .value {
             text-align: center;
             color: rgba($cl-gray, 0.75);
             margin-bottom: 0;
+            font-weight: $fw-lighter;
         }
     }
 }

@@ -2,14 +2,15 @@
 import { Fragment, useState, useEffect, useContext } from 'react';
 
 /** Context. */
-import AuthContext from '../../../context/auth-context';
+import AuthContext from '../../../../../context/auth-context';
 
 /** Hook. */
-import useHttp from '../../../hooks/use-http';
+import useHttp from '../../../../../hooks/use-http';
+import useScreen from '../../../../../hooks/use-screen';
 
 /** Component. */
-import Messenger from '../../messenger';
-import Icon from '../../icons';
+import Icon from '../../../../icons';
+import Desktop from './desktop';
 
 const StockTrade = () => {
     /** Declare result and disabled state. */
@@ -215,7 +216,7 @@ const StockTrade = () => {
     }, []);
 
     /** Define update handler. */
-    const updateHandler = (idx, edge) => {
+    const chartHandler = (idx, edge) => {
         // const newData = [...data];
         // newData[index].title = 'Edited Title';
         // newData[index].description = 'Edited Description';
@@ -225,7 +226,7 @@ const StockTrade = () => {
     }
 
     /** Define destroy handler. */
-    const destroyHandler = (idx, edge) => {
+    const viewHandler = (idx, edge) => {
         // const newData = [...data];
         // newData.splice(index, 1);
         // setData(newData);
@@ -241,6 +242,8 @@ const StockTrade = () => {
         setSearch(!search);
     }
 
+    /** Use screen helper. */
+    const { isMobile } = useScreen();
 
     /** Return something. */
     return (
@@ -258,44 +261,7 @@ const StockTrade = () => {
                         </div>
                     </div>
                 </div>
-                <div className="content">
-                    {search && <div className="search">
-                        <div className="form">
-                            <div className="group">
-                                <label htmlFor="search"><Icon id="search" /> Search</label>
-                                <input name="search" type="text" className="valid" />
-                            </div>
-                        </div>
-                        <div className="button">
-                            <button className="btn btn-primary" type="button">Search</button>
-                            <button className="btn btn-secondary" type="button" onClick={searchHandler}>Cancel</button>
-                        </div>
-                    </div>}
-                    <div className="items">
-                        <div className="item">Symbol</div>
-                        <div className="item">Price</div>
-                        <div className="item">Change</div>
-                        <div className="item">Eearning Per Share</div>
-                        <div className="item">Average Price</div>
-                        <div className="item">Year High Price</div>
-                        <div className="item">Income After Tax</div>
-                        <div className="item">Volume</div>
-                        <div className="item">Action</div>
-                    </div>
-                    {stocks.map((item, index) => {
-                        return <div className="items" key={index}>
-                            <div className="item">{item.symbol}</div>
-                            <div className="item">{item.price}</div>
-                            <div className="item">{item.change}</div>
-                            <div className="item">{item.earningpershare}</div>
-                            <div className="item">{item.average}</div>
-                            <div className="item">{item.yearhighprice}</div>
-                            <div className="item">{item.incomeaftertax}</div>
-                            <div className="item">{item.volume}</div>
-                            <div className="item"><button className="btn btn-primary" type="button" onClick={() => updateHandler(index, item.edge)}>Update</button> <button className="btn btn-primary" type="button" onClick={() => destroyHandler(index, item.edge)}>Destroy</button> <button className="btn btn-primary" type="button" onClick={() => console.log('Cancel action')}>Cancel</button></div>
-                        </div>
-                    })}
-                </div>
+                {isMobile ? <p>Mobile component.</p> : <Desktop data={{ stocks: stocks, search: search }} handler={{ search: searchHandler, chart: chartHandler, view: viewHandler }} />}
             </div>
 
         </div>

@@ -19,10 +19,10 @@ import Profile from './components/pages/profile';
 
 import Dashboard from './components/pages/dashboard';
 
-import StockPortfolio from './components/pages/dashboard/stock-portfolio';
-import StockWatchlist from './components/pages/dashboard/stock-watchlist';
-import StockTrade from './components/pages/dashboard/stock-trade';
-import StockChart from './components/pages/dashboard/stock-chart';
+import StockPortfolio from './components/pages/dashboard/stocks/portfolio';
+import StockWatchlist from './components/pages/dashboard/stocks/watchlist';
+import StockTrade from './components/pages/dashboard/stocks/trade';
+import StockChart from './components/pages/dashboard/stocks/chart';
 
 import CryptoPortfolio from './components/pages/dashboard/crypto-portfolio';
 import CryptoScreen from './components/pages/dashboard/crypto-screen';

@@ -78,7 +78,7 @@ class AuthController extends Controller
             /** Send mail. */
             Mail::to(strip_tags($request->email))->send(new Verify($verifyData));
             /** Return success message. */
-            return response(['message' => 'Please verify your email as soon as possible!.'], 200);
+            return response(['message' => 'Please verify your email as soon as possible!'], 200);
         } catch (\Exception $ex) {
             /** Return error message. */
             return response(['message' => 'We apologise that we are not able to send an email verification link.'], 401);

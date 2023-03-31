@@ -39,7 +39,7 @@ const Summary = () => {
 
     /** Use http hook. */
     const { isLoading, sendRequest, hasError } = useHttp({
-        url: 'https://phisix-api4.appspot.com/stocks.json',
+        url: 'http://phisix-api4.appspot.com/stocks.json',
         method: 'GET',
         params: {}
     }, requestResponse);

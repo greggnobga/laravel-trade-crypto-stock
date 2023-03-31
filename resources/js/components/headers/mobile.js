@@ -34,7 +34,7 @@ const Mobile = (props) => {
     const sticky = useSticky();
 
     return (
-        <div id="mobile" className={sticky ? "sticky fade-in-bottom" : "fade-in-top"}>
+        <header id="mobile" className={sticky ? "sticky fade-in-bottom" : "fade-in-top"}>
             <div className="brand">
                 <Link className="items" to="/">
                     <span><Icon id="logo" /> Orion</span>
@@ -97,7 +97,7 @@ const Mobile = (props) => {
                         }
                     </nav>
                 </div> : ''}
-        </div>
+        </header>
     );
 }
 

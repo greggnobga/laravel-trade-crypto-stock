@@ -35,9 +35,9 @@ const Resend = (props) => {
     }
 
     return (
-        <div className="message" onClick={resendHandler}>
+        <aside className="message" onClick={resendHandler}>
             <div className="resend">Please verify your email address by clicking this message box in order to enjoy the full benefits we offered.</div>
-        </div>
+        </aside>
     );
 }
 

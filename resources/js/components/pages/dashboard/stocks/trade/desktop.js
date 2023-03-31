@@ -3,12 +3,12 @@ import Icon from '../../../../icons';
 
 const Desktop = (props) => {
     return (
-        <div className="content">
+        <div className="desktop-content">
             {props.data.search && <div className="search">
                 <div className="form">
                     <div className="group">
-                        <label htmlFor="search"><Icon id="search" /> Search</label>
-                        <input name="search" type="text" className="valid" />
+                        <label className="label" htmlFor="search"><Icon id="search" /> Search</label>
+                        <input className="input valid" name="search" type="text" />
                     </div>
                 </div>
                 <div className="button">
@@ -28,20 +28,22 @@ const Desktop = (props) => {
                 <div className="item">Action</div>
             </div>
             {props.data.stocks && props.data.stocks.map((item, index) => {
-                return <div className="items" key={index}>
-                    <div className="item">{item.symbol}</div>
-                    <div className="item">{item.price}</div>
-                    <div className="item">{item.change}</div>
-                    <div className="item">{item.earningpershare}</div>
-                    <div className="item">{item.average}</div>
-                    <div className="item">{item.yearhighprice}</div>
-                    <div className="item">{item.incomeaftertax}</div>
-                    <div className="item">{item.volume}</div>
-                    <div className="item">
-                        <span className="btn btn-chart" type="button" onClick={() => props.handler.chart(index, item.edge)}><Icon id="chart" /> Chart</span>
-                        <span className="btn btn-view" type="button" onClick={() => props.handler.view(index, item.edge)}><Icon id="search" /> View</span>
+                return (
+                    <div className="items" key={index}>
+                        <div className="item">{item.symbol}</div>
+                        <div className="item">{item.price}</div>
+                        <div className="item">{item.change}</div>
+                        <div className="item">{item.earningpershare}</div>
+                        <div className="item">{item.average}</div>
+                        <div className="item">{item.yearhighprice}</div>
+                        <div className="item">{item.incomeaftertax}</div>
+                        <div className="item">{item.volume}</div>
+                        <div className="item">
+                            <span className="btn btn-chart" type="button" onClick={() => props.handler.chart(index, item.edge)}><Icon id="chart" /> Chart</span>
+                            <span className="btn btn-view" type="button" onClick={() => props.handler.view(index, item.edge)}><Icon id="search" /> View</span>
+                        </div>
                     </div>
-                </div>
+                );
             })}
         </div>
     );

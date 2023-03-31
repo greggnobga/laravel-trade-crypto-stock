@@ -11,6 +11,7 @@ import useScreen from '../../../../../hooks/use-screen';
 /** Component. */
 import Icon from '../../../../icons';
 import Desktop from './desktop';
+import Mobile from './mobile';
 
 const StockTrade = () => {
     /** Declare result and disabled state. */
@@ -251,7 +252,7 @@ const StockTrade = () => {
             <div className="trade">
                 <div className="board">
                     <div className="items">
-                        <div className="name">Trade</div>
+                        <div className="brand"><Icon id="trade" /> <span className="name">Trade</span></div>
                         <div className="record">
                             <span onClick={startHandler} className="btn btn-start" type="button" disabled={disabled}><Icon id="start" /> Start</span>
                             <span onClick={reportHandler} className="btn btn-report" type="button" disabled={disabled}><Icon id="report" /> Report</span>
@@ -261,7 +262,9 @@ const StockTrade = () => {
                         </div>
                     </div>
                 </div>
-                {isMobile ? <p>Mobile component.</p> : <Desktop data={{ stocks: stocks, search: search }} handler={{ search: searchHandler, chart: chartHandler, view: viewHandler }} />}
+                {isMobile ? <Mobile data={{ stocks: stocks, search: search }} handler={{ search: searchHandler, chart: chartHandler, view: viewHandler }} />
+                    : <Desktop data={{ stocks: stocks, search: search }} handler={{ search: searchHandler, chart: chartHandler, view: viewHandler }} />
+                }
             </div>
 
         </div>

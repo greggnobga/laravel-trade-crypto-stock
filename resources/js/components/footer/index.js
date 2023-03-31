@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <div id="footer">
+        <footer id="footer">
             <div className="about">
                 <h3>About</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
@@ -29,7 +29,7 @@ const Footer = () => {
                 <h3>Contact</h3>
                 <p>Hire Me!</p>
             </div>
-        </div>
+        </footer>
     );
 }
 

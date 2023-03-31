@@ -5,8 +5,8 @@
 
     .trade {
         display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: 2rem 1fr;
+        grid-template-columns: 1fr;
+        grid-template-rows: 0.02fr 1fr;
         grid-row-gap: 0.5rem;
 
         .board {
@@ -17,6 +17,19 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 grid-template-rows: auto;
+                row-gap: 0.5rem;
+
+                .brand {
+                    .sprite > .icon {
+                        fill: $cl-gray;
+                        margin-top: -5px;
+                    }
+
+                    .name {
+                        display: inline-block;
+                        margin-top: 7px;
+                    }
+                }
 
                 .record {
                     text-align: end;
@@ -32,7 +45,6 @@
 
                     .btn-search {
                         color: rgba($cl-gold, 0.75);
-                        border: rgba($cl-gold, 0.75);
                         border: 1px solid transparent;
 
                         .sprite > .icon {
@@ -50,7 +62,6 @@
 
                     .btn-start {
                         color: rgba($cl-green, 0.75);
-                        border: rgba($cl-gray, 0.75);
                         border: 1px solid transparent;
 
                         .sprite > .icon {
@@ -68,7 +79,6 @@
 
                     .btn-report {
                         color: rgba($cl-red, 0.75);
-                        border: rgba($cl-red, 0.75);
                         border: 1px solid transparent;
 
                         .sprite > .icon {
@@ -86,7 +96,6 @@
 
                     .btn-price {
                         color: rgba($cl-blue, 0.75);
-                        border: rgba($cl-blue, 0.75);
                         border: 1px solid transparent;
 
                         .sprite > .icon {
@@ -104,7 +113,6 @@
 
                     .btn-sector {
                         color: rgba($cl-purple, 0.75);
-                        border: rgba($cl-purple, 0.75);
                         border: 1px solid transparent;
 
                         .sprite > .icon {
@@ -123,13 +131,13 @@
             }
         }
 
-        .content {
+        .desktop-content {
             grid-column: 1;
             grid-row: 2;
             background: $box-background;
             border: $box-border;
             box-shadow: $box-shadow;
-            border-radius: 5px;
+            border-radius: 3px;
             margin-top: 0.25rem;
 
             .search {
@@ -179,7 +187,7 @@
                 padding: 0.25rem;
                 font-size: 0.85rem;
                 font-weight: $fw-lighter;
-                color: $cl-dark;
+                color: rbga($cl-dark, 0.75);
 
                 .item {
                     padding: 0.25rem;
@@ -200,7 +208,6 @@
 
                     .btn-chart {
                         color: rgba($cl-purple, 0.75);
-                        border: rgba($cl-purple, 0.75);
                         border: 1px solid transparent;
 
                         .sprite > .icon {
@@ -218,7 +225,6 @@
 
                     .btn-view {
                         color: rgba($cl-orange, 0.75);
-                        border: rgba($cl-orange, 0.75);
                         border: 1px solid transparent;
 
                         .sprite > .icon {
@@ -236,11 +242,11 @@
                 }
 
                 &:nth-child(odd) {
-                    background: rgba($cl-gray-200, 0.5);
+                    background: rgba($cl-gray-100, 0.25);
                 }
 
                 &:nth-child(even) {
-                    background: rgba($cl-gray-100, 0.75);
+                    background: rgba($cl-gray-100, 0.1);
                 }
 
                 &:first-child {
@@ -251,9 +257,88 @@
                     border-bottom: none;
                 }
             }
+        }
 
-            .color {
-                color: rgba($cl-teal, 0.75);
+        .mobile-content {
+            grid-column: 1;
+            grid-row: 2;
+            margin-top: 0.25rem;
+
+            .search {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(2, 1fr);
+                row-gap: 0.5rem;
+                padding: 0.25rem;
+            }
+
+            .items {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+                row-gap: 0.25rem;
+                column-gap: 0.25rem;
+                background: rgba($cl-gray-100, 0.25);
+                background: $box-background;
+                border: $box-border;
+                box-shadow: $box-shadow;
+                border-radius: 3px;
+                margin-top: 0.5rem;
+                padding: 0.25rem;
+
+                .item {
+                    padding: 0.25rem;
+                    position: relative;
+
+                    .key {
+                        position: absolute;
+                        top: 0;
+                        left: 5px;
+                        font-size: 0.5rem;
+                        font-weight: $fw-normal;
+                    }
+
+                    .value {
+                        margin-top: 0.75rem;
+                        font-size: 0.75rem;
+                        text-align: center;
+                        vertical-align: middle;
+                        font-weight: $fw-lighter;
+                    }
+
+                    .btn {
+                        font-size: 0.75rem;
+
+                        .sprite > .icon {
+                            height: 16px;
+                            width: 16px;
+                        }
+                    }
+
+                    .btn-chart {
+                        color: rgba($cl-purple, 0.75);
+                        border: 1px solid transparent;
+                        text-align: center;
+
+                        .sprite > .icon {
+                            fill: rgba($cl-purple, 0.75);
+                        }
+                    }
+
+                    .btn-view {
+                        text-align: center;
+                        color: rgba($cl-orange, 0.75);
+                        border: 1px solid transparent;
+
+                        .sprite > .icon {
+                            fill: rgba($cl-orange, 0.75);
+                        }
+                    }
+                }
+
+                &:first-child {
+                    margin-top: 0;
+                }
             }
         }
     }
@@ -266,12 +351,13 @@
  */
 @media only screen and (min-device-width: 280px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 2) {
     #stock-trade > .trade {
-        grid-template-rows: 10rem 1fr;
+        grid-template-rows: 0.02fr 1fr;
 
         .board {
             .items {
-                grid-template-rows: 2rem 1fr;
                 grid-template-columns: 1fr;
+                grid-template-rows: 2rem 1fr;
+                row-gap: 0.25rem;
 
                 .record {
                     text-align: start;
@@ -280,20 +366,6 @@
                         width: 4.5rem;
                     }
                 }
-            }
-        }
-
-        .content {
-            border: 1px soild blue;
-
-            .search {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr 1fr;
-            }
-
-            .items {
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: auto;
             }
         }
     }
@@ -305,4 +377,22 @@
  * ----------------------------------------
  */
 @media (min-device-width: 768px) and (max-device-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) {
+    #stock-trade > .trade {
+        grid-template-rows: 0.02fr 1fr;
+
+        .board {
+            .items {
+                grid-template-rows: 2rem 1fr;
+                grid-template-columns: 5rem 1fr;
+
+                .record {
+                    text-align: end;
+
+                    .btn {
+                        width: 7.5rem;
+                    }
+                }
+            }
+        }
+    }
 }

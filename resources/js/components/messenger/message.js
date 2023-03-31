@@ -13,9 +13,9 @@ const Message = (props) => {
 
     /** Return something. */
     return (
-        <div className="message" onClick={props.onHide}>
+        <aside className="message" onClick={props.onHide}>
             <div className={noticeClasses}>{authCtx.message}</div>
-        </div>
+        </aside>
     );
 
 }

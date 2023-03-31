@@ -12,7 +12,7 @@ const Menu = (props) => {
 
     /** Return something. */
     return (
-        <div onClick={controlHandler} className="control">
+        <nav onClick={controlHandler} className="control">
             <ul className="items">
                 <li className="sector">Stock</li>
                 <ul className="list">
@@ -74,7 +74,7 @@ const Menu = (props) => {
                     </li>
                 </ul>
             </ul>
-        </div>
+        </nav>
     );
 }
 

@@ -36,14 +36,14 @@ const Single = () => {
     return (
         <section id="single" className="fade-in-bottom">
             <Header />
-            <div id="wrapper">
+            <section id="wrapper">
                 {check ? <Loader /> : token ?
                     <Fragment>
                         <Summary />
                         <Outlet />
                     </Fragment>
                     : ''}
-            </div>
+            </section>
             <Footer />
         </section>
     );

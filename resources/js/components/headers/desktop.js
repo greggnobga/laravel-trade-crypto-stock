@@ -87,7 +87,7 @@ const Desktop = (props) => {
 
     /** Return something. */
     return (
-        <div id="header" className={sticky ? "sticky fade-in-bottom" : "fade-in-top"}>
+        <header id="header" className={sticky ? "sticky fade-in-bottom" : "fade-in-top"}>
             <div className="explorer">
                 <Link to="/stock-explorer">
                     <span className={stockExplorerHover} onMouseEnter={stockExplorerMouseEnter} onMouseLeave={stockExplorerMouseLeave}>
@@ -144,7 +144,7 @@ const Desktop = (props) => {
                 </Fragment>
                 }
             </div>
-        </div>
+        </header>
     );
 }
 

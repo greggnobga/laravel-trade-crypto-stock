@@ -1,19 +1,19 @@
 /** React. */
-import { Fragment, useState, useEffect, useContext } from 'react';
+import { Fragment, useState, useEffect, useContext } from "react";
 
 /** Context. */
-import AuthContext from '../../../../../context/auth-context';
+import AuthContext from "../../../../../context/auth-context";
 
 /** Hook. */
-import useHttp from '../../../../../hooks/use-http';
-import useScreen from '../../../../../hooks/use-screen';
+import useHttp from "../../../../../hooks/use-http";
+import useScreen from "../../../../../hooks/use-screen";
 
 /** Component. */
-import Icon from '../../../../icons';
-import Desktop from './desktop';
-import Mobile from './mobile';
+import Icon from "../../../../icons";
+import Desktop from "./desktop";
+import Mobile from "./mobile";
 
-const StockTrade = () => {
+const Trade = () => {
     /** Declare result and disabled state. */
     const [result, setResult] = useState([]);
     const [disabled, setDisabled] = useState(false);
@@ -24,20 +24,20 @@ const StockTrade = () => {
         apiRequest();
         /** Set start button to true. */
         setDisabled(true);
-    }
+    };
 
     const apiResponse = (data) => {
         let reMap = [];
         /** Check if server return data. */
-        if (data.hasOwnProperty('stock')) {
+        if (data.hasOwnProperty("stock")) {
             /** Remap keys before saving to state. */
-            for (let i = 0; i < data['stock'].length; i++) {
+            for (let i = 0; i < data["stock"].length; i++) {
                 reMap.push({
-                    'name': data['stock'][i]['name'],
-                    'change': data['stock'][i]['percent_change'],
-                    'price': data['stock'][i]['price']['amount'],
-                    'symbol': data['stock'][i]['symbol'],
-                    'volume': data['stock'][i]['volume'],
+                    name: data["stock"][i]["name"],
+                    change: data["stock"][i]["percent_change"],
+                    price: data["stock"][i]["price"]["amount"],
+                    symbol: data["stock"][i]["symbol"],
+                    volume: data["stock"][i]["volume"],
                 });
             }
         }
@@ -46,11 +46,14 @@ const StockTrade = () => {
     };
 
     /** Prepare request to phisix api using http hook. */
-    const { sendRequest: apiRequest } = useHttp({
-        url: 'https://phisix-api4.appspot.com/stocks.json',
-        method: 'GET',
-        params: {}
-    }, apiResponse);
+    const { sendRequest: apiRequest } = useHttp(
+        {
+            url: "https://phisix-api4.appspot.com/stocks.json",
+            method: "GET",
+            params: {},
+        },
+        apiResponse
+    );
 
     /** Run use effect after result state ready. */
     let stock = [];
@@ -85,37 +88,40 @@ const StockTrade = () => {
     };
 
     /** Prepare request to local api using http hook. */
-    const { sendRequest: localRequest } = useHttp({
-        url: '/api/stock-trade-store',
-        method: 'POST',
-        params: { input: stock, table: 'trade', statement: 'store' }
-    }, localResponse);
+    const { sendRequest: localRequest } = useHttp(
+        {
+            url: "/api/stock-trade-store",
+            method: "POST",
+            params: { input: stock, table: "trade", statement: "store" },
+        },
+        localResponse
+    );
 
     /** Declare edge and caller state. */
-    const [edge, setEdge] = useState('');
-    const [caller, setCaller] = useState('');
+    const [edge, setEdge] = useState("");
+    const [caller, setCaller] = useState("");
 
     /** Report handler. */
     const reportHandler = () => {
         /** Set caller. */
-        setCaller('reports');
+        setCaller("reports");
         /** Send request. */
         retrieveRequest();
         /** Set start button to true. */
         setDisabled(true);
-    }
+    };
 
     /** Use http hook reponse callback. */
     const retrieveResponse = (data) => {
         /** Render reponse message. */
-        if (data.hasOwnProperty('stocks')) {
-            data['stocks'].map((item, index) => {
+        if (data.hasOwnProperty("stocks")) {
+            data["stocks"].map((item, index) => {
                 setTimeout(() => {
                     /** Assign variable a value. */
-                    setEdge(item['edge']);
+                    setEdge(item["edge"]);
                 }, 3000 * index);
                 /** Set start button state to false after the map reach its last iteration. */
-                if (index >= result.length) {
+                if (index >= data.length) {
                     setDisabled(false);
                 }
             });
@@ -129,30 +135,35 @@ const StockTrade = () => {
     useEffect(() => {
         /** Conditional payload value. */
         switch (caller) {
-            case 'reports':
-                setPayload({ section: 'reports', id: edge })
+            case "reports":
+                setPayload({ section: "reports", id: edge });
                 break;
-            case 'prices':
-                setPayload({ section: 'prices', id: edge })
+            case "prices":
+                setPayload({ section: "prices", id: edge });
                 break;
-            case 'sectors':
-                setPayload({ section: 'sectors', id: edge })
+            case "sectors":
+                setPayload({ section: "sectors", id: edge });
                 break;
             default:
-                setPayload({ section: 'reports', id: edge })
+                setPayload({ section: "reports", id: edge });
         }
         /** Send request. */
         if (edge) {
-            storeRequest();
+            if (typeof payload["id"] !== "undefined") {
+                storeRequest();
+            }
         }
     }, [edge]);
 
     /** Prepare request to local api using http hook. */
-    const { sendRequest: retrieveRequest } = useHttp({
-        url: '/stock-reports-retrieve',
-        method: 'GET',
-        params: { section: 'stocks' }
-    }, retrieveResponse);
+    const { sendRequest: retrieveRequest } = useHttp(
+        {
+            url: "/stock-reports-retrieve",
+            method: "GET",
+            params: { section: "stocks" },
+        },
+        retrieveResponse
+    );
 
     /** Use http hook reponse callback. */
     const storeResponse = (data) => {
@@ -164,31 +175,34 @@ const StockTrade = () => {
     };
 
     /** Prepare request to local api using http hook. */
-    const { sendRequest: storeRequest } = useHttp({
-        url: '/stock-reports-store',
-        method: 'POST',
-        params: payload
-    }, storeResponse);
+    const { sendRequest: storeRequest } = useHttp(
+        {
+            url: "/stock-reports-store",
+            method: "POST",
+            params: payload,
+        },
+        storeResponse
+    );
 
     /** Search handler. */
     const priceHandler = () => {
         /** Set caller. */
-        setCaller('prices');
+        setCaller("prices");
         /** Send request. */
         retrieveRequest();
         /** Set start button to true. */
         setDisabled(true);
-    }
+    };
 
     /** Search handler. */
     const sectorHandler = () => {
         /** Set caller. */
-        setCaller('sectors');
+        setCaller("sectors");
         /** Send request. */
         retrieveRequest();
         /** Set start button to true. */
         setDisabled(true);
-    }
+    };
 
     /** Declare stocks state. */
     const [stocks, setStocks] = useState([]);
@@ -201,15 +215,18 @@ const StockTrade = () => {
             /** Render reponse message. */
             authCtx.messenger(data.message);
             /** Assign data to stocks state. */
-            setStocks(data['data']);
+            setStocks(data["data"]);
         }
-    }
+    };
     /** Prepare request to local api using http hook. */
-    const { sendRequest: stocksRequest } = useHttp({
-        url: '/api/stock-trade-retrieve',
-        method: 'GET',
-        params: { table: 'trade' }
-    }, stocksResponse);
+    const { sendRequest: stocksRequest } = useHttp(
+        {
+            url: "/api/stock-trade-retrieve",
+            method: "GET",
+            params: { table: "trade" },
+        },
+        stocksResponse
+    );
 
     useEffect(() => {
         /** Send request. */
@@ -223,17 +240,17 @@ const StockTrade = () => {
         // newData[index].description = 'Edited Description';
         // setData(newData);
 
-        console.log('index: ' + idx + ' edge id: ' + edge);
-    }
+        console.log("index: " + idx + " edge id: " + edge);
+    };
 
     /** Define destroy handler. */
-    const viewHandler = (idx, edge) => {
-        // const newData = [...data];
-        // newData.splice(index, 1);
-        // setData(newData);
-
-        console.log('index: ' + idx + ' edge id: ' + edge);
-    }
+    const viewHandler = (edge) => {
+        const url =
+            "https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=" +
+            edge;
+        /** Open a new tab. */
+        window.open(url, "_blank", "noopener");
+    };
 
     /** Declare search state. */
     const [search, setSearch] = useState(false);
@@ -241,7 +258,7 @@ const StockTrade = () => {
     /** Search handler. */
     const searchHandler = () => {
         setSearch(!search);
-    }
+    };
 
     /** Use screen helper. */
     const { isMobile } = useScreen();
@@ -252,23 +269,75 @@ const StockTrade = () => {
             <div className="trade">
                 <div className="board">
                     <div className="items">
-                        <div className="brand"><Icon id="trade" /> <span className="name">Trade</span></div>
+                        <div className="brand">
+                            <Icon id="trade" />{" "}
+                            <span className="name">Trade</span>
+                        </div>
                         <div className="record">
-                            <span onClick={startHandler} className="btn btn-start" type="button" disabled={disabled}><Icon id="start" /> Start</span>
-                            <span onClick={reportHandler} className="btn btn-report" type="button" disabled={disabled}><Icon id="report" /> Report</span>
-                            <span onClick={priceHandler} className="btn btn-price" type="button" disabled={disabled}><Icon id="price" /> Price</span>
-                            <span onClick={sectorHandler} className="btn btn-sector" type="button" disabled={disabled}><Icon id="sector" /> Sector</span>
-                            <span onClick={searchHandler} className="btn btn-search" type="button"><Icon id="search" /> Search</span>
+                            <span
+                                onClick={startHandler}
+                                className="btn btn-green-outline"
+                                type="button"
+                                disabled={disabled}
+                            >
+                                <Icon id="start" /> Start
+                            </span>
+                            <span
+                                onClick={reportHandler}
+                                className="btn btn-red-outline"
+                                type="button"
+                                disabled={disabled}
+                            >
+                                <Icon id="report" /> Report
+                            </span>
+                            <span
+                                onClick={priceHandler}
+                                className="btn btn-blue-outline"
+                                type="button"
+                                disabled={disabled}
+                            >
+                                <Icon id="price" /> Price
+                            </span>
+                            <span
+                                onClick={sectorHandler}
+                                className="btn btn-purple-outline"
+                                type="button"
+                                disabled={disabled}
+                            >
+                                <Icon id="sector" /> Sector
+                            </span>
+                            <span
+                                onClick={searchHandler}
+                                className="btn btn-gold-outline"
+                                type="button"
+                            >
+                                <Icon id="search" /> Search
+                            </span>
                         </div>
                     </div>
                 </div>
-                {isMobile ? <Mobile data={{ stocks: stocks, search: search }} handler={{ search: searchHandler, chart: chartHandler, view: viewHandler }} />
-                    : <Desktop data={{ stocks: stocks, search: search }} handler={{ search: searchHandler, chart: chartHandler, view: viewHandler }} />
-                }
+                {isMobile ? (
+                    <Mobile
+                        data={{ stocks: stocks, search: search }}
+                        handler={{
+                            search: searchHandler,
+                            chart: chartHandler,
+                            view: viewHandler,
+                        }}
+                    />
+                ) : (
+                    <Desktop
+                        data={{ stocks: stocks, search: search }}
+                        handler={{
+                            search: searchHandler,
+                            chart: chartHandler,
+                            view: viewHandler,
+                        }}
+                    />
+                )}
             </div>
-
         </div>
     );
-}
+};
 
-export default StockTrade;
+export default Trade;

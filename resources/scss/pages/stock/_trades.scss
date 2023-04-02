@@ -42,91 +42,6 @@
                         width: 7.5rem;
                         text-align: center;
                     }
-
-                    .btn-search {
-                        color: rgba($cl-gold, 0.75);
-                        border: 1px solid transparent;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-gold, 0.75);
-
-                            &:hover {
-                                fill: rgba($cl-gold, 1);
-                            }
-                        }
-                        &:hover {
-                            color: rgba($cl-gold, 1);
-                            border: 1px solid rgba($cl-gold, 0.5);
-                        }
-                    }
-
-                    .btn-start {
-                        color: rgba($cl-green, 0.75);
-                        border: 1px solid transparent;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-green, 0.75);
-
-                            &:hover {
-                                fill: rgba($cl-green, 1);
-                            }
-                        }
-                        &:hover {
-                            color: rgba($cl-green, 1);
-                            border: 1px solid rgba($cl-green, 0.5);
-                        }
-                    }
-
-                    .btn-report {
-                        color: rgba($cl-red, 0.75);
-                        border: 1px solid transparent;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-red, 0.75);
-
-                            &:hover {
-                                fill: rgba($cl-red, 1);
-                            }
-                        }
-                        &:hover {
-                            color: rgba($cl-red, 1);
-                            border: 1px solid rgba($cl-red, 0.5);
-                        }
-                    }
-
-                    .btn-price {
-                        color: rgba($cl-blue, 0.75);
-                        border: 1px solid transparent;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-blue, 0.75);
-
-                            &:hover {
-                                fill: rgba($cl-blue, 1);
-                            }
-                        }
-                        &:hover {
-                            color: rgba($cl-blue, 1);
-                            border: 1px solid rgba($cl-blue, 0.5);
-                        }
-                    }
-
-                    .btn-sector {
-                        color: rgba($cl-purple, 0.75);
-                        border: 1px solid transparent;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-purple, 0.75);
-
-                            &:hover {
-                                fill: rgba($cl-purple, 1);
-                            }
-                        }
-                        &:hover {
-                            color: rgba($cl-purple, 1);
-                            border: 1px solid rgba($cl-purple, 0.5);
-                        }
-                    }
                 }
             }
         }
@@ -199,44 +114,11 @@
                         width: 45%;
                         text-align: center;
                         font-size: 0.75rem;
+                        padding: 0.25rem;
 
                         .sprite > .icon {
                             width: 18px;
                             height: 18px;
-                        }
-                    }
-
-                    .btn-chart {
-                        color: rgba($cl-purple, 0.75);
-                        border: 1px solid transparent;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-purple, 0.75);
-
-                            &:hover {
-                                fill: rgba($cl-purple, 1);
-                            }
-                        }
-                        &:hover {
-                            color: rgba($cl-purple, 1);
-                            border: 1px solid rgba($cl-purple, 0.5);
-                        }
-                    }
-
-                    .btn-view {
-                        color: rgba($cl-orange, 0.75);
-                        border: 1px solid transparent;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-orange, 0.75);
-
-                            &:hover {
-                                fill: rgba($cl-orange, 1);
-                            }
-                        }
-                        &:hover {
-                            color: rgba($cl-orange, 1);
-                            border: 1px solid rgba($cl-orange, 0.5);
                         }
                     }
                 }
@@ -308,30 +190,11 @@
 
                     .btn {
                         font-size: 0.75rem;
+                        padding: 0.25rem;
 
                         .sprite > .icon {
                             height: 16px;
                             width: 16px;
-                        }
-                    }
-
-                    .btn-chart {
-                        color: rgba($cl-purple, 0.75);
-                        border: 1px solid transparent;
-                        text-align: center;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-purple, 0.75);
-                        }
-                    }
-
-                    .btn-view {
-                        text-align: center;
-                        color: rgba($cl-orange, 0.75);
-                        border: 1px solid transparent;
-
-                        .sprite > .icon {
-                            fill: rgba($cl-orange, 0.75);
                         }
                     }
                 }

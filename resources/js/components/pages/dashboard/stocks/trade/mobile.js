@@ -52,10 +52,10 @@ const Mobile = (props) => {
                             <span className="value">{item.volume}</span>
                         </div>
                         <div className="item">
-                            <span className="btn btn-chart" type="button" onClick={() => props.handler.chart(index, item.edge)}><Icon id="chart" /> Chart</span>
+                            <span className="btn btn-purple-outline" type="button" onClick={() => props.handler.chart(index, item.edge)}><Icon id="chart" /> Chart</span>
                         </div>
                         <div className="item">
-                            <span className="btn btn-view" type="button" onClick={() => props.handler.view(index, item.edge)}><Icon id="search" /> View</span>
+                            <span className="btn btn-orange-outline" type="button" onClick={() => props.handler.view(item.edge)}><Icon id="search" /> View</span>
                         </div>
                     </div>
                 );

@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\Dashboard;
 
+use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\HttpClient\HttpClient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Goutte\Client;
 
 use App\Http\Controllers\Controller;
 
@@ -22,7 +22,7 @@ class PSEController extends Controller
      */
     public function __construct()
     {
-        $this->client = new Client();
+        $this->client = new HttpBrowser(HttpClient::create());
     }
 
     /**
@@ -44,6 +44,10 @@ class PSEController extends Controller
             if ($request->input('section') === 'sectors') {
                 return $this->stocksectors($request->all());
             }
+            /** forward watchlist command. */
+            if ($request->input('section') === 'watches') {
+                return $this->stockwatches($request->all());
+            }
         }
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
@@ -51,26 +55,22 @@ class PSEController extends Controller
             if ($request->input('section') === 'stocks') {
                 return $this->stocktrades();
             }
-            /** forward watchlist command. */
-            if ($request->input('section') === 'watches') {
-                return $this->stockwatches($request->all());
-            }
         }
     }
 
     /**
      * Declare financials function.
      */
-    public function stockreports($data)
-    {
+    public function stockreports($data) {
         /** repository. */
         $financialreports = [];
         $result = [];
-        /** fetch and crawl document element. */
+       /** fetch and crawl document element. */
         $financial = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id']);
         $finance = $financial->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
+
         if (count($finance) != 0) {
             /** mapping net after tax . */
             $annualincomestatement['CurrentYearNetIncomeLossAfterTax'] = $finance['22'];
@@ -274,8 +274,7 @@ class PSEController extends Controller
     /**
      * Declare financials function.
      */
-    public function stockwatches($data)
-    {
+    public function stockwatches($data) {
         /** repository. */
         $financialreports = [];
         $result = [];
@@ -284,6 +283,7 @@ class PSEController extends Controller
         $finance = $financial->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
+
         if (count($finance) != 0) {
             /** mapping total liabilities. */
             $annualincomestatement['CurrentTotalLiabilities'] = $finance['6'];
@@ -418,55 +418,49 @@ class PSEController extends Controller
                 'gross' => number_format($result['grossrevenue'], 2, '.', ','),
             ];
 
-            if ($data['caller'] == 'trade') {
-                return ['message' => 'Data has been retrieved.', 'reports' => $financialreports];
-            }
+            $symbol = DB::table('stock_watchlists')
+                ->select('symbol')
+                ->where('symbol', $data['symbol'])
+                ->get();
 
-            if ($data['caller'] == 'watchlist') {
-                $symbol = DB::table('stock_watchlists')
-                    ->select('symbol')
-                    ->where('symbol', $data['symbol'])
-                    ->get();
-
-                if ($symbol->isEmpty()) {
-                    $insert = DB::table('stock_watchlists')
-                        ->insertGetId([
-                            'userid' => Auth::id(),
-                            'symbol' => strip_tags($data['symbol']),
-                            'sector' => strip_tags($data['sector']),
-                            'edge' => strip_tags($data['id']),
-                            'volume' => strip_tags($data['volume']),
-                            'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
-                            'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
-                            'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),
-                            'earningspershare' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['earning'])),
-                            'netincomebeforetax' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['income'])),
-                            'grossrevenue' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['gross'])),
-                            'created_at' => date('Y-m-d H:i:s'),
-                            'updated_at' => date('Y-m-d H:i:s'),
-                        ]);
-                    /** if insert not empty.*/
-                    if ($insert) {
-                        return ['status' =>  true, 'sql' => 'select', 'message' => $data['symbol'] . ' has been added to the database.'];
-                    }
-                } else {
-                    $update = DB::table('stock_watchlists')
-                        ->where('userid', '=', Auth::id())
-                        ->where('symbol', '=', $data['symbol'])
-                        ->update([
-                            'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
-                            'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
-                            'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),
-                            'earningspershare' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['earning'])),
-                            'netincomebeforetax' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['income'])),
-                            'grossrevenue' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['gross'])),
-                            'created_at' => date('Y-m-d H:i:s'),
-                            'updated_at' => date('Y-m-d H:i:s'),
-                        ]);
-                    /** if update not empty.*/
-                    if ($update) {
-                        return ['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'];
-                    }
+            if ($symbol->isEmpty()) {
+                $insert = DB::table('stock_watchlists')
+                    ->insertGetId([
+                        'userid' => Auth::id(),
+                        'symbol' => strip_tags($data['symbol']),
+                        'sector' => strip_tags($data['sector']),
+                        'edge' => strip_tags($data['id']),
+                        'volume' => strip_tags($data['volume']),
+                        'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
+                        'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
+                        'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),
+                        'earningspershare' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['earning'])),
+                        'netincomebeforetax' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['income'])),
+                        'grossrevenue' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['gross'])),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                /** if insert not empty.*/
+                if ($insert) {
+                    return ['message' => 'The ' . $data['symbol'] . ' has been added to the database.'];
+                }
+            } else {
+                $update = DB::table('stock_watchlists')
+                    ->where('userid', '=', Auth::id())
+                    ->where('symbol', '=', $data['symbol'])
+                    ->update([
+                        'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
+                        'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
+                        'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),
+                        'earningspershare' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['earning'])),
+                        'netincomebeforetax' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['income'])),
+                        'grossrevenue' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['gross'])),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                /** if update not empty.*/
+                if ($update) {
+                    return ['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'];
                 }
             }
             /** return something. */
@@ -481,7 +475,7 @@ class PSEController extends Controller
     {
         /** repository. */
         $stocks = DB::table('stock_trades')
-            ->select('edge')
+            ->select('edge', 'symbol', 'sector', 'volume')
             ->where('edge', '>', '0')
             ->where('updated_at', '<', Carbon::now()->subHour(0))
             ->get()

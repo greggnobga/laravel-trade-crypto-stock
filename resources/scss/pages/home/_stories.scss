@@ -33,6 +33,24 @@
 
             .content {
                 padding: 0.5rem;
+
+                .button {
+                    .btn {
+                        width: 25%;
+                    }
+
+                    .btn-primary {
+                        color: rgba($cl-dark, 0.85);
+                        border: 1px solid rgba($cl-dark, 0.85);
+                        background: rgba($cl-gray-100, 0.75);
+
+                        &:hover {
+                            color: rgba($cl-light, 0.75);
+                            border: 1px solid rgba($cl-lime, 0.75);
+                            background: rgba($cl-green, 0.75);
+                        }
+                    }
+                }
             }
         }
     }

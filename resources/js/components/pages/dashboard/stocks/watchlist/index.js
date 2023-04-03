@@ -16,6 +16,7 @@ import Mobile from "./mobile";
 const Watchlist = () => {
     /** Declare disabled state. */
     const [stocks, setStocks] = useState([]);
+    const [sectors, setSectors] = useState([]);
     const [disabled, setDisabled] = useState(false);
 
     /** Use context. */
@@ -54,7 +55,6 @@ const Watchlist = () => {
 
     /** Use http hook reponse callback. */
     const storeResponse = (data) => {
-        console.log(data);
         /** Check if data is not empty. */
         if (data) {
             /** Render reponse message. */
@@ -102,245 +102,125 @@ const Watchlist = () => {
         }
     }, [stocks]);
 
+    /** Use http hook reponse callback. */
+    const sectorResponse = (data) => {
+        console.log(data);
+        /** Check if data is not empty. */
+        if (data) {
+            /** Set sector. */
+            setSectors(data["sectors"]);
+            /** Render reponse message. */
+            authCtx.messenger(data["message"]);
+        }
+    };
+
+    /** Prepare request to local api using http hook. */
+    const { sendRequest: sectorRequest } = useHttp(
+        {
+            url: "/api/stock-watchlist-retrieve",
+            method: "GET",
+            params: { table: "watchlist", statement: "select" },
+        },
+        sectorResponse
+    );
+
+    useEffect(() => {
+        sectorRequest();
+    }, []);
+
+    const viewHandler = (edge) => {
+        const url =
+            "https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=" +
+            edge;
+        /** Open a new tab. */
+        window.open(url, "_blank", "noopener");
+    };
+
+    const trashHandler = (symbol, index) => {
+        console.log("symbol: " + symbol + "index: " + index);
+        console.log("CLicked destroy button");
+    };
+
     /** Build handler. */
     const buildHandler = () => {
         /** Set caller. */
         setCaller("watches");
+        /** Set disabled.*/
+        setDisabled(true);
         /** Send request. */
         retrieveRequest();
     };
+
+    /** Use screen helper. */
+    const { isMobile } = useScreen();
 
     return (
         <div id="stock-watchlist">
             <div className="cheat">
                 <div className="board">
                     <div className="items">
-                        <div className="name">Cheat Code</div>
+                        <div className="brand">
+                            <Icon id="cheat" />
+                            <span className="name">Cheat Code</span>
+                        </div>
                         <div className="build">
-                            <button
+                            <span
                                 onClick={buildHandler}
-                                className="run"
+                                className="btn btn-blue-outline"
                                 type="button"
                             >
-                                Build
-                            </button>
+                                <Icon id="build" /> Build
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div className="content">
                     <div className="items">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        The net profit margin, also known as net margin,
+                        indicates how much net income a company makes with total
+                        sales achieved. A higher net profit margin means that a
+                        company is more efficient at converting sales into
+                        actual profit.
                     </div>
                     <div className="items">
-                        Sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
+                        A higher PE suggests high expectations for future
+                        growth, perhaps because the company is small or is an a
+                        rapidly expanding market. For others, a low PE is
+                        preferred, since it suggests expectations are not too
+                        high and the company is more likely to outperform
+                        earnings forecasts.
                     </div>
                     <div className="items">
-                        Quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat.
+                        Debt ratio is a metric that measures a company's total
+                        debt, as a percentage of its total assets. A high debt
+                        ratio indicates that a company is highly leveraged, and
+                        may have borrowed more money than it can easily pay
+                        back.
+                    </div>
+                    <div className="items">
+                        The higher a companys ROE percentage, the better. A
+                        higher percentage indicates a company is more effective
+                        at generating profit from its existing assets.
                     </div>
                 </div>
             </div>
-            <div className="minings">
-                <div className="board">Minings Sector</div>
-                <div className="content">
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                    <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                </div>
-            </div>
-            <div className="holdings">
-                <div className="board">Holding Firms Sector</div>
-                <div className="content">
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                    <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                </div>
-            </div>
-            <div className="services">
-                <div className="board">Services Sector</div>
-                <div className="content">
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                    <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                </div>
-            </div>
-            <div className="industrials">
-                <div className="board">Industrials Sector</div>
-                <div className="content">
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                    <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                </div>
-            </div>
-            <div className="properties">
-                <div className="board">Poperties Sector</div>
-                <div className="content">
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                    <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                </div>
-            </div>
-            <div className="financials">
-                <div className="board">Financials Sector</div>
-                <div className="content">
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                    <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                </div>
-            </div>
-            <div className="boards">
-                <div className="board">Small Boards Sector</div>
-                <div className="content">
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                    <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                </div>
-            </div>
-            <div className="funds">
-                <div className="board">Funds Sector</div>
-                <div className="content">
-                    <div className="items color">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                    <div className="items">
-                        <div className="item">Item 1</div>
-                        <div className="item">Item 2</div>
-                        <div className="item">Item 3</div>
-                        <div className="item">Item 4</div>
-                        <div className="item">Item 5</div>
-                        <div className="item">Item 6</div>
-                        <div className="item">Item 7</div>
-                        <div className="item">Item 8</div>
-                    </div>
-                </div>
-            </div>
+            {isMobile ? (
+                <Mobile
+                    data={{ sectors: sectors }}
+                    handler={{
+                        view: viewHandler,
+                        trash: trashHandler,
+                    }}
+                />
+            ) : (
+                <Desktop
+                    data={{ sectors: sectors }}
+                    handler={{
+                        view: viewHandler,
+                        trash: trashHandler,
+                    }}
+                />
+            )}
         </div>
     );
 };

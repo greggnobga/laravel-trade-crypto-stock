@@ -289,6 +289,8 @@ class PSEController extends Controller
             $annualincomestatement['CurrentTotalLiabilities'] = $finance['6'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentTotalLiabilities", $annualincomestatement)) {
+                /** remove rouge space. */
+                $annualincomestatement['CurrentTotalLiabilities'] = trim($annualincomestatement['CurrentTotalLiabilities']);
                 /** match string if has number and comma. */
                 if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentTotalLiabilities'])) {
                     $result['totalliabilities'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentTotalLiabilities']));
@@ -303,11 +305,12 @@ class PSEController extends Controller
                     $result['totalliabilities'] = 0.00;
                 }
             }
-
             /** mapping stock holder equity. */
             $annualincomestatement['CurrentStockholdersEquity'] = $finance['10'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentStockholdersEquity", $annualincomestatement)) {
+                /** remove rouge space. */
+                $annualincomestatement['CurrentStockholdersEquity'] = trim($annualincomestatement['CurrentStockholdersEquity']);
                 /** match string if has number and comma. */
                 if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentStockholdersEquity'])) {
                     $result['stockholderequity'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentStockholdersEquity']));
@@ -325,17 +328,17 @@ class PSEController extends Controller
 
             /** mapping stock holder equity. */
             $annualincomestatement['CurrentEarningsLossPerShareBasic'] = $finance['26'];
-            /** remove rouge space. */
-            $annualincomestatement['CurrentEarningsLossPerShareBasic'] = str_replace(' ', '', $annualincomestatement['CurrentEarningsLossPerShareBasic']);
             /** check if key exist in array. */
             if (array_key_exists("CurrentEarningsLossPerShareBasic", $annualincomestatement)) {
-                /** match string if has number and comma. */
-                if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentEarningsLossPerShareBasic'])) {
-                    $result['earningpershare'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentEarningsLossPerShareBasic']));
+                /** remove rouge space. */
+                $annualincomestatement['CurrentEarningsLossPerShareBasic'] = trim($annualincomestatement['CurrentEarningsLossPerShareBasic']);
+               /** match string if has number and comma. */
+                if (preg_match('/^-?[0-9,\s($.?\d{0,2}]+$/', $annualincomestatement['CurrentEarningsLossPerShareBasic'])) {
+                    $result['earningpershare'] = floatval(str_replace([' ', '(', ',', ')', '$'], '', $annualincomestatement['CurrentEarningsLossPerShareBasic']));
                 }
                 /** match string if has number and comma and parentheses. */
                 if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['CurrentEarningsLossPerShareBasic'])) {
-                    $result['earningpershare'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentEarningsLossPerShareBasic']));
+                    $result['earningpershare'] = floatval(str_replace([' ', '(', ',', ')', '$'], '', $annualincomestatement['CurrentEarningsLossPerShareBasic']));
                     $result['earningpershare'] = -abs($result['earningpershare']);
                 }
                 /** match string if has no value. */
@@ -343,11 +346,12 @@ class PSEController extends Controller
                     $result['earningpershare'] = 0.00;
                 }
             }
-
             /** mapping stock holder equity. */
             $annualincomestatement['CurrentIncomeLossBeforeTax'] = $finance['20'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentIncomeLossBeforeTax", $annualincomestatement)) {
+                /** remove rouge space. */
+                $annualincomestatement['CurrentIncomeLossBeforeTax'] = trim($annualincomestatement['CurrentIncomeLossBeforeTax']);
                 /** match string if has number and comma. */
                 if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentIncomeLossBeforeTax'])) {
                     $result['incomebeforetax'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentIncomeLossBeforeTax']));
@@ -367,6 +371,8 @@ class PSEController extends Controller
             $annualincomestatement['CurrentGrossRevenue'] = $finance['16'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentGrossRevenue", $annualincomestatement)) {
+                /** remove rouge space. */
+                $annualincomestatement['CurrentGrossRevenue'] = trim($annualincomestatement['CurrentGrossRevenue']);
                 /** match string if has number and comma. */
                 if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentGrossRevenue'])) {
                     $result['grossrevenue'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentGrossRevenue']));
@@ -393,6 +399,8 @@ class PSEController extends Controller
             $annualincomestatement['LastTradedPrice'] = $price['12'];
             /** check if key exist in array. */
             if (array_key_exists("LastTradedPrice", $annualincomestatement)) {
+                /** remove rouge space. */
+                $annualincomestatement['LastTradedPrice'] = trim($annualincomestatement['LastTradedPrice']);
                 /** match string if has number and comma. */
                 if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['LastTradedPrice'])) {
                     $result['lasttradedprice'] = floatval(str_replace(',', '', $annualincomestatement['LastTradedPrice']));

@@ -17,19 +17,29 @@
                 grid-template-columns: 1fr 1fr;
                 grid-template-rows: auto;
 
+                .brand {
+                    .sprite > .icon {
+                        fill: $cl-gray;
+                        margin-top: -5px;
+                    }
+
+                    .name {
+                        display: inline-block;
+                        margin-top: 7px;
+                        padding-left: 0.25rem;
+                    }
+                }
+
                 .build {
                     text-align: end;
 
-                    .run {
-                        color: $cl-light;
-                        background: rgba($cl-teal, 0.75);
-                        border: rgba($cl-green, 0.75);
-                        border-radius: 5px;
-
-                        &:hover {
-                            background: rgba($cl-green, 1);
-                            border: rgba($cl-teal, 1);
-                        }
+                    .btn {
+                        display: inline-block;
+                        border-radius: 3px;
+                        margin-right: 0.25rem;
+                        padding: 0.25rem;
+                        width: 7.5rem;
+                        text-align: center;
                     }
                 }
             }
@@ -41,15 +51,27 @@
             background: $box-background;
             border: $box-border;
             box-shadow: $box-shadow;
-            border-radius: 5px;
+            border-radius: 3px;
+            margin-top: 0.5rem;
             padding: 0.25rem 0.5rem;
 
             .items {
                 display: grid;
                 grid-template-rows: 1fr;
                 grid-template-columns: auto;
-                border-bottom: 1px solid rgba($cl-gray, 0.25);
+                border-bottom: 1px solid rgba($cl-gray-300, 0.5);
                 padding: 0.25rem 0.5rem;
+                font-weight: $fw-lighter;
+                color: rgba($cl-dark, 0.75);
+                font-size: 0.85rem;
+
+                &:nth-child(odd) {
+                    background: rgba($cl-gray-100, 0.25);
+                }
+
+                &:nth-child(even) {
+                    background: rgba($cl-gray-100, 0.1);
+                }
 
                 &:last-child {
                     border-bottom: none;
@@ -58,14 +80,7 @@
         }
     }
 
-    .minings,
-    .holdings,
-    .services,
-    .industrials,
-    .properties,
-    .financials,
-    .boards,
-    .funds {
+    .sector {
         display: grid;
         grid-template-columns: auto;
         grid-template-rows: 2rem 1fr;
@@ -74,6 +89,17 @@
         .board {
             grid-column: 1;
             grid-row: 1;
+
+            .sprite > .icon {
+                fill: $cl-gray;
+                margin-top: -5px;
+            }
+
+            .name {
+                display: inline-block;
+                margin-top: 7px;
+                padding-left: 0.25rem;
+            }
         }
 
         .content {
@@ -82,23 +108,50 @@
             background: $box-background;
             border: $box-border;
             box-shadow: $box-shadow;
-            border-radius: 5px;
+            border-radius: 3px;
             padding: 0.25rem 0.5rem;
+            margin-top: 0.5rem;
 
             .items {
                 display: grid;
                 grid-template-rows: 1fr;
-                grid-template-columns: 5rem repeat(8, 1fr);
-                border-bottom: 1px solid rgba($cl-gray, 0.15);
+                grid-template-columns: repeat(8, 1fr);
+                border-bottom: 1px solid rgba($cl-gray-300, 0.5);
                 padding: 0.25rem 0.5rem;
+                font-size: 0.85rem;
+                font-weight: $fw-lighter;
+                color: rgba($cl-dark, 0.75);
+
+                .value {
+                    .btn {
+                        display: inline-block;
+                        width: 45%;
+
+                        font-size: 0.75rem;
+                        padding: 0.25rem;
+
+                        .sprite > .icon {
+                            height: 16px;
+                            width: 16px;
+                        }
+                    }
+                }
+
+                &:nth-child(odd) {
+                    background: rgba($cl-gray-100, 0.25);
+                }
+
+                &:nth-child(even) {
+                    background: rgba($cl-gray-100, 0.1);
+                }
+
+                &:first-child {
+                    font-weight: $fw-normal;
+                }
 
                 &:last-child {
                     border-bottom: none;
                 }
-            }
-
-            .color {
-                color: rgba($cl-teal, 0.75);
             }
         }
     }

@@ -20,7 +20,7 @@ const Verify = () => {
     const verifyResponse = (data) => {
         /** set valid to false. */
         authCtx.validifier(true);
-        /** set error message. */
+        /** set message. */
         authCtx.messenger(data.message);
         /** Navigate out if done loading. */
         navigate('/');

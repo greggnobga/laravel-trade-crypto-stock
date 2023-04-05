@@ -16,7 +16,7 @@ import Mobile from "./mobile";
 const Watchlist = () => {
     /** Declare disabled state. */
     const [stocks, setStocks] = useState([]);
-    const [sectors, setSectors] = useState([]);
+    const [sectors, setSectors] = useState({});
     const [disabled, setDisabled] = useState(false);
 
     /** Use context. */
@@ -102,45 +102,6 @@ const Watchlist = () => {
         }
     }, [stocks]);
 
-    /** Use http hook reponse callback. */
-    const sectorResponse = (data) => {
-        console.log(data);
-        /** Check if data is not empty. */
-        if (data) {
-            /** Set sector. */
-            setSectors(data["sectors"]);
-            /** Render reponse message. */
-            authCtx.messenger(data["message"]);
-        }
-    };
-
-    /** Prepare request to local api using http hook. */
-    const { sendRequest: sectorRequest } = useHttp(
-        {
-            url: "/api/stock-watchlist-retrieve",
-            method: "GET",
-            params: { table: "watchlist", statement: "select" },
-        },
-        sectorResponse
-    );
-
-    useEffect(() => {
-        sectorRequest();
-    }, []);
-
-    const viewHandler = (edge) => {
-        const url =
-            "https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=" +
-            edge;
-        /** Open a new tab. */
-        window.open(url, "_blank", "noopener");
-    };
-
-    const trashHandler = (symbol, index) => {
-        console.log("symbol: " + symbol + "index: " + index);
-        console.log("CLicked destroy button");
-    };
-
     /** Build handler. */
     const buildHandler = () => {
         /** Set caller. */
@@ -151,9 +112,95 @@ const Watchlist = () => {
         retrieveRequest();
     };
 
+    /** Use http hook reponse callback. */
+    const watchRetrieveResponse = (data) => {
+        /** Check if data is not empty. */
+        if (data) {
+            /** Set sector. */
+            setSectors(data["sectors"]);
+            /** Render reponse message. */
+            authCtx.messenger(data["message"]);
+        }
+    };
+
+    /** Prepare request to local api using http hook. */
+    const { sendRequest: watchRetrieveRequest } = useHttp(
+        {
+            url: "/api/stock-watchlist-retrieve",
+            method: "GET",
+            params: { table: "watchlist", statement: "select" },
+        },
+        watchRetrieveResponse
+    );
+
+    useEffect(() => {
+        watchRetrieveRequest();
+    }, []);
+
+    const viewHandler = (edge) => {
+        const url =
+            "https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=" +
+            edge;
+        /** Open a new tab. */
+        window.open(url, "_blank", "noopener");
+    };
+
+    /** Declare state. */
+    const [destroy, setDestroy] = useState();
+
+    /** Send http request after state has a value. */
+    useEffect(() => {
+        if (typeof destroy !== "undefined") {
+            /** Send request. */
+            watchStoreRequest();
+        }
+    }, [destroy]);
+
+    /** Use http hook reponse callback. */
+    const watchStoreResponse = (data) => {
+        /** Check if data is not empty. */
+        if (data) {
+            /** Render reponse message. */
+            authCtx.messenger(data["message"]);
+        }
+    };
+
+    /** Prepare request to local api using http hook. */
+    const { sendRequest: watchStoreRequest } = useHttp(
+        {
+            url: "/api/stock-watchlist-store",
+            method: "POST",
+            params: { table: "watchlist", statement: "trash", input: destroy },
+        },
+        watchStoreResponse
+    );
+
+    /** destroy handler. */
+    const destroyHandler = (symbol, index, sector) => {
+        /** Create new set of data. */
+        const targetedSector = [...sectors[sector]];
+        /** Remove item in the array. */
+        const filtered = targetedSector.filter(
+            (item) => item.symbol !== symbol
+        );
+        /** Copy sectors to new pointer. */
+        const updatedSector = { ...sectors };
+        /** Loop to find a match. */
+        for (let item in updatedSector) {
+            if (item === sector) {
+                updatedSector[sector] = filtered;
+            }
+        }
+        /** Set data. */
+        setSectors({ ...updatedSector });
+        /** Set params. */
+        setDestroy(symbol);
+    };
+
     /** Use screen helper. */
     const { isMobile } = useScreen();
 
+    /** Return something. */
     return (
         <div id="stock-watchlist">
             <div className="cheat">
@@ -206,18 +253,18 @@ const Watchlist = () => {
             </div>
             {isMobile ? (
                 <Mobile
-                    data={{ sectors: sectors }}
+                    data={sectors}
                     handler={{
                         view: viewHandler,
-                        trash: trashHandler,
+                        destroy: destroyHandler,
                     }}
                 />
             ) : (
                 <Desktop
-                    data={{ sectors: sectors }}
+                    data={{ stocks: sectors }}
                     handler={{
                         view: viewHandler,
-                        trash: trashHandler,
+                        destroy: destroyHandler,
                     }}
                 />
             )}

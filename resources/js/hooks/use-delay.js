@@ -1,5 +1,5 @@
 /** React. */
-import { useState, useEf } from 'react';
+import { useState } from 'react';
 
 /** Vendor. */
 import { useNavigate } from "react-router-dom";
@@ -18,9 +18,9 @@ const useDelay = (props) => {
         /** Change state on click. */
         setDelay(false);
         /** Wait to have animation some leeway. */
-        setTimeout(() => {
-            navigate('/');
-        }, 1000);
+        // setTimeout(() => {
+        //     navigate('/');
+        // }, 1000);
     }
 
     /** Return something */

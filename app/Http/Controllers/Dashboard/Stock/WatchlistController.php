@@ -15,7 +15,7 @@ class WatchlistController extends Controller
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward destroy command. */
-            if ($request->input('table') === 'watchlist' && $request->input('statement') === 'destroy') {
+            if ($request->input('table') === 'watchlist' && $request->input('statement') === 'trash') {
                 return $this->destroy(['table' => 'watchlist', 'input' => $request->input('input')]);
             }
         }
@@ -162,9 +162,9 @@ class WatchlistController extends Controller
                         }
                     }
                     /** return something. */
-                    return ['message' => 'Please wait while we process your request..', 'sectors' => $response];
+                    return response(['message' => 'Please wait while we process your request.', 'sectors' => $response], 200);
                 } else {
-                    return ['message' => 'There were no records discovered.', 'sectors' => ''];
+                    return response(['message' => 'There were no records discovered.', 'sectors' => ''], 200);
                 }
             }            
         }
@@ -176,13 +176,13 @@ class WatchlistController extends Controller
     public function destroy($data) {
         if ($data['table'] === 'watchlist') {
             $delete = DB::table('stock_watchlists')
-                ->where('symbol', '=', $data['input']['symbol'])
+                ->where('symbol', '=', $data['input'])
                 ->where('userid', '=', Auth::id())
                 ->delete();
             if ($delete) {
-                return ['status' =>  true, 'sql' => 'destroy', 'message' => $data['input']['symbol'] . ' has been deleted.', 'stock' => $data['input']['id']];
+                return response(['message' => 'The ' . $data['input'] . ' record has been removed.'], 200);
             } else {
-                return ['status' =>  false, 'sql' => 'destroy', 'message' => 'Your attempt to delete ' . $data['input']['symbol'] . ' could not be completed.' , 'stock' => '' ];
+                return response(['message' => 'Your attempt to delete ' . $data['input'] . ' was unsuccessful.'], 200);
             }
         }
     }
@@ -210,7 +210,7 @@ class WatchlistController extends Controller
                     $return[$key]['priceearningratio'] = bcdiv($value->lasttradedprice, $value->earningspershare, 2);
                 }
                 if ($value->netincomebeforetax > 0 && $value->grossrevenue > 0) {
-                    $return[$key]['netprofitmargin'] = bcmul(bcdiv($value->netincomebeforetax, $value->grossrevenue, 2), 100, 2);
+                    $return[$key]['netprofitmargin'] = bcmul(bcdiv($value->netincomebeforetax, $value->grossrevenue, 2), 100, 2) . '%';
                 }
                 if ($value->grossrevenue > 0 && $value->stockholdersequity > 0) {
                     $return[$key]['returnonequity'] = bcdiv($value->grossrevenue, bcdiv($value->stockholdersequity, 2, 2), 2); 

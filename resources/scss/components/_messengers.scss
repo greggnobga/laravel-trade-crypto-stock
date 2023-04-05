@@ -1,24 +1,21 @@
 .message {
-    position: fixed;
-    z-index: 200;
-    top: 4.5em;
+    position: sticky;
+    z-index: 500;
+    top: 0;
     right: 0.5rem;
     color: $cl-white;
     cursor: pointer;
-    padding: 0.25rem;
 
     .error {
         padding: 0.5rem;
-        border-radius: 0.35rem;
         border: 1px solid rgba($cl-gray, 0.25);
         background: rgba($cl-red, 0.75);
     }
 
     .success {
         padding: 0.5rem;
-        border-radius: 0.35rem;
         border: 1px solid rgba($cl-gray, 0.25);
-        background: rgba($cl-green, 0.75);
+        background: rgba($cl-purple, 0.75);
     }
 
     .resend {
@@ -26,7 +23,6 @@
         z-index: 201;
         top: 4rem;
         padding: 0.5rem;
-        border-radius: 0.35rem;
         border: 1px solid rgba($cl-gray, 0.25);
         background: rgba($cl-red, 0.75);
     }

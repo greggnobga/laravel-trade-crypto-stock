@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 
 /** Component. */
 import Icon from '../../icons';
-import Summary from '../../ui/summary';
+import Summary from '../../interfaces/summary';
 
 import Hero from './hero';
 import Reason from './reason';

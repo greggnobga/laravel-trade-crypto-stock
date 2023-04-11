@@ -1,5 +1,5 @@
 /** React. */
-import { useState, useContext, useEffect } from "react";
+import { Fragment, useState, useContext, useEffect } from "react";
 
 /** Context. */
 import AuthContext from "../../../../../context/auth-context";
@@ -114,6 +114,7 @@ const Watchlist = () => {
 
     /** Use http hook reponse callback. */
     const watchRetrieveResponse = (data) => {
+        console.log(data);
         /** Check if data is not empty. */
         if (data) {
             /** Set sector. */
@@ -200,6 +201,20 @@ const Watchlist = () => {
     /** Use screen helper. */
     const { isMobile } = useScreen();
 
+    /** Create array of labels for sector. */
+    const sectorLabels = [
+        { label: "Mining And Oils", sector: "miningandoils" },
+        { label: "Holding Firms", sector: "holdingfirms" },
+        { label: "Services", sector: "services" },
+        { label: "Properties", sector: "properties" },
+        { label: "Financials", sector: "financials" },
+        { label: "Industrials", sector: "industrials" },
+        { label: "Exchange Traded Funds", sector: "exchangetradedfunds" },
+        {
+            label: "Emerging Boards",
+            sector: "smallmediumemergingboards",
+        },
+    ];
     /** Return something. */
     return (
         <div id="stock-watchlist">
@@ -251,23 +266,33 @@ const Watchlist = () => {
                     </div>
                 </div>
             </div>
-            {isMobile ? (
-                <Mobile
-                    data={sectors}
-                    handler={{
-                        view: viewHandler,
-                        destroy: destroyHandler,
-                    }}
-                />
-            ) : (
-                <Desktop
-                    data={{ stocks: sectors }}
-                    handler={{
-                        view: viewHandler,
-                        destroy: destroyHandler,
-                    }}
-                />
-            )}
+            {isMobile
+                ? sectorLabels.map((item, index) => {
+                      return (
+                          <Mobile
+                              key={index}
+                              data={sectors[item["sector"]]}
+                              label={item["label"]}
+                              handler={{
+                                  view: viewHandler,
+                                  destroy: destroyHandler,
+                              }}
+                          />
+                      );
+                  })
+                : sectorLabels.map((item, index) => {
+                      return (
+                          <Desktop
+                              key={index}
+                              data={sectors[item["sector"]]}
+                              label={item["label"]}
+                              handler={{
+                                  view: viewHandler,
+                                  destroy: destroyHandler,
+                              }}
+                          />
+                      );
+                  })}
         </div>
     );
 };

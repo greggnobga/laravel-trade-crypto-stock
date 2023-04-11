@@ -10,7 +10,7 @@ import helpNotice from "../../helpers/help-notice";
 /** Components */
 import Desktop from "./desktop";
 import Mobile from "./mobile";
-import Messenger from "../../components/messenger";
+import Messengers from "../../components/messengers";
 
 const Header = () => {
     /** Use notice helper. */
@@ -29,7 +29,7 @@ const Header = () => {
     /** Return something. */
     return (
         <Fragment>
-            {notified && <Messenger onShow={setNotified} />}
+            {notified && <Messengers onShow={setNotified} />}
             {isMobile ? (
                 <Mobile menu={menu} onMenu={menuHandler} />
             ) : (

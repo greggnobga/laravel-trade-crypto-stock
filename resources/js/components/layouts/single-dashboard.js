@@ -12,9 +12,9 @@ import helpProtect from "../../helpers/help-protect";
 
 /** Component. */
 import Loader from "../icons/loader";
-import Header from "../headers";
-import Summary from "../ui/summary";
-import Footer from "../footer";
+import Headers from "../headers";
+import Summary from "../interfaces/summary";
+import Footers from "../footers";
 
 const Single = () => {
     /** Use protect. */
@@ -39,7 +39,7 @@ const Single = () => {
     /** Return something. */
     return (
         <section id="single" className="fade-in-bottom">
-            <Header />
+            <Headers />
             <section id="wrapper">
                 {check ? (
                     <Loader />
@@ -52,7 +52,7 @@ const Single = () => {
                     ""
                 )}
             </section>
-            <Footer />
+            <Footers />
         </section>
     );
 };

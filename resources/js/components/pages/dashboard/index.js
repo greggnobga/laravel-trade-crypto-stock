@@ -1,6 +1,6 @@
 /** Component. */
 import Icon from '../../icons';
-import Card from '../../ui/card';
+import Card from '../../interfaces/card';
 
 const Dashboad = () => {
     const cardItems = [

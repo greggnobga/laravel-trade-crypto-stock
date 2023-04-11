@@ -2,18 +2,18 @@
 import { Outlet } from 'react-router-dom';
 
 /** Component. */
-import Header from '../headers'
-import Footer from '../footer'
+import Headers from '../headers'
+import Footers from '../footers'
 
 const Single = () => {
     /** Return something. */
     return (
         <section id="single" className="fade-in-bottom">
-            <Header />
+            <Headers />
             <div id="wrapper">
                 <Outlet />
             </div>
-            <Footer />
+            <Footers />
         </section>
     );
 }

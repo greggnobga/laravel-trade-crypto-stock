@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class WatchlistController extends Controller
-{
+class WatchlistController extends Controller {
       /**
    * Display a listing of the resource.
    */
@@ -35,7 +34,7 @@ class WatchlistController extends Controller
                     foreach($sectors as $key => $value) {
                         if ($value->sector == 'miningandoil') {
                             /** fetch stocks. */
-                            $sector['miningandoil'] = DB::table('stock_watchlists')
+                            $sector['miningandoils'] = DB::table('stock_watchlists')
                                 ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
@@ -45,9 +44,9 @@ class WatchlistController extends Controller
                                 ->get()
                                 ->toArray();
                             /** resequence array keys. */
-                            $sector['miningandoil'] = array_values($sector['miningandoil']);
+                            $sector['miningandoils'] = array_values($sector['miningandoils']);
                             /** call helper fucntion. */
-                            $response['miningandoil'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['miningandoil']]);
+                            $response['miningandoils'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['miningandoils']]);
                         }
                         if ($value->sector == 'holdingfirms') {
                             /** fetch stocks. */
@@ -83,7 +82,7 @@ class WatchlistController extends Controller
                          }
                         if ($value->sector == 'industrial') {
                             /** fetch stocks. */
-                            $sector['industrial'] = DB::table('stock_watchlists')
+                            $sector['industrials'] = DB::table('stock_watchlists')
                                 ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
@@ -93,13 +92,13 @@ class WatchlistController extends Controller
                                 ->get()
                                 ->toArray();
                             /** resequence array keys. */
-                            $sector['industrial'] = array_values($sector['industrial']);
+                            $sector['industrials'] = array_values($sector['industrials']);
                             /** call helper fucntion. */
-                            $response['industrial'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['industrial']]);
+                            $response['industrials'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['industrials']]);
                        }
                         if ($value->sector == 'property') {
                             /** fetch stocks. */
-                            $sector['property'] = DB::table('stock_watchlists')
+                            $sector['properties'] = DB::table('stock_watchlists')
                                 ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
@@ -109,9 +108,9 @@ class WatchlistController extends Controller
                                 ->get()
                                 ->toArray();
                             /** resequence array keys. */
-                            $sector['property'] = array_values($sector['property']);
+                            $sector['properties'] = array_values($sector['properties']);
                             /** call helper fucntion. */
-                            $response['property'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['property']]);
+                            $response['properties'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['properties']]);
                        }
                         if ($value->sector == 'financials') {
                             /** fetch stocks. */
@@ -131,7 +130,7 @@ class WatchlistController extends Controller
                        }
                         if ($value->sector == 'smallmediumemergingboard') {
                             /** fetch stocks. */
-                            $sector['smallmediumemergingboard'] = DB::table('stock_watchlists')
+                            $sector['smallmediumemergingboards'] = DB::table('stock_watchlists')
                                 ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
@@ -141,12 +140,12 @@ class WatchlistController extends Controller
                                 ->get()
                                 ->toArray();
                             /** resequence array keys. */
-                            $sector['smallmediumemergingboard'] = array_values($sector['smallmediumemergingboard']);
+                            $sector['smallmediumemergingboards'] = array_values($sector['smallmediumemergingboards']);
                             /** call helper fucntion. */
-                            $response['smallmediumemergingboard'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['smallmediumemergingboard']]);
+                            $response['smallmediumemergingboards'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['smallmediumemergingboards']]);
                         }
                         if ($value->sector == 'etf') {
-                            $sector['funds'] = DB::table('stock_watchlists')
+                            $sector['exchangetradedfunds'] = DB::table('stock_watchlists')
                                 ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                                 ->where('userid', '=', Auth::id())
                                 ->where('sector', '=', $value->sector)
@@ -156,9 +155,9 @@ class WatchlistController extends Controller
                                 ->get()
                                 ->toArray();
                             /** resequence array keys. */
-                            $sector['funds'] = array_values($sector['funds']);
+                            $sector['exchangetradedfunds'] = array_values($sector['exchangetradedfunds']);
                              /** call helper fucntion. */
-                            $response['funds'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['funds']]);
+                            $response['exchangetradedfunds'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['exchangetradedfunds']]);
                         }
                     }
                     /** return something. */
@@ -193,40 +192,41 @@ class WatchlistController extends Controller
     private function helpers($data) {
         /** repository. */
         $return = [];
+
         /** check purpose and source. */
         if ($data['purpose'] === 'iterate' && $data['source'] === 'watchlists') {
             foreach ($data['stocks'] as $key => $value) {
-                $return[$key]['id'] = $value->id;
-                $return[$key]['volume'] = number_format($value->volume, 2,'.', ',');
-                $return[$key]['symbol'] = $value->symbol;
-                $return[$key]['sector'] = $value->sector;
-                $return[$key]['edge'] = $value->edge;
-                $return[$key]['lasttradedprice'] = $value->lasttradedprice;
+               $return[$key]['id'] = $value->id;
+               $return[$key]['volume'] = number_format($value->volume, 2,'.', ',');
+               $return[$key]['symbol'] = $value->symbol;
+               $return[$key]['sector'] = $value->sector;
+               $return[$key]['edge'] = $value->edge;
+               $return[$key]['lasttradedprice'] = $value->lasttradedprice;
                 /** evalaute value is greater than zero. */
                 if ($value->totalliabilities > 0 && $value->stockholdersequity > 0) {
-                     $return[$key]['debtequityratio'] = bcdiv($value->totalliabilities, $value->stockholdersequity, 2);
+                    $return[$key]['debtequityratio'] = bcdiv($value->totalliabilities, $value->stockholdersequity, 2);
                 }
                 if ($value->lasttradedprice > 0 && $value->earningspershare > 0) {
-                    $return[$key]['priceearningratio'] = bcdiv($value->lasttradedprice, $value->earningspershare, 2);
+                   $return[$key]['priceearningratio'] = bcdiv($value->lasttradedprice, $value->earningspershare, 2);
                 }
                 if ($value->netincomebeforetax > 0 && $value->grossrevenue > 0) {
-                    $return[$key]['netprofitmargin'] = bcmul(bcdiv($value->netincomebeforetax, $value->grossrevenue, 2), 100, 2) . '%';
+                   $return[$key]['netprofitmargin'] = bcmul(bcdiv($value->netincomebeforetax, $value->grossrevenue, 2), 100, 2) . '%';
                 }
                 if ($value->grossrevenue > 0 && $value->stockholdersequity > 0) {
-                    $return[$key]['returnonequity'] = bcdiv($value->grossrevenue, bcdiv($value->stockholdersequity, 2, 2), 2); 
+                   $return[$key]['returnonequity'] = bcdiv($value->grossrevenue, bcdiv($value->stockholdersequity, 2, 2), 2); 
                 }
                 /** evalaute value is equal to zero. */
                 if ($value->totalliabilities <= 0 || $value->stockholdersequity <= 0) {
-                    $return[$key]['debtequityratio'] = 0.00;
+                   $return[$key]['debtequityratio'] = 0.00;
                 }
                 if ($value->lasttradedprice <= 0 || $value->earningspershare <= 0) {
-                    $return[$key]['priceearningratio'] = 0.00;
+                   $return[$key]['priceearningratio'] = 0.00;
                 }
                 if ($value->netincomebeforetax <= 0 || $value->grossrevenue <= 0) {
-                    $return[$key]['netprofitmargin'] = 0.00;
+                   $return[$key]['netprofitmargin'] = 0.00;
                 }
                 if ($value->grossrevenue <= 0 || $value->stockholdersequity <= 0) {
-                    $return[$key]['returnonequity'] = 0.00;
+                   $return[$key]['returnonequity'] = 0.00;
                 } 
             }
             /** return something. */

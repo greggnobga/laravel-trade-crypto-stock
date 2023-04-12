@@ -1,5 +1,4 @@
-@import "dashboard.scss";
-@import "index.scss";
+@import "wrapper.scss";
 
 @import "app/crypto-explorer.scss";
 @import "app/stock-explorer.scss";
@@ -9,6 +8,11 @@
 @import "crypto/moons.scss";
 @import "crypto/nfts.scss";
 @import "crypto/portfolios.scss";
+
+@import "dashboard/charts.scss";
+@import "dashboard/dashboard.scss";
+@import "dashboard/decks.scss";
+@import "dashboard/ranks.scss";
 
 @import "home/hero.scss";
 @import "home/reason.scss";

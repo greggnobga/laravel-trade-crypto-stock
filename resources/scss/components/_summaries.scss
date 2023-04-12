@@ -3,10 +3,8 @@
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: auto;
     place-items: center;
-    border-radius: 3px;
-    background: $box-background;
-    border: $box-border;
-    box-shadow: $box-shadow;
+
+    @include content-background;
 
     .items {
         padding: 1rem;

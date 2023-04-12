@@ -39,11 +39,8 @@
         .content {
             grid-column: 1;
             grid-row: 2;
-            background: $box-background;
-            border: $box-border;
-            box-shadow: $box-shadow;
-            border-radius: 5px;
-            padding: 0.25rem 0.5rem;
+
+            @include content-background;
 
             .items {
                 display: grid;
@@ -63,16 +60,3 @@
         }
     }
 }
-
-// .stock-note>.items {
-//     display: grid;
-//     grid-template-rows: 1fr;
-//     grid-template-columns: 5rem 1fr 3fr 1fr 1fr;
-//     border-bottom: 1px solid rgba($cl-gray, .15);
-//     padding: 1rem;
-//     vertical-align: top;
-
-//     &:last-child {
-//         border-bottom: none;
-//     }
-// }

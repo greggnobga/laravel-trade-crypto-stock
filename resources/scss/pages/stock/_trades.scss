@@ -1,7 +1,6 @@
 #stock-trade {
     min-height: 100vh;
     margin-top: 1rem;
-    color: rgba($cl-gray, 1);
 
     .trade {
         display: grid;
@@ -20,15 +19,7 @@
                 row-gap: 0.5rem;
 
                 .brand {
-                    .sprite > .icon {
-                        fill: $cl-gray;
-                        margin-top: -5px;
-                    }
-
-                    .name {
-                        display: inline-block;
-                        margin-top: 7px;
-                    }
+                    @include icon-name-desktop($cl-gray);
                 }
 
                 .record {
@@ -49,50 +40,9 @@
         .desktop-content {
             grid-column: 1;
             grid-row: 2;
-            background: $box-background;
-            border: $box-border;
-            box-shadow: $box-shadow;
-            border-radius: 3px;
-            margin-top: 0.25rem;
 
-            .search {
-                display: grid;
-                grid-template-columns: 1fr 20rem;
-                grid-template-rows: auto;
-                column-gap: 1rem;
-                border-bottom: 1px solid rgba($cl-gray, 0.15);
+            @include content-background;
 
-                .form {
-                    background: none;
-                    color: rgba($cl-green, 0.75);
-                    padding: 0.5rem 1rem;
-
-                    .group > label > .sprite > .icon {
-                        fill: $cl-green;
-                    }
-
-                    .group > .valid {
-                        padding: 0.5rem 1rem;
-                        margin-top: 0.25rem;
-                    }
-                }
-
-                .button {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    grid-template-rows: auto;
-                    column-gap: 0.25rem;
-                    place-items: center;
-                    width: 100%;
-
-                    .btn {
-                        width: 90%;
-                        padding: 0.5rem 1rem;
-                        margin-top: 2rem;
-                        display: inline-block;
-                    }
-                }
-            }
             .items {
                 display: grid;
                 grid-template-rows: 1fr;
@@ -116,10 +66,7 @@
                         font-size: 0.75rem;
                         padding: 0.25rem;
 
-                        .sprite > .icon {
-                            width: 18px;
-                            height: 18px;
-                        }
+                        @include icon-size-desktop;
                     }
                 }
 
@@ -146,27 +93,14 @@
             grid-row: 2;
             margin-top: 0.25rem;
 
-            .search {
-                display: grid;
-                grid-template-columns: 1fr;
-                grid-template-rows: repeat(2, 1fr);
-                row-gap: 0.5rem;
-                padding: 0.25rem;
-            }
-
             .items {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: auto;
                 row-gap: 0.25rem;
                 column-gap: 0.25rem;
-                background: rgba($cl-gray-100, 0.25);
-                background: $box-background;
-                border: $box-border;
-                box-shadow: $box-shadow;
-                border-radius: 3px;
-                margin-top: 0.5rem;
-                padding: 0.25rem;
+
+                @include content-background;
 
                 .item {
                     padding: 0.25rem;
@@ -192,10 +126,7 @@
                         font-size: 0.75rem;
                         padding: 0.25rem;
 
-                        .sprite > .icon {
-                            height: 16px;
-                            width: 16px;
-                        }
+                        @include icon-size-mobile;
                     }
                 }
 

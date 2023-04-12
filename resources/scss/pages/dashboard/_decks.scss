@@ -1,0 +1,159 @@
+.deck {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 2rem 1fr;
+    margin-top: 0.5rem;
+    color: rgba($cl-gray, 0.75);
+
+    .board {
+        grid-column: 1 / 5;
+        grid-row: 1 / 2;
+    }
+
+    .cards {
+        grid-column: 1 / 5;
+        grid-row: 2 / 3;
+
+        .card {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1fr;
+            column-gap: 0.5rem;
+            row-gap: 0.5rem;
+
+            .items {
+                @include content-background;
+
+                .title {
+                    margin-bottom: 0;
+                    text-transform: uppercase;
+                    padding: 0.25rem;
+                }
+
+                .value {
+                    font-size: $fz-medium;
+                    text-align: center;
+                    color: rgba($cl-gray, 75);
+                }
+            }
+
+            .green {
+                border: 1px solid rgba($cl-green, 0.25);
+
+                .title {
+                    color: $cl-green;
+
+                    .sprite > .icon {
+                        fill: $cl-green;
+                    }
+                }
+
+                .link {
+                    background: rgba($cl-green, 0.15);
+                    text-align: right;
+
+                    a {
+                        text-transform: uppercase;
+                        padding-right: 0.5rem;
+                        font-size: 0.75rem;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .red {
+                border: 1px solid rgba($cl-red, 0.25);
+
+                .title {
+                    color: $cl-red;
+
+                    .sprite > .icon {
+                        fill: $cl-red;
+                    }
+                }
+
+                .link {
+                    background: rgba($cl-red, 0.15);
+                    text-align: right;
+
+                    a {
+                        text-transform: uppercase;
+                        padding-right: 0.5rem;
+                        font-size: 0.75rem;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .blue {
+                border: 1px solid rgba($cl-blue, 0.25);
+
+                .title {
+                    color: $cl-blue;
+
+                    .sprite > .icon {
+                        fill: $cl-blue;
+                    }
+                }
+
+                .link {
+                    background: rgba($cl-blue, 0.15);
+                    text-align: right;
+
+                    a {
+                        text-transform: uppercase;
+                        padding-right: 0.5rem;
+                        font-size: 0.75rem;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .gold {
+                border: 1px solid rgba($cl-gold, 0.25);
+
+                .title {
+                    color: $cl-gold;
+
+                    .sprite > .icon {
+                        fill: $cl-gold;
+                    }
+                }
+
+                .link {
+                    background: rgba($cl-gold, 0.15);
+                    text-align: right;
+
+                    a {
+                        text-transform: uppercase;
+                        padding-right: 0.5rem;
+                        font-size: 0.75rem;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * ----------------------------------------
+ *  Media Query Phones
+ * ----------------------------------------
+ */
+@media only screen and (min-device-width: 280px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 2) {
+    .deck > .cards > .card {
+        grid-template-columns: 1fr;
+    }
+}
+
+/**
+ * ----------------------------------------
+ *  Media Query Tablets
+ * ----------------------------------------
+ */
+@media (min-device-width: 768px) and (max-device-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) {
+    .deck > .cards > .card {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

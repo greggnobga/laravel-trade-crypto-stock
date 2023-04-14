@@ -279,7 +279,6 @@ const Trade = () => {
                             <span
                                 onClick={startHandler}
                                 className="btn btn-green-outline"
-                                type="button"
                                 disabled={disabled}
                             >
                                 <Icon id="start" /> Start
@@ -287,7 +286,6 @@ const Trade = () => {
                             <span
                                 onClick={reportHandler}
                                 className="btn btn-red-outline"
-                                type="button"
                                 disabled={disabled}
                             >
                                 <Icon id="report" /> Report
@@ -295,7 +293,6 @@ const Trade = () => {
                             <span
                                 onClick={priceHandler}
                                 className="btn btn-blue-outline"
-                                type="button"
                                 disabled={disabled}
                             >
                                 <Icon id="price" /> Price
@@ -303,7 +300,6 @@ const Trade = () => {
                             <span
                                 onClick={sectorHandler}
                                 className="btn btn-purple-outline"
-                                type="button"
                                 disabled={disabled}
                             >
                                 <Icon id="sector" /> Sector
@@ -311,7 +307,6 @@ const Trade = () => {
                             <span
                                 onClick={displaySearch}
                                 className="btn btn-gold-outline"
-                                type="button"
                             >
                                 <Icon id="search" /> Search
                             </span>

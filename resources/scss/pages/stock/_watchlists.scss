@@ -44,23 +44,7 @@
                 display: grid;
                 grid-template-rows: 1fr;
                 grid-template-columns: auto;
-                border-bottom: 1px solid rgba($cl-gray-300, 0.5);
-                padding: 0.25rem 0.5rem;
-                font-weight: $fw-lighter;
-                color: rgba($cl-dark, 0.75);
-                font-size: 0.85rem;
-
-                &:nth-child(odd) {
-                    background: rgba($cl-gray-100, 0.25);
-                }
-
-                &:nth-child(even) {
-                    background: rgba($cl-gray-100, 0.1);
-                }
-
-                &:last-child {
-                    border-bottom: none;
-                }
+                @include content-items;
             }
         }
     }
@@ -74,52 +58,30 @@
         .board {
             grid-column: 1;
             grid-row: 1;
-
             @include icon-name-desktop($cl-purple);
         }
 
         .content {
             grid-column: 1;
             grid-row: 2;
-
             @include content-background;
 
             .items {
                 display: grid;
                 grid-template-rows: 1fr;
                 grid-template-columns: repeat(8, 1fr);
-                border-bottom: 1px solid rgba($cl-gray-300, 0.5);
-                padding: 0.25rem 0.5rem;
-                font-size: 0.85rem;
-                font-weight: $fw-lighter;
-                color: rgba($cl-dark, 0.75);
+                @include content-items;
 
                 .value {
+                    vertical-align: center;
+
                     .btn {
                         display: inline-block;
                         font-size: 0.75rem;
                         padding: 0.25rem;
                         width: 45%;
-
                         @include icon-size-desktop;
                     }
-                }
-
-                &:nth-child(odd) {
-                    background: rgba($cl-gray-100, 0.25);
-                }
-
-                &:nth-child(even) {
-                    background: rgba($cl-gray-100, 0.1);
-                }
-
-                &:first-child {
-                    font-weight: $fw-normal;
-                    color: rgba($cl-green, 0.75);
-                }
-
-                &:last-child {
-                    border-bottom: none;
                 }
             }
         }
@@ -134,7 +96,6 @@
         .brand {
             grid-column: 1;
             grid-row: 1;
-
             @include icon-name-mobile($cl-purple);
         }
         .content {
@@ -145,7 +106,6 @@
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: auto;
-
                 @include content-background;
 
                 .item {
@@ -167,7 +127,6 @@
                     .btn {
                         font-size: 0.75rem;
                         padding: 0.25rem;
-
                         @include icon-size-mobile;
                     }
 

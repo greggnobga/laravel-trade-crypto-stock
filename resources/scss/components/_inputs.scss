@@ -8,8 +8,8 @@ select {
     border-radius: 3px;
     padding: 1rem;
     width: 100%;
-    border: 1px solid rgba($cl-dark, 0.5);
-    color: $cl-gray;
+    border: 1px solid rgba($cl-gray-400, 0.5);
+    color: rgba($cl-gray, 0.75);
 }
 
 input:focus,
@@ -19,27 +19,5 @@ textarea:active,
 select:focus,
 select:active {
     outline: none;
-    color: $cl-dark;
-}
-
-input[type="text"]:valid,
-input[type="email"]:valid,
-input[type="password"]:valid,
-input[type="number"]:valid,
-input[type="url"]:valid,
-textarea:valid,
-select:valid {
-    border: 1px solid rgba($cl-green, 0.5);
-    color: rgba($cl-green, 0.75);
-}
-
-input[type="text"]:invalid,
-input[type="email"]:invalid,
-input[type="password"]:invalid,
-input[type="number"]:invalid,
-input[type="url"]:invalid,
-textarea:invalid,
-select:invalid {
-    border: 1px solid rgba($cl-red, 0.5);
-    color: rgba($cl-red, 0.75);
+    color: rgba($cl-dark, 0.75);
 }

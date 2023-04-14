@@ -1,8 +1,8 @@
 /** React. */
-import { useState, useContext } from 'react';
+import { useState, useContext } from "react";
 
 /** Store. */
-import AuthContext from '../context/auth-context';
+import AuthContext from "../context/auth-context";
 
 const useHttp = (reqConfig, applyData) => {
     /** declare local state. */
@@ -20,21 +20,23 @@ const useHttp = (reqConfig, applyData) => {
         try {
             const response = await axios({
                 url: reqConfig.url,
-                method: reqConfig.method ? reqConfig.method : 'GET',
+                method: reqConfig.method ? reqConfig.method : "GET",
                 headers: reqConfig.headers ? reqConfig.headers : {},
                 params: reqConfig.params ? reqConfig.params : null,
-            })
+            });
             /** wait til response data arrived. */
             let data = await response.data;
             /** send to call back function. */
             applyData(data);
-        }
-        /** catch thrown error. */
-        catch (error) {
+        } catch (error) {
+            /** debug thrown error. */
+            console.log(error);
             /** set valid to false. */
             authCtx.validifier(false);
             /** set error message. */
-            authCtx.messenger(error.response.data.message);
+            if (error.hasOwnProperty("response")) {
+                authCtx.messenger(error.response.data.message);
+            }
             /** set error true. */
             setError(true);
         }
@@ -47,7 +49,7 @@ const useHttp = (reqConfig, applyData) => {
         isLoading,
         sendRequest,
         hasError,
-    }
-}
+    };
+};
 
 export default useHttp;

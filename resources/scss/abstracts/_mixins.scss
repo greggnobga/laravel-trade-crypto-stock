@@ -7,7 +7,60 @@
     margin-top: 0.5rem;
     padding: 0.25rem;
 }
+/** for items spacing and border bottom. */
+@mixin content-items {
+    border-bottom: 1px solid rgba($cl-gray-300, 0.75);
+    font-weight: $fw-lighter;
+    color: rgba($cl-dark, 0.75);
+    font-size: 0.85rem;
+    padding: 0.25rem;
 
+    &:nth-child(odd) {
+        background: rgba($cl-gray-100, 0.25);
+    }
+
+    &:nth-child(even) {
+        background: rgba($cl-gray-100, 0.1);
+    }
+
+    &:first-child {
+        font-weight: $fw-normal;
+        color: rgba($cl-green, 0.75);
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+/** for items spacing and border bottom. */
+@mixin input-label {
+    .label {
+        position: absolute;
+        top: 2px;
+        left: 5px;
+        transition: 0.5s ease all;
+    }
+
+    .input {
+        appearance: none;
+        padding: 0.75rem;
+        height: 100%;
+
+        &:active,
+        &:focus {
+            border: 1px solid rgba($cl-purple, 0.75);
+        }
+        &:active ~ .label,
+        &:focus ~ .label {
+            font-size: 0.5rem;
+            color: rgba($cl-purple, 0.75);
+        }
+
+        &::placeholder {
+            color: rgba($cl-gray-300, 0.75);
+        }
+    }
+}
 /** for icon name desktop screen. */
 @mixin icon-name-desktop($fill) {
     .sprite > .icon {
@@ -22,7 +75,6 @@
         color: rgba($fill, 0.75);
     }
 }
-
 /** for icon name mobile screen. */
 @mixin icon-name-mobile($fill) {
     .sprite > .icon {
@@ -39,7 +91,6 @@
         color: rgba($fill, 0.75);
     }
 }
-
 /** for icon size desktop screen. */
 @mixin icon-size-desktop {
     .sprite > .icon {
@@ -47,7 +98,6 @@
         width: 18px;
     }
 }
-
 /** for icon size mobile screen. */
 @mixin icon-size-mobile {
     .sprite > .icon {

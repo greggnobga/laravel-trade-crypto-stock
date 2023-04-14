@@ -35,6 +35,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/stock-watchlist-store', [App\Http\Controllers\Dashboard\Stock\WatchlistController::class, 'init']);
     Route::get('/stock-watchlist-retrieve', [App\Http\Controllers\Dashboard\Stock\WatchlistController::class, 'init']);
 
+    Route::post('/stock-portfolio-store', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'init']);
+    Route::get('/stock-portfolio-retrieve', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'init']);
+
     // Route::post('/crypto-portfolio-store', [App\Http\Controllers\Dashboard\Crypto\PortfolioController::class, 'init']);
     // Route::get('/crypto-portfolio-retrieve', [App\Http\Controllers\Dashboard\Crypto\PortfolioController::class, 'init']);
 
@@ -49,9 +52,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Route::post('/crypto-overview-store', [App\Http\Controllers\Dashboard\Crypto\OverviewController::class, 'init']);
     // Route::get('/crypto-overview-retrieve', [App\Http\Controllers\Dashboard\Crypto\OverviewController::class, 'init']);
-
-    // Route::post('/stock-portfolio-store', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'init']);
-    // Route::get('/stock-portfolio-retrieve', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'init']);
 
     // Route::post('/stock-note-store', [App\Http\Controllers\Dashboard\Stock\NoteController::class, 'init']);
     // Route::get('/stock-note-retrieve', [App\Http\Controllers\Dashboard\Stock\NoteController::class, 'init']);

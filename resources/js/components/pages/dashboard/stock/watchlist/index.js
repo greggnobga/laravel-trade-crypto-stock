@@ -234,7 +234,6 @@ const Watchlist = () => {
                             <span
                                 onClick={buildHandler}
                                 className="btn btn-blue-outline"
-                                type="button"
                             >
                                 <Icon id="build" /> Build
                             </span>

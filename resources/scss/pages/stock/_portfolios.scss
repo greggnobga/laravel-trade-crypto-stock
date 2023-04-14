@@ -1,7 +1,6 @@
 #stock-portfolio {
     min-height: 100vh;
     margin-top: 0.5rem;
-    color: rgba($cl-gray, 1);
 
     .asset {
         display: grid;
@@ -11,28 +10,19 @@
         .board {
             grid-column: 1;
             grid-row: 1;
+            @include icon-name-desktop($cl-purple);
         }
 
         .content {
             grid-column: 1;
             grid-row: 2;
-
             @include content-background;
 
             .items {
                 display: grid;
-                grid-template-rows: 1fr;
-                grid-template-columns: repeat(5, 1fr);
-                border-bottom: 1px solid rgba($cl-gray, 0.15);
-                padding: 0.25rem 0.5rem;
-
-                &:last-child {
-                    border-bottom: none;
-                }
-            }
-
-            .color {
-                color: rgba($cl-teal, 0.75);
+                grid-template-rows: auto;
+                grid-template-columns: repeat(4, 1fr);
+                @include content-items;
             }
         }
     }
@@ -52,18 +42,19 @@
                 grid-template-columns: 1fr 1fr;
                 grid-template-rows: auto;
 
+                .brand {
+                    @include icon-name-desktop($cl-purple);
+                }
+
                 .record {
                     text-align: end;
 
-                    .add {
-                        color: $cl-light;
-                        background: rgba($cl-gold, 0.75);
-                        border: rgba($cl-gray, 0.75);
-                        border-radius: 5px;
+                    .btn {
+                        display: inline-block;
+                        width: 7.5rem;
 
-                        &:hover {
-                            background: rgba($cl-gold, 1);
-                            border: rgba($cl-gray, 1);
+                        .sprite > .icon {
+                            fill: rgba($cl-gold, 0.75);
                         }
                     }
                 }
@@ -73,23 +64,27 @@
         .content {
             grid-column: 1;
             grid-row: 2;
-
             @include content-background;
 
             .items {
                 display: grid;
-                grid-template-rows: 1fr;
-                grid-template-columns: 5rem repeat(8, 1fr);
-                border-bottom: 1px solid rgba($cl-gray, 0.15);
-                padding: 0.25rem 0.5rem;
+                grid-template-rows: auto;
+                grid-template-columns: repeat(7, 1fr);
+                column-gap: 0.5rem;
+                @include content-items;
 
-                &:last-child {
-                    border-bottom: none;
+                .item {
+                    text-align: center;
+                    position: relative;
+                    @include input-label;
+
+                    .btn {
+                        display: inline-block;
+                        width: 40%;
+                        text-align: center;
+                        padding: 0.25rem;
+                    }
                 }
-            }
-
-            .color {
-                color: rgba($cl-teal, 0.75);
             }
         }
     }

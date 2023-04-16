@@ -16,26 +16,26 @@ class PortfolioController extends Controller {
         if ($request->method() === 'POST') {
             /** forward insert command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'insert') {
-                if ($request->input('order') === 'buy') {
+                if ($request->input('input.order') === 'buy') {
                     return $this->store(['table' => 'portfolio', 'input' => $request->input('input')]);
                 } else {
-                    return ['status' =>  false, 'sql' => 'insert', 'message' => 'No sell order allowed, just BTFD and HODL.', 'coin' => ''];
+                    return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
                 }
             }
             /** forward update command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'update') {
-                if ($request->input('order') === 'buy') {
+                if ($request->input('input.order') === 'buy') {
                     return $this->update(['table' => 'portfolio', 'input' => $request->input('input')]);
                 } else {
-                    return ['status' =>  false, 'sql' => 'update', 'message' => 'No sell order allowed, just BTFD and HODL.', 'coin' => ''];
+                    return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
                 }
             }
             /** forward destroy command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'destroy') {
-                if ($request->input('order') === 'buy') {
+                if ($request->input('input.order') === 'buy') {
                     return $this->destroy(['table' => 'portfolio', 'input' => $request->input('input')]);
                 } else {
-                    return ['status' =>  false, 'sql' => 'update', 'message' => 'No sell order allowed, just BTFD and HODL.', 'coin' => ''];
+                    return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
                 }
             }
         }
@@ -112,6 +112,13 @@ class PortfolioController extends Controller {
                     $hold['total'][$key]['fee'] = number_format($buy->where('symbol', $value->symbol)->sum('fee') - $sell->where('symbol', $value->symbol)->sum('fee'), '2', '.', ',');
                     $hold['total'][$key]['capital'] = number_format($buy->where('symbol', $value->symbol)->sum('capital') - $sell->where('symbol', $value->symbol)->sum('capital'), '2', '.', ',');
                     $hold['total'][$key]['average'] = number_format($buy->where('symbol', $value->symbol)->sum('capital') / $buy->where('symbol', $value->symbol)->sum('share'), '2', '.', ',');
+
+                    /** add last trded price. */
+                    $price = DB::table('stock_trades')->where('symbol', $value->symbol)->select('price')->first();
+                    $hold['total'][$key]['price'] = number_format($price->price, '2', '.', ',');
+
+                    /** add prospective direction. */
+                    $hold['total'][$key]['prospect'] = number_format($hold['total'][$key]['price'] - $hold['total'][$key]['average'], '2', '.', ',');
                 }
 
                 /** resequence array keys*/
@@ -152,7 +159,7 @@ class PortfolioController extends Controller {
                     ->where('userid', '=', Auth::id())
                     ->get();
                 $result = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stock]);
-                return ['status' =>  true, 'sql' => 'select', 'message' => $stock[0]->name . ' has been added to the database.', 'stock' => $result];
+                return response(['message' => $stock[0]->name . ' has been added to the database.', 'stock' => $result], 200);
             }
         }
     }
@@ -183,9 +190,9 @@ class PortfolioController extends Controller {
                     ->where('userid', '=', Auth::id())
                     ->get();
                 $result = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stocks]);
-                return ['status' =>  true, 'sql' => 'update', 'message' => $data['input']['name'] . ' successfully updated.', 'stock' => $result];
+                return response(['message' => $data['input']['name'] . ' successfully updated.', 'stock' => $result], 200);
             } else {
-                return ['status' =>  false, 'sql' => 'update', 'message' => $data['input']['name'] . ' no changes made.', 'stock' => ''];
+                return response(['message' => $data['input']['name'] . ' no changes made.'], 200);
             }
         }
     }
@@ -200,9 +207,9 @@ class PortfolioController extends Controller {
                 ->where('userid', '=', Auth::id())
                 ->delete();
             if ($delete) {
-                return ['status' =>  true, 'sql' => 'destroy', 'message' => $data['input']['name'] . ' has been deleted.', 'stock' => $data['input']['id']];
+                return response(['message' => $data['input']['name'] . ' has been deleted.', 'stock' => $data['input']['id']]);
             } else {
-                return ['status' =>  false, 'sql' => 'destroy', 'message' => 'No changes made.', 'stock' => ''];
+                return response(['message' => 'No changes made.']);
             }
         }
     }
@@ -220,7 +227,6 @@ class PortfolioController extends Controller {
                         $price = number_format($v, '2', '.', ',');
                         $result->forget('capital');
                         $result->put('capital', $price);
-                        $result->put('action', 'Update Destroy');
                     }
                     if ($k === 'share') {
                         $share = number_format($v, '2', '.', ',');

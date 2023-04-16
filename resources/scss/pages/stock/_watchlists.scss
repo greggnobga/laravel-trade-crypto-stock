@@ -25,11 +25,9 @@
 
                     .btn {
                         display: inline-block;
-                        border-radius: 3px;
-                        margin-right: 0.25rem;
                         padding: 0.25rem;
                         width: 7.5rem;
-                        text-align: center;
+                        @include icon-size-desktop;
                     }
                 }
             }

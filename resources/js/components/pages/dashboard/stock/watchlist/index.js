@@ -106,10 +106,10 @@ const Watchlist = () => {
     const buildHandler = () => {
         /** Set caller. */
         setCaller("watches");
-        /** Set disabled.*/
-        setDisabled(true);
         /** Send request. */
         retrieveRequest();
+        /** Set disabled.*/
+        setDisabled(true);
     };
 
     /** Use http hook reponse callback. */
@@ -231,12 +231,14 @@ const Watchlist = () => {
                             <span className="name">Cheat Code</span>
                         </div>
                         <div className="build">
-                            <span
+                            <button
                                 onClick={buildHandler}
                                 className="btn btn-blue-outline"
+                                type="button"
+                                disabled={disabled}
                             >
                                 <Icon id="build" /> Build
-                            </span>
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -31,6 +31,14 @@
     &:last-child {
         border-bottom: none;
     }
+
+    .green {
+        color: rgba($cl-green, 0.75);
+    }
+
+    .red {
+        color: rgba($cl-red, 0.75);
+    }
 }
 /** for items spacing and border bottom. */
 @mixin input-label {
@@ -51,14 +59,27 @@
             border: 1px solid rgba($cl-purple, 0.75);
         }
         &:active ~ .label,
-        &:focus ~ .label {
+        &:focus ~ .label,
+        &:valid ~ .label {
             font-size: 0.5rem;
             color: rgba($cl-purple, 0.75);
         }
+    }
 
-        &::placeholder {
-            color: rgba($cl-gray-300, 0.75);
-        }
+    .valid {
+        border: 1px solid rgba($cl-green, 0.75);
+    }
+
+    .invalid {
+        border: 1px solid rgba($cl-red, 0.75);
+    }
+
+    .error {
+        position: absolute;
+        top: 2px;
+        right: 5px;
+        font-size: 0.5rem;
+        color: rgba($cl-red, 0.75);
     }
 }
 /** for icon name desktop screen. */

@@ -22,7 +22,7 @@ const Trade = () => {
     const startHandler = () => {
         /** Request data from api. */
         apiRequest();
-        /** Set start button to true. */
+        /** Set disabled state to true. */
         setDisabled(true);
     };
 
@@ -107,7 +107,7 @@ const Trade = () => {
         setCaller("reports");
         /** Send request. */
         retrieveRequest();
-        /** Set start button to true. */
+        /** Set disabled state to true. */
         setDisabled(true);
     };
 
@@ -190,7 +190,7 @@ const Trade = () => {
         setCaller("prices");
         /** Send request. */
         retrieveRequest();
-        /** Set start button to true. */
+        /** Set disabled state to true. */
         setDisabled(true);
     };
 
@@ -200,7 +200,7 @@ const Trade = () => {
         setCaller("sectors");
         /** Send request. */
         retrieveRequest();
-        /** Set start button to true. */
+        /** Set disabled state to true. */
         setDisabled(true);
     };
 
@@ -276,40 +276,46 @@ const Trade = () => {
                             <span className="name">Trade</span>
                         </div>
                         <div className="record">
-                            <span
+                            <button
                                 onClick={startHandler}
                                 className="btn btn-green-outline"
+                                type="button"
                                 disabled={disabled}
                             >
                                 <Icon id="start" /> Start
-                            </span>
-                            <span
+                            </button>
+                            <button
                                 onClick={reportHandler}
                                 className="btn btn-red-outline"
+                                type="button"
                                 disabled={disabled}
                             >
                                 <Icon id="report" /> Report
-                            </span>
-                            <span
+                            </button>
+                            <button
                                 onClick={priceHandler}
                                 className="btn btn-blue-outline"
+                                type="button"
                                 disabled={disabled}
                             >
                                 <Icon id="price" /> Price
-                            </span>
-                            <span
+                            </button>
+                            <button
                                 onClick={sectorHandler}
                                 className="btn btn-purple-outline"
+                                type="button"
                                 disabled={disabled}
                             >
                                 <Icon id="sector" /> Sector
-                            </span>
-                            <span
+                            </button>
+                            <button
                                 onClick={displaySearch}
                                 className="btn btn-gold-outline"
+                                type="button"
+                                disabled={disabled}
                             >
                                 <Icon id="search" /> Search
-                            </span>
+                            </button>
                         </div>
                     </div>
                 </div>

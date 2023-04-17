@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const useValidate = (validateValue) => {
     /** declare local state. */
-    const [enteredValue, setEnteredValue] = useState('');
+    const [enteredValue, setEnteredValue] = useState("");
     const [isTouched, setTouched] = useState(false);
 
     /** received external function to validate input. */
@@ -14,18 +14,18 @@ const useValidate = (validateValue) => {
     /** bind to onchange attribute and capture input. */
     const valueChangeHandler = (event) => {
         setEnteredValue(event.target.value);
-    }
+    };
 
     /** bind to onblur attribute and change touched state accordingly. */
     const inputBlurHandler = () => {
         setTouched(true);
-    }
+    };
 
     /** reset value to default. */
     const resetHandler = () => {
-        setEnteredValue('');
+        setEnteredValue("");
         setTouched(false);
-    }
+    };
 
     /** expose local state and function outside. */
     return {
@@ -34,8 +34,8 @@ const useValidate = (validateValue) => {
         hasError,
         valueChangeHandler,
         inputBlurHandler,
-        resetHandler
-    }
-}
+        resetHandler,
+    };
+};
 
 export default useValidate;

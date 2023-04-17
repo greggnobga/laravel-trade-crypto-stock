@@ -91,7 +91,7 @@ const Portfolio = () => {
                         display={recordHandler}
                         retrieve={retrieveRequest}
                     />
-                    <Order order={order} />
+                    <Order order={order} retrieve={retrieveRequest} />
                 </div>
             </div>
         </div>

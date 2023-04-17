@@ -17,7 +17,9 @@ const Order = (props) => {
                 <div className="item">Action</div>
             </div>
             {props.order.map((item, index) => {
-                return <Show data={item} key={index} />;
+                return (
+                    <Show data={item} key={index} retrieve={props.retrieve} />
+                );
             })}
         </Fragment>
     );

@@ -69,12 +69,11 @@
             .items {
                 display: grid;
                 grid-template-rows: auto;
-                grid-template-columns: 1fr 1fr 4fr 1fr 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr 3fr 1fr 1fr 1fr 1fr;
                 column-gap: 0.5rem;
                 @include content-items;
 
                 .item {
-                    text-align: center;
                     position: relative;
                     @include input-label;
 
@@ -83,6 +82,7 @@
                         width: 40%;
                         text-align: center;
                         padding: 0.25rem;
+                        margin-top: 0.25rem;
                     }
                 }
             }

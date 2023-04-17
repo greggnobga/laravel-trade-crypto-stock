@@ -16,7 +16,7 @@ class PortfolioController extends Controller {
         if ($request->method() === 'POST') {
             /** forward insert command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'insert') {
-                if ($request->input('input.order') === 'buy') {
+                if (strtolower($request->input('input.order')) === 'buy') {
                     return $this->store(['table' => 'portfolio', 'input' => $request->input('input')]);
                 } else {
                     return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
@@ -24,7 +24,7 @@ class PortfolioController extends Controller {
             }
             /** forward update command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'update') {
-                if ($request->input('input.order') === 'buy') {
+                if (strtolower($request->input('input.order')) === 'buy') {
                     return $this->update(['table' => 'portfolio', 'input' => $request->input('input')]);
                 } else {
                     return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
@@ -32,7 +32,7 @@ class PortfolioController extends Controller {
             }
             /** forward destroy command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'destroy') {
-                if ($request->input('input.order') === 'buy') {
+                if (strtolower($request->input('input.order')) === 'buy') {
                     return $this->destroy(['table' => 'portfolio', 'input' => $request->input('input')]);
                 } else {
                     return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
@@ -143,7 +143,7 @@ class PortfolioController extends Controller {
             $insert = DB::table('stock_portfolios')
                 ->insertGetId([
                     'userid' => Auth::id(),
-                    'order' => strip_tags($data['input']['order']),
+                    'order' => strip_tags(strtolower($data['input']['order'])),
                     'symbol' => strip_tags($data['input']['symbol']),
                     'name' => strip_tags($data['input']['name']),
                     'fee' => strip_tags($data['input']['fee']),
@@ -174,7 +174,7 @@ class PortfolioController extends Controller {
                 ->where('id', $data['input']['id'])
                 ->where('userid', Auth::id())
                 ->update([
-                    'order' => strip_tags($data['input']['order']),
+                    'order' => strip_tags(strtolower($data['input']['order'])),
                     'symbol' => strip_tags($data['input']['symbol']),
                     'name' => strip_tags($data['input']['name']),
                     'fee' => strip_tags($data['input']['fee']),
@@ -223,6 +223,11 @@ class PortfolioController extends Controller {
             foreach ($data['stock'] as $key => $value) {
                 $result = collect($value);
                 foreach ($value as $k => $v) {
+                    if ($k === 'order') {
+                        $order = ucfirst($v);
+                        $result->forget('order');
+                        $result->put('order', $order);
+                    }
                     if ($k === 'capital') {
                         $price = number_format($v, '2', '.', ',');
                         $result->forget('capital');

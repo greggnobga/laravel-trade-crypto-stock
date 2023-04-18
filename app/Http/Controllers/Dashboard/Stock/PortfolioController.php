@@ -32,11 +32,7 @@ class PortfolioController extends Controller {
             }
             /** forward destroy command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'destroy') {
-                if (strtolower($request->input('input.order')) === 'buy') {
-                    return $this->destroy(['table' => 'portfolio', 'input' => $request->input('input')]);
-                } else {
-                    return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
-                }
+                return $this->destroy(['table' => 'portfolio', 'input' => $request->input('input')]);
             }
         }
 
@@ -113,12 +109,14 @@ class PortfolioController extends Controller {
                     $hold['total'][$key]['capital'] = number_format($buy->where('symbol', $value->symbol)->sum('capital') - $sell->where('symbol', $value->symbol)->sum('capital'), '2', '.', ',');
                     $hold['total'][$key]['average'] = number_format($buy->where('symbol', $value->symbol)->sum('capital') / $buy->where('symbol', $value->symbol)->sum('share'), '2', '.', ',');
 
-                    /** add last trded price. */
+                    /** fetch price. */
                     $price = DB::table('stock_trades')->where('symbol', $value->symbol)->select('price')->first();
-                    $hold['total'][$key]['price'] = number_format($price->price, '2', '.', ',');
-
-                    /** add prospective direction. */
-                    $hold['total'][$key]['prospect'] = number_format($hold['total'][$key]['price'] - $hold['total'][$key]['average'], '2', '.', ',');
+                    if (!is_null($price)) {
+                        /** add price to array with proper decimal points. */
+                        $hold['total'][$key]['price'] = number_format($price->price, '2', '.', ',');
+                        /** add prospective direction. */
+                        $hold['total'][$key]['prospect'] = number_format($hold['total'][$key]['price'] - $hold['total'][$key]['average'], '2', '.', ',');
+                    }
                 }
 
                 /** resequence array keys*/
@@ -207,7 +205,7 @@ class PortfolioController extends Controller {
                 ->where('userid', '=', Auth::id())
                 ->delete();
             if ($delete) {
-                return response(['message' => $data['input']['name'] . ' has been deleted.', 'stock' => $data['input']['id']]);
+                return response(['message' => $data['input']['name'] . ' has been deleted.']);
             } else {
                 return response(['message' => 'No changes made.']);
             }

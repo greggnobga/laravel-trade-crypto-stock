@@ -43,7 +43,7 @@ const Update = (props) => {
         inputBlurHandler: nameBlurHandler,
         resetHandler: nameInputReset,
     } = useValidate(
-        (value) => value.trim() !== "" && value.match(/^[A-Za-z0-9\s,.]*$/)
+        (value) => value.trim() !== "" && value.match(/^[A-Za-z0-9&\s,.]*$/)
     );
 
     const {
@@ -206,7 +206,7 @@ const Update = (props) => {
     return (
         <Fragment>
             {props.data && (
-                <Fragment>
+                <div className="update">
                     <div className="item">
                         <input
                             name="order"
@@ -353,7 +353,7 @@ const Update = (props) => {
                             <Icon id="cancel" /> Cancel
                         </button>
                     </div>
-                </Fragment>
+                </div>
             )}
         </Fragment>
     );

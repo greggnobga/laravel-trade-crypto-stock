@@ -43,7 +43,7 @@ const Add = (props) => {
         inputBlurHandler: nameBlurHandler,
         resetHandler: nameInputReset,
     } = useValidate(
-        (value) => value.trim() !== "" && value.match(/^[A-Za-z0-9\s,.]*$/)
+        (value) => value.trim() !== "" && value.match(/^[A-Za-z0-9&\s,.]*$/)
     );
 
     const {
@@ -163,7 +163,9 @@ const Add = (props) => {
         props.display();
 
         /** Send request to update state. */
-        props.retrieve();
+        setTimeout(() => {
+            props.retrieve();
+        }, 3000);
     };
 
     /** Return something. */

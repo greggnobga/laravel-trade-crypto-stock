@@ -80,7 +80,7 @@ const Portfolio = () => {
                                 onClick={recordHandler}
                                 className="btn btn-gold-outline"
                             >
-                                <Icon id="stock" /> Add
+                                <Icon id="add" /> Add
                             </span>
                         </div>
                     </div>

@@ -6,24 +6,24 @@ import useHttp from "../../../../../hooks/use-http";
 
 /** Component. */
 import Update from "./update";
+import Destroy from "./destroy";
+
+/** Component. */
+import Icon from "../../../../icons";
 
 const Show = (props) => {
     /** Use state. */
     const [update, setUpdate] = useState(false);
-
-    /** Display handler. */
-    const displayHandler = () => {
-        setUpdate(!update);
-    };
+    const [destroy, setDestroy] = useState(false);
 
     /** Update handler. */
     const updateHandler = () => {
-        console.log("Update me.");
+        setUpdate(!update);
     };
 
     /** Destroy handler. */
     const destroyHandler = () => {
-        console.log("Destroy me.");
+        setDestroy(!destroy);
     };
 
     return (
@@ -37,22 +37,28 @@ const Show = (props) => {
             <div className="item">
                 <button
                     className="btn btn-purple-outline"
-                    onClick={displayHandler}
+                    onClick={updateHandler}
                 >
-                    Update
+                    <Icon id="update" /> Update
                 </button>
                 <button
                     className="btn btn-red-outline"
                     onClick={destroyHandler}
                 >
-                    Destroy
+                    <Icon id="destroy" /> Destroy
                 </button>
             </div>
             {update && (
                 <Update
                     data={props.data}
-                    display={displayHandler}
-                    update={updateHandler}
+                    display={updateHandler}
+                    retrieve={props.retrieve}
+                />
+            )}
+            {destroy && (
+                <Destroy
+                    data={props.data}
+                    display={destroyHandler}
                     retrieve={props.retrieve}
                 />
             )}

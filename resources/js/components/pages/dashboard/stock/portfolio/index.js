@@ -62,6 +62,15 @@ const Portfolio = () => {
             <div className="asset">
                 <div className="board">
                     <Icon id="portfolio" />
+                    <span className="name">Account Statistics</span>
+                </div>
+                <div className="content">
+                    <p>Graph for capital, assets and orders.</p>
+                </div>
+            </div>
+            <div className="asset">
+                <div className="board">
+                    <Icon id="portfolio" />
                     <span className="name">Hold</span>
                 </div>
                 <div className="content">

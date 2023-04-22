@@ -20,10 +20,10 @@ const Trade = () => {
 
     /** Start handler. */
     const startHandler = () => {
+        /** Set disabled state. */
+        setDisabled(true);
         /** Request data from api. */
         apiRequest();
-        /** Set disabled state to true. */
-        setDisabled(true);
     };
 
     const apiResponse = (data) => {
@@ -59,6 +59,8 @@ const Trade = () => {
     let stock = [];
     useEffect(() => {
         result.map((item, index) => {
+            /** Get last index. */
+            let end = result.length - 1;
             /** Call delay item function. */
             setTimeout(function () {
                 /** Push params.. */
@@ -71,8 +73,8 @@ const Trade = () => {
                     stock.shift(index);
                 }
             }, 3000 * index);
-            /** Set start button state to false after the map reach its last iteration. */
-            if (index >= result.length) {
+            /** Set start button state to false. */
+            if (index === end) {
                 setDisabled(false);
             }
         });
@@ -105,23 +107,25 @@ const Trade = () => {
     const reportHandler = () => {
         /** Set caller. */
         setCaller("reports");
+        /** Set disabled state. */
+        setDisabled(true);
         /** Send request. */
         retrieveRequest();
-        /** Set disabled state to true. */
-        setDisabled(true);
     };
 
     /** Use http hook reponse callback. */
     const retrieveResponse = (data) => {
         /** Render reponse message. */
         if (data.hasOwnProperty("stocks")) {
+            /** Get last index. */
+            let end = data["stocks"].length - 1;
             data["stocks"].map((item, index) => {
                 setTimeout(() => {
                     /** Assign variable a value. */
                     setEdge(item["edge"]);
                 }, 3000 * index);
-                /** Set start button state to false after the map reach its last iteration. */
-                if (index >= data.length) {
+                /** Set start button state to false. */
+                if (index === end) {
                     setDisabled(false);
                 }
             });
@@ -188,20 +192,20 @@ const Trade = () => {
     const priceHandler = () => {
         /** Set caller. */
         setCaller("prices");
+        /** Set disabled state. */
+        setDisabled(true);
         /** Send request. */
         retrieveRequest();
-        /** Set disabled state to true. */
-        setDisabled(true);
     };
 
     /** Search handler. */
     const sectorHandler = () => {
         /** Set caller. */
         setCaller("sectors");
+        /** Set disabled state. */
+        setDisabled(true);
         /** Send request. */
         retrieveRequest();
-        /** Set disabled state to true. */
-        setDisabled(true);
     };
 
     /** Declare stocks state. */
@@ -252,14 +256,26 @@ const Trade = () => {
     };
 
     /** Declare search state. */
-    const [search, setSearch] = useState(false);
+    const [display, setDisplay] = useState(false);
+
+    /** Display handler. */
+    const displaySearch = () => {
+        /** Toggle search form. */
+        setDisplay(!display);
+        /** Fetch stocks. */
+        stocksRequest();
+    };
 
     /** Search handler. */
-    const displaySearch = () => {
-        setSearch(!search);
-    };
-    const searchHandler = () => {
-        console.log("Searching...");
+    const searchHandler = (filter) => {
+        if (filter.length !== 0) {
+            /** Filter stocks state. */
+            let filtered = stocks.filter(
+                (item) => item.symbol === filter.toUpperCase()
+            );
+            /** Set stocks state. */
+            setStocks(filtered);
+        }
     };
 
     /** Use screen helper. */
@@ -272,7 +288,7 @@ const Trade = () => {
                 <div className="board">
                     <div className="items">
                         <div className="brand">
-                            <Icon id="trade" />{" "}
+                            <Icon id="trade" />
                             <span className="name">Trade</span>
                         </div>
                         <div className="record">
@@ -321,7 +337,7 @@ const Trade = () => {
                 </div>
                 {isMobile ? (
                     <Mobile
-                        data={{ stocks: stocks, search: search }}
+                        data={{ stocks: stocks, display: display }}
                         handler={{
                             display: displaySearch,
                             search: searchHandler,
@@ -331,7 +347,7 @@ const Trade = () => {
                     />
                 ) : (
                     <Desktop
-                        data={{ stocks: stocks, search: search }}
+                        data={{ stocks: stocks, display: display }}
                         handler={{
                             display: displaySearch,
                             search: searchHandler,

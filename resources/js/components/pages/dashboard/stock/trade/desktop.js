@@ -5,7 +5,7 @@ import Search from "../../../../interfaces/search";
 const Desktop = (props) => {
     return (
         <div className="desktop-content">
-            {props.data.search && (
+            {props.data.display && (
                 <Search
                     screen="desktop"
                     display={props.handler.display}

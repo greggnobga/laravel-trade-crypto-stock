@@ -5,7 +5,7 @@ import Search from "../../../../interfaces/search";
 const Mobile = (props) => {
     return (
         <div className="mobile-content">
-            {props.data.search && (
+            {props.data.display && (
                 <Search
                     screen="mobile"
                     display={props.handler.display}

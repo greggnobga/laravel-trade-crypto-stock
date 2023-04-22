@@ -106,10 +106,10 @@ const Watchlist = () => {
     const buildHandler = () => {
         /** Set caller. */
         setCaller("watches");
-        /** Send request. */
-        retrieveRequest();
         /** Set disabled.*/
         setDisabled(true);
+        /** Send request. */
+        retrieveRequest();
     };
 
     /** Use http hook reponse callback. */
@@ -243,6 +243,7 @@ const Watchlist = () => {
                     </div>
                 </div>
                 <div className="content">
+                    <div className="items">Reminder</div>
                     <div className="items">
                         The net profit margin, also known as net margin,
                         indicates how much net income a company makes with total

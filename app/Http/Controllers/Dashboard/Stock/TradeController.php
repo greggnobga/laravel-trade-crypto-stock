@@ -7,13 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class TradeController extends Controller
-{
+class TradeController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function init(Request $request)
-    {
+    public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward insert command. */
@@ -85,8 +83,7 @@ class TradeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store($data)
-    {
+    public function store($data) {
         /** fetch symbol and name. */
         $symbol = DB::table('stock_trades')
             ->select('symbol', 'name')
@@ -128,8 +125,7 @@ class TradeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($data, $id)
-    {
+    public function update($data, $id) {
         if ($data['table'] === 'trade') {
             /** run update query.*/
             $update = DB::table('stock_trades')
@@ -159,8 +155,7 @@ class TradeController extends Controller
     /**
      * Helper function.
      */
-    private function helpers($data)
-    {
+    private function helpers($data) {
         if ($data['purpose'] === 'format' && $data['source'] === 'stocks') {
             $return = [];
             foreach ($data['stock'] as $key => $value) {
@@ -183,8 +178,7 @@ class TradeController extends Controller
     /**
      * Edge function.
      */
-    private function edge()
-    {
+    private function edge() {
         return [
             ['symbol' => '2GO', 'edge' => 29],
             ['symbol' => 'HOUSE', 'edge' => 626],
@@ -498,6 +492,11 @@ class TradeController extends Controller
             ['symbol' => 'KPPI', 'edge' => 672],
             ['symbol' => 'LODE', 'edge' => 37],
             ['symbol' => 'PLUS', 'edge' => 96],
+            ['symbol' => 'LPC', 'edge' => 698],
+            ['symbol' => 'ALTER', 'edge' => 701],
+            ['symbol' => 'ENEX', 'edge' => 653],
+            ['symbol' => 'PREIT', 'edge' => 699],
+            ['symbol' => 'UPSON', 'edge' => 700],
         ];
     }
 }

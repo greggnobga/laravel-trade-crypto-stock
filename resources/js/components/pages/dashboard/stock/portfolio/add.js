@@ -180,6 +180,7 @@ const Add = (props) => {
                             value={order}
                             onChange={orderChangeHandler}
                             onBlur={orderBlurHandler}
+                            required
                         >
                             <option value=""></option>
                             <option value="buy">Buy</option>

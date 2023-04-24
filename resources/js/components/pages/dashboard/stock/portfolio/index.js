@@ -6,6 +6,7 @@ import AuthContext from "../../../../../context/auth-context";
 
 /** Hook. */
 import useHttp from "../../../../../hooks/use-http";
+import useScreen from "../../../../../hooks/use-screen";
 
 /** Component. */
 import Icon from "../../../../icons";
@@ -57,6 +58,12 @@ const Portfolio = () => {
         retrieveRequest();
     }, []);
 
+    /** Use screen helper. */
+    const { isMobile } = useScreen();
+
+    /** Infer screen size. */
+    const screen = isMobile ? "content-mobile" : "content-desktop";
+
     return (
         <div id="stock-portfolio">
             <div className="asset">
@@ -73,8 +80,8 @@ const Portfolio = () => {
                     <Icon id="portfolio" />
                     <span className="name">Hold</span>
                 </div>
-                <div className="content">
-                    <Hold hold={hold} />
+                <div className={screen}>
+                    <Hold hold={hold} screen={isMobile} />
                 </div>
             </div>
             <div className="order">

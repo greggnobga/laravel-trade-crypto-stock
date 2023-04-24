@@ -26,6 +26,12 @@ const Mobile = (props) => {
                                     </div>
                                 </div>
                                 <div className="item">
+                                    <div className="key">Year High Price</div>
+                                    <div className="value">
+                                        {item["yearhighprice"]}
+                                    </div>
+                                </div>
+                                <div className="item">
                                     <div className="key">Net Profit Margin</div>
                                     <div className="value">
                                         {item["netprofitmargin"]}
@@ -57,7 +63,6 @@ const Mobile = (props) => {
                                         {item["volume"]}
                                     </div>
                                 </div>
-                                <div className="item"></div>
                                 <div className="item">
                                     <span
                                         className="btn btn-orange-outline"

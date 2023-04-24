@@ -12,6 +12,7 @@ const Desktop = (props) => {
                 <div className="items">
                     <div className="value">Symbol</div>
                     <div className="value">Last Traded Price</div>
+                    <div className="value">Year High Price</div>
                     <div className="value">Net Profit Margin</div>
                     <div className="value">Price Earning Ratio</div>
                     <div className="value">Debt To Equity Ratio</div>
@@ -26,6 +27,9 @@ const Desktop = (props) => {
                                 <div className="value">{item["symbol"]}</div>
                                 <div className="value">
                                     {item["lasttradedprice"]}
+                                </div>
+                                <div className="value">
+                                    {item["yearhighprice"]}
                                 </div>
                                 <div className="value">
                                     {item["netprofitmargin"]}

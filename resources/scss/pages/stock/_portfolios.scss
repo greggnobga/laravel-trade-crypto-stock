@@ -13,7 +13,7 @@
             @include icon-name-desktop($cl-purple);
         }
 
-        .content {
+        .content-desktop {
             grid-column: 1;
             grid-row: 2;
             @include content-background;
@@ -24,6 +24,10 @@
                 grid-template-columns: repeat(7, 1fr);
                 @include content-items;
             }
+        }
+
+        .content-mobile {
+            border: 1px solid red;
         }
     }
 

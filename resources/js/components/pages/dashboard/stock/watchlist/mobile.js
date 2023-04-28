@@ -59,7 +59,9 @@ const Mobile = (props) => {
                                 </div>
                                 <div className="item">
                                     <div className="key">Dividend Yield</div>
-                                    <div className="value">0.00</div>
+                                    <div className="value">
+                                        {item["dividendyield"]}
+                                    </div>
                                 </div>
                                 <div className="item">
                                     <div className="key">Volume</div>

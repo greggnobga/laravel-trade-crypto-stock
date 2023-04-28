@@ -36,15 +36,15 @@ class TradeController extends Controller {
         $check = DB::table('stock_trades')
             ->select('symbol')
             ->where('symbol', '=', 'PSEi')
-            ->get();
+            ->first();
 
-        if ($check->isNotEmpty()) {
+        if ($check->symbol == 'PSEi') {
             /** create stock list. */
             $items = DB::table('stock_trades')
                 ->select('edge', 'symbol', 'sector', 'price', 'change', 'volume', 'average', 'incomeaftertax', 'earningpershare', 'yearhighprice',  'dividendyield')
                 ->where('edge', '>', 0)
-                ->where('incomeaftertax', '>', 0)
                 ->orderBy('incomeaftertax', 'desc')
+                ->orderBy('dividendyield', 'desc')
                 ->get();
 
             /** ignore indexes. */
@@ -118,10 +118,6 @@ class TradeController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($insert) {
-                $stock = DB::table('stock_trades')
-                    ->select('id', 'edge', 'created_at as date', 'name', 'symbol', 'price', 'change', 'volume')
-                    ->where('id', '=', $insert)
-                    ->get();
                 return ['message' => $data['input'][0]['name'] . ' has been added to the database.'];
             }
         } else {

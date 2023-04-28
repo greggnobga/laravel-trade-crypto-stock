@@ -53,7 +53,6 @@ class PSEController extends Controller {
      */
     public function stockreports($data) {
         /** repository. */
-        $financialreports = [];
         $result = [];
 
         /** create request. */
@@ -69,50 +68,49 @@ class PSEController extends Controller {
             /** mapping net after tax . */
             $annualincomestatement['CurrentYearNetIncomeLossAfterTax'] = $finance['22'];
             $annualincomestatement['PreviousYearNetIncomeLossAfterTax'] = $finance['23'];
+
             /** check if key exist in array. */
             if (array_key_exists("CurrentYearNetIncomeLossAfterTax", $annualincomestatement)) {
-                /** match string if in currency format. */
-                if (preg_match("/^-?[0-9,.?\d{0,2}]+$/", $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
-                    $result['income']['current'] = floatval(str_replace(',', '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
+                $current['CurrentYearNetIncomeLossAfterTax'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['CurrentYearNetIncomeLossAfterTax']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $current['CurrentYearNetIncomeLossAfterTax'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $current['CurrentYearNetIncomeLossAfterTax']);
+                    /** then turn negative using abs function. */
+                    $result['income']['current'] = -abs($negative);
+                } else {
+                    $result['income']['current'] = $current['CurrentYearNetIncomeLossAfterTax'];
                 }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*\.?d{0,2}$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
-                    $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
-                    $result['income']['current'] = -abs($result['income']['current']);
-                }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*,.*\)$/', $annualincomestatement['CurrentYearNetIncomeLossAfterTax'])) {
-                    $result['income']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearNetIncomeLossAfterTax']));
-                    $result['income']['current'] = -abs($result['income']['current']);
-                }
+
                 /** match string if has no value. */
-                if ($annualincomestatement['CurrentYearNetIncomeLossAfterTax'] == '') {
+                if ($current['CurrentYearNetIncomeLossAfterTax'] == '') {
                     $result['income']['current'] = 0.00;
                 }
             }
+
             /** check if key exist in array. */
             if (array_key_exists("PreviousYearNetIncomeLossAfterTax", $annualincomestatement)) {
-                /** match string if in currency format. */
-                if (preg_match("/^-?[0-9,.?\d{0,2}]+$/", $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
-                    $result['income']['previous'] = floatval(str_replace(',', '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
+                $previous['PreviousYearNetIncomeLossAfterTax'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['PreviousYearNetIncomeLossAfterTax']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $previous['PreviousYearNetIncomeLossAfterTax'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $previous['PreviousYearNetIncomeLossAfterTax']);
+                    /** then turn negative using abs function. */
+                    $result['income']['previous'] = -abs($negative);
+                } else {
+                    $result['income']['previous'] = $previous['PreviousYearNetIncomeLossAfterTax'];
                 }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*\.?d{0,2}$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
-                    $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
-                    $result['income']['previous'] = -abs($result['income']['previous']);
-                }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*,.*\)$/', $annualincomestatement['PreviousYearNetIncomeLossAfterTax'])) {
-                    $result['income']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearNetIncomeLossAfterTax']));
-                    $result['income']['previous'] = -abs($result['income']['previous']);
-                }
+
                 /** match string if has no value. */
-                if ($annualincomestatement['PreviousYearNetIncomeLossAfterTax'] == '') {
+                if ($previous['PreviousYearNetIncomeLossAfterTax'] == '') {
                     $result['income']['previous'] = 0.00;
                 }
             }
             /** determine if profitable against previous year. */
-            $result['income']['balance'] = floatval(bcsub($result['income']['current'], $result['income']['previous'], 2));
+            $result['income']['balance'] = floatval(bcsub(abs($result['income']['current']), abs($result['income']['previous']), 2));
+
             /** save to database.. */
             DB::table('stock_trades')
                 ->where('edge', '=', $data['id'])
@@ -126,44 +124,60 @@ class PSEController extends Controller {
 
             /** check if key exist in array. */
             if (array_key_exists("CurrentYearEarningsLossPerShareBasic", $annualincomestatement)) {
-                $annualincomestatement['CurrentYearEarningsLossPerShareBasic'] = str_replace([' ', '(', '$'], '', $annualincomestatement['CurrentYearEarningsLossPerShareBasic']);
-                /** match string if in currency format. */
-                if (preg_match("/^-?\d*\.{0,1}\d+$/", $annualincomestatement['CurrentYearEarningsLossPerShareBasic'])) {
-                    $result['earning']['current'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentYearEarningsLossPerShareBasic']));
+                $share['CurrentYearEarningsLossPerShareBasic'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['CurrentYearEarningsLossPerShareBasic']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $share['CurrentYearEarningsLossPerShareBasic'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $share['CurrentYearEarningsLossPerShareBasic']);
+                    /** then turn negative using abs function. */
+                    $result['earning']['current'] = -abs($negative);
+                } else {
+                    $result['earning']['current'] = $share['CurrentYearEarningsLossPerShareBasic'];
                 }
                 /** match string if has no value. */
-                if ($annualincomestatement['CurrentYearEarningsLossPerShareBasic'] == '') {
+                if ($share['CurrentYearEarningsLossPerShareBasic'] == '') {
                     $result['earning']['current'] = 0.00;
                 }
             }
+
             /** check if key exist in array. */
             if (array_key_exists("PreviousYearEarningsLossPerShareBasic", $annualincomestatement)) {
-                /** replace rouge character. */
-                $annualincomestatement['PreviousYearEarningsLossPerShareBasic'] = str_replace([' ', '(', '$'], '', $annualincomestatement['PreviousYearEarningsLossPerShareBasic']);
-                /** match string if in currency format. */
-                if (preg_match("/^-?\d*\.{0,1}\d+$/", $annualincomestatement['PreviousYearEarningsLossPerShareBasic'])) {
-                    $result['earning']['previous'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['PreviousYearEarningsLossPerShareBasic']));
+                $share['PreviousYearEarningsLossPerShareBasic'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['PreviousYearEarningsLossPerShareBasic']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $share['PreviousYearEarningsLossPerShareBasic'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $share['PreviousYearEarningsLossPerShareBasic']);
+                    /** then turn negative using abs function. */
+                    $result['earning']['previous'] = -abs($negative);
+                } else {
+                    $result['earning']['previous'] = $share['PreviousYearEarningsLossPerShareBasic'];
                 }
                 /** match string if has no value. */
-                if ($annualincomestatement['PreviousYearEarningsLossPerShareBasic'] == '') {
+                if ($share['PreviousYearEarningsLossPerShareBasic'] == '') {
                     $result['earning']['previous'] = 0.00;
                 }
             }
+
             /** determine if profitable against previous year. */
-            $result['earning']['balance'] =  floatval(bcsub($result['earning']['current'], $result['earning']['previous'], 2));
+            $result['earning']['balance'] =  floatval(bcsub(abs($result['earning']['current']), abs($result['earning']['previous']), 2));
+
             /** save to database.. */
             DB::table('stock_trades')
                 ->where('edge', '=', $data['id'])
                 ->update([
                     'earningpershare' => strip_tags($result['earning']['balance']),
                 ]);
-            /** search database.. */
-            $financialreports =   DB::table('stock_trades')
+
+            /** search database. */
+            $reports =   DB::table('stock_trades')
                 ->select('name')
                 ->where('edge', '=', $data['id'])
                 ->first();
+
             /** return something. */
-            return ['message' => 'The ' . $financialreports->name . ' information was successfully updated.'];
+            return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
         }
     }
 
@@ -189,9 +203,25 @@ class PSEController extends Controller {
             /** save to database.. */
             if (array_key_exists("52WeekHigh", $stockdata)) {
                 /** replace comma with nothing. */
-                $price['high'] = preg_replace("/[^0-9.]/", "", $stockdata['52WeekHigh']);
+                $price['high'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['52WeekHigh']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $price['high'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $price['high']);
+                    /** then turn negative using abs function. */
+                    $result['high'] = -abs($negative);
+                } else {
+                    $result['high'] = $price['high'];
+                }
+                /** match string if has no value. */
+                if ($price['high'] == '') {
+                    $result['high'] = 0.00;
+                }
+
                 /** convert into float value. */
-                $result['high'] = floatval($price['high']);
+                $result['high'] = floatval($result['high']);
+
                 /** save to database. */
                 DB::table('stock_trades')
                     ->where('edge', '=', $data['id'])
@@ -204,9 +234,25 @@ class PSEController extends Controller {
             /** save to database.. */
             if (array_key_exists("AveragePrice", $stockdata)) {
                 /** replace comma with nothing. */
-                $average['average'] = preg_replace("/[^0-9.]/", "", $stockdata['AveragePrice']);
+                $average['price'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['AveragePrice']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $average['price'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $average['price']);
+                    /** then turn negative using abs function. */
+                    $result['average'] = -abs($negative);
+                } else {
+                    $result['average'] = $average['price'];
+                }
+                /** match string if has no value. */
+                if ($average['price'] == '') {
+                    $result['average'] = 0.00;
+                }
+
                 /** convert into float value. */
-                $result['average'] = floatval($average['average']);
+                $result['average'] = floatval($result['average']);
+
                 /** save to database. */
                 DB::table('stock_trades')
                     ->where('edge', '=', $data['id'])
@@ -217,13 +263,13 @@ class PSEController extends Controller {
         }
 
         /** fetch stock name. */
-        $stockreports = DB::table('stock_trades')
+        $reports = DB::table('stock_trades')
             ->select('name')
             ->where('edge', '=', $data['id'])
             ->first();
 
         /** return something. */
-        return ['message' => 'The ' . $stockreports->name . ' information was successfully updated.'];
+        return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
     }
 
     /**
@@ -248,14 +294,16 @@ class PSEController extends Controller {
             $yield = '';
             if (strtolower($dividend[1]) == 'cash') {
                 /** replace all non numeric characters. */
-                $rate = number_format(floatval(preg_replace("/[^0-9.]/", "", $dividend['2'])), 2, '.', ',');
+                $rate = number_format($this->helpers(['sanitized' => 'decimal', 'string' => $dividend[2]]), 2, '.', ',');
+
                 /** fetch price. */
                 $trade = DB::table('stock_trades')
                     ->where('edge', '=', $data['id'])
                     ->select('price')
                     ->first();
+
                 /** calculate dividend yield. */
-                $yield = bcdiv($rate, $trade->price, 4);
+                $yield = bcdiv(abs($rate), abs($trade->price), 4);
             } else {
                 /** set dividend yield to zero. */
                 $yield = number_format(0.00, 2, '.', ',');
@@ -279,33 +327,38 @@ class PSEController extends Controller {
      */
     public function stocksectors($data) {
         /** repository. */
-        $stockreports = [];
         $result = [];
 
         /** create request. */
         $stocksectors = Http::get('https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=' . $data['id'])->body();
+
         /** make it crawlable. */
         $crawler_sectors = new Crawler($stocksectors);
+
         /** filter response. */
         $stocksector = $crawler_sectors->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
 
-        if (count($stocksector) != 0) {
+        if (count($stocksector) >= 1) {
             /** mapping year high price. */
             $stockdata['sector'] = $stocksector['1'];
+
             /** save to database.. */
             if (array_key_exists("sector", $stockdata)) {
                 /** replace comma with nothing. */
-                $sector['sector'] = str_replace([' ', '&', ','], '', $stockdata['sector']);
+                $sector['sector'] = $this->helpers(['sanitized' => 'alpha', 'string' => $stockdata['sector']]);
+
                 /** match string if has number and comma and parentheses. */
-                if (preg_match('/^.*$/', $sector['sector'])) {
+                if (preg_match('/([a-zA-Z0-9])\w+/', $sector['sector'])) {
                     $result['sector'] = strtolower($sector['sector']);
                 }
+
                 /** match string if has no value. */
                 if ($sector['sector'] == '') {
                     $result['sector'] = 'kolorum';
                 }
+
                 /** save to database. */
                 DB::table('stock_trades')
                     ->where('edge', '=', $data['id'])
@@ -314,12 +367,13 @@ class PSEController extends Controller {
                     ]);
             }
         }
-        $stockreports =   DB::table('stock_trades')
+        /** fetch stock name. */
+        $reports =   DB::table('stock_trades')
             ->select('name')
             ->where('edge', '=', $data['id'])
             ->first();
         /** return something. */
-        return ['message' => 'The ' . $stockreports->name . ' information was successfully updated.'];
+        return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
     }
 
     /**
@@ -327,13 +381,14 @@ class PSEController extends Controller {
      */
     public function stockwatches($data) {
         /** repository. */
-        $financialreports = [];
         $result = [];
 
         /** create request. */
         $financial = Http::get('https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id'])->body();
+
         /** make it crawlable. */
         $crawler_financial = new Crawler($financial);
+
         /** filter response. */
         $finance = $crawler_financial->filter('tr > td')->each(function ($node) {
             return $node->text();
@@ -344,39 +399,42 @@ class PSEController extends Controller {
             $annualincomestatement['CurrentTotalLiabilities'] = $finance['6'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentTotalLiabilities", $annualincomestatement)) {
-                /** remove rouge space. */
-                $annualincomestatement['CurrentTotalLiabilities'] = trim($annualincomestatement['CurrentTotalLiabilities']);
-                /** match string if has number and comma. */
-                if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentTotalLiabilities'])) {
-                    $result['totalliabilities'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentTotalLiabilities']));
-                }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['CurrentTotalLiabilities'])) {
-                    $result['totalliabilities'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentTotalLiabilities']));
-                    $result['totalliabilities'] = -abs($result['totalliabilities']);
+                /** call helper function. */
+                $current['CurrentTotalLiabilities'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['CurrentTotalLiabilities']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $current['CurrentTotalLiabilities'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $current['CurrentTotalLiabilities']);
+                    /** then turn negative using abs function. */
+                    $result['totalliabilities'] = -abs($negative);
+                } else {
+                    $result['totalliabilities'] = $current['CurrentTotalLiabilities'];
                 }
                 /** match string if has no value. */
-                if ($annualincomestatement['CurrentTotalLiabilities'] == '') {
+                if ($current['CurrentTotalLiabilities'] == '') {
                     $result['totalliabilities'] = 0.00;
                 }
             }
+
             /** mapping stock holder equity. */
             $annualincomestatement['CurrentStockholdersEquity'] = $finance['10'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentStockholdersEquity", $annualincomestatement)) {
-                /** remove rouge space. */
-                $annualincomestatement['CurrentStockholdersEquity'] = trim($annualincomestatement['CurrentStockholdersEquity']);
-                /** match string if has number and comma. */
-                if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentStockholdersEquity'])) {
-                    $result['stockholderequity'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentStockholdersEquity']));
-                }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['CurrentStockholdersEquity'])) {
-                    $result['stockholderequity'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentStockholdersEquity']));
-                    $result['stockholderequity'] = -abs($result['stockholderequity']);
+                /** call helper function. */
+                $equity['CurrentStockholdersEquity'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['CurrentStockholdersEquity']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $equity['CurrentStockholdersEquity'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $equity['CurrentStockholdersEquity']);
+                    /** then turn negative using abs function. */
+                    $result['stockholderequity'] = -abs($negative);
+                } else {
+                    $result['stockholderequity'] = $equity['CurrentStockholdersEquity'];
                 }
                 /** match string if has no value. */
-                if ($annualincomestatement['CurrentStockholdersEquity'] == '') {
+                if ($equity['CurrentStockholdersEquity'] == '') {
                     $result['stockholderequity'] = 0.00;
                 }
             }
@@ -385,39 +443,42 @@ class PSEController extends Controller {
             $annualincomestatement['CurrentEarningsLossPerShareBasic'] = $finance['26'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentEarningsLossPerShareBasic", $annualincomestatement)) {
-                /** remove rouge space. */
-                $annualincomestatement['CurrentEarningsLossPerShareBasic'] = trim($annualincomestatement['CurrentEarningsLossPerShareBasic']);
-                /** match string if has number and comma. */
-                if (preg_match('/^-?[0-9,\s($.?\d{0,2}]+$/', $annualincomestatement['CurrentEarningsLossPerShareBasic'])) {
-                    $result['earningpershare'] = floatval(str_replace([' ', '(', ',', ')', '$'], '', $annualincomestatement['CurrentEarningsLossPerShareBasic']));
-                }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['CurrentEarningsLossPerShareBasic'])) {
-                    $result['earningpershare'] = floatval(str_replace([' ', '(', ',', ')', '$'], '', $annualincomestatement['CurrentEarningsLossPerShareBasic']));
-                    $result['earningpershare'] = -abs($result['earningpershare']);
+                /** call helper function. */
+                $earning['CurrentEarningsLossPerShareBasic'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['CurrentEarningsLossPerShareBasic']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $earning['CurrentEarningsLossPerShareBasic'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $earning['CurrentEarningsLossPerShareBasic']);
+                    /** then turn negative using abs function. */
+                    $result['earningpershare'] = -abs($negative);
+                } else {
+                    $result['earningpershare'] = $earning['CurrentEarningsLossPerShareBasic'];
                 }
                 /** match string if has no value. */
-                if ($annualincomestatement['CurrentEarningsLossPerShareBasic'] == '') {
+                if ($earning['CurrentEarningsLossPerShareBasic'] == '') {
                     $result['earningpershare'] = 0.00;
                 }
             }
+
             /** mapping stock holder equity. */
             $annualincomestatement['CurrentIncomeLossBeforeTax'] = $finance['20'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentIncomeLossBeforeTax", $annualincomestatement)) {
-                /** remove rouge space. */
-                $annualincomestatement['CurrentIncomeLossBeforeTax'] = trim($annualincomestatement['CurrentIncomeLossBeforeTax']);
-                /** match string if has number and comma. */
-                if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentIncomeLossBeforeTax'])) {
-                    $result['incomebeforetax'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentIncomeLossBeforeTax']));
-                }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['CurrentIncomeLossBeforeTax'])) {
-                    $result['incomebeforetax'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentIncomeLossBeforeTax']));
-                    $result['incomebeforetax'] = -abs($result['incomebeforetax']);
+                /** call helper function. */
+                $income['CurrentIncomeLossBeforeTax'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['CurrentIncomeLossBeforeTax']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $income['CurrentIncomeLossBeforeTax'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $income['CurrentIncomeLossBeforeTax']);
+                    /** then turn negative using abs function. */
+                    $result['incomebeforetax'] = -abs($negative);
+                } else {
+                    $result['incomebeforetax'] = $income['CurrentIncomeLossBeforeTax'];
                 }
                 /** match string if has no value. */
-                if ($annualincomestatement['CurrentIncomeLossBeforeTax'] == '') {
+                if ($income['CurrentIncomeLossBeforeTax'] == '') {
                     $result['incomebeforetax'] = 0.00;
                 }
             }
@@ -426,19 +487,20 @@ class PSEController extends Controller {
             $annualincomestatement['CurrentGrossRevenue'] = $finance['16'];
             /** check if key exist in array. */
             if (array_key_exists("CurrentGrossRevenue", $annualincomestatement)) {
-                /** remove rouge space. */
-                $annualincomestatement['CurrentGrossRevenue'] = trim($annualincomestatement['CurrentGrossRevenue']);
-                /** match string if has number and comma. */
-                if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['CurrentGrossRevenue'])) {
-                    $result['grossrevenue'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentGrossRevenue']));
-                }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['CurrentGrossRevenue'])) {
-                    $result['grossrevenue'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['CurrentGrossRevenue']));
-                    $result['grossrevenue'] = -abs($result['grossrevenue']);
+                /** call helper function. */
+                $revenue['CurrentGrossRevenue'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['CurrentGrossRevenue']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $revenue['CurrentGrossRevenue'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $revenue['CurrentGrossRevenue']);
+                    /** then turn negative using abs function. */
+                    $result['grossrevenue'] = -abs($negative);
+                } else {
+                    $result['grossrevenue'] = $revenue['CurrentGrossRevenue'];
                 }
                 /** match string if has no value. */
-                if ($annualincomestatement['CurrentGrossRevenue'] == '' || $annualincomestatement['CurrentGrossRevenue'] == '-') {
+                if ($revenue['CurrentGrossRevenue'] == '') {
                     $result['grossrevenue'] = 0.00;
                 }
             }
@@ -458,38 +520,30 @@ class PSEController extends Controller {
             $annualincomestatement['LastTradedPrice'] = $price['12'];
             /** check if key exist in array. */
             if (array_key_exists("LastTradedPrice", $annualincomestatement)) {
-                /** remove rouge space. */
-                $annualincomestatement['LastTradedPrice'] = trim($annualincomestatement['LastTradedPrice']);
-                /** match string if has number and comma. */
-                if (preg_match('/^-?[0-9,.?\d{0,2}]+$/', $annualincomestatement['LastTradedPrice'])) {
-                    $result['lasttradedprice'] = floatval(str_replace(',', '', $annualincomestatement['LastTradedPrice']));
-                }
-                /** match string if has number and comma and parentheses. */
-                if (preg_match('/^\(.*,.*,.*\).*$/', $annualincomestatement['LastTradedPrice'])) {
-                    $result['lasttradedprice'] = floatval(str_replace(['(', ',', ')'], '', $annualincomestatement['LastTradedPrice']));
-                    $result['lasttradedprice'] = -abs($result['lasttradedprice']['current']);
+                /** call helper function. */
+                $traded['LastTradedPrice'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['LastTradedPrice']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $traded['LastTradedPrice'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $traded['LastTradedPrice']);
+                    /** then turn negative using abs function. */
+                    $result['lasttradedprice'] = -abs($negative);
+                } else {
+                    $result['lasttradedprice'] = $traded['LastTradedPrice'];
                 }
                 /** match string if has no value. */
-                if ($annualincomestatement['LastTradedPrice'] == '') {
+                if ($traded['LastTradedPrice'] == '') {
                     $result['lasttradedprice'] = 0.00;
                 }
             }
-
-            /** map to currency format. */
-            $financialreports = [
-                'liabilities' => number_format($result['totalliabilities'], 2, '.', ','),
-                'equity' => number_format($result['stockholderequity'], 2, '.', ','),
-                'price' => number_format($result['lasttradedprice'], 2, '.', ','),
-                'earning' => number_format($result['earningpershare'], 2, '.', ','),
-                'income' => number_format($result['incomebeforetax'], 2, '.', ','),
-                'gross' => number_format($result['grossrevenue'], 2, '.', ','),
-            ];
-
+            /** check record if exist. */
             $symbol = DB::table('stock_watchlists')
                 ->select('symbol')
                 ->where('symbol', $data['symbol'])
                 ->get();
 
+            /** check if not empty. */
             if ($symbol->isEmpty()) {
                 $insert = DB::table('stock_watchlists')
                     ->insertGetId([
@@ -498,12 +552,12 @@ class PSEController extends Controller {
                         'sector' => strip_tags($data['sector']),
                         'edge' => strip_tags($data['id']),
                         'volume' => strip_tags($data['volume']),
-                        'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
-                        'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
-                        'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),
-                        'earningspershare' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['earning'])),
-                        'netincomebeforetax' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['income'])),
-                        'grossrevenue' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['gross'])),
+                        'totalliabilities' => strip_tags($result['totalliabilities']),
+                        'stockholdersequity' => strip_tags($result['stockholderequity']),
+                        'lasttradedprice' => strip_tags($result['lasttradedprice']),
+                        'earningspershare' => strip_tags($result['earningpershare']),
+                        'netincomebeforetax' => strip_tags($result['incomebeforetax']),
+                        'grossrevenue' => strip_tags($result['grossrevenue']),
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
@@ -512,16 +566,17 @@ class PSEController extends Controller {
                     return ['message' => 'The ' . $data['symbol'] . ' has been added to the database.'];
                 }
             } else {
+                /** update if not found.*/
                 $update = DB::table('stock_watchlists')
                     ->where('userid', '=', Auth::id())
                     ->where('symbol', '=', $data['symbol'])
                     ->update([
-                        'totalliabilities' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['liabilities'])),
-                        'stockholdersequity' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['equity'])),
-                        'lasttradedprice' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['price'])),
-                        'earningspershare' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['earning'])),
-                        'netincomebeforetax' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['income'])),
-                        'grossrevenue' => strip_tags(str_replace([' ', '(', ',', ')'], '', $financialreports['gross'])),
+                        'totalliabilities' => strip_tags($result['totalliabilities']),
+                        'stockholdersequity' => strip_tags($result['stockholderequity']),
+                        'lasttradedprice' => strip_tags($result['lasttradedprice']),
+                        'earningspershare' => strip_tags($result['earningpershare']),
+                        'netincomebeforetax' => strip_tags($result['incomebeforetax']),
+                        'grossrevenue' => strip_tags($result['grossrevenue']),
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
@@ -555,5 +610,28 @@ class PSEController extends Controller {
             /** return something. */
             return ['message' => 'All records are up to date.'];
         }
+    }
+
+    /**
+     * Helper function.
+     */
+    public function helpers($data) {
+        /** repository */
+        $result = '';
+
+        /** if string is decimal */
+        if ($data['sanitized'] === 'decimal') {
+            /** replace string. */
+            $result = preg_replace("/[^0-9.()-]/", "", $data['string']);
+            /** convert to float. */
+            $result = floatval($result);
+        }
+
+        /** if string is alpha */
+        if ($data['sanitized'] === 'alpha') {
+            $result = preg_replace("/[^a-zA-Z]/", "", $data['string']);
+        }
+        /** return something. */
+        return $result;
     }
 }

@@ -44,7 +44,9 @@ const Desktop = (props) => {
                                 <div className="value">
                                     {item["returnonequity"]}
                                 </div>
-                                <div className="value">0.00</div>
+                                <div className="value">
+                                    {item["dividendyield"]}
+                                </div>
                                 <div className="value">{item["volume"]}</div>
                                 <div className="value">
                                     <span

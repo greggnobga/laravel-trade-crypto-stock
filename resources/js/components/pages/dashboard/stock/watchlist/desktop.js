@@ -17,6 +17,7 @@ const Desktop = (props) => {
                     <div className="value">Price Earning Ratio</div>
                     <div className="value">Debt To Equity Ratio</div>
                     <div className="value">Return On Equity</div>
+                    <div className="value">Dividend Yield</div>
                     <div className="value">Volume</div>
                     <div className="value">Action</div>
                 </div>
@@ -43,6 +44,7 @@ const Desktop = (props) => {
                                 <div className="value">
                                     {item["returnonequity"]}
                                 </div>
+                                <div className="value">0.00</div>
                                 <div className="value">{item["volume"]}</div>
                                 <div className="value">
                                     <span

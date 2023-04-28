@@ -1,35 +1,21 @@
 <?php
+
 namespace App\Http\Controllers\Dashboard;
 
-use Symfony\Component\BrowserKit\HttpBrowser;
-use Symfony\Component\HttpClient\HttpClient;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Symfony\Component\DomCrawler\Crawler;
 use Carbon\Carbon;
 
 use App\Http\Controllers\Controller;
 
-class PSEController extends Controller
-{
-    /**
-     * Define variables..
-     */
-    protected $client;
-
-    /**
-     * Set constructor.
-     */
-    public function __construct()
-    {
-        $this->client = new HttpBrowser(HttpClient::create());
-    }
-
+class PSEController extends Controller {
     /**
      * Declare init function.
      */
-    public function init(Request $request)
-    {
+    public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward reports command. */
@@ -43,6 +29,10 @@ class PSEController extends Controller
             /** forward watchlist command. */
             if ($request->input('section') === 'sectors') {
                 return $this->stocksectors($request->all());
+            }
+            /** forward watchlist command. */
+            if ($request->input('section') === 'dividends') {
+                return $this->stockdividends($request->all());
             }
             /** forward watchlist command. */
             if ($request->input('section') === 'watches') {
@@ -65,9 +55,13 @@ class PSEController extends Controller
         /** repository. */
         $financialreports = [];
         $result = [];
-       /** fetch and crawl document element. */
-        $financial = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id']);
-        $finance = $financial->filter('tr > td')->each(function ($node) {
+
+        /** create request. */
+        $financial = Http::get('https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id'])->body();
+        /** make it crawlable. */
+        $crawler_financial = new Crawler($financial);
+        /** filter response. */
+        $finance = $crawler_financial->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
 
@@ -176,23 +170,26 @@ class PSEController extends Controller
     /**
      * Declare stocks function.
      */
-    public function stockprices($data)
-    {
+    public function stockprices($data) {
         /** repository. */
-        $stockreports = [];
         $result = [];
-        /** fetch and crawl document element. */
-        $stockprices = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id']);
-        $stockprice = $stockprices->filter('tr > td')->each(function ($node) {
+
+        /** create request. */
+        $stockprices = Http::get('https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id'])->body();
+        /** make it crawlable. */
+        $crawler_prices = new Crawler($stockprices);
+        /** filter response. */
+        $stockprice = $crawler_prices->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
+
         if (count($stockprice) != 0) {
             /** mapping year high price. */
             $stockdata['52WeekHigh'] = $stockprice['24'];
             /** save to database.. */
             if (array_key_exists("52WeekHigh", $stockdata)) {
                 /** replace comma with nothing. */
-                $price['high'] = str_replace([' ', '(', '$', ','], '', $stockdata['52WeekHigh']);
+                $price['high'] = preg_replace("/[^0-9.]/", "", $stockdata['52WeekHigh']);
                 /** convert into float value. */
                 $result['high'] = floatval($price['high']);
                 /** save to database. */
@@ -207,7 +204,7 @@ class PSEController extends Controller
             /** save to database.. */
             if (array_key_exists("AveragePrice", $stockdata)) {
                 /** replace comma with nothing. */
-                $average['average'] = str_replace([' ', '(', '$', ','], '', $stockdata['AveragePrice']);
+                $average['average'] = preg_replace("/[^0-9.]/", "", $stockdata['AveragePrice']);
                 /** convert into float value. */
                 $result['average'] = floatval($average['average']);
                 /** save to database. */
@@ -218,28 +215,82 @@ class PSEController extends Controller
                     ]);
             }
         }
-        $stockreports =   DB::table('stock_trades')
+
+        /** fetch stock name. */
+        $stockreports = DB::table('stock_trades')
             ->select('name')
             ->where('edge', '=', $data['id'])
             ->first();
+
         /** return something. */
-        //'The ' . $stockreports->name . ' information was successfully updated.'
         return ['message' => 'The ' . $stockreports->name . ' information was successfully updated.'];
     }
 
     /**
      * Declare stocks function.
      */
-    public function stocksectors($data)
-    {
+    public function stockdividends($data) {
+        /** create request. */
+        $dividends = Http::get('https://edge.pse.com.ph/companyPage/dividends_and_rights_list.ax?cmpy_id=' . $data['id'])->body();
+        /** make it crawlable. */
+        $crawler_dividends = new Crawler($dividends);
+        /** filter response. */
+        $dividend = $crawler_dividends->filter('tr > td')->each(function ($node) {
+            return $node->text();
+        });
+
+        $stock = DB::table('stock_trades')
+            ->select('name')
+            ->where('edge', '=', $data['id'])
+            ->first();
+
+        if (count($dividend) >= 2) {
+            $yield = '';
+            if (strtolower($dividend[1]) == 'cash') {
+                /** replace all non numeric characters. */
+                $rate = number_format(floatval(preg_replace("/[^0-9.]/", "", $dividend['2'])), 2, '.', ',');
+                /** fetch price. */
+                $trade = DB::table('stock_trades')
+                    ->where('edge', '=', $data['id'])
+                    ->select('price')
+                    ->first();
+                /** calculate dividend yield. */
+                $yield = bcdiv($rate, $trade->price, 4);
+            } else {
+                /** set dividend yield to zero. */
+                $yield = number_format(0.00, 2, '.', ',');
+            }
+
+            /** save to database. */
+            DB::table('stock_trades')
+                ->where('edge', '=', $data['id'])
+                ->update([
+                    'dividendyield' => strip_tags($yield),
+                ]);
+        } else {
+            return response(['message' => 'The ' . $stock->name . ' has yet to establish a dividend rate.'], 200);
+        }
+        /** return something. */
+        return response(['message' => 'The dividend rate of ' . $stock->name . ' was added.'], 200);
+    }
+
+    /**
+     * Declare stocks function.
+     */
+    public function stocksectors($data) {
         /** repository. */
         $stockreports = [];
         $result = [];
-        /** fetch and crawl document element. */
-        $stocksectors = $this->client->request('GET', 'https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=' . $data['id']);
-        $stocksector = $stocksectors->filter('tr > td')->each(function ($node) {
+
+        /** create request. */
+        $stocksectors = Http::get('https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=' . $data['id'])->body();
+        /** make it crawlable. */
+        $crawler_sectors = new Crawler($stocksectors);
+        /** filter response. */
+        $stocksector = $crawler_sectors->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
+
         if (count($stocksector) != 0) {
             /** mapping year high price. */
             $stockdata['sector'] = $stocksector['1'];
@@ -278,9 +329,13 @@ class PSEController extends Controller
         /** repository. */
         $financialreports = [];
         $result = [];
-        /** fetch and crawl document element. */
-        $financial = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id']);
-        $finance = $financial->filter('tr > td')->each(function ($node) {
+
+        /** create request. */
+        $financial = Http::get('https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id'])->body();
+        /** make it crawlable. */
+        $crawler_financial = new Crawler($financial);
+        /** filter response. */
+        $finance = $crawler_financial->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
 
@@ -332,7 +387,7 @@ class PSEController extends Controller
             if (array_key_exists("CurrentEarningsLossPerShareBasic", $annualincomestatement)) {
                 /** remove rouge space. */
                 $annualincomestatement['CurrentEarningsLossPerShareBasic'] = trim($annualincomestatement['CurrentEarningsLossPerShareBasic']);
-               /** match string if has number and comma. */
+                /** match string if has number and comma. */
                 if (preg_match('/^-?[0-9,\s($.?\d{0,2}]+$/', $annualincomestatement['CurrentEarningsLossPerShareBasic'])) {
                     $result['earningpershare'] = floatval(str_replace([' ', '(', ',', ')', '$'], '', $annualincomestatement['CurrentEarningsLossPerShareBasic']));
                 }
@@ -389,11 +444,15 @@ class PSEController extends Controller
             }
         }
 
-        /** fetch and crawl document element. */
-        $prices = $this->client->request('GET', 'https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id']);
-        $price = $prices->filter('tr > td')->each(function ($node) {
+        /** create request. */
+        $prices = Http::get('https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id'])->body();
+        /** make it crawlable. */
+        $crawler_prices = new Crawler($prices);
+        /** filter response. */
+        $price = $crawler_prices->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
+
         if (count($price) != 0) {
             /** mapping net after tax . */
             $annualincomestatement['LastTradedPrice'] = $price['12'];
@@ -479,8 +538,7 @@ class PSEController extends Controller
     /**
      * Declare stocks function.
      */
-    public function stocktrades()
-    {
+    public function stocktrades() {
         /** repository. */
         $stocks = DB::table('stock_trades')
             ->select('edge', 'symbol', 'sector', 'volume')

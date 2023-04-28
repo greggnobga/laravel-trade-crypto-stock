@@ -117,17 +117,12 @@ const Trade = () => {
     const retrieveResponse = (data) => {
         /** Render reponse message. */
         if (data.hasOwnProperty("stocks")) {
-            /** Get last index. */
-            let end = data["stocks"].length - 1;
+            /** Loop through it. */
             data["stocks"].map((item, index) => {
                 setTimeout(() => {
                     /** Assign variable a value. */
                     setEdge(item["edge"]);
                 }, 3000 * index);
-                /** Set start button state to false. */
-                if (index === end) {
-                    setDisabled(false);
-                }
             });
         }
     };
@@ -148,6 +143,9 @@ const Trade = () => {
             case "sectors":
                 setPayload({ section: "sectors", id: edge });
                 break;
+            case "dividends":
+                setPayload({ section: "dividends", id: edge });
+                break;
             default:
                 setPayload({ section: "reports", id: edge });
         }
@@ -155,6 +153,9 @@ const Trade = () => {
         if (edge) {
             if (typeof payload["id"] !== "undefined") {
                 storeRequest();
+            } else {
+                /** Set disabled state. */
+                setDisabled(false);
             }
         }
     }, [edge]);
@@ -171,6 +172,7 @@ const Trade = () => {
 
     /** Use http hook reponse callback. */
     const storeResponse = (data) => {
+        console.log(data);
         /** Check if data is not empty. */
         if (data) {
             /** Render reponse message. */
@@ -202,6 +204,16 @@ const Trade = () => {
     const sectorHandler = () => {
         /** Set caller. */
         setCaller("sectors");
+        /** Set disabled state. */
+        setDisabled(true);
+        /** Send request. */
+        retrieveRequest();
+    };
+
+    /** Search handler. */
+    const dividendHandler = () => {
+        /** Set caller. */
+        setCaller("dividends");
         /** Set disabled state. */
         setDisabled(true);
         /** Send request. */
@@ -315,6 +327,14 @@ const Trade = () => {
                                 disabled={disabled}
                             >
                                 <Icon id="price" /> Price
+                            </button>
+                            <button
+                                onClick={dividendHandler}
+                                className="btn btn-green-outline"
+                                type="button"
+                                disabled={disabled}
+                            >
+                                <Icon id="dividend" /> Dividend
                             </button>
                             <button
                                 onClick={sectorHandler}

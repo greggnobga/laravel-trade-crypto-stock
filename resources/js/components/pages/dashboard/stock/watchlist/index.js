@@ -245,31 +245,28 @@ const Watchlist = () => {
                 <div className="content">
                     <div className="items">Reminder</div>
                     <div className="items">
-                        The net profit margin, also known as net margin,
-                        indicates how much net income a company makes with total
-                        sales achieved. A higher net profit margin means that a
-                        company is more efficient at converting sales into
-                        actual profit.
+                        Debt Equity Ratio - Always try to find a company to
+                        invest which has debt equity ratio of less than one.
                     </div>
                     <div className="items">
-                        A higher PE suggests high expectations for future
-                        growth, perhaps because the company is small or is an a
-                        rapidly expanding market. For others, a low PE is
-                        preferred, since it suggests expectations are not too
-                        high and the company is more likely to outperform
-                        earnings forecasts.
+                        Price Earning Ratio - A higher PE compared to the market
+                        indicates that the stock is expensive, whereas lower PE
+                        indicates that the stock is undervalued. We should buy
+                        the stock when it is undervalued.
                     </div>
                     <div className="items">
-                        Debt ratio is a metric that measures a company's total
-                        debt, as a percentage of its total assets. A high debt
-                        ratio indicates that a company is highly leveraged, and
-                        may have borrowed more money than it can easily pay
-                        back.
+                        Net Profit Margin - Should be higher as it indicates the
+                        company is efficient as compared to its peers.
                     </div>
                     <div className="items">
-                        The higher a companys ROE percentage, the better. A
-                        higher percentage indicates a company is more effective
-                        at generating profit from its existing assets.
+                        Return On Equity - The higher the ROE, the more
+                        efficient a company's management is at generating income
+                        and growth from its equity financing.
+                    </div>
+                    <div className="items">
+                        Dividend Rate Per Year - Is the amount of money a
+                        company pays shareholders for owning a share of its
+                        stock divided by its current stock price.
                     </div>
                 </div>
             </div>

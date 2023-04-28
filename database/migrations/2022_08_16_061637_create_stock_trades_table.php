@@ -4,15 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('stock_trades', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -26,6 +24,7 @@ return new class extends Migration
             $table->decimal('incomeaftertax', 24, 2)->signed()->default(0.00);
             $table->decimal('earningpershare', 24, 2)->signed()->default(0.00);
             $table->decimal('yearhighprice', 24, 2)->signed()->default(0.00);
+            $table->decimal('dividendyield', 24, 2)->signed()->default(0.00);
             $table->timestamps();
         });
     }
@@ -35,8 +34,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('stock_trades');
     }
 };

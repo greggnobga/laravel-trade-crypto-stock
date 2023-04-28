@@ -20,6 +20,7 @@ const Desktop = (props) => {
                 <div className="item">Average Price</div>
                 <div className="item">Year High Price</div>
                 <div className="item">Income After Tax</div>
+                <div className="item">Dividend Yield</div>
                 <div className="item">Volume</div>
                 <div className="item">Action</div>
             </div>
@@ -34,6 +35,7 @@ const Desktop = (props) => {
                             <div className="item">{item.average}</div>
                             <div className="item">{item.yearhighprice}</div>
                             <div className="item">{item.incomeaftertax}</div>
+                            <div className="item">{item.dividendyield}</div>
                             <div className="item">{item.volume}</div>
                             <div className="item">
                                 <span

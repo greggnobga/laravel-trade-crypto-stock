@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Dashboard\Stock;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class TradeController extends Controller {
     /**
@@ -22,61 +21,70 @@ class TradeController extends Controller {
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
             if ($request->input('table') === 'trade') {
-                /** repository. */
-                $result = [];
-                /** check record. */
-                $check = DB::table('stock_trades')
-                    ->select('symbol')
-                    ->where('symbol', '=', 'PSEi')
-                    ->get();
+                return $this->fetch();
+            }
+        }
+    }
 
-                if ($check->isNotEmpty()) {
-                    /** create stock list. */
-                    $items = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'sector', 'price', 'change', 'earningpershare',  'average', 'yearhighprice', 'incomeaftertax', 'volume')
-                        ->orderBy('incomeaftertax', 'desc')
-                        ->get();
+    /**
+     * Fetch stocks.
+     */
+    public function fetch() {
+        /** repository. */
+        $result = [];
+        /** check record. */
+        $check = DB::table('stock_trades')
+            ->select('symbol')
+            ->where('symbol', '=', 'PSEi')
+            ->get();
 
-                    /** ignore indexes. */
-                    foreach ($items as $key => $value) {
-                        switch ($value->symbol) {
-                            case 'PSEi':
-                                break;
-                            case 'ALL':
-                                break;
-                            case 'FIN':
-                                break;
-                            case 'IND':
-                                break;
-                            case 'HDG':
-                                break;
-                            case 'PRO':
-                                break;
-                            case 'SVC':
-                                break;
-                            case 'M-O':
-                                break;
-                            default:
-                                $result['stocks'][$key] = $value;
-                        }
-                    }
+        if ($check->isNotEmpty()) {
+            /** create stock list. */
+            $items = DB::table('stock_trades')
+                ->select('edge', 'symbol', 'sector', 'price', 'change', 'volume', 'average', 'incomeaftertax', 'earningpershare', 'yearhighprice',  'dividendyield')
+                ->where('edge', '>', 0)
+                ->where('incomeaftertax', '>', 0)
+                ->orderBy('incomeaftertax', 'desc')
+                ->get();
 
-                    /** sort data order by volume. */
-                    collect($result['stocks'])->sortByDesc('incomeaftertax');
-
-                    /** add button array keys. */
-                    $result['stocks'] = $this->helpers(['purpose' => 'format', 'source' => 'stocks', 'stock' => $result['stocks']]);
-
-                    /** resequence array keys. */
-                    $result['stocks'] = array_values($result['stocks']);
-
-                    /** return something. */
-                    return array('message' => 'Processed and displayed are all potential stocks that could be listed on the PSE.', 'data' => $result['stocks']);
-                } else {
-                    /** return something. */
-                    return array('message' => 'There was no entry in the database.');
+            /** ignore indexes. */
+            foreach ($items as $key => $value) {
+                switch ($value->symbol) {
+                    case 'PSEi':
+                        break;
+                    case 'ALL':
+                        break;
+                    case 'FIN':
+                        break;
+                    case 'IND':
+                        break;
+                    case 'HDG':
+                        break;
+                    case 'PRO':
+                        break;
+                    case 'SVC':
+                        break;
+                    case 'M-O':
+                        break;
+                    default:
+                        $result['stocks'][$key] = $value;
                 }
             }
+
+            /** sort data order by volume. */
+            collect($result['stocks'])->sortByDesc('incomeaftertax');
+
+            /** add button array keys. */
+            $result['stocks'] = $this->helpers(['purpose' => 'format', 'source' => 'stocks', 'stock' => $result['stocks']]);
+
+            /** resequence array keys. */
+            $result['stocks'] = array_values($result['stocks']);
+
+            /** return something. */
+            return array('message' => 'Processed and displayed are all potential stocks that could be listed on the PSE.', 'data' => $result['stocks']);
+        } else {
+            /** return something. */
+            return array('message' => 'There was no entry in the database.');
         }
     }
 

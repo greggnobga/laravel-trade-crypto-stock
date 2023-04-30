@@ -264,7 +264,7 @@ const Watchlist = () => {
                         and growth from its equity financing.
                     </div>
                     <div className="items">
-                        Dividend Rate Per Year - Is the amount of money a
+                        Dividend Yield - Is the amount of money a
                         company pays shareholders for owning a share of its
                         stock divided by its current stock price.
                     </div>

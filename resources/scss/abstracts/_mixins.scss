@@ -126,3 +126,35 @@
         width: 16px;
     }
 }
+/** for icon size desktop screen. */
+@mixin item-mobile {
+    padding: 0.25rem;
+    border-bottom: 1px solid rgba($cl-gray-200, 0.75);
+
+    .key {
+        font-size: 0.5rem;
+        font-weight: $fw-normal;
+        color: rgba($cl-green, 0.75);
+    }
+
+    .value {
+        padding-top: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: $fw-lighter;
+        text-align: center;
+    }
+
+    .btn {
+        font-size: 0.75rem;
+        padding: 0.25rem;
+        @include icon-size-mobile;
+    }
+
+    &:nth-child(odd) {
+        background: rgba($cl-gray-100, 0.25);
+    }
+
+    &:nth-child(even) {
+        background: rgba($cl-gray-100, 0.15);
+    }
+}

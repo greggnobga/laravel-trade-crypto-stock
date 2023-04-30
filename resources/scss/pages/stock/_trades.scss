@@ -5,7 +5,7 @@
     .trade {
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: 0.02fr 1fr;
+        grid-template-rows: 5rem 1fr;
         row-gap: 0.25rem;
 
         .board {
@@ -70,35 +70,10 @@
                 grid-template-rows: auto;
                 row-gap: 0.25rem;
                 column-gap: 0.25rem;
-
                 @include content-background;
 
                 .item {
-                    padding: 0.25rem;
-                    position: relative;
-
-                    .key {
-                        position: absolute;
-                        top: 0;
-                        left: 5px;
-                        font-size: 0.5rem;
-                        font-weight: $fw-normal;
-                        color: rgba($cl-green, 0.75);
-                    }
-
-                    .value {
-                        margin-top: 0.75rem;
-                        font-size: 0.75rem;
-                        text-align: center;
-                        vertical-align: middle;
-                        font-weight: $fw-lighter;
-                    }
-
-                    .btn {
-                        font-size: 0.75rem;
-                        padding: 0.25rem;
-                        @include icon-size-mobile;
-                    }
+                    @include item-mobile;
                 }
 
                 &:first-child {
@@ -116,7 +91,7 @@
  */
 @media only screen and (min-device-width: 280px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 2) {
     #stock-trade > .trade {
-        grid-template-rows: 0.02fr 1fr;
+        grid-template-rows: 10rem 1fr;
         row-gap: 0.25rem;
 
         .board {
@@ -148,7 +123,7 @@
  */
 @media (min-device-width: 768px) and (max-device-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) {
     #stock-trade > .trade {
-        grid-template-rows: 0.02fr 1fr;
+        grid-template-rows: 10rem 1fr;
         row-gap: 0.25rem;
 
         .board {

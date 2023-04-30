@@ -56,29 +56,100 @@ const Destroy = (props) => {
     return (
         <Fragment>
             {props.data && (
-                <div className="destroy">
+                <div className="items">
                     <div className="item">
-                        <span>
-                            Are you certain that you want to remove{" "}
-                            {props.data.name}?
-                        </span>
+                        <input
+                            className="destroy"
+                            name="order"
+                            type="text"
+                            value={props.data.order}
+                            disabled={true}
+                        />
                     </div>
                     <div className="item">
-                        <button
-                            className="btn btn-green-outline"
-                            onClick={destroyHandler}
-                            type="button"
-                        >
-                            <Icon id="submit" /> Submit
-                        </button>
-                        <button
-                            className="btn btn-red-outline"
-                            onClick={props.display}
-                            type="button"
-                        >
-                            <Icon id="cancel" /> Cancel
-                        </button>
+                        <input
+                            className="destroy"
+                            name="symbol"
+                            type="text"
+                            value={props.data.symbol}
+                            disabled={true}
+                        />
                     </div>
+                    <div className="item">
+                        <input
+                            className="destroy"
+                            name="name"
+                            type="text"
+                            value={props.data.name}
+                            disabled={true}
+                        />
+                    </div>
+                    <div className="item">
+                        <input
+                            className="destroy"
+                            name="fee"
+                            type="text"
+                            value={props.data.fee}
+                            disabled={true}
+                        />
+                    </div>
+                    <div className="item">
+                        <input
+                            className="destroy"
+                            name="share"
+                            type="text"
+                            value={props.data.share}
+                            disabled={true}
+                        />
+                    </div>
+                    <div className="item">
+                        <input
+                            className="destroy"
+                            name="capital"
+                            type="text"
+                            value={props.data.capital}
+                            disabled={true}
+                        />
+                    </div>
+                    {props.screen ? (
+                        <Fragment>
+                            <div className="item">
+                                <button
+                                    className="btn btn-green-outline"
+                                    onClick={destroyHandler}
+                                    type="button"
+                                >
+                                    <Icon id="submit" /> Submit
+                                </button>
+                            </div>
+                            <div className="item">
+                                <button
+                                    className="btn btn-red-outline"
+                                    onClick={props.display}
+                                    type="button"
+                                >
+                                    <Icon id="cancel" /> Cancel
+                                </button>
+                            </div>
+                        </Fragment>
+                    ) : (
+                        <div className="item">
+                            <button
+                                className="btn btn-green-outline"
+                                onClick={destroyHandler}
+                                type="button"
+                            >
+                                <Icon id="submit" /> Submit
+                            </button>
+                            <button
+                                className="btn btn-red-outline"
+                                onClick={props.display}
+                                type="button"
+                            >
+                                <Icon id="cancel" /> Cancel
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
         </Fragment>

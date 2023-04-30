@@ -36,9 +36,9 @@ class TradeController extends Controller {
         $check = DB::table('stock_trades')
             ->select('symbol')
             ->where('symbol', '=', 'PSEi')
-            ->first();
+            ->get();
 
-        if ($check->symbol == 'PSEi') {
+        if ($check->isNotEmpty()) {
             /** create stock list. */
             $items = DB::table('stock_trades')
                 ->select('edge', 'symbol', 'sector', 'price', 'change', 'volume', 'average', 'incomeaftertax', 'earningpershare', 'yearhighprice',  'dividendyield')

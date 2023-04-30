@@ -60,6 +60,7 @@ const Mobile = (props) => {
                                 <span className="key">Volume</span>
                                 <span className="value">{item.volume}</span>
                             </div>
+                            <div className="item"></div>
                             <div className="item">
                                 <span
                                     className="btn btn-purple-outline"

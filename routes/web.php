@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/debug', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'fetch']);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::post('/stock-reports-store', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
@@ -23,6 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::view('{catchall}', 'app')->where('catchall', '.*');
 
 
+//Route::get('/debug', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'fetch']);
 
 // Route::group(['middleware' => 'web'], function() {
 //     Route::get('/', [App\Http\Controllers\App\AppController::class, 'init']);
@@ -37,5 +37,3 @@ Route::view('{catchall}', 'app')->where('catchall', '.*');
 //     Route::post('/stock-reports-store', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
 //     Route::get('/stock-reports-retrieve', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
 // });
-
-// Route::get('/stocks', [App\Http\Controllers\App\AppController::class, 'init']);

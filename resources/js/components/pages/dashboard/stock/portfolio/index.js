@@ -101,13 +101,17 @@ const Portfolio = () => {
                         </div>
                     </div>
                 </div>
-                <div className="content">
+                <div className={screen}>
                     <Add
                         record={record}
                         display={recordHandler}
                         retrieve={retrieveRequest}
                     />
-                    <Order order={order} retrieve={retrieveRequest} />
+                    <Order
+                        order={order}
+                        screen={isMobile}
+                        retrieve={retrieveRequest}
+                    />
                 </div>
             </div>
         </div>

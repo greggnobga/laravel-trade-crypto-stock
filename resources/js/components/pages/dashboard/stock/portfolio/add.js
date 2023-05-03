@@ -297,23 +297,47 @@ const Add = (props) => {
                             ""
                         )}
                     </div>
-                    <div className="item">
-                        <button
-                            className="btn btn-green-outline"
-                            onClick={recordHandler}
-                            disabled={!formIsValid}
-                            type="button"
-                        >
-                            <Icon id="submit" /> Submit
-                        </button>
-                        <button
-                            className="btn btn-red-outline"
-                            onClick={props.display}
-                            type="button"
-                        >
-                            <Icon id="cancel" /> Cancel
-                        </button>
-                    </div>
+                    {props.screen ? (
+                        <Fragment>
+                            <div className="item">
+                                <button
+                                    className="btn btn-green-outline"
+                                    onClick={recordHandler}
+                                    disabled={!formIsValid}
+                                    type="button"
+                                >
+                                    <Icon id="submit" /> Submit
+                                </button>
+                            </div>
+                            <div className="item">
+                                <button
+                                    className="btn btn-red-outline"
+                                    onClick={props.display}
+                                    type="button"
+                                >
+                                    <Icon id="cancel" /> Cancel
+                                </button>
+                            </div>
+                        </Fragment>
+                    ) : (
+                        <div className="item">
+                            <button
+                                className="btn btn-green-outline"
+                                onClick={recordHandler}
+                                disabled={!formIsValid}
+                                type="button"
+                            >
+                                <Icon id="submit" /> Submit
+                            </button>
+                            <button
+                                className="btn btn-red-outline"
+                                onClick={props.display}
+                                type="button"
+                            >
+                                <Icon id="cancel" /> Cancel
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
         </Fragment>

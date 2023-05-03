@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/debug', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'fetch']);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::post('/stock-reports-store', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);
@@ -20,9 +21,6 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::view('{catchall}', 'app')->where('catchall', '.*');
-
-
-//Route::get('/debug', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'fetch']);
 
 // Route::group(['middleware' => 'web'], function() {
 //     Route::get('/', [App\Http\Controllers\App\AppController::class, 'init']);

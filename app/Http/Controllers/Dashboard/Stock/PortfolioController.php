@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class PortfolioController extends Controller {
     /**
@@ -48,9 +49,7 @@ class PortfolioController extends Controller {
     /** Fetch portfolio. */
     public function fetch() {
         /** repository. */
-        $result = [];
-        $order = [];
-        $hold = [];
+        $result = array();
 
         /** check record. */
         $check = DB::table('stock_portfolios')
@@ -59,6 +58,64 @@ class PortfolioController extends Controller {
             ->get();
 
         if ($check->isNotEmpty()) {
+            /** fetch stocks. */
+            $chart['stocks']['object'] = DB::table('stock_portfolios')->select('symbol', 'capital')->get();
+            foreach ($chart['stocks']['object'] as $key => $value) {
+                $chart['stocks']['array'][$key]['symbol'] = $value->symbol;
+                $chart['stocks']['array'][$key]['capital'] = $value->capital;
+            }
+            /** append to result. */
+            $result['chart']['stocks'] = $chart['stocks']['array'];
+
+            /** plot month and year. */
+            $chart['plot'] = array();
+            for ($i = 11; $i >= 0; $i--) {
+                $month = Carbon::today()->startOfMonth()->subMonth($i);
+                $year = Carbon::today()->startOfMonth()->subMonth($i)->format('Y');
+                array_push($chart['plot'], array(
+                    'id' => $month->format('m'),
+                    'month' => $month->shortMonthName,
+                    'year' => $year
+                ));
+            }
+
+            /** get data by month and year. */
+            $chart['data'] = array();
+            foreach ($chart['plot'] as $key => $value) {
+                $chart['data'][$value['month']] = DB::table('stock_portfolios')
+                    ->select('capital')
+                    ->whereYear('created_at', $value['year'])
+                    ->whereMonth('created_at', $value['id'])
+                    ->orderBy('created_at')
+                    ->get();
+            }
+
+            /** format chart data. */
+            $chart['capital'] = array();
+            foreach ($chart['data'] as $key => $value) {
+                if ($value->isEmpty()) {
+                    $chart['capital'][$key]['month'] = $key;
+                    $chart['capital'][$key]['capital'] = number_format(0.00, 2, '.', '');
+                }
+                if ($value->isNotEmpty()) {
+                    $chart['capital'][$key]['month'] = $key;
+                    $chart['capital'][$key]['capital'] = number_format($value->sum('capital'), 2, '.', '');
+                }
+            }
+
+            /** resequence array keys*/
+            $result['chart']['capital'] = array_values($chart['capital']);
+
+            /** get asset summary. */
+            $chart['total']['capital'] = DB::table('stock_portfolios')->select('capital')->get()->sum('capital');
+            $chart['total']['stocks'] = DB::table('stock_portfolios')->select('symbol')->distinct()->count('symbol');
+
+            /** fix decimal on capital. */
+            $chart['total']['capital'] = number_format($chart['total']['capital'], 2, '.', ',');
+
+            /** append to result. */
+            $result['chart']['total'] = $chart['total'];
+
             /** order data. */
             $stocks = DB::table('stock_portfolios')
                 ->select('id', 'created_at as date', 'order', 'symbol', 'name', 'fee', 'share', 'capital')
@@ -70,12 +127,14 @@ class PortfolioController extends Controller {
             }
 
             /** hold data. */
+            $hold = array();
             $symbol = DB::table('stock_portfolios')
                 ->select('symbol')
                 ->where('userid', '=', Auth::id())
                 ->get()
                 ->unique();
 
+            /** if not empty. */
             if ($symbol->isNotEmpty()) {
                 foreach ($symbol as $key => $value) {
                     /** build buy data. */
@@ -125,10 +184,10 @@ class PortfolioController extends Controller {
                 $result['hold']['total'] = array_values($hold['total']);
             }
             /** return if record found. */
-            return ['message' => 'Please wait while we process your request.', 'order' => $result['order'], 'hold' => $result['hold']];
+            return response(['message' => 'Please wait while we process your request.', 'order' => $result['order'], 'hold' => $result['hold'], 'chart' => $result['chart']], 200);
         } else {
             /** return if no record. */
-            return ['message' => 'No record found so far.'];
+            return response(['message' => 'No record found so far.'], 200);
         }
     }
 

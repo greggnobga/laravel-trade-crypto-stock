@@ -2,6 +2,51 @@
     min-height: 100vh;
     margin-top: 0.5rem;
 
+    .account {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: 2rem 1fr;
+
+        .board {
+            grid-column: 1;
+            grid-row: 1;
+            @include icon-name-desktop($cl-purple);
+        }
+
+        .content-desktop {
+            grid-column: 1;
+            grid-row: 2;
+            @include content-background;
+
+            .items {
+                display: grid;
+                grid-template-rows: auto;
+                grid-template-columns: repeat(3, 1fr);
+                grid-column-gap: 1rem;
+                @include content-items;
+
+                .item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+
+        .content-mobile {
+            .items {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+                @include content-background;
+
+                .item {
+                    @include item-mobile;
+                }
+            }
+        }
+    }
+
     .asset {
         display: grid;
         grid-template-columns: auto;
@@ -124,10 +169,7 @@
 
                 .item {
                     position: relative;
-
-                    .label {
-                        padding: 0.25rem;
-                    }
+                    padding: 0.15rem;
                     @include input-label;
                     @include item-mobile;
                 }

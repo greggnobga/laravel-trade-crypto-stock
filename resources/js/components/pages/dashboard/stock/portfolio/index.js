@@ -1,6 +1,9 @@
 /** React. */
 import { useState, useContext, useEffect } from "react";
 
+/** Vendor. */
+import Chart from "chart.js/auto";
+
 /** Context. */
 import AuthContext from "../../../../../context/auth-context";
 
@@ -13,12 +16,68 @@ import Icon from "../../../../icons";
 import Hold from "./hold";
 import Add from "./add";
 import Order from "./order";
+import BarChart from "../../../../interfaces/chart/bar";
+import PieChart from "../../../../interfaces/chart/pie";
+import DoughnutChart from "../../../../interfaces/chart/doughnut";
 
 const Portfolio = () => {
     /** Use state. */
     const [record, setRecord] = useState(false);
     const [hold, setHold] = useState([]);
     const [order, setOrder] = useState([]);
+    const [capital, setCapital] = useState([]);
+    const [stocks, setStocks] = useState([]);
+    const [total, setTotal] = useState([]);
+    const [watcher, setWatcher] = useState(false);
+    const [capitalChart, setCapitalChart] = useState({});
+    const [stocksChart, setStocksChart] = useState({});
+
+    useEffect(() => {
+        /** define state. */
+        const capitalData = {
+            labels: capital.map((item) => item.month),
+            datasets: [
+                {
+                    label: "Capital",
+                    data: capital.map((item) => item.capital),
+                    backgroundColor: [
+                        "rgba(255, 99, 132, 0.5)",
+                        "rgba(255, 159, 64, 0.5)",
+                        "rgba(255, 205, 86, 0.5)",
+                        "rgba(75, 192, 192, 0.5)",
+                        "rgba(54, 162, 235, 0.5)",
+                        "rgba(153, 102, 255, 0.5)",
+                        "rgba(201, 203, 207, 0.5)",
+                    ],
+                    borderColor: ["rgba(233, 236, 239, .75)"],
+                },
+            ],
+        };
+        /** Set state data. */
+        setCapitalChart(capitalData);
+        /** define state. */
+        const stocksData = {
+            labels: stocks.map((item) => item.symbol),
+            datasets: [
+                {
+                    label: "Stocks",
+                    data: stocks.map((item) => item.capital),
+                    backgroundColor: [
+                        "rgba(255, 99, 132, 0.5)",
+                        "rgba(255, 159, 64, 0.5)",
+                        "rgba(255, 205, 86, 0.5)",
+                        "rgba(75, 192, 192, 0.5)",
+                        "rgba(54, 162, 235, 0.5)",
+                        "rgba(153, 102, 255, 0.5)",
+                        "rgba(201, 203, 207, 0.5)",
+                    ],
+                    borderColor: ["rgba(233, 236, 239, .75)"],
+                },
+            ],
+        };
+        /** Set state data. */
+        setStocksChart(stocksData);
+    }, [capital, stocks]);
 
     /** Show or hide form. */
     const recordHandler = () => {
@@ -37,9 +96,18 @@ const Portfolio = () => {
             /** Set state value. */
             setHold(data["hold"]["total"]);
         }
+        /** Process response. */
         if (data.hasOwnProperty("order")) {
             /** Set state value. */
             setOrder(data["order"]);
+        }
+        /** Process response. */
+        if (data.hasOwnProperty("chart")) {
+            /** Set state value. */
+            setWatcher(true);
+            setCapital(data["chart"]["capital"]);
+            setStocks(data["chart"]["stocks"]);
+            setTotal(data["chart"]["total"]);
         }
     };
 
@@ -66,13 +134,42 @@ const Portfolio = () => {
 
     return (
         <div id="stock-portfolio">
-            <div className="asset">
+            <div className="account">
                 <div className="board">
                     <Icon id="portfolio" />
                     <span className="name">Account Statistics</span>
                 </div>
-                <div className="content">
-                    <p>Graph for capital, assets and orders.</p>
+                <div className={screen}>
+                    <div className="items">
+                        <div className="item">
+                            {watcher ? (
+                                <BarChart data={capitalChart} />
+                            ) : (
+                                <p>No data.</p>
+                            )}
+                        </div>
+                        <div className="item">
+                            {watcher ? (
+                                <div className="total">
+                                    <span className="stocks">
+                                        Total Stocks: {total["stocks"]}
+                                    </span>
+                                    <span className="capital">
+                                        Total Capital: {total["capital"]}
+                                    </span>
+                                </div>
+                            ) : (
+                                <p>No data.</p>
+                            )}
+                        </div>
+                        <div className="item">
+                            {watcher ? (
+                                <DoughnutChart data={stocksChart} />
+                            ) : (
+                                <p>No data.</p>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className="asset">
@@ -104,6 +201,7 @@ const Portfolio = () => {
                 <div className={screen}>
                     <Add
                         record={record}
+                        screen={isMobile}
                         display={recordHandler}
                         retrieve={retrieveRequest}
                     />

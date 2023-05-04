@@ -64,6 +64,7 @@ class PortfolioController extends Controller {
                 $chart['stocks']['array'][$key]['symbol'] = $value->symbol;
                 $chart['stocks']['array'][$key]['capital'] = $value->capital;
             }
+
             /** append to result. */
             $result['chart']['stocks'] = $chart['stocks']['array'];
 
@@ -107,14 +108,21 @@ class PortfolioController extends Controller {
             $result['chart']['capital'] = array_values($chart['capital']);
 
             /** get asset summary. */
-            $chart['total']['capital'] = DB::table('stock_portfolios')->select('capital')->get()->sum('capital');
-            $chart['total']['stocks'] = DB::table('stock_portfolios')->select('symbol')->distinct()->count('symbol');
+            $chart['sum']['capital'] = DB::table('stock_portfolios')->select('capital')->get()->sum('capital');
+            $chart['sum']['fee'] = DB::table('stock_portfolios')->select('fee')->get()->sum('fee');
+            $chart['sum']['share'] = DB::table('stock_portfolios')->select('share')->get()->sum('share');
 
-            /** fix decimal on capital. */
-            $chart['total']['capital'] = number_format($chart['total']['capital'], 2, '.', ',');
+            /** format chart data. */
+            $chart['total'] = array();
+            foreach ($chart['sum'] as $key => $value) {
+                if ($value >= 0) {
+                    $chart['total'][$key]['label'] = ucfirst($key);
+                    $chart['total'][$key]['amount'] = number_format($value, 2, '.', '');
+                }
+            }
 
             /** append to result. */
-            $result['chart']['total'] = $chart['total'];
+            $result['chart']['total'] = array_values($chart['total']);
 
             /** order data. */
             $stocks = DB::table('stock_portfolios')

@@ -17,7 +17,7 @@ import Hold from "./hold";
 import Add from "./add";
 import Order from "./order";
 import BarChart from "../../../../interfaces/chart/bar";
-import PieChart from "../../../../interfaces/chart/pie";
+import PolarChart from "../../../../interfaces/chart/polar";
 import DoughnutChart from "../../../../interfaces/chart/doughnut";
 
 const Portfolio = () => {
@@ -31,14 +31,16 @@ const Portfolio = () => {
     const [watcher, setWatcher] = useState(false);
     const [capitalChart, setCapitalChart] = useState({});
     const [stocksChart, setStocksChart] = useState({});
+    const [totalChart, setTotalChart] = useState({});
 
+    /** Use effect. */
     useEffect(() => {
         /** define state. */
         const capitalData = {
             labels: capital.map((item) => item.month),
             datasets: [
                 {
-                    label: "Capital",
+                    label: "Monthly Capital Distribution",
                     data: capital.map((item) => item.capital),
                     backgroundColor: [
                         "rgba(255, 99, 132, 0.5)",
@@ -77,7 +79,29 @@ const Portfolio = () => {
         };
         /** Set state data. */
         setStocksChart(stocksData);
-    }, [capital, stocks]);
+        /** define state. */
+        const totalData = {
+            labels: total.map((item) => item.label),
+            datasets: [
+                {
+                    label: "Total",
+                    data: total.map((item) => item.amount),
+                    backgroundColor: [
+                        "rgba(255, 99, 132, 0.5)",
+                        "rgba(255, 159, 64, 0.5)",
+                        "rgba(255, 205, 86, 0.5)",
+                        "rgba(75, 192, 192, 0.5)",
+                        "rgba(54, 162, 235, 0.5)",
+                        "rgba(153, 102, 255, 0.5)",
+                        "rgba(201, 203, 207, 0.5)",
+                    ],
+                    borderColor: ["rgba(233, 236, 239, .75)"],
+                },
+            ],
+        };
+        /** Set state data. */
+        setTotalChart(totalData);
+    }, [capital, stocks, total]);
 
     /** Show or hide form. */
     const recordHandler = () => {
@@ -137,7 +161,7 @@ const Portfolio = () => {
             <div className="account">
                 <div className="board">
                     <Icon id="portfolio" />
-                    <span className="name">Account Statistics</span>
+                    <span className="name">Account</span>
                 </div>
                 <div className={screen}>
                     <div className="items">
@@ -150,21 +174,14 @@ const Portfolio = () => {
                         </div>
                         <div className="item">
                             {watcher ? (
-                                <div className="total">
-                                    <span className="stocks">
-                                        Total Stocks: {total["stocks"]}
-                                    </span>
-                                    <span className="capital">
-                                        Total Capital: {total["capital"]}
-                                    </span>
-                                </div>
+                                <DoughnutChart data={stocksChart} />
                             ) : (
                                 <p>No data.</p>
                             )}
                         </div>
                         <div className="item">
                             {watcher ? (
-                                <DoughnutChart data={stocksChart} />
+                                <PolarChart data={totalChart} />
                             ) : (
                                 <p>No data.</p>
                             )}

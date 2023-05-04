@@ -15,7 +15,7 @@ const DoughnutChart = (props) => {
                 position: "top",
                 labels: {
                     usePointStyle: true,
-                    pointStyle: "circle",
+                    pointStyle: "rect",
                     font: {
                         size: 10,
                     },

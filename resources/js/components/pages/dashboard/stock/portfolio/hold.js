@@ -5,7 +5,7 @@ const Hold = (props) => {
     /** Return something. */
     return (
         <Fragment>
-            {props.screen ? (
+            {props.mobile ? (
                 <Fragment>
                     {props.hold &&
                         props.hold.map((item, index) => {

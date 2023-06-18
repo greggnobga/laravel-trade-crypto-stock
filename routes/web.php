@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/debug', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'fetch']);
+Route::get('/debug', [App\Http\Controllers\Dashboard\Crypto\ScreenController::class, 'test']);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::post('/stock-reports-store', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);

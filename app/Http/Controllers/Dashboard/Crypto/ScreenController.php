@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Http\Controllers\Dashboard\Crypto;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+
+use Symfony\Component\DomCrawler\Crawler;
 use App\Http\Controllers\Controller;
 
 class ScreenController extends Controller {
@@ -84,12 +88,11 @@ class ScreenController extends Controller {
                 }
             } else {
                 /** return if false. */
-                return ['status' =>  false, 'sql' => 'select', 'message' => $check->coin . ' already recorded in the database.', 'coin' => '' ];
+                return ['status' =>  false, 'sql' => 'select', 'message' => $check->coin . ' already recorded in the database.', 'coin' => ''];
             }
         }
         /** return. */
-        return ['status' =>  false, 'sql' => 'update', 'message' => 'Insert operation unsuccessful.', 'coin' => '' ];
-
+        return ['status' =>  false, 'sql' => 'update', 'message' => 'Insert operation unsuccessful.', 'coin' => ''];
     }
 
     /**
@@ -127,7 +130,7 @@ class ScreenController extends Controller {
         }
 
         /** return. */
-        return ['status' =>  false, 'sql' => 'update', 'message' => 'Update operation unsuccessful.', 'coin' => '' ];
+        return ['status' =>  false, 'sql' => 'update', 'message' => 'Update operation unsuccessful.', 'coin' => ''];
     }
 
     /**
@@ -145,7 +148,7 @@ class ScreenController extends Controller {
         }
 
         /** return. */
-        return ['status' =>  false, 'sql' => 'destroy', 'message' => 'Destroy operation unsuccessful.', 'coin' => '' ];
+        return ['status' =>  false, 'sql' => 'destroy', 'message' => 'Destroy operation unsuccessful.', 'coin' => ''];
     }
 
     private function helpers($data) {
@@ -183,5 +186,20 @@ class ScreenController extends Controller {
             }
             return $return;
         }
+    }
+
+    public function test() {
+        /** create request. */
+        $uniswap = Http::get('https://app.uniswap.org/#/tokens/ethereum');
+
+        dd($uniswap);
+        /** make it crawlable. */
+        $crawler_uniswap = new Crawler($uniswap);
+
+        dd($crawler_uniswap);
+        /** filter response. */
+        $stocksector = $$crawler_uniswap->filter('tr > td')->each(function ($node) {
+            return $node->text();
+        });
     }
 }

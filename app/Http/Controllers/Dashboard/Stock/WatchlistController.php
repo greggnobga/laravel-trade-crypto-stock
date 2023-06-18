@@ -46,7 +46,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'miningandoil') {
                     /** fetch stocks. */
                     $sector['miningandoils'] = DB::table('stock_watchlists')
-                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                         ->where('userid', '=', Auth::id())
                         ->where('sector', '=', $value->sector)
                         ->where('earningspershare', '>', 0)
@@ -64,7 +64,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'holdingfirms') {
                     /** fetch stocks. */
                     $sector['holdingfirms'] = DB::table('stock_watchlists')
-                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                         ->where('userid', '=', Auth::id())
                         ->where('sector', '=', $value->sector)
                         ->where('earningspershare', '>', 0)
@@ -82,7 +82,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'services') {
                     /** fetch stocks. */
                     $sector['services'] = DB::table('stock_watchlists')
-                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                         ->where('userid', '=', Auth::id())
                         ->where('sector', '=', $value->sector)
                         ->where('earningspershare', '>', 0)
@@ -100,7 +100,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'industrial') {
                     /** fetch stocks. */
                     $sector['industrials'] = DB::table('stock_watchlists')
-                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                         ->where('userid', '=', Auth::id())
                         ->where('sector', '=', $value->sector)
                         ->where('earningspershare', '>', 0)
@@ -118,7 +118,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'property') {
                     /** fetch stocks. */
                     $sector['properties'] = DB::table('stock_watchlists')
-                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                         ->where('userid', '=', Auth::id())
                         ->where('sector', '=', $value->sector)
                         ->where('earningspershare', '>', 0)
@@ -136,7 +136,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'financials') {
                     /** fetch stocks. */
                     $sector['financials'] = DB::table('stock_watchlists')
-                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                         ->where('userid', '=', Auth::id())
                         ->where('sector', '=', $value->sector)
                         ->where('earningspershare', '>', 0)
@@ -154,7 +154,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'smallmediumemergingboard') {
                     /** fetch stocks. */
                     $sector['smallmediumemergingboards'] = DB::table('stock_watchlists')
-                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                         ->where('userid', '=', Auth::id())
                         ->where('sector', '=', $value->sector)
                         ->where('earningspershare', '>', 0)
@@ -171,7 +171,7 @@ class WatchlistController extends Controller {
                 }
                 if ($value->sector == 'etf') {
                     $sector['exchangetradedfunds'] = DB::table('stock_watchlists')
-                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'lasttradedprice', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
+                        ->select('id', 'volume', 'symbol', 'sector', 'edge', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
                         ->where('userid', '=', Auth::id())
                         ->where('sector', '=', $value->sector)
                         ->orderBy('volume', 'desc')
@@ -229,31 +229,31 @@ class WatchlistController extends Controller {
                 $return[$key]['symbol'] = $value->symbol;
                 $return[$key]['sector'] = $value->sector;
                 $return[$key]['edge'] = $value->edge;
-                $return[$key]['lasttradedprice'] = $value->lasttradedprice;
 
                 /** fetch additional column. */
-                $price = DB::table('stock_trades')->select('yearhighprice', 'dividendyield', 'incomeaftertax')->where('symbol', $value->symbol)->first();
-                $return[$key]['yearhighprice'] = $price->yearhighprice;
-                $return[$key]['dividendyield'] = $price->dividendyield;
+                $trade = DB::table('stock_trades')->select('price', 'yearhighprice', 'dividendyield', 'incomeaftertax')->where('symbol', $value->symbol)->first();
+                $return[$key]['yearhighprice'] = $trade->yearhighprice;
+                $return[$key]['dividendyield'] = $trade->dividendyield;
+                $return[$key]['lasttradedprice'] = $trade->price;
 
                 /** evalaute value is greater than zero. */
                 if ($value->totalliabilities > 0 && $value->stockholdersequity > 0) {
                     $return[$key]['debtequityratio'] = bcdiv(abs($value->totalliabilities), abs($value->stockholdersequity), 2);
                 }
-                if ($value->lasttradedprice > 0 && $value->earningspershare > 0) {
-                    $return[$key]['priceearningratio'] = bcdiv(abs($value->lasttradedprice), abs($value->earningspershare), 2);
+                if ($trade->price > 0 && $value->earningspershare > 0) {
+                    $return[$key]['priceearningratio'] = bcdiv(abs($trade->price), abs($value->earningspershare), 2);
                 }
                 if ($value->netincomebeforetax > 0 && $value->grossrevenue > 0) {
-                    $return[$key]['netprofitmargin'] = bcmul(bcdiv(abs($price->incomeaftertax), abs($value->grossrevenue), 2), 100, 2);
+                    $return[$key]['netprofitmargin'] = bcmul(bcdiv(abs($trade->incomeaftertax), abs($value->grossrevenue), 2), 100, 2);
                 }
                 if ($value->grossrevenue > 0 && $value->stockholdersequity > 0) {
-                    $return[$key]['returnonequity'] = bcdiv(abs($price->incomeaftertax), abs($value->stockholdersequity), 2);
+                    $return[$key]['returnonequity'] = bcdiv(abs($trade->incomeaftertax), abs($value->stockholdersequity), 2);
                 }
                 /** evalaute value is equal to zero. */
                 if ($value->totalliabilities <= 0 || $value->stockholdersequity <= 0) {
                     $return[$key]['debtequityratio'] = 0.00;
                 }
-                if ($value->lasttradedprice <= 0 || $value->earningspershare <= 0) {
+                if ($trade->price <= 0 || $value->earningspershare <= 0) {
                     $return[$key]['priceearningratio'] = 0.00;
                 }
                 if ($value->netincomebeforetax <= 0 || $value->grossrevenue <= 0) {

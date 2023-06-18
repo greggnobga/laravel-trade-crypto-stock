@@ -7,11 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Title -->
-    <title>{{ config('app.name', 'Discover Your Ideal Work From Home Opportunities') }}</title>
+    <title>Trade - Buy High Sell Low - A Classic Approach</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="48x48" href="/public/icons/favicon.ico">
     <!-- Pure CSS -->
-    <link href="/public/css/main.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/app.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>

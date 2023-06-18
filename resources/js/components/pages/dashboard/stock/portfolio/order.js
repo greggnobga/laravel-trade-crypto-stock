@@ -7,7 +7,7 @@ import Show from "./show";
 const Order = (props) => {
     return (
         <Fragment>
-            {props.screen ? (
+            {props.mobile ? (
                 <Fragment>
                     {props.order.map((item, index) => {
                         return (
@@ -15,7 +15,7 @@ const Order = (props) => {
                                 data={item}
                                 key={index}
                                 retrieve={props.retrieve}
-                                screen={props.screen}
+                                mobile={props.mobile}
                             />
                         );
                     })}
@@ -37,7 +37,7 @@ const Order = (props) => {
                                 data={item}
                                 key={index}
                                 retrieve={props.retrieve}
-                                screen={props.screen}
+                                mobile={props.mobile}
                             />
                         );
                     })}

@@ -1,5 +1,5 @@
-const mix = require('laravel-mix');
-
+const mix = require("laravel-mix");
+const tailwind = require("tailwindcss");
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,23 +11,16 @@ const mix = require('laravel-mix');
  |
  */
 
-/** bundle javascript and sass. */
-mix.js('resources/js/main.js', 'public/js/main.js')
-    .sass('resources/scss/global.scss', 'public/css/main.css')
+/** bundle javascript and tailwind. */
+mix.js("resources/js/main.js", "public/js/main.js")
+    .postCss("resources/css/app.css", "public/css/app.css", [tailwind])
     .react();
 
 /** create source maps. */
 mix.sourceMaps(true);
 
 /** copy svg sprite. */
-mix.copy('resources/icons', 'public/icons');
+mix.copy("resources/icons", "public/icons");
 
 /** copy images. */
-mix.copy('resources/images', 'public/images');
-
-
-mix.webpackConfig({
-    stats: {
-        children: true,
-    },
-});
+mix.copy("resources/images", "public/images");

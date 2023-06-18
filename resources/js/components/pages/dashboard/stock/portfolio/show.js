@@ -28,21 +28,21 @@ const Show = (props) => {
 
     return (
         <Fragment>
-            {props.screen ? (
+            {props.mobile ? (
                 <Fragment>
                     {update ? (
                         <Update
                             data={props.data}
                             display={updateHandler}
                             retrieve={props.retrieve}
-                            screen={props.screen}
+                            mobile={props.mobile}
                         />
                     ) : destroy ? (
                         <Destroy
                             data={props.data}
                             display={destroyHandler}
                             retrieve={props.retrieve}
-                            screen={props.screen}
+                            mobile={props.mobile}
                         />
                     ) : (
                         <div className="items" key={props.data.id}>
@@ -104,14 +104,14 @@ const Show = (props) => {
                             data={props.data}
                             display={updateHandler}
                             retrieve={props.retrieve}
-                            screen={props.screen}
+                            mobile={props.mobile}
                         />
                     ) : destroy ? (
                         <Destroy
                             data={props.data}
                             display={destroyHandler}
                             retrieve={props.retrieve}
-                            screen={props.screen}
+                            mobile={props.mobile}
                         />
                     ) : (
                         <div className="items" key={props.data.id}>

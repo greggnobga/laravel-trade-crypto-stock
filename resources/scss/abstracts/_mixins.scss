@@ -49,7 +49,7 @@
         font-size: 0.75rem;
         transition: 0.5s ease all;
         color: rgba($cl-green, 0.75);
-        padding: 3px 2px 2px 3px;
+        padding: 5px;
     }
 
     .input {
@@ -59,12 +59,14 @@
         &:active,
         &:focus {
             border: 1px solid rgba($cl-purple, 0.75);
+            padding-left: 5px;
         }
         &:active ~ .label,
         &:focus ~ .label,
         &:valid ~ .label {
             font-size: 0.5rem;
             color: rgba($cl-purple, 0.75);
+            padding-left: 5px;
         }
     }
 
@@ -82,7 +84,7 @@
         right: 2px;
         font-size: 0.5rem;
         color: rgba($cl-red, 0.75);
-        padding: 3px 2px 2px 3px;
+        padding: 5px;
     }
 }
 /** for icon name desktop screen. */

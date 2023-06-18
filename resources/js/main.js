@@ -4,10 +4,10 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
+import axios from "axios";
 window.axios = axios;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
  * Next, we will create a fresh React component instance and attach it to
@@ -16,14 +16,16 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 /** Vendor. */
-import ReactDOM from 'react-dom/client';
+import ReactDOM from "react-dom/client";
 
 /** Context. */
-import AuthProvider from './context/auth-provider';
+import AuthProvider from "./context/auth-provider";
 
-import App from './app';
+/** Entry. */
+import App from "./app";
 
-if (document.getElementById('root')) {
+/** Attached. */
+if (document.getElementById("root")) {
     const Index = ReactDOM.createRoot(document.getElementById("root"));
     Index.render(
         <AuthProvider>

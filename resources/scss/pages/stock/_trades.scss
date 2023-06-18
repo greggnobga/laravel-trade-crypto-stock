@@ -5,7 +5,7 @@
     .trade {
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: 5rem 1fr;
+        grid-template-rows: 2rem 1fr;
         row-gap: 0.25rem;
 
         .board {
@@ -14,7 +14,7 @@
 
             .items {
                 display: grid;
-                grid-template-columns: 5rem 1fr;
+                grid-template-columns: 2rem 1fr;
                 grid-template-rows: auto;
                 row-gap: 0.5rem;
 

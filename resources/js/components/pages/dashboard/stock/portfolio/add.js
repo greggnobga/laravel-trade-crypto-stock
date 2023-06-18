@@ -297,7 +297,7 @@ const Add = (props) => {
                             ""
                         )}
                     </div>
-                    {props.screen ? (
+                    {props.mobile ? (
                         <Fragment>
                             <div className="item">
                                 <button

@@ -29,11 +29,11 @@ import StockWatchlist from "./components/pages/dashboard/stock/watchlist";
 import StockTrade from "./components/pages/dashboard/stock/trade";
 import StockChart from "./components/pages/dashboard/stock/chart";
 
-import CryptoPortfolio from "./components/pages/dashboard/crypto-portfolio";
-import CryptoScreen from "./components/pages/dashboard/crypto-screen";
-import CryptoMoon from "./components/pages/dashboard/crypto-moon";
-import CryptoGame from "./components/pages/dashboard/crypto-game";
-import CryptoNft from "./components/pages/dashboard/crypto-nft";
+import CryptoPortfolio from "./components/pages/dashboard/crypto/portfolio";
+import CryptoScreen from "./components/pages/dashboard/crypto/screen";
+import CryptoMoon from "./components/pages/dashboard/crypto/moon";
+import CryptoGame from "./components/pages/dashboard/crypto/game";
+import CryptoNft from "./components/pages/dashboard/crypto/nft";
 
 import Note from "./components/pages/extra/note";
 

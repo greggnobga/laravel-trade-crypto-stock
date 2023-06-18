@@ -1,9 +1,9 @@
 /** React. */
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useScreen = () => {
     /** Get inner width size. */
-    const getScreen = () => window.innerWidth <= 1024;
+    const getScreen = () => window.innerWidth <= 915;
 
     /** Use state. */
     const [isMobile, setMobile] = useState(getScreen);
@@ -13,18 +13,18 @@ const useScreen = () => {
         /** On resize function. */
         const onResize = () => {
             setMobile(getScreen());
-        }
+        };
         /** Add event resize listener.  */
         window.addEventListener("resize", onResize);
 
         /** Return and remove event listener. */
         return () => {
             window.removeEventListener("resize", onResize);
-        }
+        };
     }, []);
 
     /** Return something. */
-    return { isMobile }
-}
+    return { isMobile };
+};
 
 export default useScreen;

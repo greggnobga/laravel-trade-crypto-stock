@@ -6,6 +6,7 @@ const PolarChart = (props) => {
     const config = {
         responsive: true,
         maintainAspectRatio: true,
+        aspectRatio: 1,
         scales: {
             y: {
                 max: 160000,

@@ -33,6 +33,12 @@ const Portfolio = () => {
     const [stocksChart, setStocksChart] = useState({});
     const [totalChart, setTotalChart] = useState({});
 
+    /** Use screen helper. */
+    const { isMobile } = useScreen();
+
+    /** Infer screen size. */
+    const screen = isMobile ? "content-mobile" : "content-desktop";
+
     /** Use effect. */
     useEffect(() => {
         /** define state. */
@@ -40,7 +46,7 @@ const Portfolio = () => {
             labels: capital.map((item) => item.month),
             datasets: [
                 {
-                    label: "Monthly Capital Distribution",
+                    label: "Capital",
                     data: capital.map((item) => item.capital),
                     backgroundColor: [
                         "rgba(255, 99, 132, 0.5)",
@@ -62,7 +68,7 @@ const Portfolio = () => {
             labels: stocks.map((item) => item.symbol),
             datasets: [
                 {
-                    label: "Stocks",
+                    label: "Capital",
                     data: stocks.map((item) => item.capital),
                     backgroundColor: [
                         "rgba(255, 99, 132, 0.5)",
@@ -150,12 +156,6 @@ const Portfolio = () => {
         retrieveRequest();
     }, []);
 
-    /** Use screen helper. */
-    const { isMobile } = useScreen();
-
-    /** Infer screen size. */
-    const screen = isMobile ? "content-mobile" : "content-desktop";
-
     return (
         <div id="stock-portfolio">
             <div className="account">
@@ -195,7 +195,7 @@ const Portfolio = () => {
                     <span className="name">Hold</span>
                 </div>
                 <div className={screen}>
-                    <Hold hold={hold} screen={isMobile} />
+                    <Hold hold={hold} mobile={isMobile} />
                 </div>
             </div>
             <div className="order">
@@ -218,13 +218,13 @@ const Portfolio = () => {
                 <div className={screen}>
                     <Add
                         record={record}
-                        screen={isMobile}
+                        mobile={isMobile}
                         display={recordHandler}
                         retrieve={retrieveRequest}
                     />
                     <Order
                         order={order}
-                        screen={isMobile}
+                        mobile={isMobile}
                         retrieve={retrieveRequest}
                     />
                 </div>

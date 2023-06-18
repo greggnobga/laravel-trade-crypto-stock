@@ -6,6 +6,7 @@ const DoughnutChart = (props) => {
     const config = {
         responsive: true,
         maintainAspectRatio: true,
+        aspectRatio: 1,
         cutout: 70,
         circumference: 360,
         radius: "85%",

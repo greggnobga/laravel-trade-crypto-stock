@@ -1,11 +1,9 @@
-const Icon = (props) => {
+const Icon = ({ id }) => {
     return (
-        <span className="sprite">
-            <svg className="icon">
-                <use href={`/public/icons/sprite.svg#${props.id}`} />
-            </svg>
-        </span>
+        <svg className="w-6 h-6 inline fill-current">
+            <use href={`/public/icons/sprite.svg#${id}`} />
+        </svg>
     );
-}
+};
 
 export default Icon;

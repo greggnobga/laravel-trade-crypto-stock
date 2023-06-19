@@ -10,9 +10,9 @@
      <link rel="icon" as="image/svg+xml" href="/public/icons/sprite.svg">
  </head>
 
- <body>
+ <body class="font-monster text-base bg-gray-50">
      <aside id="modal"></aside>
-     <main class="bg-gray-500" id="root"></main>
+     <main id="root"></main>
  </body>
  <script src="/public/js/main.js"></script>
 

@@ -1,14 +1,14 @@
 /** Vendor. */
-import { Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
 
 /** Component. */
-import Headers from '../headers'
-import Footers from '../footers'
+import Headers from "../headers";
+import Footers from "../footers";
 
 const Single = () => {
     /** Return something. */
     return (
-        <section id="single" className="fade-in-bottom">
+        <section id="single">
             <Headers />
             <div id="wrapper">
                 <Outlet />
@@ -16,6 +16,6 @@ const Single = () => {
             <Footers />
         </section>
     );
-}
+};
 
 export default Single;

@@ -14,7 +14,7 @@
     <link href="/public/css/app.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
+<body class="font-monster text-base bg-gray-50">
     <main>
         <section id="root"></section>
     </main>

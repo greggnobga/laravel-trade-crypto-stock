@@ -11,16 +11,16 @@ const tailwind = require("tailwindcss");
  |
  */
 
-/** bundle javascript and tailwind. */
-mix.js("resources/js/main.js", "public/js/main.js")
-    .postCss("resources/css/app.css", "public/css/app.css", [tailwind])
-    .react();
+/** bundle react codes. */
+mix.js("resources/js/main.js", "public/js/main.js").react().sourceMaps(true);
 
-/** create source maps. */
-mix.sourceMaps(true);
+/** bundle react codes. */
+mix.postCss("resources/css/app.css", "public/css/app.css", [tailwind]);
 
-/** copy svg sprite. */
+/** copy svg sprite. 
 mix.copy("resources/icons", "public/icons");
+*/
 
-/** copy images. */
+/** copy images. 
 mix.copy("resources/images", "public/images");
+*/

@@ -1,9 +1,6 @@
 /** React. */
 import { Fragment, useEffect, useState, useContext } from "react";
 
-/** Store. */
-import AuthContext from "../../context/auth-context";
-
 /** Hook. */
 import useHttp from "../../hooks/use-http";
 
@@ -17,9 +14,6 @@ const Summary = () => {
 
     /** Philippine stock exchange index symbols. */
     const symbol = ["PSEi", "ALL", "FIN", "IND", "HDG", "PRO", "SVC", "M-O"];
-
-    /** Use context. */
-    const authCtx = useContext(AuthContext);
 
     /** Callback function for http hooks. */
     const requestResponse = (data) => {
@@ -46,7 +40,7 @@ const Summary = () => {
             setGot(true);
         } else {
             /** Inform user that no data received from api. */
-            authCtx.messenger("No data from external api.");
+            console.log("No data from external api.");
             /** Set got state to false. */
             setGot(false);
         }

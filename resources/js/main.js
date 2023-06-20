@@ -17,19 +17,20 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /** Vendor. */
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 
-/** Context. */
-import AuthProvider from "./context/auth-provider";
+/** Store. */
+import store from "./store";
 
-/** Entry. */
+/** Component. */
 import App from "./app";
 
 /** Attached. */
 if (document.getElementById("root")) {
     const Index = ReactDOM.createRoot(document.getElementById("root"));
     Index.render(
-        <AuthProvider>
+        <Provider store={store}>
             <App />
-        </AuthProvider>
+        </Provider>
     );
 }

@@ -8,14 +8,14 @@ import { Link } from "react-router-dom";
 import useScreen from "../../hooks/use-screen";
 
 /** Helper. */
-import helpNavigation from "../../helpers/help-navigation";
+import helpCheck from "../../helpers/help-check";
 
 /** Component. */
 import Icon from "../icons";
 
 const Header = () => {
     /** Use helper. */
-    const { authenticated, requestHandler } = helpNavigation();
+    const { authenticated, requestHandler } = helpCheck();
 
     /** Use screen hook. */
     const { isMobile } = useScreen();
@@ -25,7 +25,6 @@ const Header = () => {
 
     /** Hamburger handler. */
     const hamburgerHandler = () => {
-        console.log("Hamburger clicked.");
         setIsActive(!isActive);
     };
 
@@ -46,7 +45,7 @@ const Header = () => {
                             </span>
                         </Link>
                     </div>
-                    <div className="p-0 relative">
+                    <div className="p-0">
                         {authenticated ? (
                             <>
                                 <span>

@@ -4,9 +4,6 @@ import { useState, useContext, useEffect } from "react";
 /** Vendor. */
 import Chart from "chart.js/auto";
 
-/** Context. */
-import AuthContext from "../../../../../context/auth-context";
-
 /** Hook. */
 import useHttp from "../../../../../hooks/use-http";
 import useScreen from "../../../../../hooks/use-screen";
@@ -114,13 +111,10 @@ const Portfolio = () => {
         setRecord(!record);
     };
 
-    /** Use context. */
-    const authCtx = useContext(AuthContext);
-
     /** Use http hook reponse callback. */
     const retrieveResponse = (data) => {
         /** Render reponse message. */
-        authCtx.messenger(data.message);
+        console.log(data.message);
         /** Process response. */
         if (data.hasOwnProperty("hold")) {
             /** Set state value. */

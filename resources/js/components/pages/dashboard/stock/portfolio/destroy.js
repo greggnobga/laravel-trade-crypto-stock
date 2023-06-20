@@ -1,9 +1,6 @@
 /** React. */
 import { Fragment, useContext } from "react";
 
-/** Context. */
-import AuthContext from "../../../../../context/auth-context";
-
 /** Hook. */
 import useHttp from "../../../../../hooks/use-http";
 
@@ -11,14 +8,10 @@ import useHttp from "../../../../../hooks/use-http";
 import Icon from "../../../../icons";
 
 const Destroy = (props) => {
-    /** Use context. */
-    const authCtx = useContext(AuthContext);
-
     /** Use http hook reponse callback. */
     const storeResponse = (data) => {
-        console.log(data);
         /** Render reponse message. */
-        authCtx.messenger(data.message);
+        console.log(data.message);
     };
 
     /** Prepare request to local api using http hook. */

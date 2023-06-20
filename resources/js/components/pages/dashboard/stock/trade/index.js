@@ -1,9 +1,6 @@
 /** React. */
 import { Fragment, useState, useEffect, useContext } from "react";
 
-/** Context. */
-import AuthContext from "../../../../../context/auth-context";
-
 /** Hook. */
 import useHttp from "../../../../../hooks/use-http";
 import useScreen from "../../../../../hooks/use-screen";
@@ -80,13 +77,10 @@ const Trade = () => {
         });
     }, [result]);
 
-    /** Use context. */
-    const authCtx = useContext(AuthContext);
-
     /** Use http hook reponse callback. */
     const localResponse = (data) => {
         /** Render reponse message. */
-        authCtx.messenger(data.message);
+        console.log(data.message);
     };
 
     /** Prepare request to local api using http hook. */

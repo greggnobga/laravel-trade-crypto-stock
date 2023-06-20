@@ -1,9 +1,6 @@
 /** React. */
 import { Fragment, useState, useContext, useEffect } from "react";
 
-/** Context. */
-import AuthContext from "../../../../../context/auth-context";
-
 /** Hook. */
 import useHttp from "../../../../../hooks/use-http";
 import useScreen from "../../../../../hooks/use-screen";
@@ -18,9 +15,6 @@ const Watchlist = () => {
     const [stocks, setStocks] = useState([]);
     const [sectors, setSectors] = useState({});
     const [disabled, setDisabled] = useState(false);
-
-    /** Use context. */
-    const authCtx = useContext(AuthContext);
 
     /** Use http hook reponse callback. */
     const retrieveResponse = (data) => {
@@ -58,7 +52,7 @@ const Watchlist = () => {
         /** Check if data is not empty. */
         if (data) {
             /** Render reponse message. */
-            authCtx.messenger(data.message);
+            console.log(data.message);
         }
     };
 
@@ -120,7 +114,7 @@ const Watchlist = () => {
             /** Set sector. */
             setSectors(data["sectors"]);
             /** Render reponse message. */
-            authCtx.messenger(data["message"]);
+            console.log(data["message"]);
         }
     };
 
@@ -162,7 +156,7 @@ const Watchlist = () => {
         /** Check if data is not empty. */
         if (data) {
             /** Render reponse message. */
-            authCtx.messenger(data["message"]);
+            console.log(data["message"]);
         }
     };
 
@@ -264,9 +258,9 @@ const Watchlist = () => {
                         and growth from its equity financing.
                     </div>
                     <div className="items">
-                        Dividend Yield - Is the amount of money a
-                        company pays shareholders for owning a share of its
-                        stock divided by its current stock price.
+                        Dividend Yield - Is the amount of money a company pays
+                        shareholders for owning a share of its stock divided by
+                        its current stock price.
                     </div>
                 </div>
             </div>

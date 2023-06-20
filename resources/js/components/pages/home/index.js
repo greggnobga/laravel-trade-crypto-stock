@@ -1,25 +1,37 @@
 /** React. */
-import { Fragment } from 'react';
+import { useEffect } from "react";
+
+/** Vendor. */
+import { useDispatch, useSelector } from "react-redux";
 
 /** Component. */
-import Icon from '../../icons';
-import Summary from '../../interfaces/summary';
+import Icon from "../../icons";
+import Summary from "../../interfaces/summary";
 
-import Hero from './hero';
-import Reason from './reason';
-import Compare from './compare';
-import Stories from './stories';
+/** Action. */
+import { listStocks } from "../../../actions/stockActions";
+
+import Hero from "./hero";
+import Reason from "./reason";
+import Compare from "./compare";
+import Stories from "./stories";
 
 const Home = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(listStocks());
+    }, [dispatch]);
+
     return (
-        <Fragment>
+        <>
             <Summary />
             <Hero />
             <Reason />
             <Stories />
             <Compare />
-        </Fragment>
+        </>
     );
-}
+};
 
 export default Home;

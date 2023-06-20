@@ -1,54 +1,43 @@
 /** React. */
 import { useState, useContext } from "react";
 
-/** Store. */
-import AuthContext from "../context/auth-context";
+/** Vendor. */
+import axios from "axios";
 
-const useHttp = (reqConfig, applyData) => {
+const useHttp = (config) => {
     /** declare local state. */
-    const [isLoading, setLoading] = useState(false);
-    const [hasError, setError] = useState(false);
-
-    /** Use context. */
-    const authCtx = useContext(AuthContext);
+    const [result, setResult] = useState([]);
+    const [error, setError] = useState();
 
     /** declare send request aysnc function. */
     const sendRequest = async () => {
-        /** change state. */
-        setLoading(true);
         /** try axios request. */
         try {
             const response = await axios({
-                url: reqConfig.url,
-                method: reqConfig.method ? reqConfig.method : "GET",
-                headers: reqConfig.headers ? reqConfig.headers : {},
-                params: reqConfig.params ? reqConfig.params : null,
+                url: config.url,
+                method: config.method ? config.method : "GET",
+                headers: config.headers ? config.headers : {},
+                params: config.params ? config.params : null,
             });
             /** wait til response data arrived. */
             let data = await response.data;
-            /** send to call back function. */
-            applyData(data);
+            /** set state. */
+            setResult(data);
         } catch (error) {
-            /** debug thrown error. */
-            console.log(error);
-            /** set valid to false. */
-            authCtx.validifier(false);
+            let message =
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message;
             /** set error message. */
-            if (error.hasOwnProperty("response")) {
-                authCtx.messenger(error.response.data.message);
-            }
-            /** set error true. */
-            setError(true);
+            setError(message);
         }
-        /** change state. */
-        setLoading(false);
     };
 
     /** expose to the world. */
     return {
-        isLoading,
+        result,
+        error,
         sendRequest,
-        hasError,
     };
 };
 

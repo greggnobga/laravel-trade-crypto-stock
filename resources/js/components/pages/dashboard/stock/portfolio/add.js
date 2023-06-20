@@ -1,9 +1,6 @@
 /** React. */
 import { Fragment, useContext } from "react";
 
-/** Context. */
-import AuthContext from "../../../../../context/auth-context";
-
 /** Hook. */
 import useValidate from "../../../../../hooks/use-validate";
 import useHttp from "../../../../../hooks/use-http";
@@ -103,13 +100,10 @@ const Add = (props) => {
     const shareInputClasses = shareHasError ? "invalid" : "valid";
     const capitalInputClasses = capitalHasError ? "invalid" : "valid";
 
-    /** Use context. */
-    const authCtx = useContext(AuthContext);
-
     /** Use http hook reponse callback. */
     const storeResponse = (data) => {
         /** Render reponse message. */
-        authCtx.messenger(data.message);
+        console.log(data.message);
     };
 
     /** Prepare request to local api using http hook. */

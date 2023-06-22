@@ -15,9 +15,8 @@
 </head>
 
 <body class="font-monster text-base bg-gray-50">
-    <main>
-        <section id="root"></section>
-    </main>
+    <aside id="modal"></aside>
+    <main id="root"></main>
 </body>
 <script src="/public/js/main.js"></script>
 

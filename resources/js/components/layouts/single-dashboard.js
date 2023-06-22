@@ -1,5 +1,5 @@
 /** React. */
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 
 /** Vendor. */
 import { Outlet } from "react-router-dom";
@@ -40,14 +40,14 @@ const Single = () => {
     return (
         <section id="single">
             <Headers />
-            <section id="wrapper">
+            <section id="wrapper" class="min-h-screen">
                 {check ? (
                     <Loader />
                 ) : token ? (
-                    <Fragment>
+                    <>
                         <Summary />
                         <Outlet />
-                    </Fragment>
+                    </>
                 ) : (
                     ""
                 )}

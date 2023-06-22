@@ -6,9 +6,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Directives */
+.border-bottom {
+    @apply p-2 border-b border-stone-100 border-opacity-50;
+}
+.gradient-oceanic {
+    @apply hover:bg-gradient-to-l bg-gradient-to-r from-blue-500 to-purple-500;
+}
+
+.fancy-border {
+    border-radius: 100% 0% 0% 100% / 0% 100% 0% 100%;
+}
 /* Hamburgers */
 .hamburger {
-    padding: 15px 15px;
+    padding: 5px 5px;
     display: inline-block;
     cursor: pointer;
     transition-property: opacity, filter;

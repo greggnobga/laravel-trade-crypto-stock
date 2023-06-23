@@ -37,7 +37,7 @@ const Header = () => {
     return (
         <>
             {isMobile ? (
-                <header className="flex justify-between h-14 gradient-oceanic border-bottom text-stone-200 relative">
+                <header className="flex justify-between h-14 gradient-blue-purple border-bottom text-stone-200 relative">
                     <div className="p-2">
                         <Link to="/">
                             <span className="block uppercase text-stone-700 hover:text-stone-200">
@@ -66,7 +66,7 @@ const Header = () => {
                         </button>
                     </div>
                     {isActive ? (
-                        <nav className="flex flex-col flex-grow shadow gradient-oceanic text-stone-800 absolute w-full top-14 right-0">
+                        <nav className="flex flex-col flex-grow shadow gradient-blue-purple text-stone-800 absolute w-full top-14 right-0">
                             <Link to="/stock-explorer">
                                 <span className="block border-bottom">
                                     <Icon id="stock" /> Stock Explorer
@@ -115,7 +115,7 @@ const Header = () => {
                     )}
                 </header>
             ) : (
-                <header className="flex justify-between gradient-oceanic">
+                <header className="flex justify-between gradient-blue-purple">
                     <div className="p-3">
                         <Link to="/stock-explorer">
                             <span className="hover:text-stone-200 text-stone-800">

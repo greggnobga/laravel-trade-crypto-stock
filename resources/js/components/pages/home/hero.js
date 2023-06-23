@@ -4,7 +4,7 @@ import Icon from "../../icons";
 const Hero = () => {
     /** Return something. */
     return (
-        <div className="w-full h-64 grid content-center md:h-96 bg-indigo-200 bg-opacity-20 hover:bg-blue-200 hover:bg-opacity-20 fancy-border mb-4">
+        <div className="w-full h-64 md:h-96 grid auto-rows-min content-center bg-indigo-200 bg-opacity-20 hover:bg-blue-200 hover:bg-opacity-20 border-one mb-4">
             <div className="p-4 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl">
                 At little cost, you can accomplish more.
             </div>
@@ -15,13 +15,13 @@ const Hero = () => {
             <div className="p-4 text-center">
                 <button
                     type="button"
-                    className="w-32 bg-indigo-500 rounded-md mb-2 p-2 text-xs text-stone-200"
+                    className="md:w-48 button-indigo md:text-md"
                 >
                     Open an account
                 </button>
                 <button
                     type="button"
-                    className="w-32 bg-emerald-600 rounded-md ml-2 p-2 text-xs text-stone-200"
+                    className="md:w-48 button-emerald md:text-md"
                 >
                     Learn more
                 </button>

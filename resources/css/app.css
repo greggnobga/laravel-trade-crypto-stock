@@ -10,13 +10,51 @@
 .border-bottom {
     @apply p-2 border-b border-stone-100 border-opacity-50;
 }
-.gradient-oceanic {
+
+.gradient-blue-purple {
     @apply hover:bg-gradient-to-l bg-gradient-to-r from-blue-500 to-purple-500;
 }
 
-.fancy-border {
+.button-indigo {
+    @apply w-32 bg-indigo-500 hover:bg-indigo-400 hover:border hover:border-stone-100 hover:shadow-md rounded-md mb-2 p-2 md:p-3 text-stone-200 text-xs;
+}
+
+.button-emerald {
+    @apply w-32 bg-emerald-600 hover:bg-emerald-400 hover:border hover:border-stone-100 hover:shadow-md rounded-md ml-2 p-2 md:p-3 text-stone-200 text-xs;
+}
+
+.button-orange {
+    @apply w-32 bg-orange-600 hover:bg-orange-400 hover:border hover:border-stone-100 hover:shadow-md p-2 md:p-3 text-stone-200 text-xs;
+}
+
+.card {
+    @apply shadow border border-gray-100 cursor-pointer mb-2;
+}
+
+.card-rounded {
+    @apply rounded-lg shadow border border-gray-100 cursor-pointer mb-2;
+}
+
+/** Fancy borders. */
+.border-one {
     border-radius: 100% 0% 0% 100% / 0% 100% 0% 100%;
 }
+
+.border-two {
+    border-radius: 0% 100% 100% 0% / 100% 100% 0% 0%;
+}
+
+.border-three {
+    border-radius: 67% 0% 69% 0% / 42% 27% 50% 29%;
+}
+
+/** Backgrounds. */
+.background-dot {
+    background-image: radial-gradient(#6d28d9 0.5px, transparent 0.5px);
+    background-size: 19px 19px;
+    background-color: #ffffff;
+}
+
 /* Hamburgers */
 .hamburger {
     padding: 5px 5px;

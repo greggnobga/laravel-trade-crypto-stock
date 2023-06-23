@@ -14,7 +14,7 @@
     <link href="/public/css/app.css" rel="stylesheet" type="text/css">
 </head>
 
-<body class="font-monster text-base bg-gray-50">
+<body class="font-monster text-base bg-gray-50 background-dot">
     <aside id="modal"></aside>
     <main id="root"></main>
 </body>

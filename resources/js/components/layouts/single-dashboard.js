@@ -40,7 +40,7 @@ const Single = () => {
     return (
         <section id="single">
             <Headers />
-            <section id="wrapper" class="min-h-screen">
+            <section id="wrapper" className="min-h-screen">
                 {check ? (
                     <Loader />
                 ) : token ? (

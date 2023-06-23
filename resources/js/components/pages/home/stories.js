@@ -1,28 +1,22 @@
-/** Hook. */
-import useFocus from "../../../hooks/use-focus";
-
 const Stories = () => {
-    /** Use focus hook. */
-    const [refer, animate, effect] = useFocus({
-        default: "stories",
-        animate: "fade-in-left",
-    });
-
     /** Return something. */
     return (
-        <div ref={refer} className={effect}>
-            <div className="title">Our Stories</div>
-            <div className="story">
-                <div className="items">
-                    <div className="thumbnail">
+        <div className="grid auto-rows-min">
+            <div className="p-2 mb-2 uppercase text-right text-green-700 bg-cyan-500 bg-opacity-50">
+                Our Stories
+            </div>
+            <div className="p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-neutral-200 bg-opacity-30">
+                <div className="card">
+                    <div className="hover:graycale">
                         <img
-                            src="/public/images/placeholder.png"
+                            className="w-400 h-200 object-cover w-full"
+                            src="/public/images/bitcoin.jpg"
                             alt="Placeholder Image"
                         />
                     </div>
-                    <div className="content">
-                        <h1>Story Title</h1>
-                        <p>
+                    <div className="p-2">
+                        <h1 className="pb-2">Story Title</h1>
+                        <p className="text-sm md:text-md lg:text-lg">
                             Sed ut perspiciatis unde omnis iste natus error sit
                             voluptatem accusantium doloremque laudantium, totam
                             rem aperiam, eaque ipsa quae ab illo inventore
@@ -32,23 +26,22 @@ const Stories = () => {
                             consequuntur magni dolores eos qui ratione
                             voluptatem sequi nesciunt.
                         </p>
-                        <span className="button">
-                            <button className="btn btn-primary">
-                                Read More
-                            </button>
-                        </span>
+                    </div>
+                    <div className="p-2 text-right">
+                        <button className="button-orange">Read More</button>
                     </div>
                 </div>
-                <div className="items">
-                    <div className="thumbnail">
+                <div className="card">
+                    <div className="hover:graycale">
                         <img
-                            src="/public/images/placeholder.png"
+                            className="w-400 h-200 object-cover w-full"
+                            src="/public/images/boat.jpg"
                             alt="Placeholder Image"
                         />
                     </div>
-                    <div className="content">
-                        <h1>Story Title</h1>
-                        <p>
+                    <div className="p-2">
+                        <h1 className="pb-2">Story Title</h1>
+                        <p className="text-sm md:text-md lg:text-lg">
                             Neque porro quisquam est, qui dolorem ipsum quia
                             dolor sit amet, consectetur, adipisci velit, sed
                             quia non numquam eius modi tempora incidunt ut
@@ -57,23 +50,22 @@ const Stories = () => {
                             exercitationem ullam corporis suscipit laboriosam,
                             nisi ut aliquid ex ea commodi consequatur.
                         </p>
-                        <span className="button">
-                            <button className="btn btn-primary">
-                                Read More
-                            </button>
-                        </span>
+                    </div>
+                    <div className="p-2 text-right">
+                        <button className="button-orange">Read More</button>
                     </div>
                 </div>
-                <div className="items">
-                    <div className="thumbnail">
+                <div className="card">
+                    <div className="hover:graycale">
                         <img
-                            src="/public/images/placeholder.png"
+                            className="w-400 h-200 object-cover w-full"
+                            src="/public/images/marketing.jpg"
                             alt="Placeholder Image"
                         />
                     </div>
-                    <div className="content">
-                        <h1>Story Title</h1>
-                        <p>
+                    <div className="p-2">
+                        <h1 className="pb-2">Story Title</h1>
+                        <p className="text-sm md:text-md lg:text-lg">
                             At vero eos et accusamus et iusto odio dignissimos
                             ducimus qui blanditiis praesentium voluptatum
                             deleniti atque corrupti quos dolores et quas
@@ -82,11 +74,9 @@ const Stories = () => {
                             deserunt mollitia animi, id est laborum et dolorum
                             fuga.
                         </p>
-                        <span className="button">
-                            <button className="btn btn-primary">
-                                Read More
-                            </button>
-                        </span>
+                    </div>
+                    <div className="p-2 text-right">
+                        <button className="button-orange">Read More</button>
                     </div>
                 </div>
             </div>

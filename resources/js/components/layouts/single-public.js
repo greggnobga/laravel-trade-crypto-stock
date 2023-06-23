@@ -10,7 +10,7 @@ const Single = () => {
     return (
         <section id="single">
             <Headers />
-            <div id="wrapper" class="min-h-screen">
+            <div id="wrapper" className="min-h-screen">
                 <Outlet />
             </div>
             <Footers />

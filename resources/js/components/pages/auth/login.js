@@ -1,17 +1,14 @@
 /** React. */
-import { Fragment, useContext } from "react";
+import { useContext } from "react";
 
 /** Vendor. */
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 /** Component. */
 import Loader from "../../icons/loader.js";
 
 /** Hook. */
 import useValidate from "../../../hooks/use-validate";
-import useHttp from "../../../hooks/use-http";
-import useMouse from "../../../hooks/use-mouse";
-import useDelay from "../../../hooks/use-delay";
 
 const Login = () => {
     /** Map html element to validate hook. */
@@ -47,28 +44,10 @@ const Login = () => {
     }
 
     /** Change class logic if valid or otherwise. */
-    const emailInputClasses = emailHasError ? "invalid" : "valid";
-    const passwordInputClasses = passwordHasError ? "invalid" : "valid";
-
-    /** Use navigate. */
-    const navigate = useNavigate();
-
-    const loginResponse = (data) => {
-        /** set error message. */
-        console.log(data.message);
-        /** Navigate out if done loading. */
-        navigate("/profile");
-    };
-
-    /** Use http hook. */
-    const { isLoading, sendRequest, hasError } = useHttp(
-        {
-            url: "/api/login",
-            method: "POST",
-            params: { email: email, password: password },
-        },
-        loginResponse
-    );
+    const emailInputClasses = emailHasError ? "input-warning" : "input-success";
+    const passwordInputClasses = passwordHasError
+        ? "input-warning"
+        : "input-success";
 
     /** Submit handler. */
     const submitHandler = (event) => {
@@ -92,42 +71,23 @@ const Login = () => {
         passwordInputReset();
     };
 
-    /** Use delay hook. */
-    const { isClass, onDelay } = useDelay({
-        default: true,
-        enter: "form fade-in-bottom",
-        exit: "form fade-out-bottom",
-    });
-
-    /** Map animate hook submit button. */
-    const {
-        mouseHover: submitHover,
-        mouseEnter: submitMouseEnter,
-        mouseLeave: submitMouseLeave,
-    } = useMouse({ default: "btn btn-primary", enter: "pulsate-forward" });
-
-    /** Map animate hook cancel button. */
-    const {
-        mouseHover: cancelHover,
-        mouseEnter: cancelMouseEnter,
-        mouseLeave: cancelMouseLeave,
-    } = useMouse({ default: "btn btn-secondary", enter: "pulsate-forward" });
-
     return (
-        <form method="post" className={isClass} onSubmit={submitHandler}>
-            {isLoading ? (
-                <Loader />
-            ) : (
-                <Fragment>
-                    <div className="heading">
+        <div className="flex items-center justify-center h-screen border-two bg-indigo-200 bg-opacity-20">
+            <form
+                method="post"
+                onSubmit={submitHandler}
+                className="px-6 grid  w-2/4 h-2/4 gradient-huckle-berry rounded-lg shadow border border-slate-50"
+            >
+                <>
+                    <div className="p-6 uppercase text-center border-bottom my-auto">
                         <h4>Login</h4>
                     </div>
-                    <div className="group">
-                        <label className="label" htmlFor="email">
+                    <div className="p-2 grid grid-cols-6 auto-rows-min">
+                        <label className="col-span-2 span-box" htmlFor="email">
                             Email
                         </label>
                         <input
-                            className={emailInputClasses}
+                            className={`col-span-4 input-box  ${emailInputClasses}`}
                             name="email"
                             type="email"
                             value={email}
@@ -135,17 +95,22 @@ const Login = () => {
                             onBlur={emailBlurHandler}
                         />
                         {emailHasError ? (
-                            <p className="error">Please enter a valid email.</p>
+                            <p className="col-span-6 py-2 text-right text-xs message-warning">
+                                Please enter a valid email.
+                            </p>
                         ) : (
                             ""
                         )}
                     </div>
-                    <div className="group">
-                        <label className="label" htmlFor="password">
+                    <div className="p-2 grid grid-cols-6 auto-rows-min">
+                        <label
+                            className="col-span-2 span-box"
+                            htmlFor="password"
+                        >
                             Password
                         </label>
                         <input
-                            className={passwordInputClasses}
+                            className={`col-span-4 input-box ${passwordInputClasses}`}
                             name="password"
                             type="password"
                             value={password}
@@ -153,40 +118,35 @@ const Login = () => {
                             onBlur={passwordBlurHandler}
                         />
                         {passwordHasError && (
-                            <p className="error">
+                            <p className="col-span-6 py-2 text-right text-xs message-warning">
                                 Please enter a valid password.
                             </p>
                         )}
                     </div>
-                    <div className="reset">
-                        <p>
+                    <div className="p-2 grid auto-rows-min">
+                        <p className="text-xs text-slate-50 text-right">
                             Password forgotten? Click this{" "}
-                            <Link to="/auth/forgot">link</Link> to reset it.
+                            <Link to="/auth/forgot" className="text-orange-400">
+                                link
+                            </Link>{" "}
+                            to reset it.
                         </p>
                     </div>
-                    <div className="button">
+                    <div className="grid grid-cols-2 auto-rows-min">
                         <button
-                            className={submitHover}
-                            onMouseEnter={submitMouseEnter}
-                            onMouseLeave={submitMouseLeave}
+                            className="p-2"
                             type="submit"
                             disabled={!formIsValid}
                         >
                             Login
                         </button>
-                        <button
-                            className={cancelHover}
-                            onMouseEnter={cancelMouseEnter}
-                            onMouseLeave={cancelMouseLeave}
-                            type="button"
-                            onClick={onDelay}
-                        >
+                        <button className="p-2" type="button">
                             Cancel
                         </button>
                     </div>
-                </Fragment>
-            )}
-        </form>
+                </>
+            </form>
+        </div>
     );
 };
 

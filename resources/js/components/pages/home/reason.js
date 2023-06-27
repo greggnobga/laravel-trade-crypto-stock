@@ -4,7 +4,7 @@ import Icon from "../../icons";
 const Reason = () => {
     /** Return something. */
     return (
-        <div className="mb-2 grid auto-rows-min bg-stone-100 bg-opacity-30 border-b border-stone-100">
+        <div className="mb-2 grid auto-rows-min bg-stone-100 bg-opacity-70 border-b border-neutral-100">
             <div className="p-2 mb-2 uppercase text-stone-700 bg-stone-200 bg-opacity-50">
                 <h1>Why Orion Trade?</h1>
             </div>

@@ -15,6 +15,9 @@
     @apply hover:bg-gradient-to-l bg-gradient-to-r from-blue-500 to-purple-500;
 }
 
+.gradient-huckle-berry {
+    @apply hover:bg-gradient-to-l bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800;
+}
 .button-indigo {
     @apply w-32 bg-indigo-500 hover:bg-indigo-400 hover:border hover:border-stone-100 hover:shadow-md rounded-md mb-2 p-2 md:p-3 text-stone-200 text-xs;
 }
@@ -28,11 +31,34 @@
 }
 
 .card {
-    @apply shadow border border-gray-100 cursor-pointer mb-2;
+    @apply bg-slate-100 bg-opacity-50 shadow border border-gray-100 cursor-pointer mb-2;
 }
 
 .card-rounded {
-    @apply rounded-lg shadow border border-gray-100 cursor-pointer mb-2;
+    @apply bg-slate-100 bg-opacity-50 rounded-lg shadow border border-gray-100 cursor-pointer mb-2;
+}
+
+.message-success {
+    @apply text-green-500;
+}
+
+.message-warning {
+    @apply text-red-500;
+}
+
+.input-box {
+    @apply mt-1 px-3 py-2 rounded-lg bg-white border shadow-sm border-slate-300;
+}
+.input-sucess {
+    @apply border border-green-500;
+}
+
+.input-warning {
+    @apply border border-red-500;
+}
+
+.span-box {
+    @apply mt-1 px-3 py-2;
 }
 
 /** Fancy borders. */

@@ -1,36 +1,68 @@
 const Footer = () => {
     return (
-        <footer id="footer">
-            <div className="about">
-                <h3>About</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <footer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-min gradient-blue-purple">
+            <div className="p-2 mb-2 text-sm md:text-md lg:text-lg">
+                <h3 className="border-bottom pb-2 uppercase text-stone-700 hover:text-stone-200">
+                    About
+                </h3>
+                <p className="p-2">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                </p>
             </div>
-            <div className="resource">
-                <h3>Resources</h3>
+            <div className="p-2 mb-2 text-sm md:text-md lg:text-lg">
+                <h3 className="border-bottom pb-2 uppercase text-stone-700 hover:text-stone-200">
+                    Resources
+                </h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Stock Explorer</a></li>
-                    <li><a href="#">Crypto Explorer</a></li>
-                    <li><a href="#">Frequently Ask Questions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-200 hover:bg-opacity-50">
+                        <a href="#">Home</a>
+                    </li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-200 hover:bg-opacity-50">
+                        <a href="#">Stock Explorer</a>
+                    </li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-200 hover:bg-opacity-50">
+                        <a href="#">Crypto Explorer</a>
+                    </li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-200 hover:bg-opacity-50">
+                        <a href="#">Frequently Ask Questions</a>
+                    </li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-200 hover:bg-opacity-50">
+                        <a href="#">Privacy Policy</a>
+                    </li>
                 </ul>
             </div>
-            <div className="contact">
-                <h3>Contact</h3>
+            <div className="p-2 mb-2 text-sm md:text-md lg:text-lg">
+                <h3 className="border-bottom pb-2 uppercase text-stone-700 hover:text-stone-200">
+                    Socials
+                </h3>
                 <ul>
-                    <li><a href="#">Email</a></li>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">Tiktok</a></li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-200 hover:bg-opacity-50">
+                        <a href="#">Email</a>
+                    </li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-300 hover:bg-opacity-50">
+                        <a href="#">Facebook</a>
+                    </li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-300 hover:bg-opacity-50">
+                        <a href="#">Twitter</a>
+                    </li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-300 hover:bg-opacity-50">
+                        <a href="#">Instagram</a>
+                    </li>
+                    <li className="border-bottom cursor-pointer hover:text-stone-200 hover:bg-stone-300 hover:bg-opacity-50">
+                        <a href="#">Tiktok</a>
+                    </li>
                 </ul>
             </div>
-            <div className="hire">
-                <h3>Contact</h3>
-                <p>Hire Me!</p>
+            <div className="p-2 mb-2 text-sm md:text-md lg:text-lg">
+                <h3 className="border-bottom pb-2 uppercase text-stone-700 hover:text-stone-200">
+                    Contact
+                </h3>
+                <p className="p-2">Hire Me!</p>
             </div>
         </footer>
     );
-}
+};
 
 export default Footer;

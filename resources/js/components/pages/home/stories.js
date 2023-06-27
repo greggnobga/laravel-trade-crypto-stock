@@ -1,8 +1,8 @@
 const Stories = () => {
     /** Return something. */
     return (
-        <div className="grid auto-rows-min">
-            <div className="p-2 mb-2 uppercase text-right text-green-700 bg-cyan-500 bg-opacity-50">
+        <div className="grid auto-rows-min bg-zinc-200 bg-opacity-50 border-b border-neutral-100">
+            <div className="p-2 mb-2 uppercase text-right text-green-700 bg-green-200 bg-opacity-50">
                 Our Stories
             </div>
             <div className="p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-neutral-200 bg-opacity-30">

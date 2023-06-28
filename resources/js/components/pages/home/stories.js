@@ -5,7 +5,7 @@ const Stories = () => {
             <div className="p-2 mb-2 uppercase text-right text-green-700 bg-green-200 bg-opacity-50">
                 Our Stories
             </div>
-            <div className="p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-neutral-200 bg-opacity-30">
+            <div className="p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-stone-200 bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40">
                 <div className="card">
                     <div className="hover:graycale">
                         <img
@@ -28,7 +28,7 @@ const Stories = () => {
                         </p>
                     </div>
                     <div className="p-2 text-right">
-                        <button className="button-orange">Read More</button>
+                        <button className="btn btn-orange">Read More</button>
                     </div>
                 </div>
                 <div className="card">
@@ -52,7 +52,7 @@ const Stories = () => {
                         </p>
                     </div>
                     <div className="p-2 text-right">
-                        <button className="button-orange">Read More</button>
+                        <button className="btn btn-orange">Read More</button>
                     </div>
                 </div>
                 <div className="card">
@@ -76,7 +76,7 @@ const Stories = () => {
                         </p>
                     </div>
                     <div className="p-2 text-right">
-                        <button className="button-orange">Read More</button>
+                        <button className="btn btn-orange">Read More</button>
                     </div>
                 </div>
             </div>

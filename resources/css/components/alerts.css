@@ -1,0 +1,15 @@
+.alert-success {
+    @apply text-green-500 !important;
+}
+
+.alert-warning {
+    @apply text-red-500 !important;
+}
+
+.alert-border-sucess {
+    @apply border border-green-500 !important;
+}
+
+.alert-border-warning {
+    @apply border border-red-500 !important;
+}

@@ -1,17 +1,14 @@
 /** React. */
-import { Fragment, useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 /** Vendor. */
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 /** Component. */
 import Loader from "../../icons/loader.js";
 
 /** Hook. */
 import useValidate from "../../../hooks/use-validate";
-import useHttp from "../../../hooks/use-http";
-import useMouse from "../../../hooks/use-mouse";
-import useDelay from "../../../hooks/use-delay";
 
 const Register = () => {
     /** Map html element to validate hook. */
@@ -128,31 +125,6 @@ const Register = () => {
     const confirmInputClasses = confirmHasError ? "invalid" : "valid";
     const passwordMatchedClasses = passwordMatched ? "invalid" : "valid";
 
-    /** Use navigate. */
-    const navigate = useNavigate();
-
-    const regResponse = (data) => {
-        /** set error message. */
-        console.log(data.message);
-        /** Navigate out if done loading. */
-        navigate("/");
-    };
-
-    const { isLoading, sendRequest, hasError } = useHttp(
-        {
-            url: "/api/register",
-            method: "POST",
-            params: {
-                username: userName,
-                firstname: firstName,
-                lastname: lastName,
-                email: email,
-                password: password,
-            },
-        },
-        regResponse
-    );
-
     /** Submit handler. */
     const submitHandler = (event) => {
         /** Prevent browser default behaviour */
@@ -183,191 +155,183 @@ const Register = () => {
         confirmInputReset();
     };
 
-    /** Use delay hook. */
-    const { isClass, onDelay } = useDelay({
-        default: true,
-        enter: "form fade-in-bottom",
-        exit: "form fade-out-bottom",
-    });
-
-    /** Map animate hook submit button. */
-    const {
-        mouseHover: submitHover,
-        mouseEnter: submitMouseEnter,
-        mouseLeave: submitMouseLeave,
-    } = useMouse({ default: "btn btn-primary", enter: "pulsate-forward" });
-
-    /** Map animate hook cancel button. */
-    const {
-        mouseHover: cancelHover,
-        mouseEnter: cancelMouseEnter,
-        mouseLeave: cancelMouseLeave,
-    } = useMouse({ default: "btn btn-secondary", enter: "pulsate-forward" });
-
     return (
-        <form method="post" className={isClass} onSubmit={submitHandler}>
-            {isLoading ? (
-                <Loader />
-            ) : (
-                <Fragment>
-                    <div className="heading">
-                        <h4>Register</h4>
-                    </div>
-                    <div className="group">
-                        <label className="label" htmlFor="username">
-                            Username
-                        </label>
-                        <input
-                            className={userNameInputClasses}
-                            name="username"
-                            type="text"
-                            value={userName}
-                            onChange={userNameChangeHandler}
-                            onBlur={userNameBlurHandler}
-                        />
-                        {userNameHasError ? (
-                            <p className="error">
-                                Please enter a valid username.
-                            </p>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                    <div className="group">
-                        <label className="label" htmlFor="firstname">
-                            First Name
-                        </label>
-                        <input
-                            className={firstNameInputClasses}
-                            name="firstname"
-                            type="text"
-                            value={firstName}
-                            onChange={firstNameChangeHandler}
-                            onBlur={firstNameBlurHandler}
-                        />
-                        {firstNameHasError ? (
-                            <p className="error">
-                                Please enter a valid first name.
-                            </p>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                    <div className="group">
-                        <label className="label" htmlFor="lastname">
-                            Last Name
-                        </label>
-                        <input
-                            className={lastNameInputClasses}
-                            name="lastname"
-                            type="text"
-                            value={lastName}
-                            onChange={lastNameChangeHandler}
-                            onBlur={lastNameBlurHandler}
-                        />
-                        {lastNameHasError ? (
-                            <p className="error">
-                                Please enter a valid last name.
-                            </p>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                    <div className="group">
-                        <label className="label" htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            className={emailInputClasses}
-                            name="email"
-                            type="email"
-                            value={email}
-                            onChange={emailChangeHandler}
-                            onBlur={emailBlurHandler}
-                        />
-                        {emailHasError ? (
-                            <p className="error">Please enter a valid email.</p>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                    <div className="group">
-                        <label className="label" htmlFor="password">
-                            Password
-                        </label>
-                        <input
-                            className={passwordInputClasses}
-                            name="password"
-                            type="password"
-                            value={password}
-                            onChange={passwordChangeHandler}
-                            onBlur={passwordBlurHandler}
-                        />
-                        {passwordHasError ? (
-                            <p className="error">
-                                Please enter a valid password.
-                            </p>
-                        ) : passwordLength ? (
-                            <p className="error">
-                                Password must be 10 characters or more.
-                            </p>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                    <div className="group">
-                        <label className="label" htmlFor="confirm">
-                            Confirm Password
-                        </label>
-                        <input
-                            className={confirmInputClasses}
-                            name="confirm"
-                            type="password"
-                            value={confirm}
-                            onChange={confirmChangeHandler}
-                            onBlur={confirmBlurHandler}
-                        />
-                        {confirmHasError ? (
-                            <p className="error">
-                                Please enter a valid confirm password.
-                            </p>
-                        ) : passwordMatched ? (
-                            <p className="error">
-                                Password and confirm password do not match.
-                            </p>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                    <div className="reset">
-                        <p>
-                            Password forgotten? Click this{" "}
-                            <Link to="/auth/forgot">link</Link> to reset it.
+        <div className="form-center my-2">
+            <form
+                method="post"
+                className="form-group screen-size font-size gradient-huckle-berry"
+                onSubmit={submitHandler}
+            >
+                <div className="form-header border-bottom">
+                    <h4>Register</h4>
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="username">
+                        Username
+                    </label>
+                    <input
+                        className={`form-input ${userNameInputClasses}`}
+                        id="username"
+                        name="username"
+                        type="text"
+                        value={userName}
+                        onChange={userNameChangeHandler}
+                        onBlur={userNameBlurHandler}
+                        autoComplete="off"
+                    />
+                    {userNameHasError ? (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid username.
                         </p>
-                    </div>
-                    <div className="button">
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="firstname">
+                        First Name
+                    </label>
+                    <input
+                        className={`form-input ${firstNameInputClasses}`}
+                        id="firstname"
+                        name="firstname"
+                        type="text"
+                        value={firstName}
+                        onChange={firstNameChangeHandler}
+                        onBlur={firstNameBlurHandler}
+                        autoComplete="off"
+                    />
+                    {firstNameHasError ? (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid first name.
+                        </p>
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="lastname">
+                        Last Name
+                    </label>
+                    <input
+                        className={`form-input ${lastNameInputClasses}`}
+                        id="lastname"
+                        name="lastname"
+                        type="text"
+                        value={lastName}
+                        onChange={lastNameChangeHandler}
+                        onBlur={lastNameBlurHandler}
+                        autoComplete="off"
+                    />
+                    {lastNameHasError ? (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid last name.
+                        </p>
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="email">
+                        Email
+                    </label>
+                    <input
+                        className={`form-input ${emailInputClasses}`}
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={email}
+                        onChange={emailChangeHandler}
+                        onBlur={emailBlurHandler}
+                        autoComplete="off"
+                    />
+                    {emailHasError ? (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid email.
+                        </p>
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="password">
+                        Password
+                    </label>
+                    <input
+                        className={`form-input ${passwordInputClasses}`}
+                        id="password"
+                        name="password"
+                        type="password"
+                        value={password}
+                        onChange={passwordChangeHandler}
+                        onBlur={passwordBlurHandler}
+                        autoComplete="off"
+                    />
+                    {passwordHasError ? (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid password.
+                        </p>
+                    ) : passwordLength ? (
+                        <p className="form-alert alert-warning">
+                            Password must be 10 characters or more.
+                        </p>
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="confirm">
+                        Confirm Password
+                    </label>
+                    <input
+                        className={`form-input ${confirmInputClasses}`}
+                        id="confirm"
+                        name="confirm"
+                        type="password"
+                        value={confirm}
+                        onChange={confirmChangeHandler}
+                        onBlur={confirmBlurHandler}
+                        autoComplete="off"
+                    />
+                    {confirmHasError ? (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid confirm password.
+                        </p>
+                    ) : passwordMatched ? (
+                        <p className="form-alert alert-warning">
+                            Password and confirm password do not match.
+                        </p>
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="form-notice">
+                    <p className="py-2 text-right">
+                        Password forgotten? Click this{" "}
+                        <Link to="/auth/forgot" className="text-orange-400">
+                            link
+                        </Link>{" "}
+                        to reset it.
+                    </p>
+                </div>
+                <div className="form-button">
+                    <div className="mx-auto">
                         <button
-                            className={submitHover}
-                            onMouseEnter={submitMouseEnter}
-                            onMouseLeave={submitMouseLeave}
                             type="submit"
+                            className="btn btn-green"
                             disabled={!formIsValid}
                         >
                             Register
                         </button>
-                        <button
-                            className={cancelHover}
-                            onMouseEnter={cancelMouseEnter}
-                            onMouseLeave={cancelMouseLeave}
-                            type="button"
-                            onClick={onDelay}
-                        >
+                    </div>
+                    <div className="mx-auto">
+                        <button type="button" className="btn btn-stone">
                             Cancel
                         </button>
                     </div>
-                </Fragment>
-            )}
-        </form>
+                </div>
+            </form>
+        </div>
     );
 };
 

@@ -1,0 +1,7 @@
+.gradient-blue-purple {
+    @apply hover:bg-gradient-to-l bg-gradient-to-r from-blue-500 to-purple-500 !important;
+}
+
+.gradient-huckle-berry {
+    @apply hover:bg-gradient-to-l bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800 !important;
+}

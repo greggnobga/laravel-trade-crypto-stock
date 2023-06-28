@@ -1,17 +1,11 @@
 /** React. */
-import { Fragment, useContext } from "react";
+import { useContext } from "react";
 
 /** Vendor. */
-import { Link, useNavigate } from "react-router-dom";
-
-/** Component. */
-import Loader from "../../icons/loader.js";
+import { Link } from "react-router-dom";
 
 /** Hook. */
 import useValidate from "../../../hooks/use-validate";
-import useHttp from "../../../hooks/use-http";
-import useMouse from "../../../hooks/use-mouse";
-import useDelay from "../../../hooks/use-delay";
 
 const Forgot = () => {
     /** Map html element to validate hook. */
@@ -37,26 +31,6 @@ const Forgot = () => {
     /** Change class logic if valid or otherwise. */
     const emailInputClasses = emailHasError ? "invalid" : "valid";
 
-    /** Use navigate. */
-    const navigate = useNavigate();
-
-    const forgotResponse = (data) => {
-        /** set error message. */
-        console.log(data.message);
-        /** Navigate out if done loading. */
-        navigate("/");
-    };
-
-    /** Use http hook. */
-    const { isLoading, sendRequest, hasError } = useHttp(
-        {
-            url: "/api/reset",
-            method: "POST",
-            params: { email: email },
-        },
-        forgotResponse
-    );
-
     /** Submit handler. */
     const submitHandler = (event) => {
         /** Prevent browser default behaviour */
@@ -77,79 +51,56 @@ const Forgot = () => {
         emailInputReset();
     };
 
-    /** Use delay hook. */
-    const { isClass, onDelay } = useDelay({
-        default: true,
-        enter: "form fade-in-bottom",
-        exit: "form fade-out-bottom",
-    });
-
-    /** Map animate hook submit button. */
-    const {
-        mouseHover: submitHover,
-        mouseEnter: submitMouseEnter,
-        mouseLeave: submitMouseLeave,
-    } = useMouse({ default: "btn btn-primary", enter: "pulsate-forward" });
-
-    /** Map animate hook cancel button. */
-    const {
-        mouseHover: cancelHover,
-        mouseEnter: cancelMouseEnter,
-        mouseLeave: cancelMouseLeave,
-    } = useMouse({ default: "btn btn-secondary", enter: "pulsate-forward" });
-
     return (
-        <form method="post" className={isClass} onSubmit={submitHandler}>
-            {isLoading ? (
-                <Loader />
-            ) : (
-                <Fragment>
-                    <div className="heading">
-                        <h4>Forgot Password</h4>
-                    </div>
-                    <div className="group">
-                        <label className="label" htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            className={emailInputClasses}
-                            name="email"
-                            type="email"
-                            value={email}
-                            onChange={emailChangeHandler}
-                            onBlur={emailBlurHandler}
-                        />
-                        {emailHasError ? (
-                            <p className="error">Please enter a valid email.</p>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                    <div className="button">
+        <div className="form-center">
+            <form
+                method="post"
+                className="form-group screen-size font-size gradient-huckle-berry"
+                onSubmit={submitHandler}
+            >
+                <div className="form-header border-bottom">
+                    <h4>Forgot Password</h4>
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="email">
+                        Email
+                    </label>
+                    <input
+                        className={`form-input ${emailInputClasses}`}
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={email}
+                        onChange={emailChangeHandler}
+                        onBlur={emailBlurHandler}
+                        autoComplete="off"
+                    />
+                    {emailHasError ? (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid email.
+                        </p>
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="form-button">
+                    <div className="mx-auto">
                         <button
-                            className={submitHover}
-                            onMouseEnter={submitMouseEnter}
-                            onMouseLeave={submitMouseLeave}
-                            className="btn btn-primary"
                             type="submit"
+                            className="btn btn-green"
                             disabled={!formIsValid}
                         >
                             Submit
                         </button>
-                        <button
-                            className={cancelHover}
-                            onMouseEnter={cancelMouseEnter}
-                            onMouseLeave={cancelMouseLeave}
-                            className="btn btn-secondary"
-                            type="button"
-                            onClick={onDelay}
-                        >
+                    </div>
+                    <div className="mx-auto">
+                        <button type="button" className="btn btn-stone">
                             Cancel
                         </button>
                     </div>
-                </Fragment>
-            )}
-        </form>
+                </div>
+            </form>
+        </div>
     );
 };
 

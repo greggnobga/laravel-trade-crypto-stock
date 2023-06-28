@@ -44,10 +44,12 @@ const Login = () => {
     }
 
     /** Change class logic if valid or otherwise. */
-    const emailInputClasses = emailHasError ? "input-warning" : "input-success";
+    const emailInputClasses = emailHasError
+        ? "alert-border-warning"
+        : "alert-border-success";
     const passwordInputClasses = passwordHasError
-        ? "input-warning"
-        : "input-success";
+        ? "alert-border-warning"
+        : "alert-border-success";
 
     /** Submit handler. */
     const submitHandler = (event) => {
@@ -72,79 +74,82 @@ const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen border-two bg-indigo-200 bg-opacity-20">
+        <div className="form-center my-2">
             <form
                 method="post"
                 onSubmit={submitHandler}
-                className="px-6 grid  w-2/4 h-2/4 gradient-huckle-berry rounded-lg shadow border border-slate-50"
+                className="form-group screen-size font-size gradient-huckle-berry"
             >
-                <>
-                    <div className="p-6 uppercase text-center border-bottom my-auto">
-                        <h4>Login</h4>
-                    </div>
-                    <div className="p-2 grid grid-cols-6 auto-rows-min">
-                        <label className="col-span-2 span-box" htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            className={`col-span-4 input-box  ${emailInputClasses}`}
-                            name="email"
-                            type="email"
-                            value={email}
-                            onChange={emailChangeHandler}
-                            onBlur={emailBlurHandler}
-                        />
-                        {emailHasError ? (
-                            <p className="col-span-6 py-2 text-right text-xs message-warning">
-                                Please enter a valid email.
-                            </p>
-                        ) : (
-                            ""
-                        )}
-                    </div>
-                    <div className="p-2 grid grid-cols-6 auto-rows-min">
-                        <label
-                            className="col-span-2 span-box"
-                            htmlFor="password"
-                        >
-                            Password
-                        </label>
-                        <input
-                            className={`col-span-4 input-box ${passwordInputClasses}`}
-                            name="password"
-                            type="password"
-                            value={password}
-                            onChange={passwordChangeHandler}
-                            onBlur={passwordBlurHandler}
-                        />
-                        {passwordHasError && (
-                            <p className="col-span-6 py-2 text-right text-xs message-warning">
-                                Please enter a valid password.
-                            </p>
-                        )}
-                    </div>
-                    <div className="p-2 grid auto-rows-min">
-                        <p className="text-xs text-slate-50 text-right">
-                            Password forgotten? Click this{" "}
-                            <Link to="/auth/forgot" className="text-orange-400">
-                                link
-                            </Link>{" "}
-                            to reset it.
+                <div className="form-header border-bottom">
+                    <h4>Login</h4>
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="email">
+                        Email
+                    </label>
+                    <input
+                        className={`form-input ${emailInputClasses}`}
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={email}
+                        onChange={emailChangeHandler}
+                        onBlur={emailBlurHandler}
+                        autoComplete="off"
+                    />
+                    {emailHasError ? (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid email.
                         </p>
-                    </div>
-                    <div className="grid grid-cols-2 auto-rows-min">
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="form-control">
+                    <label className="form-label" htmlFor="password">
+                        Password
+                    </label>
+                    <input
+                        className={`form-input ${passwordInputClasses}`}
+                        id="password"
+                        name="password"
+                        type="password"
+                        value={password}
+                        onChange={passwordChangeHandler}
+                        onBlur={passwordBlurHandler}
+                        autoComplete="off"
+                    />
+                    {passwordHasError && (
+                        <p className="form-alert alert-warning">
+                            Please enter a valid password.
+                        </p>
+                    )}
+                </div>
+                <div className="form-notice">
+                    <p className="py-2 text-right">
+                        Password forgotten? Click this{" "}
+                        <Link to="/auth/forgot" className="text-orange-400">
+                            link
+                        </Link>{" "}
+                        to reset it.
+                    </p>
+                </div>
+                <div className="form-button">
+                    <div className="mx-auto">
                         <button
-                            className="p-2"
+                            className="btn btn-green"
                             type="submit"
                             disabled={!formIsValid}
                         >
                             Login
                         </button>
-                        <button className="p-2" type="button">
+                    </div>
+                    <div className="mx-auto">
+                        <button className="btn btn-stone" type="button">
                             Cancel
                         </button>
                     </div>
-                </>
+                </div>
             </form>
         </div>
     );

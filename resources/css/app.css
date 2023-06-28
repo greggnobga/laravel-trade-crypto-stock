@@ -1,174 +1,37 @@
 /** Import google font.*/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400;1,600;1,800&display=swap");
 
-/** Import tailwind.*/
+/** Import Tailwind.*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Directives */
-.border-bottom {
-    @apply p-2 border-b border-stone-100 border-opacity-50;
-}
+/** Button Directives. */
+@import "components/buttons.css";
 
-.gradient-blue-purple {
-    @apply hover:bg-gradient-to-l bg-gradient-to-r from-blue-500 to-purple-500;
-}
+/** Font Directives. */
+@import "components/fonts.css";
 
-.gradient-huckle-berry {
-    @apply hover:bg-gradient-to-l bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800;
-}
-.button-indigo {
-    @apply w-32 bg-indigo-500 hover:bg-indigo-400 hover:border hover:border-stone-100 hover:shadow-md rounded-md mb-2 p-2 md:p-3 text-stone-200 text-xs;
-}
+/** Border Directives. */
+@import "components/borders.css";
 
-.button-emerald {
-    @apply w-32 bg-emerald-600 hover:bg-emerald-400 hover:border hover:border-stone-100 hover:shadow-md rounded-md ml-2 p-2 md:p-3 text-stone-200 text-xs;
-}
+/** Screen Directives. */
+@import "components/screens.css";
 
-.button-orange {
-    @apply w-32 bg-orange-600 hover:bg-orange-400 hover:border hover:border-stone-100 hover:shadow-md p-2 md:p-3 text-stone-200 text-xs;
-}
+/** Gradient Directives. */
+@import "components/gradients.css";
 
-.card {
-    @apply bg-slate-100 bg-opacity-50 shadow border border-gray-100 cursor-pointer mb-2;
-}
+/** Card Directives. */
+@import "components/cards.css";
 
-.card-rounded {
-    @apply bg-slate-100 bg-opacity-50 rounded-lg shadow border border-gray-100 cursor-pointer mb-2;
-}
+/** Form Directives. */
+@import "components/forms.css";
 
-.message-success {
-    @apply text-green-500;
-}
+/* Alert Directives */
+@import "components/alerts.css";
 
-.message-warning {
-    @apply text-red-500;
-}
-
-.input-box {
-    @apply mt-1 px-3 py-2 rounded-lg bg-white border shadow-sm border-slate-300;
-}
-.input-sucess {
-    @apply border border-green-500;
-}
-
-.input-warning {
-    @apply border border-red-500;
-}
-
-.span-box {
-    @apply mt-1 px-3 py-2;
-}
-
-/** Fancy borders. */
-.border-one {
-    border-radius: 100% 0% 0% 100% / 0% 100% 0% 100%;
-}
-
-.border-two {
-    border-radius: 0% 100% 100% 0% / 100% 100% 0% 0%;
-}
-
-.border-three {
-    border-radius: 67% 0% 69% 0% / 42% 27% 50% 29%;
-}
-
-/** Backgrounds. */
-.background-dot {
-    background-image: radial-gradient(#6d28d9 0.5px, transparent 0.5px);
-    background-size: 19px 19px;
-    background-color: #ffffff;
-}
+/** Background Directives. */
+@import "components/backgrounds.css";
 
 /* Hamburgers */
-.hamburger {
-    padding: 5px 5px;
-    display: inline-block;
-    cursor: pointer;
-    transition-property: opacity, filter;
-    transition-duration: 0.15s;
-    transition-timing-function: linear;
-    font: inherit;
-    color: inherit;
-    text-transform: none;
-    background-color: transparent;
-    border: 0;
-    margin: 0;
-    overflow: visible;
-}
-.hamburger:hover {
-    opacity: 0.7;
-}
-.hamburger.is-active:hover {
-    opacity: 0.7;
-}
-.hamburger.is-active .hamburger-inner,
-.hamburger.is-active .hamburger-inner::before,
-.hamburger.is-active .hamburger-inner::after {
-    background-color: #f1f5f9;
-}
-
-.hamburger-box {
-    width: 40px;
-    height: 24px;
-    display: inline-block;
-    position: relative;
-}
-
-.hamburger-inner {
-    display: block;
-    top: 50%;
-    margin-top: -2px;
-}
-.hamburger-inner,
-.hamburger-inner::before,
-.hamburger-inner::after {
-    width: 40px;
-    height: 4px;
-    background-color: #f1f5f9;
-    border-radius: 4px;
-    position: absolute;
-    transition-property: transform;
-    transition-duration: 0.15s;
-    transition-timing-function: ease;
-}
-.hamburger-inner::before,
-.hamburger-inner::after {
-    content: "";
-    display: block;
-}
-.hamburger-inner::before {
-    top: -10px;
-}
-.hamburger-inner::after {
-    bottom: -10px;
-}
-
-/* Elastic */
-.hamburger-elastic .hamburger-inner {
-    top: 2px;
-    transition-duration: 0.275s;
-    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-.hamburger-elastic .hamburger-inner::before {
-    top: 10px;
-    transition: opacity 0.125s 0.275s ease;
-}
-.hamburger-elastic .hamburger-inner::after {
-    top: 20px;
-    transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.hamburger-elastic.is-active .hamburger-inner {
-    transform: translate3d(0, 10px, 0) rotate(135deg);
-    transition-delay: 0.075s;
-}
-.hamburger-elastic.is-active .hamburger-inner::before {
-    transition-delay: 0s;
-    opacity: 0;
-}
-.hamburger-elastic.is-active .hamburger-inner::after {
-    transform: translate3d(0, -20px, 0) rotate(-270deg);
-    transition-delay: 0.075s;
-}
+@import "vendors/hamburgers.css";

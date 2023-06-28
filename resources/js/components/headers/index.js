@@ -37,10 +37,10 @@ const Header = () => {
     return (
         <>
             {isMobile ? (
-                <header className="flex justify-between h-14 gradient-blue-purple border-bottom text-stone-200 relative">
+                <header className="flex justify-between h-14 gradient-blue-purple border-bottom text-slate-50 relative">
                     <div className="p-2">
                         <Link to="/">
-                            <span className="block uppercase text-stone-700 hover:text-stone-200">
+                            <span className="block uppercase hover:text-slate-300">
                                 <Icon id="logo" /> Orion
                             </span>
                         </Link>
@@ -66,31 +66,31 @@ const Header = () => {
                         </button>
                     </div>
                     {isActive ? (
-                        <nav className="flex flex-col flex-grow shadow gradient-blue-purple text-stone-800 absolute w-full top-14 right-0">
+                        <nav className="flex flex-col flex-grow shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0">
                             <Link to="/stock-explorer">
-                                <span className="block border-bottom">
+                                <span className="block border-bottom hover:text-slate-300">
                                     <Icon id="stock" /> Stock Explorer
                                 </span>
                             </Link>
                             <Link to="/crypto-explorer">
-                                <span className="block border-bottom">
+                                <span className="block border-bottom hover:text-slate-300">
                                     <Icon id="crypto" /> Crypto Explorer
                                 </span>
                             </Link>
                             {authenticated ? (
                                 <>
                                     <Link to="/dashboard">
-                                        <span className="block border-bottom">
+                                        <span className="block border-bottom hover:text-slate-300">
                                             <Icon id="menu" /> Dashboard
                                         </span>
                                     </Link>
                                     <Link to="/profile">
-                                        <span className="block border-bottom">
+                                        <span className="block border-bottom hover:text-slate-300">
                                             <Icon id="profile" /> Profile
                                         </span>
                                     </Link>
                                     <Link to="/" onClick={requestHandler}>
-                                        <span className="block border-bottom">
+                                        <span className="block border-bottom hover:text-slate-300">
                                             <Icon id="logout" /> Logout
                                         </span>
                                     </Link>
@@ -98,12 +98,12 @@ const Header = () => {
                             ) : (
                                 <>
                                     <Link to="/auth/login">
-                                        <span className="block border-bottom">
+                                        <span className="block border-bottom hover:text-slate-300">
                                             <Icon id="login" /> Login
                                         </span>
                                     </Link>
                                     <Link to="/auth/register">
-                                        <span className="block border-bottom">
+                                        <span className="block border-bottom hover:text-slate-300">
                                             <Icon id="register" /> Register
                                         </span>
                                     </Link>
@@ -115,22 +115,22 @@ const Header = () => {
                     )}
                 </header>
             ) : (
-                <header className="flex justify-between gradient-blue-purple">
+                <header className="flex justify-between gradient-blue-purple text-slate-50">
                     <div className="p-3">
                         <Link to="/stock-explorer">
-                            <span className="hover:text-stone-200 text-stone-800">
+                            <span className="hover:text-slate-300">
                                 <Icon id="stock" /> Stock Explorer
                             </span>
                         </Link>
                         <Link to="/crypto-explorer">
-                            <span className="ml-6 hover:text-stone-200 text-stone-800">
+                            <span className="ml-6 hover:text-slate-300">
                                 <Icon id="crypto" /> Crypto Explorer
                             </span>
                         </Link>
                     </div>
                     <div className="p-3">
                         <Link to="/">
-                            <span className="uppercase text-stone-700 hover:text-stone-200">
+                            <span className="uppercase text-yellow-500 hover:text-slate-200">
                                 <Icon id="logo" /> Orion Trade
                             </span>
                         </Link>
@@ -139,23 +139,23 @@ const Header = () => {
                         {authenticated ? (
                             <>
                                 <Link to="#">
-                                    <span className="hover:text-stone-200 text-stone-800">
+                                    <span className="hover:text-slate-300">
                                         <Icon id="control" /> Control Panel
                                     </span>
                                 </Link>
                                 <Link to="/dashboard">
-                                    <span className="hover:text-stone-200 text-stone-800">
+                                    <span className="hover:text-slate-300">
                                         <Icon id="menu" />
                                         Dashboard
                                     </span>
                                 </Link>
                                 <Link to="/profile">
-                                    <span className="ml-6 hover:text-stone-200 text-stone-800">
+                                    <span className="ml-6 hover:text-slate-300">
                                         <Icon id="profile" /> Profile
                                     </span>
                                 </Link>
                                 <Link to="/" onClick={requestHandler}>
-                                    <span className="ml-6 hover:text-stone-200 text-stone-800">
+                                    <span className="ml-6 hover:text-slate-300">
                                         <Icon id="logout" /> Logout
                                     </span>
                                 </Link>
@@ -163,12 +163,12 @@ const Header = () => {
                         ) : (
                             <>
                                 <Link to="/auth/login">
-                                    <span className="hover:text-stone-200 text-stone-800">
+                                    <span className="hover:text-slate-300">
                                         <Icon id="login" /> Login
                                     </span>
                                 </Link>
                                 <Link to="/auth/register">
-                                    <span className="ml-6 hover:text-stone-200 text-stone-800">
+                                    <span className="ml-6 hover:text-slate-300">
                                         <Icon id="register" /> Register
                                     </span>
                                 </Link>

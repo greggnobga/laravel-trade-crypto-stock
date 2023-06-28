@@ -1,0 +1,35 @@
+.form-center {
+    @apply p-2 flex items-center justify-center h-fit border bg-indigo-200 bg-opacity-20 !important;
+}
+
+.form-group {
+    @apply px-6 grid rounded-lg shadow border border-slate-50 text-slate-50 !important;
+}
+
+.form-header {
+    @apply p-6 uppercase text-center my-auto !important;
+}
+
+.form-control {
+    @apply grid py-2 sm:grid-cols-6 auto-rows-min !important;
+}
+
+.form-input {
+    @apply sm:col-span-4 mt-1 px-1 py-1 rounded-lg bg-white border shadow-sm border-slate-300 text-sm sm:text-base text-stone-500 !important;
+}
+
+.form-label {
+    @apply sm:col-span-2 mt-1 px-1 py-1 !important;
+}
+
+.form-alert {
+    @apply sm:col-span-6 py-1 text-right !important;
+}
+
+.form-notice {
+    @apply grid auto-rows-min !important;
+}
+
+.form-button {
+    @apply grid py-4 sm:grid-cols-2 justify-center auto-rows-min !important;
+}

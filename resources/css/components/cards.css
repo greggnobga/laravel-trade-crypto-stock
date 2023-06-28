@@ -1,0 +1,7 @@
+.card {
+    @apply bg-slate-100 bg-opacity-50 shadow border border-gray-100 cursor-pointer mb-2 !important;
+}
+
+.card-rounded {
+    @apply bg-slate-100 bg-opacity-50 rounded-lg shadow border border-gray-100 cursor-pointer mb-2 !important;
+}

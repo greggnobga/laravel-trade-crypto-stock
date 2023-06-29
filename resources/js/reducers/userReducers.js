@@ -1,20 +1,20 @@
 import {
-    USER_CREDENTIAL_REQUEST,
-    USER_CREDENTIAL_SUCCESS,
-    USER_CREDENTIAL_FAILURE,
-    USER_CREDENTIAL_RESET,
+    USER_LOGIN_REQUEST,
+    USER_LOGIN_SUCCESS,
+    USER_LOGIN_FAILURE,
+    USER_LOGIN_LOGOUT,
 } from "../constants/userConstants";
 
-export const userCredentialReducer = (state = { credential: [] }, action) => {
+export const userLoginReducer = (state = {}, action) => {
     switch (action.type) {
-        case USER_CREDENTIAL_REQUEST:
-            return { loading: true, credential: [] };
-        case USER_CREDENTIAL_SUCCESS:
-            return { loading: false, credential: action.payload };
-        case USER_CREDENTIAL_FAILURE:
+        case USER_LOGIN_REQUEST:
+            return { loading: true };
+        case USER_LOGIN_SUCCESS:
+            return { loading: false, auth: action.payload };
+        case USER_LOGIN_FAILURE:
             return { loading: false, error: action.payload };
-        case USER_CREDENTIAL_RESET:
-            return { loading: false, credential: [] };
+        case USER_LOGIN_LOGOUT:
+            return {};
         default:
             return state;
     }

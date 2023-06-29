@@ -10,34 +10,34 @@ import {
 import SinglePublic from "./components/layouts/single-public";
 import SingleDashboard from "./components/layouts/single-dashboard";
 
-import Home from "./components/pages/home";
-import CryptoExplorer from "./components/pages/crypto-explorer";
-import StockExplorer from "./components/pages/stock-explorer";
+import Home from "./screens/homeScreen";
+import CryptoExplorer from "./screens/cryptoScreen";
+import StockExplorer from "./screens/stockScreen";
 
-import Login from "./components/pages/auth/login";
-import Register from "./components/pages/auth/register";
-import Forgot from "./components/pages/auth/forgot";
-import Reset from "./components/pages/auth/reset";
-import Verify from "./components/pages/auth/verify";
+import Login from "./screens/auth/loginScreen";
+import Register from "./screens/auth/registerScreen";
+import Forgot from "./screens/auth/forgotScreen";
+import Reset from "./screens/auth/resetScreen";
+import Verify from "./screens/auth/verifyScreen";
 
-import Profile from "./components/pages/profile";
+import Profile from "./screens/profileScreen";
 
-import Dashboard from "./components/pages/dashboard";
+import Dashboard from "./screens/dashboardScreen";
 
-import StockPortfolio from "./components/pages/dashboard/stock/portfolio";
-import StockWatchlist from "./components/pages/dashboard/stock/watchlist";
-import StockTrade from "./components/pages/dashboard/stock/trade";
-import StockChart from "./components/pages/dashboard/stock/chart";
+import StockPortfolio from "./screens/dashboard/stock/portfolioScreen";
+import StockWatchlist from "./screens/dashboard/stock/watchlistScreen";
+import StockTrade from "./screens/dashboard/stock/tradeScreen";
+import StockChart from "./screens/dashboard/stock/chartScreen";
 
-import CryptoPortfolio from "./components/pages/dashboard/crypto/portfolio";
-import CryptoScreen from "./components/pages/dashboard/crypto/screen";
-import CryptoMoon from "./components/pages/dashboard/crypto/moon";
-import CryptoGame from "./components/pages/dashboard/crypto/game";
-import CryptoNft from "./components/pages/dashboard/crypto/nft";
+import CryptoPortfolio from "./screens/dashboard/crypto/portfolioScreen";
+import CryptoScreen from "./screens/dashboard/crypto/screenScreen";
+import CryptoMoon from "./screens/dashboard/crypto/moonScreen";
+import CryptoGame from "./screens/dashboard/crypto/gameScreen";
+import CryptoNft from "./screens/dashboard/crypto/nftScreen";
 
-import Note from "./components/pages/extra/note";
+import Note from "./screens/dashboard/noteScreen";
 
-import Uncharted from "./components/pages/error/uncharted";
+import Uncharted from "./screens/errorScreen";
 
 const App = () => {
     /** Return something. */

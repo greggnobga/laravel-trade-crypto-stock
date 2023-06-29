@@ -3,19 +3,18 @@ import { useState } from "react";
 
 /** Vendor. */
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 /** Hook. */
 import useScreen from "../../hooks/use-screen";
-
-/** Helper. */
-import helpCheck from "../../helpers/help-check";
 
 /** Component. */
 import Icon from "../icons";
 
 const Header = () => {
-    /** Use helper. */
-    const { authenticated, requestHandler } = helpCheck();
+    /** Get state. */
+    const userLogin = useSelector((state) => state.userLogin);
+    const { auth } = userLogin;
 
     /** Use screen hook. */
     const { isMobile } = useScreen();
@@ -46,7 +45,7 @@ const Header = () => {
                         </Link>
                     </div>
                     <div className="p-0">
-                        {authenticated ? (
+                        {auth ? (
                             <>
                                 <span>
                                     <Icon id="control" />
@@ -77,7 +76,7 @@ const Header = () => {
                                     <Icon id="crypto" /> Crypto Explorer
                                 </span>
                             </Link>
-                            {authenticated ? (
+                            {auth ? (
                                 <>
                                     <Link to="/dashboard">
                                         <span className="block border-bottom hover:text-slate-300">
@@ -89,7 +88,7 @@ const Header = () => {
                                             <Icon id="profile" /> Profile
                                         </span>
                                     </Link>
-                                    <Link to="/" onClick={requestHandler}>
+                                    <Link to="/">
                                         <span className="block border-bottom hover:text-slate-300">
                                             <Icon id="logout" /> Logout
                                         </span>
@@ -136,7 +135,7 @@ const Header = () => {
                         </Link>
                     </div>
                     <div className="p-3">
-                        {authenticated ? (
+                        {auth ? (
                             <>
                                 <Link to="#">
                                     <span className="hover:text-slate-300">
@@ -154,7 +153,7 @@ const Header = () => {
                                         <Icon id="profile" /> Profile
                                     </span>
                                 </Link>
-                                <Link to="/" onClick={requestHandler}>
+                                <Link to="/">
                                     <span className="ml-6 hover:text-slate-300">
                                         <Icon id="logout" /> Logout
                                     </span>

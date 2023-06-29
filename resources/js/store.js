@@ -5,15 +5,21 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 /** Reducer. */
 import { stockListReducer } from "./reducers/stockReducers";
-import { userCredentialReducer } from "./reducers/userReducers";
+import { userLoginReducer } from "./reducers/userReducers";
 
 const reducer = combineReducers({
     stockList: stockListReducer,
-    userCredential: userCredentialReducer,
+    userLogin: userLoginReducer,
 });
 
 /** State. */
-const initialState = {};
+const userAuthFromStorage = localStorage.getItem("auth")
+    ? JSON.parse(localStorage.getItem("auth"))
+    : null;
+
+const initialState = {
+    userLogin: { auth: userAuthFromStorage },
+};
 
 /** Middleware. */
 const middleware = [thunk];

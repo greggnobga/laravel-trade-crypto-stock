@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use Carbon\Carbon;
@@ -17,10 +18,8 @@ use App\Models\Users;
 use App\Models\Verification;
 use App\Http\Controllers\Controller;
 
-class AuthController extends Controller
-{
-    public function register(Request $request)
-    {
+class AuthController extends Controller {
+    public function register(Request $request) {
         /** Add hard coded parameter. */
         if ($request->email === 'reijo@buntod.com') {
             $request->request->add(['role' => 'admin']);
@@ -85,8 +84,7 @@ class AuthController extends Controller
         }
     }
 
-    public function login(Request $request)
-    {
+    public function login(Request $request) {
 
         /** Attempt to authenticate Users. */
         if (!Auth::attempt($request->only('email', 'password'))) {
@@ -111,8 +109,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function reset(Request $request)
-    {
+    public function reset(Request $request) {
         if (is_null($request->input('token'))) {
             /** Validate request data */
             $validator = Validator::make($request->all(), [
@@ -200,8 +197,7 @@ class AuthController extends Controller
         }
     }
 
-    public function verify(Request $request)
-    {
+    public function verify(Request $request) {
         /** Validate request data */
         $validator = Validator::make($request->all(), [
             'token' => 'required|string|max:255',
@@ -239,8 +235,7 @@ class AuthController extends Controller
         }
     }
 
-    public function resend()
-    {
+    public function resend() {
         /** Get Users id. */
         $id = Auth::id();
 
@@ -281,8 +276,7 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         if (is_null($request->only('token'))) {
             /** Return error message. */
             return response(['message' => 'The authentication token has not been set. Did you perhaps enter from another door?'], 401);
@@ -295,11 +289,5 @@ class AuthController extends Controller
 
         /** Return something. */
         return response(['message' => 'We are hoping to see you any time soon!'], 200);
-    }
-
-    public function protect()
-    {
-        /** Return something. */
-        return response(['status' => true], 200);
     }
 }

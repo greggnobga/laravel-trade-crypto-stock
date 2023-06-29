@@ -23,7 +23,6 @@ Route::group(['middleware' => 'api'], function () {
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/resend', [App\Http\Controllers\Auth\AuthController::class, 'resend'])->name('resend');
     Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
-    Route::get('/protect', [App\Http\Controllers\Auth\AuthController::class, 'protect'])->name('protect');
 
     Route::get('/dashboard', [App\Http\Controllers\Dashboard\DashboardController::class, 'init'])->name('init');
 });

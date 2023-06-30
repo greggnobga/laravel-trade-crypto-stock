@@ -5,7 +5,6 @@ import { useState, useContext, useEffect } from "react";
 import Chart from "chart.js/auto";
 
 /** Hook. */
-import useHttp from "../../../hooks/use-http";
 import useScreen from "../../../hooks/use-screen";
 
 /** Component. */
@@ -107,45 +106,6 @@ const Portfolio = () => {
     const recordHandler = () => {
         setRecord(!record);
     };
-
-    /** Use http hook reponse callback. */
-    const retrieveResponse = (data) => {
-        /** Render reponse message. */
-        console.log(data.message);
-        /** Process response. */
-        if (data.hasOwnProperty("hold")) {
-            /** Set state value. */
-            setHold(data["hold"]["total"]);
-        }
-        /** Process response. */
-        if (data.hasOwnProperty("order")) {
-            /** Set state value. */
-            setOrder(data["order"]);
-        }
-        /** Process response. */
-        if (data.hasOwnProperty("chart")) {
-            /** Set state value. */
-            setWatcher(true);
-            setCapital(data["chart"]["capital"]);
-            setStocks(data["chart"]["stocks"]);
-            setTotal(data["chart"]["total"]);
-        }
-    };
-
-    /** Prepare request to local api using http hook. */
-    const { sendRequest: retrieveRequest } = useHttp(
-        {
-            url: "/api/stock-portfolio-retrieve",
-            method: "GET",
-            params: { table: "portfolio" },
-        },
-        retrieveResponse
-    );
-
-    /** Use effect. */
-    useEffect(() => {
-        retrieveRequest();
-    }, []);
 
     return (
         <div id="stock-portfolio">

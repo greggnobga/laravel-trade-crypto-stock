@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const useScreen = () => {
     /** Get inner width size. */
-    const getScreen = () => window.innerWidth <= 768;
+    const getScreen = () => window.innerWidth <= 1024;
 
     /** Use state. */
     const [isMobile, setMobile] = useState(getScreen);

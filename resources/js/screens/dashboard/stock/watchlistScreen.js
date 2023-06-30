@@ -2,7 +2,6 @@
 import { Fragment, useState, useContext, useEffect } from "react";
 
 /** Hook. */
-import useHttp from "../../../hooks/use-http";
 import useScreen from "../../../hooks/use-screen";
 
 /** Component. */
@@ -14,86 +13,6 @@ const Watchlist = () => {
     const [sectors, setSectors] = useState({});
     const [disabled, setDisabled] = useState(false);
 
-    /** Use http hook reponse callback. */
-    const retrieveResponse = (data) => {
-        /** Render reponse message. */
-        if (data.hasOwnProperty("stocks")) {
-            data["stocks"].map((item, index) => {
-                setTimeout(() => {
-                    /** Assign variable a value. */
-                    setStocks(item);
-                }, 3000 * index);
-                /** Set start button state to false after the map reach its last iteration. */
-                if (index >= data.length) {
-                    setDisabled(false);
-                }
-            });
-        }
-    };
-
-    /** Prepare request to local api using http hook. */
-    const { sendRequest: retrieveRequest } = useHttp(
-        {
-            url: "/stock-reports-retrieve",
-            method: "GET",
-            params: { section: "stocks" },
-        },
-        retrieveResponse
-    );
-
-    /** Declare config state. */
-    const [payload, setPayload] = useState({});
-    const [caller, setCaller] = useState("");
-
-    /** Use http hook reponse callback. */
-    const storeResponse = (data) => {
-        /** Check if data is not empty. */
-        if (data) {
-            /** Render reponse message. */
-            console.log(data.message);
-        }
-    };
-
-    /** Prepare request to local api using http hook. */
-    const { sendRequest: storeRequest } = useHttp(
-        {
-            url: "/stock-reports-store",
-            method: "POST",
-            params: payload,
-        },
-        storeResponse
-    );
-
-    /** Use effect when edge state changes. */
-    useEffect(() => {
-        /** Conditional payload value. */
-        switch (caller) {
-            case "watches":
-                setPayload({
-                    section: "watches",
-                    id: stocks["edge"],
-                    symbol: stocks["symbol"],
-                    sector: stocks["sector"],
-                    volume: stocks["volume"],
-                });
-                break;
-            default:
-                setPayload({
-                    section: "watches",
-                    id: stocks["edge"],
-                    symbol: stocks["symbol"],
-                    sector: stocks["sector"],
-                    volume: stocks["volume"],
-                });
-        }
-        /** Send request. */
-        if (stocks) {
-            if (typeof payload["id"] !== "undefined") {
-                storeRequest();
-            }
-        }
-    }, [stocks]);
-
     /** Build handler. */
     const buildHandler = () => {
         /** Set caller. */
@@ -102,92 +21,6 @@ const Watchlist = () => {
         setDisabled(true);
         /** Send request. */
         retrieveRequest();
-    };
-
-    /** Use http hook reponse callback. */
-    const watchRetrieveResponse = (data) => {
-        console.log(data);
-        /** Check if data is not empty. */
-        if (data) {
-            /** Set sector. */
-            setSectors(data["sectors"]);
-            /** Render reponse message. */
-            console.log(data["message"]);
-        }
-    };
-
-    /** Prepare request to local api using http hook. */
-    const { sendRequest: watchRetrieveRequest } = useHttp(
-        {
-            url: "/api/stock-watchlist-retrieve",
-            method: "GET",
-            params: { table: "watchlist", statement: "select" },
-        },
-        watchRetrieveResponse
-    );
-
-    useEffect(() => {
-        watchRetrieveRequest();
-    }, []);
-
-    const viewHandler = (edge) => {
-        const url =
-            "https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=" +
-            edge;
-        /** Open a new tab. */
-        window.open(url, "_blank", "noopener");
-    };
-
-    /** Declare state. */
-    const [destroy, setDestroy] = useState();
-
-    /** Send http request after state has a value. */
-    useEffect(() => {
-        if (typeof destroy !== "undefined") {
-            /** Send request. */
-            watchStoreRequest();
-        }
-    }, [destroy]);
-
-    /** Use http hook reponse callback. */
-    const watchStoreResponse = (data) => {
-        /** Check if data is not empty. */
-        if (data) {
-            /** Render reponse message. */
-            console.log(data["message"]);
-        }
-    };
-
-    /** Prepare request to local api using http hook. */
-    const { sendRequest: watchStoreRequest } = useHttp(
-        {
-            url: "/api/stock-watchlist-store",
-            method: "POST",
-            params: { table: "watchlist", statement: "trash", input: destroy },
-        },
-        watchStoreResponse
-    );
-
-    /** destroy handler. */
-    const destroyHandler = (symbol, index, sector) => {
-        /** Create new set of data. */
-        const targetedSector = [...sectors[sector]];
-        /** Remove item in the array. */
-        const filtered = targetedSector.filter(
-            (item) => item["symbol"] !== symbol
-        );
-        /** Copy sectors to new pointer. */
-        const updatedSector = { ...sectors };
-        /** Loop to find a match. */
-        for (let item in updatedSector) {
-            if (item === sector) {
-                updatedSector[sector] = filtered;
-            }
-        }
-        /** Set data. */
-        setSectors({ ...updatedSector });
-        /** Set params. */
-        setDestroy(symbol);
     };
 
     /** Use screen helper. */

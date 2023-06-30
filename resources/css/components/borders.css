@@ -1,6 +1,6 @@
 /** Borders. */
 .border-bottom {
-    @apply p-2 border-b border-stone-100 border-opacity-50 !important;
+    @apply p-2 border-b border-stone-100 border-opacity-50 hover:text-slate-300 !important;
 }
 
 /** Fancy borders. */

@@ -7,8 +7,7 @@ import {
 } from "react-router-dom";
 
 /** Component. */
-import SinglePublic from "./components/layouts/single-public";
-import SingleDashboard from "./components/layouts/single-dashboard";
+import Layout from "./components/layouts";
 
 import Home from "./screens/homeScreen";
 import CryptoExplorer from "./screens/cryptoScreen";
@@ -44,7 +43,7 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<SinglePublic />}>
+                <Route path="/" element={<Layout />}>
                     <Route path="/" element={<Home />} />
                     <Route
                         path="/crypto-explorer"
@@ -52,17 +51,17 @@ const App = () => {
                     />
                     <Route path="/stock-explorer" element={<StockExplorer />} />
                 </Route>
-                <Route path="/auth" element={<SinglePublic />}>
+                <Route path="/auth" element={<Layout />}>
                     <Route path="/auth/register" element={<Register />} />
                     <Route path="/auth/login" element={<Login />} />
                     <Route path="/auth/forgot" element={<Forgot />} />
                     <Route path="/auth/reset/:token" element={<Reset />} />
                     <Route path="/auth/verify/:token" element={<Verify />} />
                 </Route>
-                <Route path="/profile" element={<SinglePublic />}>
+                <Route path="/profile" element={<Layout />}>
                     <Route path="/profile" element={<Profile />} />
                 </Route>
-                <Route path="/dashboard" element={<SingleDashboard />}>
+                <Route path="/dashboard" element={<Layout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route
                         path="/dashboard/stock-portfolio"
@@ -102,7 +101,7 @@ const App = () => {
                     />
                     <Route path="/dashboard/extra-note" element={<Note />} />
                 </Route>
-                <Route path="/" element={<SinglePublic />}>
+                <Route path="/" element={<Layout />}>
                     <Route
                         path="*"
                         element={<Navigate replace to="/uncharted" />}

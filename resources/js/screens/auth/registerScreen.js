@@ -1,14 +1,18 @@
 /** React. */
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
 /** Vendor. */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 /** Component. */
 import Loader from "../../components/interfaces/loader.js";
 
 /** Hook. */
 import useValidate from "../../hooks/use-validate";
+
+/** Action. */
+import { register } from "../../actions/userActions.js";
 
 const Register = () => {
     /** Map html element to validate hook. */
@@ -89,19 +93,38 @@ const Register = () => {
     const [passwordMatched, setPasswordMatched] = useState(false);
     const [passwordLength, setpasswordLength] = useState(false);
 
+    /** Define dispatch. */
+    const dispatch = useDispatch();
+
+    /** Select state from redux. */
+    const userLogin = useSelector((state) => state.userLogin);
+
+    /** Deconstruct state. */
+    const { loading, error, account } = userLogin;
+
+    /** Use navigate. */
+    const navigate = useNavigate();
+
+    /** Use effect. */
     useEffect(() => {
+        /** Check if password length is greater than 10. */
         if (password.length != 0 && password.length < 10) {
             setpasswordLength(true);
         } else {
             setpasswordLength(false);
         }
-
+        /** Check if password and confirm match. */
         if (password !== confirm) {
             setPasswordMatched(true);
         } else {
             setPasswordMatched(false);
         }
-    }, [password, confirm]);
+
+        /** Check account has value. */
+        if (account) {
+            navigate("/dashboard");
+        }
+    }, [password, confirm, account]);
 
     /** Set overall form validity. */
     let formIsValid = false;
@@ -143,8 +166,8 @@ const Register = () => {
             return;
         }
 
-        /** Perform ajax request. */
-        sendRequest();
+        /** Dispatch action. */
+        dispatch(login(username, firstname, lastname, email, password));
 
         /** Reset input. */
         userNameInputReset();
@@ -325,9 +348,11 @@ const Register = () => {
                         </button>
                     </div>
                     <div className="mx-auto">
-                        <button type="button" className="btn btn-stone">
-                            Cancel
-                        </button>
+                        <Link to="/">
+                            <button className="btn btn-stone" type="button">
+                                Cancel
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </form>

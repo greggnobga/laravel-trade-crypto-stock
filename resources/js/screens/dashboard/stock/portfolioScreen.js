@@ -108,7 +108,7 @@ const Portfolio = () => {
     };
 
     return (
-        <div id="stock-portfolio">
+        <div className="border border-blue-500">
             <div className="account">
                 <div className="board">
                     <Icon id="portfolio" />
@@ -146,7 +146,7 @@ const Portfolio = () => {
                     <span className="name">Hold</span>
                 </div>
                 <div className={screen}>
-                    <Hold hold={hold} mobile={isMobile} />
+                    <h1>Hold section</h1>
                 </div>
             </div>
             <div className="order">
@@ -167,17 +167,7 @@ const Portfolio = () => {
                     </div>
                 </div>
                 <div className={screen}>
-                    <Add
-                        record={record}
-                        mobile={isMobile}
-                        display={recordHandler}
-                        retrieve={retrieveRequest}
-                    />
-                    <Order
-                        order={order}
-                        mobile={isMobile}
-                        retrieve={retrieveRequest}
-                    />
+                    <h1>Order form </h1>
                 </div>
             </div>
         </div>

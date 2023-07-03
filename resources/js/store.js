@@ -1,24 +1,25 @@
 /** Vendor. */
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { composeWithDevTools } from "@redux-devtools/extension";
 
 /** Reducer. */
 import { stockListReducer } from "./reducers/stockReducers";
-import { userLoginReducer } from "./reducers/userReducers";
+import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
 
 const reducer = combineReducers({
     stockList: stockListReducer,
     userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
 });
 
 /** State. */
-const userAuthFromStorage = localStorage.getItem("auth")
-    ? JSON.parse(localStorage.getItem("auth"))
+const userAuthFromStorage = localStorage.getItem("account")
+    ? JSON.parse(localStorage.getItem("account"))
     : null;
 
 const initialState = {
-    userLogin: { auth: userAuthFromStorage },
+    userLogin: { account: userAuthFromStorage },
 };
 
 /** Middleware. */

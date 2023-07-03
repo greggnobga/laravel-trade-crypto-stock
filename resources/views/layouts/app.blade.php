@@ -11,13 +11,14 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="48x48" href="/public/icons/favicon.ico">
     <!-- Pure CSS -->
-    <link href="/public/css/app.css" rel="stylesheet" type="text/css">
+    <link href="/public/assets/app.css" rel="stylesheet" type="text/css">
 </head>
 
 <body class="font-monster text-base background-dot">
     <aside id="modal"></aside>
     <main id="root"></main>
+
 </body>
-<script src="/public/js/main.js"></script>
+<script src="/public/assets/main.js"></script>
 
 </html>

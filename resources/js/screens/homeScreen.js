@@ -6,12 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 /** Component. */
 import Icon from "../components/icons";
+import Message from "../components/interfaces/message";
 
 /** Action. */
 import { listStocks } from "../actions/stockActions";
 
 const Home = () => {
     const dispatch = useDispatch();
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { message } = userLogin;
 
     useEffect(() => {
         dispatch(listStocks());
@@ -20,6 +24,7 @@ const Home = () => {
     return (
         <>
             {/** Hero section. */}
+            {message && <Message variant="alert-info" children={message} />}
             <section className="w-full h-64 md:h-96 grid auto-rows-min content-center bg-stone-200 border-one bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40 mb-4">
                 <div className="p-4 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl">
                     At little cost, you can accomplish more.

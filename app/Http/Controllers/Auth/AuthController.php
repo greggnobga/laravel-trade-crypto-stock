@@ -77,7 +77,20 @@ class AuthController extends Controller {
             /** Send mail. */
             Mail::to(strip_tags($request->email))->send(new Verify($verifyData));
             /** Return success message. */
-            return response(['message' => 'Please verify your email as soon as possible!'], 200);
+
+            /** Find Users after passing the auth attempt. */
+            $user = Users::where('email', strip_tags($request->email))->firstOrFail();
+
+            /** Create token to send back. */
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            /** Return something. */
+            return response([
+                'email_verified' => $user->email_verified_at,
+                'role' => $user->role,
+                'access_token' => $token,
+                'message' => $user->firstname  . ', Please verify your email as soon as possible!'
+            ], 200);
         } catch (\Exception $ex) {
             /** Return error message. */
             return response(['message' => 'We apologise that we are not able to send an email verification link.'], 401);
@@ -106,7 +119,7 @@ class AuthController extends Controller {
             'role' => $user->role,
             'access_token' => $token,
             'message' => $name->firstname  . ', we are glad you are back and hope you will have a good time with us!'
-        ]);
+        ], 200);
     }
 
     public function reset(Request $request) {

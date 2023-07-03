@@ -1,6 +1,3 @@
-/** React. */
-import { useContext } from "react";
-
 /** Vendor. */
 import { Link } from "react-router-dom";
 
@@ -94,9 +91,11 @@ const Forgot = () => {
                         </button>
                     </div>
                     <div className="mx-auto">
-                        <button type="button" className="btn btn-stone">
-                            Cancel
-                        </button>
+                        <Link to="/">
+                            <button className="btn btn-stone" type="button">
+                                Cancel
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </form>

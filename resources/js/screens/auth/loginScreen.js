@@ -15,7 +15,7 @@ import useValidate from "../../hooks/use-validate";
 /** Action. */
 import { login } from "../../actions/userActions.js";
 
-const Login = (props) => {
+const Login = () => {
     /** Map html element to validate hook. */
     const {
         value: email,
@@ -63,16 +63,17 @@ const Login = (props) => {
     const userLogin = useSelector((state) => state.userLogin);
 
     /** Deconstruct state. */
-    const { loading, error, auth } = userLogin;
+    const { loading, error, account } = userLogin;
 
-    /** Use navigation hook. */
+    /** Use navigate. */
     const navigate = useNavigate();
 
+    /** Use effect. */
     useEffect(() => {
-        if (auth) {
+        if (account) {
             navigate("/dashboard");
         }
-    }, [history, auth]);
+    }, [account]);
 
     /** Submit handler. */
     const submitHandler = (event) => {
@@ -180,21 +181,26 @@ const Login = (props) => {
                             </div>
                             <div className="form-button">
                                 <div className="mx-auto">
-                                    <button
-                                        className="btn btn-green"
-                                        type="submit"
-                                        disabled={!formIsValid}
-                                    >
-                                        Login
-                                    </button>
+                                    <Link to="/dashboard">
+                                        <button
+                                            onClick={submitHandler}
+                                            className="btn btn-green"
+                                            type="submit"
+                                            disabled={!formIsValid}
+                                        >
+                                            Login
+                                        </button>
+                                    </Link>
                                 </div>
                                 <div className="mx-auto">
-                                    <button
-                                        className="btn btn-stone"
-                                        type="button"
-                                    >
-                                        Cancel
-                                    </button>
+                                    <Link to="/">
+                                        <button
+                                            className="btn btn-stone"
+                                            type="button"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
                         </form>

@@ -32,8 +32,8 @@ const useAuth = () => {
 
     useEffect(() => {
         /** Get user login details from storage or null. */
-        const userLogin = localStorage.getItem("auth")
-            ? localStorage.getItem("auth")
+        const userLogin = localStorage.getItem("account")
+            ? localStorage.getItem("account")
             : null;
 
         /** If it exists. */

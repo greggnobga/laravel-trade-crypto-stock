@@ -183,7 +183,11 @@ const Reset = () => {
                     <button type="submit" disabled={!formIsValid}>
                         Reset
                     </button>
-                    <button type="button">Cancel</button>
+                    <Link to="/">
+                        <button className="btn btn-stone" type="button">
+                            Cancel
+                        </button>
+                    </Link>
                 </div>
             </Fragment>
         </form>

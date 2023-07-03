@@ -1,11 +1,6 @@
 /** Import google font.*/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400;1,600;1,800&display=swap");
 
-/** Import Tailwind.*/
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /** Button Directives. */
 @import "components/buttons.css";
 
@@ -35,3 +30,8 @@
 
 /* Hamburgers */
 @import "vendors/hamburgers.css";
+
+/** Import Tailwind.*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

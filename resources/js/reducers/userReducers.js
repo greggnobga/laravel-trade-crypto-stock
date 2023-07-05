@@ -6,14 +6,62 @@ import {
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAILURE,
+    USER_VERIFY_REQUEST,
+    USER_VERIFY_SUCCESS,
+    USER_VERIFY_FAILURE,
+    USER_FORGOT_REQUEST,
+    USER_FORGOT_SUCCESS,
+    USER_FORGOT_FAILURE,
+    USER_RESET_REQUEST,
+    USER_RESET_SUCCESS,
+    USER_RESET_FAILURE,
 } from "../constants/userConstants";
+
+export const userResetReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_RESET_REQUEST:
+            return { loading: true };
+        case USER_RESET_SUCCESS:
+            return { loading: false, reset: action.payload };
+        case USER_RESET_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const userForgotReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_FORGOT_REQUEST:
+            return { loading: true };
+        case USER_FORGOT_SUCCESS:
+            return { loading: false, forgot: action.payload };
+        case USER_FORGOT_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const userVerifyReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_VERIFY_REQUEST:
+            return { loading: true };
+        case USER_VERIFY_SUCCESS:
+            return { loading: false, verify: action.payload };
+        case USER_VERIFY_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
 
 export const userRegisterReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_REGISTER_REQUEST:
             return { loading: true };
         case USER_REGISTER_SUCCESS:
-            return { loading: false, account: action.payload };
+            return { loading: false, register: action.payload };
         case USER_REGISTER_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -26,7 +74,7 @@ export const userLoginReducer = (state = {}, action) => {
         case USER_LOGIN_REQUEST:
             return { loading: true };
         case USER_LOGIN_SUCCESS:
-            return { loading: false, account: action.payload };
+            return { loading: false, login: action.payload };
         case USER_LOGIN_FAILURE:
             return { loading: false, error: action.payload };
         case USER_LOGIN_LOGOUT:

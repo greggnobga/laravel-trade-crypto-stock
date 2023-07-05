@@ -63,17 +63,17 @@ const Login = () => {
     const userLogin = useSelector((state) => state.userLogin);
 
     /** Deconstruct state. */
-    const { loading, error, account } = userLogin;
+    const { loading, error, login } = userLogin;
 
     /** Use navigate. */
     const navigate = useNavigate();
 
     /** Use effect. */
     useEffect(() => {
-        if (account) {
+        if (login) {
             navigate("/dashboard");
         }
-    }, [account]);
+    }, [login]);
 
     /** Submit handler. */
     const submitHandler = (event) => {
@@ -99,113 +99,97 @@ const Login = () => {
 
     return (
         <>
-            {error && (
-                <Message
-                    children={
-                        error
-                            ? error
-                            : "Some errors occurred while processing the request."
-                    }
-                    variant="alert-danger"
-                />
-            )}
+            {error && <Message children={error} variant="alert-danger" />}
             {loading ? (
                 <Loader />
             ) : (
-                <>
-                    <div className="form-center my-2">
-                        <form
-                            method="post"
-                            onSubmit={submitHandler}
-                            className="form-group screen-size font-size gradient-huckle-berry"
-                        >
-                            <div className="form-header border-bottom">
-                                <h4>Login</h4>
-                            </div>
-                            <div className="form-control">
-                                <label className="form-label" htmlFor="email">
-                                    Email
-                                </label>
-                                <input
-                                    className={`form-input ${emailInputClasses}`}
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    value={email}
-                                    onChange={emailChangeHandler}
-                                    onBlur={emailBlurHandler}
-                                    autoComplete="off"
-                                />
-                                {emailHasError ? (
-                                    <p className="form-alert">
-                                        Please enter a valid email.
-                                    </p>
-                                ) : (
-                                    ""
-                                )}
-                            </div>
-                            <div className="form-control">
-                                <label
-                                    className="form-label"
-                                    htmlFor="password"
-                                >
-                                    Password
-                                </label>
-                                <input
-                                    className={`form-input ${passwordInputClasses}`}
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    value={password}
-                                    onChange={passwordChangeHandler}
-                                    onBlur={passwordBlurHandler}
-                                    autoComplete="off"
-                                />
-                                {passwordHasError && (
-                                    <p className="form-alert">
-                                        Please enter a valid password.
-                                    </p>
-                                )}
-                            </div>
-                            <div className="form-notice">
-                                <p className="py-2 text-right">
-                                    Password forgotten? Click this{" "}
-                                    <Link
-                                        to="/auth/forgot"
-                                        className="text-orange-400"
-                                    >
-                                        link
-                                    </Link>{" "}
-                                    to reset it.
+                <div className="form-center my-2">
+                    <form
+                        method="post"
+                        onSubmit={submitHandler}
+                        className="form-group screen-size font-size gradient-huckle-berry"
+                    >
+                        <div className="form-header border-bottom">
+                            <h4>Login</h4>
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="email">
+                                Email
+                            </label>
+                            <input
+                                className={`form-input ${emailInputClasses}`}
+                                id="email"
+                                name="email"
+                                type="email"
+                                value={email}
+                                onChange={emailChangeHandler}
+                                onBlur={emailBlurHandler}
+                                autoComplete="off"
+                            />
+                            {emailHasError && (
+                                <p className="form-alert">
+                                    Please enter a valid email.
                                 </p>
+                            )}
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="password">
+                                Password
+                            </label>
+                            <input
+                                className={`form-input ${passwordInputClasses}`}
+                                id="password"
+                                name="password"
+                                type="password"
+                                value={password}
+                                onChange={passwordChangeHandler}
+                                onBlur={passwordBlurHandler}
+                                autoComplete="off"
+                            />
+                            {passwordHasError && (
+                                <p className="form-alert">
+                                    Please enter a valid password.
+                                </p>
+                            )}
+                        </div>
+                        <div className="form-notice">
+                            <p className="py-2 text-right">
+                                Password forgotten? Click this{" "}
+                                <Link
+                                    to="/auth/forgot"
+                                    className="text-orange-400"
+                                >
+                                    link
+                                </Link>{" "}
+                                to reset it.
+                            </p>
+                        </div>
+                        <div className="form-button">
+                            <div className="mx-auto">
+                                <Link to="/dashboard">
+                                    <button
+                                        onClick={submitHandler}
+                                        className="btn btn-green"
+                                        type="submit"
+                                        disabled={!formIsValid}
+                                    >
+                                        Login
+                                    </button>
+                                </Link>
                             </div>
-                            <div className="form-button">
-                                <div className="mx-auto">
-                                    <Link to="/dashboard">
-                                        <button
-                                            onClick={submitHandler}
-                                            className="btn btn-green"
-                                            type="submit"
-                                            disabled={!formIsValid}
-                                        >
-                                            Login
-                                        </button>
-                                    </Link>
-                                </div>
-                                <div className="mx-auto">
-                                    <Link to="/">
-                                        <button
-                                            className="btn btn-stone"
-                                            type="button"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </Link>
-                                </div>
+                            <div className="mx-auto">
+                                <Link to="/">
+                                    <button
+                                        className="btn btn-stone"
+                                        type="button"
+                                    >
+                                        Cancel
+                                    </button>
+                                </Link>
                             </div>
-                        </form>
-                    </div>
-                </>
+                        </div>
+                    </form>
+                </div>
             )}
         </>
     );

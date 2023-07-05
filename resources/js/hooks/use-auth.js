@@ -32,14 +32,14 @@ const useAuth = () => {
 
     useEffect(() => {
         /** Get user login details from storage or null. */
-        const userLogin = localStorage.getItem("account")
-            ? localStorage.getItem("account")
+        const account = localStorage.getItem("login")
+            ? localStorage.getItem("login")
             : null;
 
         /** If it exists. */
-        if (userLogin) {
+        if (account) {
             /** Parse into json. */
-            const details = JSON.parse(userLogin);
+            const details = JSON.parse(account);
             /** send request to check if token is valid. */
             requestStatus(details.access_token);
         }

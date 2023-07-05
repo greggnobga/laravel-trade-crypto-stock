@@ -76,21 +76,12 @@ class AuthController extends Controller {
             ];
             /** Send mail. */
             Mail::to(strip_tags($request->email))->send(new Verify($verifyData));
-            /** Return success message. */
 
-            /** Find Users after passing the auth attempt. */
-            $user = Users::where('email', strip_tags($request->email))->firstOrFail();
+            /** Generate token and response */
+            $reponse = $this->helpers(['purpose' => 'generate', 'caller' => 'register', 'data' => $request->email]);
 
-            /** Create token to send back. */
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            /** Return something. */
-            return response([
-                'email_verified' => $user->email_verified_at,
-                'role' => $user->role,
-                'access_token' => $token,
-                'message' => $user->firstname  . ', Please verify your email as soon as possible!'
-            ], 200);
+            /** Return. */
+            return response($reponse, 200);
         } catch (\Exception $ex) {
             /** Return error message. */
             return response(['message' => 'We apologise that we are not able to send an email verification link.'], 401);
@@ -104,22 +95,11 @@ class AuthController extends Controller {
             return response(['message' => 'No record was located with these login details.'], 401);
         }
 
-        /** Find Users after passing the auth attempt. */
-        $user = Users::where('email', strip_tags($request->email))->firstOrFail();
+        /** Generate token and response */
+        $reponse = $this->helpers(['purpose' => 'generate', 'caller' => 'login', 'data' => $request->email]);
 
-        /** Create token to send back. */
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        /** Select first name. */
-        $name = Users::where('id', Auth::id())->select('firstname')->first();
-
-        /** Return something. */
-        return response([
-            'email_verified' => $user->email_verified_at,
-            'role' => $user->role,
-            'access_token' => $token,
-            'message' => $name->firstname  . ', we are glad you are back and hope you will have a good time with us!'
-        ], 200);
+        /** Return. */
+        return response($reponse, 200);
     }
 
     public function reset(Request $request) {
@@ -202,11 +182,11 @@ class AuthController extends Controller {
             /** Remove the current token in order for it not to be reused. */
             DB::table('password_resets')->where('token', strip_tags($request->token))->delete();
 
-            /** Fetch Users information. */
-            $person = Users::where('id', $id)->select('firstname', 'lastname')->first();
+            /** Generate token and response */
+            $reponse = $this->helpers(['purpose' => 'generate', 'caller' => 'reset', 'data' => $request->email]);
 
-            /** Return something. */
-            return response(['message' => $person->firstname . ' ' . $person->lastname . ', your password has been successfully updated.'], 200);
+            /** Return. */
+            return response($reponse, 200);
         }
     }
 
@@ -228,7 +208,7 @@ class AuthController extends Controller {
             $person = Verification::where('token', strip_tags($request->token))->select('userid')->first();
             if (is_null($person)) {
                 /** Return error message. */
-                return response(['message' => 'There is no associated Users with the provided verification token.'], 401);
+                return response(['message' => 'There is no associated users with the provided verification token.'], 401);
             }
 
             /** Check if Users alredy verified. */
@@ -244,7 +224,7 @@ class AuthController extends Controller {
             Verification::where('token', $request->token)->delete();
 
             /** Return sucess message. */
-            return response(['message' => 'The email has successfully been verified.'], 200);
+            return response(['message' => 'Your email has successfully been verified.'], 200);
         }
     }
 
@@ -302,5 +282,39 @@ class AuthController extends Controller {
 
         /** Return something. */
         return response(['message' => 'We are hoping to see you any time soon!'], 200);
+    }
+
+    public function helpers($args) {
+        if ($args['purpose'] === 'generate') {
+            /** Find Users after passing the auth attempt. */
+            $user = Users::where('email', strip_tags($args['data']))->firstOrFail();
+
+            /** Create token to send back. */
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            /** Set message depending on the caller. */
+            $message = '';
+            switch ($args['caller']) {
+                case 'register':
+                    $message = ' , your account has been established. Please confirm your email address as soon as possible.';
+                    break;
+                case 'login':
+                    $message = ' , we are glad you are back and hope you will have a good time with us.';
+                    break;
+                case 'reset':
+                    $message = ' , your password has been successfully updated.';
+                    break;
+                default:
+                    $message = '';
+            }
+
+            /** Return something. */
+            return [
+                'email_verified' => $user->email_verified_at,
+                'role' => $user->role,
+                'access_token' => $token,
+                'message' => $user->firstname . ' ' . $user->lastname . $message
+            ];
+        }
     }
 }

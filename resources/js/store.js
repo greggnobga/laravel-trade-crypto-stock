@@ -4,22 +4,31 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension";
 
 /** Reducer. */
-import { stockListReducer } from "./reducers/stockReducers";
-import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
+import { stocksReducer } from "./reducers/stockReducers";
+import {
+    userLoginReducer,
+    userRegisterReducer,
+    userVerifyReducer,
+    userForgotReducer,
+    userResetReducer,
+} from "./reducers/userReducers";
 
 const reducer = combineReducers({
-    stockList: stockListReducer,
+    stocks: stocksReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
+    userVerify: userVerifyReducer,
+    userForgot: userForgotReducer,
+    userReset: userResetReducer,
 });
 
 /** State. */
-const userAuthFromStorage = localStorage.getItem("account")
-    ? JSON.parse(localStorage.getItem("account"))
+const loginFromStorage = localStorage.getItem("login")
+    ? JSON.parse(localStorage.getItem("login"))
     : null;
 
 const initialState = {
-    userLogin: { account: userAuthFromStorage },
+    userLogin: { login: loginFromStorage },
 };
 
 /** Middleware. */

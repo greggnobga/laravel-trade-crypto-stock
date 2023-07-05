@@ -1,14 +1,19 @@
 /** React. */
-import { Fragment, useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
 /** Vendor. */
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 /** Hook. */
 import useValidate from "../../hooks/use-validate";
 
 /** Component. */
 import Loader from "../../components/interfaces/loader.js";
+import Message from "../../components/interfaces/message.js";
+
+/** Action. */
+import { reset } from "../../actions/userActions.js";
 
 const Reset = () => {
     /** Map html element to validate hook. */
@@ -53,6 +58,22 @@ const Reset = () => {
     const [passwordMatched, setPasswordMatched] = useState(false);
     const [passwordLength, setpasswordLength] = useState(false);
 
+    /** Use params. */
+    const { token } = useParams();
+
+    /** Define dispatch. */
+    const dispatch = useDispatch();
+
+    /** Select state from redux. */
+    const userReset = useSelector((state) => state.userReset);
+
+    /** Deconstruct state. */
+    const { loading, error, message } = userReset;
+
+    /** Use navigate. */
+    const navigate = useNavigate();
+
+    /** Use effect. */
     useEffect(() => {
         if (password.length != 0 && password.length < 10) {
             setpasswordLength(true);
@@ -74,18 +95,10 @@ const Reset = () => {
     }
 
     /** Change class logic if valid or otherwise. */
-    const emailInputClasses = emailHasError
-        ? "form-input form-invalid"
-        : "form-input";
-    const passwordInputClasses = passwordHasError
-        ? "form-input form-invalid"
-        : "form-input";
-    const confirmInputClasses = confirmHasError
-        ? "form-input form-invalid"
-        : "form-input";
-    const passwordMatchedClasses = passwordMatched
-        ? "form-input form-invalid"
-        : "form-input";
+    const emailInputClasses = emailHasError ? "invalid" : "valid";
+    const passwordInputClasses = passwordHasError ? "invalid" : "valid";
+    const confirmInputClasses = confirmHasError ? "invalid" : "valid";
+    const passwordMatchedClasses = passwordMatched ? "invalid" : "valid";
 
     /** Submit handdler. */
     const submitHandler = (event) => {
@@ -103,7 +116,7 @@ const Reset = () => {
         }
 
         /** Perform ajax request. */
-        console.log(email, password, confirm);
+        dispatch(reset(token, email, password));
 
         /** Reset input. */
         emailInputReset();
@@ -112,85 +125,121 @@ const Reset = () => {
     };
 
     return (
-        <form method="POST" onSubmit={submitHandler}>
-            <Fragment>
-                <div className="heading">
-                    <h4>Reset Password</h4>
+        <>
+            {error && <Message children={error} variant="alert-danger" />}
+            {message && <Message children={message} variant="alert-success" />}
+            {loading ? (
+                <Loader />
+            ) : (
+                <div className="form-center">
+                    <form
+                        method="POST"
+                        className="form-group screen-size font-size gradient-huckle-berry"
+                        onSubmit={submitHandler}
+                    >
+                        <div className="form-header border-bottom">
+                            <h4>Reset Password</h4>
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="email">
+                                Email
+                            </label>
+                            <input
+                                className={`form-input ${emailInputClasses}`}
+                                id="email"
+                                name="email"
+                                type="email"
+                                value={email}
+                                onChange={emailChangeHandler}
+                                onBlur={emailBlurHandler}
+                                autoComplete={email}
+                            />
+                            {emailHasError && (
+                                <p className="form-alert">
+                                    Please enter a valid email address.
+                                </p>
+                            )}
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="password">
+                                Password
+                            </label>
+                            <input
+                                className={`form-input ${passwordInputClasses}`}
+                                id="password"
+                                name="password"
+                                type="password"
+                                value={password}
+                                onChange={passwordChangeHandler}
+                                onBlur={passwordBlurHandler}
+                                autoComplete={password}
+                            />
+                            {passwordHasError ? (
+                                <p className="form-alert">
+                                    Please enter a valid password.
+                                </p>
+                            ) : (
+                                passwordLength && (
+                                    <p className="form-alert">
+                                        Password must be 10 characters or more.
+                                    </p>
+                                )
+                            )}
+                        </div>
+
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="confirm">
+                                Confirm Password
+                            </label>
+                            <input
+                                className={`form-input ${passwordMatchedClasses}`}
+                                id="confirm"
+                                name="confirm"
+                                type="password"
+                                value={confirm}
+                                onChange={confirmChangeHandler}
+                                onBlur={confirmBlurHandler}
+                                autoComplete={confirm}
+                            />
+                            {confirmHasError ? (
+                                <p className="form-alert">
+                                    Please enter a valid confirm password.
+                                </p>
+                            ) : (
+                                passwordMatched && (
+                                    <p className="form-alert">
+                                        Password and confirm password do not
+                                        match.
+                                    </p>
+                                )
+                            )}
+                        </div>
+                        <div className="form-button">
+                            <div className="mx-auto">
+                                <button
+                                    type="submit"
+                                    onClick={submitHandler}
+                                    className="btn btn-green"
+                                    disabled={!formIsValid}
+                                >
+                                    Reset
+                                </button>
+                            </div>
+                            <div className="mx-auto">
+                                <Link to="/">
+                                    <button
+                                        className="btn btn-stone"
+                                        type="button"
+                                    >
+                                        Cancel
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div className="group">
-                    <label className="label" htmlFor="email">
-                        Email Address
-                    </label>
-                    <input
-                        className={emailInputClasses}
-                        name="email"
-                        type="email"
-                        value={email}
-                        onChange={emailChangeHandler}
-                        onBlur={emailBlurHandler}
-                    />
-                    {emailHasError && (
-                        <p className="error">Please enter a valid email.</p>
-                    )}
-                </div>
-                <div className="group">
-                    <label className="label" htmlFor="password">
-                        Password
-                    </label>
-                    <input
-                        className={passwordInputClasses}
-                        name="password"
-                        type="password"
-                        value={password}
-                        onChange={passwordChangeHandler}
-                        onBlur={passwordBlurHandler}
-                    />
-                    {passwordHasError ? (
-                        <p className="error">Please enter a valid password.</p>
-                    ) : passwordLength ? (
-                        <p className="error">
-                            Password must be 10 characters or more.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="group">
-                    <label className="label" htmlFor="confirm">
-                        Confirm Password
-                    </label>
-                    <input
-                        className={passwordMatchedClasses}
-                        name="confirm"
-                        type="password"
-                        value={confirm}
-                        onChange={confirmChangeHandler}
-                        onBlur={confirmBlurHandler}
-                    />
-                    {confirmHasError ? (
-                        <p className="error">
-                            Please enter a valid confirm password.
-                        </p>
-                    ) : passwordMatched ? (
-                        <p className="error">
-                            Password and confirm password do not match.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="button">
-                    <button type="submit" disabled={!formIsValid}>
-                        Reset
-                    </button>
-                    <Link to="/">
-                        <button className="btn btn-stone" type="button">
-                            Cancel
-                        </button>
-                    </Link>
-                </div>
-            </Fragment>
-        </form>
+            )}
+        </>
     );
 };
 

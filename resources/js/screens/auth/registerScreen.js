@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 /** Component. */
 import Loader from "../../components/interfaces/loader.js";
+import Message from "../../components/interfaces/message.js";
 
 /** Hook. */
 import useValidate from "../../hooks/use-validate";
@@ -97,10 +98,10 @@ const Register = () => {
     const dispatch = useDispatch();
 
     /** Select state from redux. */
-    const userLogin = useSelector((state) => state.userLogin);
+    const userRegister = useSelector((state) => state.userRegister);
 
     /** Deconstruct state. */
-    const { loading, error, account } = userLogin;
+    const { loading, error, accounts } = userRegister;
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -121,10 +122,10 @@ const Register = () => {
         }
 
         /** Check account has value. */
-        if (account) {
+        if (accounts) {
             navigate("/dashboard");
         }
-    }, [password, confirm, account]);
+    }, [password, confirm, accounts]);
 
     /** Set overall form validity. */
     let formIsValid = false;
@@ -167,7 +168,7 @@ const Register = () => {
         }
 
         /** Dispatch action. */
-        dispatch(login(username, firstname, lastname, email, password));
+        dispatch(register(userName, firstName, lastName, email, password));
 
         /** Reset input. */
         userNameInputReset();
@@ -179,184 +180,191 @@ const Register = () => {
     };
 
     return (
-        <div className="form-center my-2">
-            <form
-                method="post"
-                className="form-group screen-size font-size gradient-huckle-berry"
-                onSubmit={submitHandler}
-            >
-                <div className="form-header border-bottom">
-                    <h4>Register</h4>
+        <>
+            {error && <Message children={error} variant="alert-danger" />}
+            {loading ? (
+                <Loader />
+            ) : (
+                <div className="form-center my-2">
+                    <form
+                        method="post"
+                        className="form-group screen-size font-size gradient-huckle-berry"
+                        onSubmit={submitHandler}
+                    >
+                        <div className="form-header border-bottom">
+                            <h4>Register</h4>
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="username">
+                                Username
+                            </label>
+                            <input
+                                className={`form-input ${userNameInputClasses}`}
+                                id="username"
+                                name="username"
+                                type="text"
+                                value={userName}
+                                onChange={userNameChangeHandler}
+                                onBlur={userNameBlurHandler}
+                                autoComplete={userName}
+                            />
+                            {userNameHasError && (
+                                <p className="form-alert">
+                                    Please enter a valid username.
+                                </p>
+                            )}
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="firstname">
+                                First Name
+                            </label>
+                            <input
+                                className={`form-input ${firstNameInputClasses}`}
+                                id="firstname"
+                                name="firstname"
+                                type="text"
+                                value={firstName}
+                                onChange={firstNameChangeHandler}
+                                onBlur={firstNameBlurHandler}
+                                autoComplete={firstName}
+                            />
+                            {firstNameHasError && (
+                                <p className="form-alert">
+                                    Please enter a valid first name.
+                                </p>
+                            )}
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="lastname">
+                                Last Name
+                            </label>
+                            <input
+                                className={`form-input ${lastNameInputClasses}`}
+                                id="lastname"
+                                name="lastname"
+                                type="text"
+                                value={lastName}
+                                onChange={lastNameChangeHandler}
+                                onBlur={lastNameBlurHandler}
+                                autoComplete={lastName}
+                            />
+                            {lastNameHasError && (
+                                <p className="form-alert">
+                                    Please enter a valid last name.
+                                </p>
+                            )}
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="email">
+                                Email
+                            </label>
+                            <input
+                                className={`form-input ${emailInputClasses}`}
+                                id="email"
+                                name="email"
+                                type="email"
+                                value={email}
+                                onChange={emailChangeHandler}
+                                onBlur={emailBlurHandler}
+                                autoComplete={email}
+                            />
+                            {emailHasError && (
+                                <p className="form-alert">
+                                    Please enter a valid email.
+                                </p>
+                            )}
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="password">
+                                Password
+                            </label>
+                            <input
+                                className={`form-input ${passwordInputClasses}`}
+                                id="password"
+                                name="password"
+                                type="password"
+                                value={password}
+                                onChange={passwordChangeHandler}
+                                onBlur={passwordBlurHandler}
+                                autoComplete={password}
+                            />
+                            {passwordHasError ? (
+                                <p className="form-alert">
+                                    Please enter a valid password.
+                                </p>
+                            ) : (
+                                passwordLength && (
+                                    <p className="form-alert">
+                                        Password must be 10 characters or more.
+                                    </p>
+                                )
+                            )}
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="confirm">
+                                Confirm Password
+                            </label>
+                            <input
+                                className={`form-input ${confirmInputClasses}`}
+                                id="confirm"
+                                name="confirm"
+                                type="password"
+                                value={confirm}
+                                onChange={confirmChangeHandler}
+                                onBlur={confirmBlurHandler}
+                                autoComplete={confirm}
+                            />
+                            {confirmHasError ? (
+                                <p className="form-alert">
+                                    Please enter a valid confirm password.
+                                </p>
+                            ) : (
+                                passwordMatched && (
+                                    <p className="form-alert">
+                                        Password and confirm password do not
+                                        match.
+                                    </p>
+                                )
+                            )}
+                        </div>
+                        <div className="form-notice">
+                            <p className="py-2 text-right">
+                                Already have an account? Click this{" "}
+                                <Link
+                                    to="/auth/login"
+                                    className="text-orange-400"
+                                >
+                                    link
+                                </Link>{" "}
+                                to login.
+                            </p>
+                        </div>
+                        <div className="form-button">
+                            <div className="mx-auto">
+                                <button
+                                    type="submit"
+                                    onClick={submitHandler}
+                                    className="btn btn-green"
+                                    disabled={!formIsValid}
+                                >
+                                    Register
+                                </button>
+                            </div>
+                            <div className="mx-auto">
+                                <Link to="/">
+                                    <button
+                                        className="btn btn-stone"
+                                        type="button"
+                                    >
+                                        Cancel
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div className="form-control">
-                    <label className="form-label" htmlFor="username">
-                        Username
-                    </label>
-                    <input
-                        className={`form-input ${userNameInputClasses}`}
-                        id="username"
-                        name="username"
-                        type="text"
-                        value={userName}
-                        onChange={userNameChangeHandler}
-                        onBlur={userNameBlurHandler}
-                        autoComplete="off"
-                    />
-                    {userNameHasError ? (
-                        <p className="form-alert">
-                            Please enter a valid username.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="form-control">
-                    <label className="form-label" htmlFor="firstname">
-                        First Name
-                    </label>
-                    <input
-                        className={`form-input ${firstNameInputClasses}`}
-                        id="firstname"
-                        name="firstname"
-                        type="text"
-                        value={firstName}
-                        onChange={firstNameChangeHandler}
-                        onBlur={firstNameBlurHandler}
-                        autoComplete="off"
-                    />
-                    {firstNameHasError ? (
-                        <p className="form-alert">
-                            Please enter a valid first name.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="form-control">
-                    <label className="form-label" htmlFor="lastname">
-                        Last Name
-                    </label>
-                    <input
-                        className={`form-input ${lastNameInputClasses}`}
-                        id="lastname"
-                        name="lastname"
-                        type="text"
-                        value={lastName}
-                        onChange={lastNameChangeHandler}
-                        onBlur={lastNameBlurHandler}
-                        autoComplete="off"
-                    />
-                    {lastNameHasError ? (
-                        <p className="form-alert">
-                            Please enter a valid last name.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="form-control">
-                    <label className="form-label" htmlFor="email">
-                        Email
-                    </label>
-                    <input
-                        className={`form-input ${emailInputClasses}`}
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={email}
-                        onChange={emailChangeHandler}
-                        onBlur={emailBlurHandler}
-                        autoComplete="off"
-                    />
-                    {emailHasError ? (
-                        <p className="form-alert">
-                            Please enter a valid email.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="form-control">
-                    <label className="form-label" htmlFor="password">
-                        Password
-                    </label>
-                    <input
-                        className={`form-input ${passwordInputClasses}`}
-                        id="password"
-                        name="password"
-                        type="password"
-                        value={password}
-                        onChange={passwordChangeHandler}
-                        onBlur={passwordBlurHandler}
-                        autoComplete="off"
-                    />
-                    {passwordHasError ? (
-                        <p className="form-alert">
-                            Please enter a valid password.
-                        </p>
-                    ) : passwordLength ? (
-                        <p className="form-alert">
-                            Password must be 10 characters or more.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="form-control">
-                    <label className="form-label" htmlFor="confirm">
-                        Confirm Password
-                    </label>
-                    <input
-                        className={`form-input ${confirmInputClasses}`}
-                        id="confirm"
-                        name="confirm"
-                        type="password"
-                        value={confirm}
-                        onChange={confirmChangeHandler}
-                        onBlur={confirmBlurHandler}
-                        autoComplete="off"
-                    />
-                    {confirmHasError ? (
-                        <p className="form-alert">
-                            Please enter a valid confirm password.
-                        </p>
-                    ) : passwordMatched ? (
-                        <p className="form-alert">
-                            Password and confirm password do not match.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="form-notice">
-                    <p className="py-2 text-right">
-                        Password forgotten? Click this{" "}
-                        <Link to="/auth/forgot" className="text-orange-400">
-                            link
-                        </Link>{" "}
-                        to reset it.
-                    </p>
-                </div>
-                <div className="form-button">
-                    <div className="mx-auto">
-                        <button
-                            type="submit"
-                            className="btn btn-green"
-                            disabled={!formIsValid}
-                        >
-                            Register
-                        </button>
-                    </div>
-                    <div className="mx-auto">
-                        <Link to="/">
-                            <button className="btn btn-stone" type="button">
-                                Cancel
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            </form>
-        </div>
+            )}
+        </>
     );
 };
 

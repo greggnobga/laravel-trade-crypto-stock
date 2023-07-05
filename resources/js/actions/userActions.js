@@ -7,7 +7,109 @@ import {
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAILURE,
     USER_LOGIN_LOGOUT,
+    USER_REGISTER_REQUEST,
+    USER_REGISTER_SUCCESS,
+    USER_REGISTER_FAILURE,
+    USER_VERIFY_REQUEST,
+    USER_VERIFY_SUCCESS,
+    USER_VERIFY_FAILURE,
+    USER_FORGOT_REQUEST,
+    USER_FORGOT_SUCCESS,
+    USER_FORGOT_FAILURE,
+    USER_RESET_REQUEST,
+    USER_RESET_SUCCESS,
+    USER_RESET_FAILURE,
 } from "../constants/userConstants";
+
+export const reset = (token, email, password) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: USER_RESET_REQUEST });
+
+        /** Request data from backend. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            url: "/api/reset",
+            params: { token, email, password },
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: USER_RESET_SUCCESS, payload: data });
+
+        /** Save to result to local storage. */
+        localStorage.setItem("reset", JSON.stringify(data));
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: USER_RESET_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const forgot = (email) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: USER_FORGOT_REQUEST });
+
+        /** Request data from backend. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            url: "/api/reset",
+            params: { email },
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: USER_FORGOT_SUCCESS, payload: data });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: USER_FORGOT_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const verify = (token) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: USER_VERIFY_REQUEST });
+
+        /** Request data from backend. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            url: "/api/verify",
+            params: { token },
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: USER_VERIFY_SUCCESS, payload: data });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: USER_VERIFY_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
 
 export const register =
     (username, firstname, lastname, email, password) => async (dispatch) => {
@@ -30,7 +132,7 @@ export const register =
             dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
             /** Save to result to local storage. */
-            localStorage.setItem("account", JSON.stringify(data));
+            localStorage.setItem("login", JSON.stringify(data));
         } catch (error) {
             /** Dispatch action if error occurred. */
             dispatch({
@@ -62,7 +164,7 @@ export const login = (email, password) => async (dispatch) => {
         dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
         /** Save to result to local storage. */
-        localStorage.setItem("account", JSON.stringify(data));
+        localStorage.setItem("login", JSON.stringify(data));
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -89,9 +191,9 @@ export const logout = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set inital state. */
-        dispatch({ type: USER_LOGIN_LOGOUT, payload: data.message });
+        dispatch({ type: USER_LOGIN_LOGOUT, payload: data });
         /** Save to result to local storage. */
-        localStorage.removeItem("account");
+        localStorage.removeItem("login");
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({

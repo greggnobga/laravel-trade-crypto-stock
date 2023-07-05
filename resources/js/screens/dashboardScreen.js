@@ -14,14 +14,16 @@ import Message from "../components/interfaces/message";
 import Loader from "../components/interfaces/loader";
 import Card from "../components/interfaces/card";
 
-const Dashboad = () => {
-    /** Use hook. */
+const Dashboard = () => {
+    /** Use auth. */
     const { status } = useAuth();
+
+    /** Use navigate. */
     const navigate = useNavigate();
 
     /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { account } = userLogin;
+    const { login } = userLogin;
 
     /** Use effect. */
     useEffect(() => {
@@ -72,10 +74,10 @@ const Dashboad = () => {
         <>
             {status ? (
                 <>
-                    {account && (
+                    {login && (
                         <Message
                             variant="alert-success"
-                            children={account.message}
+                            children={login.message}
                         />
                     )}
                     <div className="border border-green-400">
@@ -120,4 +122,4 @@ const Dashboad = () => {
     );
 };
 
-export default Dashboad;
+export default Dashboard;

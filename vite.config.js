@@ -7,9 +7,6 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 
 /** Config. */
 export default defineConfig({
-    server: {
-        hmr: false,
-    },
     esbuild: {
         loader: "jsx",
         include: /resources\/js\/.*\.jsx?$/,
@@ -34,6 +31,7 @@ export default defineConfig({
         },
     },
     build: {
+        minify: true,
         outDir: "public",
         emptyOutDir: false,
         rollupOptions: {
@@ -51,18 +49,24 @@ export default defineConfig({
             refresh: ["resources/views/**"],
             manifest: true,
         }),
-        viteStaticCopy({
-            targets: [
-                {
-                    src: "resources/images/*",
-                    dest: "images",
-                },
-                {
-                    src: "resources/icons/*",
-                    dest: "icons",
-                },
-            ],
-        }),
+        // viteStaticCopy({
+        //     targets: [
+        //         {
+        //             src: "resources/images/*",
+        //             dest: "images",
+        //         },
+        //         {
+        //             src: "resources/icons/*",
+        //             dest: "icons",
+        //         },
+        //     ],
+        // }),
         react(),
     ],
+    server: {
+        host: "10.15.5.101",
+        watch: {
+            usePolling: true,
+        },
+    },
 });

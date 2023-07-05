@@ -1,8 +1,16 @@
 /** Vendor. */
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 /** Hook. */
 import useValidate from "../../hooks/use-validate";
+
+/** Component. */
+import Loader from "../../components/interfaces/loader.js";
+import Message from "../../components/interfaces/message.js";
+
+/** Action. */
+import { forgot } from "../../actions/userActions.js";
 
 const Forgot = () => {
     /** Map html element to validate hook. */
@@ -28,6 +36,13 @@ const Forgot = () => {
     /** Change class logic if valid or otherwise. */
     const emailInputClasses = emailHasError ? "invalid" : "valid";
 
+    /** Use selector. */
+    const userForgot = useSelector((state) => state.userForgot);
+    const { loading, error, message } = userForgot;
+
+    /** Use dispatch. */
+    const dispatch = useDispatch();
+
     /** Submit handler. */
     const submitHandler = (event) => {
         /** Prevent browser default behaviour */
@@ -42,64 +57,75 @@ const Forgot = () => {
         }
 
         /** Perform ajax request. */
-        sendRequest();
+        dispatch(forgot(email));
 
         /** Reset input. */
         emailInputReset();
     };
 
     return (
-        <div className="form-center">
-            <form
-                method="post"
-                className="form-group screen-size font-size gradient-huckle-berry"
-                onSubmit={submitHandler}
-            >
-                <div className="form-header border-bottom">
-                    <h4>Forgot Password</h4>
+        <>
+            {error && <Message children={error} variant="alert-danger" />}
+            {message && <Message children={message} variant="alert-success" />}
+            {loading ? (
+                <Loader />
+            ) : (
+                <div className="form-center">
+                    <form
+                        method="POST"
+                        className="form-group screen-size font-size gradient-huckle-berry"
+                        onSubmit={submitHandler}
+                    >
+                        <div className="form-header border-bottom">
+                            <h4>Forgot Password</h4>
+                        </div>
+                        <div className="form-control">
+                            <label className="form-label" htmlFor="email">
+                                Email
+                            </label>
+                            <input
+                                className={`form-input ${emailInputClasses}`}
+                                id="email"
+                                name="email"
+                                type="email"
+                                value={email}
+                                onChange={emailChangeHandler}
+                                onBlur={emailBlurHandler}
+                                autoComplete="off"
+                            />
+                            {emailHasError ? (
+                                <p className="form-alert">
+                                    Please enter a valid email.
+                                </p>
+                            ) : (
+                                ""
+                            )}
+                        </div>
+                        <div className="form-button">
+                            <div className="mx-auto">
+                                <button
+                                    type="submit"
+                                    className="btn btn-green"
+                                    disabled={!formIsValid}
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                            <div className="mx-auto">
+                                <Link to="/">
+                                    <button
+                                        className="btn btn-stone"
+                                        type="button"
+                                    >
+                                        Cancel
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div className="form-control">
-                    <label className="form-label" htmlFor="email">
-                        Email
-                    </label>
-                    <input
-                        className={`form-input ${emailInputClasses}`}
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={email}
-                        onChange={emailChangeHandler}
-                        onBlur={emailBlurHandler}
-                        autoComplete="off"
-                    />
-                    {emailHasError ? (
-                        <p className="form-alert">
-                            Please enter a valid email.
-                        </p>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <div className="form-button">
-                    <div className="mx-auto">
-                        <button
-                            type="submit"
-                            className="btn btn-green"
-                            disabled={!formIsValid}
-                        >
-                            Submit
-                        </button>
-                    </div>
-                    <div className="mx-auto">
-                        <Link to="/">
-                            <button className="btn btn-stone" type="button">
-                                Cancel
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            </form>
-        </div>
+            )}
+        </>
     );
 };
 

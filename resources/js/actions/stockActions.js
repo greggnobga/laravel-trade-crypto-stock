@@ -8,7 +8,7 @@ import {
     STOCK_LIST_FAILURE,
 } from "../constants/stockConstants";
 
-export const listStocks = () => async (dispatch) => {
+export const stockList = () => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
         dispatch({ type: STOCK_LIST_REQUEST });

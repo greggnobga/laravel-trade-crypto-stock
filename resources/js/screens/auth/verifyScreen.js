@@ -17,8 +17,8 @@ const Verify = () => {
     const { token } = useParams();
 
     /** Use selector. */
-    const userVerify = useSelector((state) => state.userVerify);
-    const { loading, error, verify } = userVerify;
+    const userLogin = useSelector((state) => state.userLogin);
+    const { loading, error, account } = userLogin;
 
     /** Use dispatch. */
     const dispatch = useDispatch();
@@ -33,8 +33,8 @@ const Verify = () => {
             {error && <Message children={error} variant="alert-danger" />}
             {loading ? (
                 <Loader />
-            ) : verify ? (
-                <Message children={verify} variant="alert-success" />
+            ) : account ? (
+                <Message children={account.message} variant="alert-success" />
             ) : (
                 <div className="flex justify-center items-center h-40 mt-6 m-2 shadow bg-slate-100 border-slate-50 border-opacity-100">
                     <p className="text-center">

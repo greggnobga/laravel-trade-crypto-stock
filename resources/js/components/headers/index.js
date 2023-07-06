@@ -1,5 +1,5 @@
 /** React. */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 /** Vendor. */
 import { Link } from "react-router-dom";
@@ -20,7 +20,7 @@ const Header = () => {
 
     /** Get state. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { login } = userLogin;
+    const { account } = userLogin;
 
     /** Use screen hook. */
     const { isMobile } = useScreen();
@@ -45,9 +45,9 @@ const Header = () => {
     /** Logout handler. */
     const logoutHandler = () => {
         /** Check if auth is not empty. */
-        if (login) {
+        if (account) {
             /** Dispatch actions. */
-            dispatch(logout(login.access_token));
+            dispatch(logout(account.access_token));
         }
     };
 
@@ -164,7 +164,7 @@ const Header = () => {
                     </div>
                     <div className="grid grid-cols-2">
                         <div className="hover:text-slate-300">
-                            {login ? (
+                            {account && account.logged && (
                                 <button onClick={controlHandler} type="button">
                                     <span className="p-2">
                                         <Icon
@@ -174,8 +174,6 @@ const Header = () => {
                                         />
                                     </span>
                                 </button>
-                            ) : (
-                                ""
                             )}
                         </div>
                         <div className="hover:text-slate-300">
@@ -190,7 +188,7 @@ const Header = () => {
                             </button>
                         </div>
                     </div>
-                    {isBurger ? (
+                    {isBurger && (
                         <nav
                             className="flex flex-col flex-grow shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0"
                             onClick={burgerHandler}
@@ -210,7 +208,7 @@ const Header = () => {
                                         </span>
                                     </Link>
                                 </li>
-                                {login ? (
+                                {account && account.logged ? (
                                     <>
                                         <li className="px-2">
                                             <Link to="/dashboard">
@@ -259,10 +257,8 @@ const Header = () => {
                                 )}
                             </ul>
                         </nav>
-                    ) : (
-                        ""
                     )}
-                    {isControl ? controlTemplate : ""}
+                    {isControl && controlTemplate}
                 </header>
             ) : (
                 <header className="flex justify-between h-14 font-size gradient-blue-purple border-bottom text-slate-50 relative">
@@ -286,7 +282,7 @@ const Header = () => {
                         </Link>
                     </div>
                     <div className="p-2">
-                        {login ? (
+                        {account && account.logged ? (
                             <ul className="grid grid-cols-4 auto-rows-min">
                                 <li className="md:text-xs">
                                     <Link to="#">
@@ -343,7 +339,7 @@ const Header = () => {
                             </ul>
                         )}
                     </div>
-                    {isControl ? controlTemplate : ""}
+                    {isControl && controlTemplate}
                 </header>
             )}
         </>

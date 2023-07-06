@@ -11,9 +11,9 @@ class DashboardController extends Controller {
      */
     public function init() {
         if (Auth::id()) {
-            return response(['response' => 'Test init response from dashboard controller.']);
+            return response(['message' => 'Test init response from dashboard controller.'], 200);
         } else {
-            return redirect('/login');
+            return response(['message' => 'Encountered something unknown..'], 401);
         }
     }
 }

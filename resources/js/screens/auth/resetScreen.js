@@ -65,10 +65,10 @@ const Reset = () => {
     const dispatch = useDispatch();
 
     /** Select state from redux. */
-    const userReset = useSelector((state) => state.userReset);
+    const userLogin = useSelector((state) => state.userLogin);
 
     /** Deconstruct state. */
-    const { loading, error, message } = userReset;
+    const { loading, error, account } = userLogin;
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -127,7 +127,9 @@ const Reset = () => {
     return (
         <>
             {error && <Message children={error} variant="alert-danger" />}
-            {message && <Message children={message} variant="alert-success" />}
+            {account && (
+                <Message children={account.message} variant="alert-success" />
+            )}
             {loading ? (
                 <Loader />
             ) : (

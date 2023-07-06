@@ -7,6 +7,7 @@ import {
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAILURE,
     USER_LOGIN_LOGOUT,
+    USER_LOGIN_CLEAR,
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAILURE,
@@ -40,7 +41,7 @@ export const reset = (token, email, password) => async (dispatch) => {
         dispatch({ type: USER_RESET_SUCCESS, payload: data });
 
         /** Save to result to local storage. */
-        localStorage.setItem("reset", JSON.stringify(data));
+        localStorage.setItem("account", JSON.stringify(data));
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -132,7 +133,7 @@ export const register =
             dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
             /** Save to result to local storage. */
-            localStorage.setItem("login", JSON.stringify(data));
+            localStorage.setItem("account", JSON.stringify(data));
         } catch (error) {
             /** Dispatch action if error occurred. */
             dispatch({
@@ -164,7 +165,7 @@ export const login = (email, password) => async (dispatch) => {
         dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
         /** Save to result to local storage. */
-        localStorage.setItem("login", JSON.stringify(data));
+        localStorage.setItem("account", JSON.stringify(data));
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -191,9 +192,31 @@ export const logout = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set inital state. */
-        dispatch({ type: USER_LOGIN_LOGOUT, payload: data });
-        /** Save to result to local storage. */
-        localStorage.removeItem("login");
+        dispatch({
+            type: USER_LOGIN_LOGOUT,
+            payload: data,
+        });
+
+        /** Remove data from local storage. */
+        localStorage.removeItem("account");
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: USER_LOGIN_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const clear = () => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: USER_LOGIN_CLEAR });
+        /** Remove data from local storage. */
+        localStorage.removeItem("account");
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({

@@ -63,17 +63,21 @@ const Login = () => {
     const userLogin = useSelector((state) => state.userLogin);
 
     /** Deconstruct state. */
-    const { loading, error, login } = userLogin;
+    const { loading, error, account } = userLogin;
 
     /** Use navigate. */
     const navigate = useNavigate();
 
     /** Use effect. */
     useEffect(() => {
-        if (login) {
-            navigate("/dashboard");
+        if (account && account.logged) {
+            if (account.logged === true) {
+                navigate("/dashboard");
+            } else {
+                navigate("/auth/login");
+            }
         }
-    }, [login]);
+    }, [account]);
 
     /** Submit handler. */
     const submitHandler = (event) => {

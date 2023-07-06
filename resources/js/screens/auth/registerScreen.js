@@ -98,10 +98,10 @@ const Register = () => {
     const dispatch = useDispatch();
 
     /** Select state from redux. */
-    const userRegister = useSelector((state) => state.userRegister);
+    const userLogin = useSelector((state) => state.userLogin);
 
     /** Deconstruct state. */
-    const { loading, error, accounts } = userRegister;
+    const { loading, error, account } = userLogin;
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -122,10 +122,14 @@ const Register = () => {
         }
 
         /** Check account has value. */
-        if (accounts) {
-            navigate("/dashboard");
+        if (account && account.logged) {
+            if (account.logged === true) {
+                navigate("/dashboard");
+            } else {
+                navigate("/auth/register");
+            }
         }
-    }, [password, confirm, accounts]);
+    }, [password, confirm, account]);
 
     /** Set overall form validity. */
     let formIsValid = false;
@@ -206,7 +210,7 @@ const Register = () => {
                                 value={userName}
                                 onChange={userNameChangeHandler}
                                 onBlur={userNameBlurHandler}
-                                autoComplete={userName}
+                                autoComplete="off"
                             />
                             {userNameHasError && (
                                 <p className="form-alert">
@@ -226,7 +230,7 @@ const Register = () => {
                                 value={firstName}
                                 onChange={firstNameChangeHandler}
                                 onBlur={firstNameBlurHandler}
-                                autoComplete={firstName}
+                                autoComplete="off"
                             />
                             {firstNameHasError && (
                                 <p className="form-alert">
@@ -246,7 +250,7 @@ const Register = () => {
                                 value={lastName}
                                 onChange={lastNameChangeHandler}
                                 onBlur={lastNameBlurHandler}
-                                autoComplete={lastName}
+                                autoComplete="off"
                             />
                             {lastNameHasError && (
                                 <p className="form-alert">
@@ -266,7 +270,7 @@ const Register = () => {
                                 value={email}
                                 onChange={emailChangeHandler}
                                 onBlur={emailBlurHandler}
-                                autoComplete={email}
+                                autoComplete="off"
                             />
                             {emailHasError && (
                                 <p className="form-alert">
@@ -286,7 +290,7 @@ const Register = () => {
                                 value={password}
                                 onChange={passwordChangeHandler}
                                 onBlur={passwordBlurHandler}
-                                autoComplete={password}
+                                autoComplete="off"
                             />
                             {passwordHasError ? (
                                 <p className="form-alert">
@@ -312,7 +316,7 @@ const Register = () => {
                                 value={confirm}
                                 onChange={confirmChangeHandler}
                                 onBlur={confirmBlurHandler}
-                                autoComplete={confirm}
+                                autoComplete="off"
                             />
                             {confirmHasError ? (
                                 <p className="form-alert">

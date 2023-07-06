@@ -1,15 +1,19 @@
 /**  React. */
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 /** Vendor. */
 import axios from "axios";
+import { useDispatch } from "react-redux";
+
+/** Actions. */
+import { clear } from "../actions/userActions";
 
 const useAuth = () => {
-    /** Declare local state. */
-    const [status, setStatus] = useState(false);
+    /** Use dispatch. */
+    const dispatch = useDispatch();
 
     /** Send request to check if user token is valid. */
-    const requestStatus = async (token) => {
+    const check = async (token) => {
         /** Try catch block. */
         try {
             /** Send request to check if token is exist. */
@@ -21,32 +25,14 @@ const useAuth = () => {
                 method: "GET",
                 url: "/api/dashboard",
             });
-
-            /** Set status to true if token is valid. */
-            setStatus(true);
         } catch (error) {
-            /** Set status to false if request fail. */
-            if (error && error.response.status === 401) setStatus(false);
+            /** Disptach login action to reset the state. */
+            dispatch(clear());
         }
     };
 
-    useEffect(() => {
-        /** Get user login details from storage or null. */
-        const account = localStorage.getItem("login")
-            ? localStorage.getItem("login")
-            : null;
-
-        /** If it exists. */
-        if (account) {
-            /** Parse into json. */
-            const details = JSON.parse(account);
-            /** send request to check if token is valid. */
-            requestStatus(details.access_token);
-        }
-    }, [status]);
-
     /** Return. */
-    return { status };
+    return { check };
 };
 
 export default useAuth;

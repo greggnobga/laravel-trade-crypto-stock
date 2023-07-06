@@ -1,8 +1,13 @@
+/** Hook. */
+import useFilter from "../hooks/use-filter";
+
+/** Constant. */
 import {
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAILURE,
     USER_LOGIN_LOGOUT,
+    USER_LOGIN_CLEAR,
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAILURE,
@@ -17,12 +22,13 @@ import {
     USER_RESET_FAILURE,
 } from "../constants/userConstants";
 
+/** Reset reducer. */
 export const userResetReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_RESET_REQUEST:
             return { loading: true };
         case USER_RESET_SUCCESS:
-            return { loading: false, reset: action.payload };
+            return { loading: false, account: action.payload };
         case USER_RESET_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -30,12 +36,13 @@ export const userResetReducer = (state = {}, action) => {
     }
 };
 
+/** Forgot reducer. */
 export const userForgotReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_FORGOT_REQUEST:
             return { loading: true };
         case USER_FORGOT_SUCCESS:
-            return { loading: false, forgot: action.payload };
+            return { loading: false, account: action.payload };
         case USER_FORGOT_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -48,7 +55,7 @@ export const userVerifyReducer = (state = {}, action) => {
         case USER_VERIFY_REQUEST:
             return { loading: true };
         case USER_VERIFY_SUCCESS:
-            return { loading: false, verify: action.payload };
+            return { loading: false, account: action.payload };
         case USER_VERIFY_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -56,12 +63,13 @@ export const userVerifyReducer = (state = {}, action) => {
     }
 };
 
+/** Register reducer. */
 export const userRegisterReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_REGISTER_REQUEST:
             return { loading: true };
         case USER_REGISTER_SUCCESS:
-            return { loading: false, register: action.payload };
+            return { loading: false, account: action.payload };
         case USER_REGISTER_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -69,16 +77,24 @@ export const userRegisterReducer = (state = {}, action) => {
     }
 };
 
+/** Login reducer. */
 export const userLoginReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_LOGIN_REQUEST:
             return { loading: true };
         case USER_LOGIN_SUCCESS:
-            return { loading: false, login: action.payload };
+            return { loading: false, account: action.payload };
         case USER_LOGIN_FAILURE:
             return { loading: false, error: action.payload };
         case USER_LOGIN_LOGOUT:
-            return { message: action.payload };
+            return {
+                ...state,
+                account: {
+                    ...action.payload,
+                },
+            };
+        case USER_LOGIN_CLEAR:
+            return { loading: false, account: {} };
         default:
             return state;
     }

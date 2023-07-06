@@ -37,8 +37,8 @@ const Forgot = () => {
     const emailInputClasses = emailHasError ? "invalid" : "valid";
 
     /** Use selector. */
-    const userForgot = useSelector((state) => state.userForgot);
-    const { loading, error, message } = userForgot;
+    const userLogin = useSelector((state) => state.userLogin);
+    const { loading, error, account } = userLogin;
 
     /** Use dispatch. */
     const dispatch = useDispatch();
@@ -66,7 +66,9 @@ const Forgot = () => {
     return (
         <>
             {error && <Message children={error} variant="alert-danger" />}
-            {message && <Message children={message} variant="alert-success" />}
+            {account && (
+                <Message children={account.message} variant="alert-success" />
+            )}
             {loading ? (
                 <Loader />
             ) : (

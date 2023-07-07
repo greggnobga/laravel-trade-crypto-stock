@@ -2,22 +2,21 @@
 import { useState } from "react";
 
 const Message = ({ variant, children }) => {
-    /** Use state. */
-    const [hidden, setHidden] = useState(false);
+    /** Use dispatch. */
+    const [show, setShow] = useState(true);
 
-    /** Hide handles. */
-    const hideHandler = () => {
-        setHidden(!hidden);
+    /** Message handles. */
+    const messageHandler = () => {
+        setShow(!show);
     };
+
     /** Return something. */
     return (
         <>
-            {hidden ? (
-                ""
-            ) : (
+            {show && (
                 <div
                     className="font-size m-2 cursor-pointer"
-                    onClick={hideHandler}
+                    onClick={messageHandler}
                 >
                     <p className={variant ? variant : "alert-danger"}>
                         {children}

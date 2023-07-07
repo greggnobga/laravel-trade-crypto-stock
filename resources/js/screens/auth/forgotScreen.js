@@ -10,7 +10,7 @@ import Loader from "../../components/interfaces/loader.js";
 import Message from "../../components/interfaces/message.js";
 
 /** Action. */
-import { forgot } from "../../actions/userActions.js";
+import { forgotPassword } from "../../actions/userActions.js";
 
 const Forgot = () => {
     /** Map html element to validate hook. */
@@ -37,8 +37,8 @@ const Forgot = () => {
     const emailInputClasses = emailHasError ? "invalid" : "valid";
 
     /** Use selector. */
-    const userLogin = useSelector((state) => state.userLogin);
-    const { loading, error, account } = userLogin;
+    const userForgot = useSelector((state) => state.userForgot);
+    const { loading, error, success } = userForgot;
 
     /** Use dispatch. */
     const dispatch = useDispatch();
@@ -57,8 +57,7 @@ const Forgot = () => {
         }
 
         /** Perform ajax request. */
-        dispatch(forgot(email));
-
+        dispatch(forgotPassword(email));
         /** Reset input. */
         emailInputReset();
     };
@@ -66,8 +65,8 @@ const Forgot = () => {
     return (
         <>
             {error && <Message children={error} variant="alert-danger" />}
-            {account && (
-                <Message children={account.message} variant="alert-success" />
+            {success && (
+                <Message children={success.message} variant="alert-success" />
             )}
             {loading ? (
                 <Loader />

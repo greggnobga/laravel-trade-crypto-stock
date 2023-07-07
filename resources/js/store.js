@@ -22,13 +22,13 @@ const reducer = combineReducers({
     userReset: userResetReducer,
 });
 
-/** State. */
+/** Initial state. */
 const accountFromStorage = localStorage.getItem("account")
     ? JSON.parse(localStorage.getItem("account"))
-    : null;
+    : { logged: false };
 
 const initialState = {
-    userLogin: { account: accountFromStorage },
+    userLogin: accountFromStorage,
 };
 
 /** Middleware. */

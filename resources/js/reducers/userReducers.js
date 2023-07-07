@@ -1,6 +1,3 @@
-/** Hook. */
-import useFilter from "../hooks/use-filter";
-
 /** Constant. */
 import {
     USER_LOGIN_REQUEST,
@@ -28,7 +25,7 @@ export const userResetReducer = (state = {}, action) => {
         case USER_RESET_REQUEST:
             return { loading: true };
         case USER_RESET_SUCCESS:
-            return { loading: false, account: action.payload };
+            return { loading: false, ...action.payload };
         case USER_RESET_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -42,7 +39,7 @@ export const userForgotReducer = (state = {}, action) => {
         case USER_FORGOT_REQUEST:
             return { loading: true };
         case USER_FORGOT_SUCCESS:
-            return { loading: false, account: action.payload };
+            return { loading: false, success: action.payload };
         case USER_FORGOT_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -55,7 +52,7 @@ export const userVerifyReducer = (state = {}, action) => {
         case USER_VERIFY_REQUEST:
             return { loading: true };
         case USER_VERIFY_SUCCESS:
-            return { loading: false, account: action.payload };
+            return { loading: false, success: action.payload };
         case USER_VERIFY_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -69,7 +66,7 @@ export const userRegisterReducer = (state = {}, action) => {
         case USER_REGISTER_REQUEST:
             return { loading: true };
         case USER_REGISTER_SUCCESS:
-            return { loading: false, account: action.payload };
+            return { loading: false, ...action.payload };
         case USER_REGISTER_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -83,18 +80,16 @@ export const userLoginReducer = (state = {}, action) => {
         case USER_LOGIN_REQUEST:
             return { loading: true };
         case USER_LOGIN_SUCCESS:
-            return { loading: false, account: action.payload };
+            return { loading: false, ...action.payload };
         case USER_LOGIN_FAILURE:
             return { loading: false, error: action.payload };
         case USER_LOGIN_LOGOUT:
             return {
                 ...state,
-                account: {
-                    ...action.payload,
-                },
+                ...action.payload,
             };
         case USER_LOGIN_CLEAR:
-            return { loading: false, account: {} };
+            return { logged: false };
         default:
             return state;
     }

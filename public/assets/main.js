@@ -10512,7 +10512,7 @@ const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST";
 const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
 const USER_LOGIN_FAILURE = "USER_LOGIN_FAILURE";
 const USER_LOGIN_LOGOUT = "USER_LOGIN_LOGOUT";
-const USER_LOGIN_CLEAR = "USER_LOGIN_LOGOUT";
+const USER_LOGIN_CLEAR = "USER_LOGIN_CLEAR";
 const USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST";
 const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
 const USER_REGISTER_FAILURE = "USER_REGISTER_FAILURE";
@@ -10530,7 +10530,7 @@ const userResetReducer = (state = {}, action) => {
     case USER_RESET_REQUEST:
       return { loading: true };
     case USER_RESET_SUCCESS:
-      return { loading: false, account: action.payload };
+      return { loading: false, ...action.payload };
     case USER_RESET_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -10542,7 +10542,7 @@ const userForgotReducer = (state = {}, action) => {
     case USER_FORGOT_REQUEST:
       return { loading: true };
     case USER_FORGOT_SUCCESS:
-      return { loading: false, account: action.payload };
+      return { loading: false, success: action.payload };
     case USER_FORGOT_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -10554,7 +10554,7 @@ const userVerifyReducer = (state = {}, action) => {
     case USER_VERIFY_REQUEST:
       return { loading: true };
     case USER_VERIFY_SUCCESS:
-      return { loading: false, account: action.payload };
+      return { loading: false, success: action.payload };
     case USER_VERIFY_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -10566,7 +10566,7 @@ const userRegisterReducer = (state = {}, action) => {
     case USER_REGISTER_REQUEST:
       return { loading: true };
     case USER_REGISTER_SUCCESS:
-      return { loading: false, account: action.payload };
+      return { loading: false, ...action.payload };
     case USER_REGISTER_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -10578,18 +10578,16 @@ const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_REQUEST:
       return { loading: true };
     case USER_LOGIN_SUCCESS:
-      return { loading: false, account: action.payload };
+      return { loading: false, ...action.payload };
     case USER_LOGIN_FAILURE:
       return { loading: false, error: action.payload };
     case USER_LOGIN_LOGOUT:
       return {
         ...state,
-        account: {
-          ...action.payload
-        }
+        ...action.payload
       };
     case USER_LOGIN_CLEAR:
-      return { loading: false, account: {} };
+      return { logged: false };
     default:
       return state;
   }
@@ -10602,9 +10600,9 @@ const reducer = combineReducers({
   userForgot: userForgotReducer,
   userReset: userResetReducer
 });
-const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : null;
+const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : { logged: false };
 const initialState = {
-  userLogin: { account: accountFromStorage }
+  userLogin: accountFromStorage
 };
 const middleware = [thunk$1];
 const store = createStore(
@@ -11956,7 +11954,7 @@ const useScreen = () => {
   }, []);
   return { isMobile };
 };
-const reset = (token, email, password) => async (dispatch) => {
+const resetPassword = (token, email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_RESET_REQUEST });
     const { data } = await axios$1({
@@ -11968,6 +11966,7 @@ const reset = (token, email, password) => async (dispatch) => {
       params: { token, email, password }
     });
     dispatch({ type: USER_RESET_SUCCESS, payload: data });
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     localStorage.setItem("account", JSON.stringify(data));
   } catch (error) {
     dispatch({
@@ -11976,7 +11975,7 @@ const reset = (token, email, password) => async (dispatch) => {
     });
   }
 };
-const forgot = (email) => async (dispatch) => {
+const forgotPassword = (email) => async (dispatch) => {
   try {
     dispatch({ type: USER_FORGOT_REQUEST });
     const { data } = await axios$1({
@@ -11995,7 +11994,7 @@ const forgot = (email) => async (dispatch) => {
     });
   }
 };
-const verify = (token) => async (dispatch) => {
+const verifyEmail = (token) => async (dispatch) => {
   try {
     dispatch({ type: USER_VERIFY_REQUEST });
     const { data } = await axios$1({
@@ -12006,7 +12005,7 @@ const verify = (token) => async (dispatch) => {
       url: "/api/verify",
       params: { token }
     });
-    dispatch({ type: USER_VERIFY_SUCCESS, payload: data });
+    dispatch({ type: USER_VERIFY_SUCCESS, payload: data.message });
   } catch (error) {
     dispatch({
       type: USER_VERIFY_FAILURE,
@@ -12014,7 +12013,7 @@ const verify = (token) => async (dispatch) => {
     });
   }
 };
-const register = (username, firstname, lastname, email, password) => async (dispatch) => {
+const registerUser = (username, firstname, lastname, email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
     const { data } = await axios$1({
@@ -12035,7 +12034,7 @@ const register = (username, firstname, lastname, email, password) => async (disp
     });
   }
 };
-const login = (email, password) => async (dispatch) => {
+const loginUser = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
     const { data } = await axios$1({
@@ -12055,7 +12054,7 @@ const login = (email, password) => async (dispatch) => {
     });
   }
 };
-const logout = (token) => async (dispatch) => {
+const logoutUser = (token) => async (dispatch) => {
   try {
     const { data } = await axios$1({
       headers: {
@@ -12078,7 +12077,7 @@ const logout = (token) => async (dispatch) => {
     });
   }
 };
-const clear = () => async (dispatch) => {
+const clearToken = () => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_CLEAR });
     localStorage.removeItem("account");
@@ -12101,7 +12100,7 @@ const Icon = ({ id: id2, width, height }) => {
 const Header = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { account } = userLogin;
+  const { logged, access_token } = userLogin;
   const { isMobile } = useScreen();
   const [isBurger, setIsBurger] = reactExports.useState(false);
   const [isControl, setIsControl] = reactExports.useState(false);
@@ -12115,8 +12114,8 @@ const Header = () => {
     setIsBurger(false);
   };
   const logoutHandler = () => {
-    if (account) {
-      dispatch(logout(account.access_token));
+    if (access_token) {
+      dispatch(logoutUser(access_token));
     }
   };
   const burgerClasses = isBurger ? "hamburger hamburger-elastic is-active" : "hamburger hamburger-elastic";
@@ -12184,7 +12183,7 @@ const Header = () => {
       " Orion"
     ] }) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:text-slate-300", children: account && account.logged && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: controlHandler, type: "button", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:text-slate-300", children: logged && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: controlHandler, type: "button", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         Icon,
         {
           id: "control",
@@ -12216,7 +12215,7 @@ const Header = () => {
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "crypto" }),
             " Crypto Explorer"
           ] }) }) }),
-          account && account.logged ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          logged ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { className: "px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block border-bottom", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "menu" }),
               " Dashboard"
@@ -12267,7 +12266,7 @@ const Header = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "logo" }),
       " Orion Trade"
     ] }) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: account && account.logged ? /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "grid grid-cols-4 auto-rows-min", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: logged ? /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "grid grid-cols-4 auto-rows-min", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("li", { className: "md:text-xs", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "#", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "span",
         {
@@ -12367,15 +12366,15 @@ const Loader = () => {
   ] }) });
 };
 const Message = ({ variant, children }) => {
-  const [hidden, setHidden] = reactExports.useState(false);
-  const hideHandler = () => {
-    setHidden(!hidden);
+  const [show, setShow] = reactExports.useState(true);
+  const messageHandler = () => {
+    setShow(!show);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: hidden ? "" : /* @__PURE__ */ jsxRuntimeExports.jsx(
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsx(
     "div",
     {
       className: "font-size m-2 cursor-pointer",
-      onClick: hideHandler,
+      onClick: messageHandler,
       children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children })
     }
   ) });
@@ -12411,145 +12410,143 @@ const stockList = () => async (dispatch) => {
 const Home = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { account, loading } = userLogin;
+  const { message, loading } = userLogin;
   reactExports.useEffect(() => {
     dispatch(stockList());
   }, [dispatch]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    account && account.logged && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-info", children: account.message }),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "w-full h-64 md:h-96 grid auto-rows-min content-center bg-stone-200 border-one bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40 mb-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl", children: "At little cost, you can accomplish more." }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-blue-500 text-sm font-thin sm:font-light text-center sm:text-md md:text-xl", children: "We help your money go further with no yearly fees and some of the most affordable prices in the sector." }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-success", children: message }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "w-full h-64 md:h-96 grid auto-rows-min content-center bg-stone-200 border-one bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40 mb-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl", children: "At little cost, you can accomplish more." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-blue-500 text-sm font-thin sm:font-light text-center sm:text-md md:text-xl", children: "We help your money go further with no yearly fees and some of the most affordable prices in the sector." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            className: "font-size btn btn-indigo",
+            children: "Get Started"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            className: "font-size ml-2 btn btn-green",
+            children: "Learn More"
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "mb-2 grid auto-rows-min bg-stone-100 bg-opacity-70 border-b border-neutral-100", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 mb-2 uppercase text-stone-700 bg-stone-200 bg-opacity-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Why Orion Trade?" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
             {
-              type: "button",
-              className: "font-size btn btn-indigo",
-              children: "Get Started"
+              className: "object-cover w-full rounded-t-lg",
+              src: "/public/images/tools.jpeg",
+              alt: "Innovative Tools"
             }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "tool" }),
+            " Innovative Tools"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-rose-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
             {
-              type: "button",
-              className: "font-size ml-2 btn btn-green",
-              children: "Learn More"
+              className: "object-cover w-full rounded-t-lg",
+              src: "/public/images/price.jpeg",
+              alt: "Transparent Pricing"
             }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "mb-2 grid auto-rows-min bg-stone-100 bg-opacity-70 border-b border-neutral-100", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 mb-2 uppercase text-stone-700 bg-stone-200 bg-opacity-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Why Orion Trade?" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "img",
-              {
-                className: "object-cover w-full rounded-t-lg",
-                src: "/public/images/tools.jpeg",
-                alt: "Innovative Tools"
-              }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "tool" }),
-              " Innovative Tools"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-rose-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
+            " Transparent Pricing"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "img",
-              {
-                className: "object-cover w-full rounded-t-lg",
-                src: "/public/images/price.jpeg",
-                alt: "Transparent Pricing"
-              }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
-              " Transparent Pricing"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-green-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-green-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
+            {
+              className: "object-cover w-full rounded-t-lg",
+              src: "/public/images/support.jpeg",
+              alt: "Dedicated Support"
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "support" }),
+            " Dedicated Support"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "img",
-              {
-                className: "object-cover w-full rounded-t-lg",
-                src: "/public/images/support.jpeg",
-                alt: "Dedicated Support"
-              }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "support" }),
-              " Dedicated Support"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-purple-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
-          ] })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "grid auto-rows-min bg-zinc-200 bg-opacity-50 border-b border-neutral-100", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 mb-2 uppercase text-right text-green-700 bg-green-200 bg-opacity-50", children: "Our Stories" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-stone-200 bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "img",
-              {
-                className: "w-400 h-200 object-cover w-full",
-                src: "/public/images/bitcoin.jpg",
-                alt: "Placeholder Image"
-              }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "img",
-              {
-                className: "w-400 h-200 object-cover w-full",
-                src: "/public/images/boat.jpg",
-                alt: "Placeholder Image"
-              }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "img",
-              {
-                className: "w-400 h-200 object-cover w-full",
-                src: "/public/images/marketing.jpg",
-                alt: "Placeholder Image"
-              }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
-          ] })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "mb-2 grid auto-rows-min bg-neutral-200 bg-opacity-50 border-b border-neutral-100", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 mb-2 uppercase text-center text-purple-700 bg-purple-200 bg-opacity-50", children: "Traditional Finance VS Cryptocurrency?" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md lg:text-lg", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-purple-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
         ] })
       ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "grid auto-rows-min bg-zinc-200 bg-opacity-50 border-b border-neutral-100", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 mb-2 uppercase text-right text-green-700 bg-green-200 bg-opacity-50", children: "Our Stories" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-stone-200 bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
+            {
+              className: "w-400 h-200 object-cover w-full",
+              src: "/public/images/bitcoin.jpg",
+              alt: "Placeholder Image"
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
+            {
+              className: "w-400 h-200 object-cover w-full",
+              src: "/public/images/boat.jpg",
+              alt: "Placeholder Image"
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
+            {
+              className: "w-400 h-200 object-cover w-full",
+              src: "/public/images/marketing.jpg",
+              alt: "Placeholder Image"
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "mb-2 grid auto-rows-min bg-neutral-200 bg-opacity-50 border-b border-neutral-100", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 mb-2 uppercase text-center text-purple-700 bg-purple-200 bg-opacity-50", children: "Traditional Finance VS Cryptocurrency?" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md lg:text-lg", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur." })
+      ] })
     ] })
-  ] });
+  ] }) });
 };
 const CryptoExplorer = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Crypto explorer page." }) });
@@ -12610,17 +12607,17 @@ const Login = () => {
   const passwordInputClasses = passwordHasError ? "alert-border-warning" : "alert-border-success";
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, account } = userLogin;
+  const { loading, error, logged } = userLogin;
   const navigate = useNavigate();
   reactExports.useEffect(() => {
-    if (account && account.logged) {
-      if (account.logged === true) {
+    if (logged) {
+      if (logged === true) {
         navigate("/dashboard");
       } else {
         navigate("/auth/login");
       }
     }
-  }, [account]);
+  }, [logged]);
   const submitHandler = (event) => {
     event.preventDefault();
     emailBlurHandler(true);
@@ -12628,7 +12625,7 @@ const Login = () => {
     if (!emailIsValid && !passwordIsValid) {
       return;
     }
-    dispatch(login(email, password));
+    dispatch(loginUser(email, password));
     emailInputReset();
     passwordInputReset();
   };
@@ -12779,8 +12776,8 @@ const Register = () => {
   const [passwordMatched, setPasswordMatched] = reactExports.useState(false);
   const [passwordLength, setpasswordLength] = reactExports.useState(false);
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, account } = userLogin;
+  const userRegister = useSelector((state) => state.userRegister);
+  const { loading, error, logged, message } = userRegister;
   const navigate = useNavigate();
   reactExports.useEffect(() => {
     if (password.length != 0 && password.length < 10) {
@@ -12793,14 +12790,14 @@ const Register = () => {
     } else {
       setPasswordMatched(false);
     }
-    if (account && account.logged) {
-      if (account.logged === true) {
+    if (logged) {
+      if (logged === true) {
         navigate("/dashboard");
       } else {
         navigate("/auth/register");
       }
     }
-  }, [password, confirm, account]);
+  }, [password, confirm, logged]);
   let formIsValid = false;
   if (userNameIsValid && firstNameIsValid && lastNameIsValid && emailIsValid && passwordIsValid && confirmIsValid) {
     formIsValid = true;
@@ -12822,7 +12819,7 @@ const Register = () => {
     if (!emailIsValid && !passwordIsValid) {
       return;
     }
-    dispatch(register(userName, firstName, lastName, email, password));
+    dispatch(registerUser(userName, firstName, lastName, email, password));
     userNameInputReset();
     firstNameInputReset();
     lastNameInputReset();
@@ -12832,6 +12829,7 @@ const Register = () => {
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: message, variant: "alert-success" }),
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center my-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "form",
       {
@@ -12997,8 +12995,8 @@ const Forgot = () => {
     formIsValid = true;
   }
   const emailInputClasses = emailHasError ? "invalid" : "valid";
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, account } = userLogin;
+  const userForgot = useSelector((state) => state.userForgot);
+  const { loading, error, success } = userForgot;
   const dispatch = useDispatch();
   const submitHandler = (event) => {
     event.preventDefault();
@@ -13006,12 +13004,12 @@ const Forgot = () => {
     if (!emailIsValid) {
       return;
     }
-    dispatch(forgot(email));
+    dispatch(forgotPassword(email));
     emailInputReset();
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
-    account && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: account.message, variant: "alert-success" }),
+    success && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: success.message, variant: "alert-success" }),
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "form",
       {
@@ -13096,9 +13094,9 @@ const Reset = () => {
   const [passwordLength, setpasswordLength] = reactExports.useState(false);
   const { token } = useParams();
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, account } = userLogin;
-  useNavigate();
+  const userReset = useSelector((state) => state.userReset);
+  const { loading, logged, error, message } = userReset;
+  const navigate = useNavigate();
   reactExports.useEffect(() => {
     if (password.length != 0 && password.length < 10) {
       setpasswordLength(true);
@@ -13110,7 +13108,15 @@ const Reset = () => {
     } else {
       setPasswordMatched(false);
     }
-  }, [password, confirm]);
+    if (logged === true) {
+      const timeout = setTimeout(() => {
+        navigate("/dashboard");
+      }, 1e3);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [logged, password, confirm]);
   let formIsValid = false;
   if (emailIsValid && passwordIsValid && confirmIsValid) {
     formIsValid = true;
@@ -13126,14 +13132,14 @@ const Reset = () => {
     if (!emailIsValid && !passwordIsValid && !confirmIsValid) {
       return;
     }
-    dispatch(reset(token, email, password));
+    dispatch(resetPassword(token, email, password));
     emailInputReset();
     passwordInputReset();
     confirmInputReset();
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
-    account && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: account.message, variant: "alert-success" }),
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: message, variant: "alert-success" }),
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "form",
       {
@@ -13220,15 +13226,15 @@ const Reset = () => {
 };
 const Verify = () => {
   const { token } = useParams();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, account } = userLogin;
+  const userVerify = useSelector((state) => state.userVerify);
+  const { loading, error, success } = userVerify;
   const dispatch = useDispatch();
   reactExports.useEffect(() => {
-    dispatch(verify(token));
-  }, []);
+    dispatch(verifyEmail(token));
+  }, [dispatch, success]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : account ? /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: account.message, variant: "alert-success" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center h-40 mt-6 m-2 shadow bg-slate-100 border-slate-50 border-opacity-100", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center", children: "Request being process, just sit and wait for response from the server!" }) })
+    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : success ? /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: success, variant: "alert-success" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center h-40 mt-6 m-2 shadow bg-slate-100 border-slate-50 border-opacity-100", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center", children: "Request being process, just sit and wait for response from the server!" }) })
   ] });
 };
 const Client = () => {
@@ -13247,7 +13253,7 @@ const useAuth = () => {
         url: "/api/dashboard"
       });
     } catch (error) {
-      dispatch(clear());
+      dispatch(clearToken());
     }
   };
   return { check };
@@ -13267,22 +13273,22 @@ const Card = (props) => {
 };
 const Dashboard = () => {
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, account } = userLogin;
+  const { loading, logged, access_token, message } = userLogin;
   const { check } = useAuth();
   const navigate = useNavigate();
   reactExports.useEffect(() => {
-    if (account && account.access_token) {
-      check(account.access_token);
+    if (access_token) {
+      check(access_token);
     }
-    if (loading === void 0) {
+    if (logged === false) {
       const timeout = setTimeout(() => {
         navigate("/auth/login");
-      }, 1e3);
+      }, 2e3);
       return () => {
         clearTimeout(timeout);
       };
     }
-  }, [account, loading]);
+  }, [navigate, access_token, logged]);
   const cardItems = [
     {
       title: "stock",
@@ -13313,14 +13319,8 @@ const Dashboard = () => {
       link: "/dashboard/stock-note"
     }
   ];
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: account && account.logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Message,
-      {
-        variant: "alert-success",
-        children: account.message
-      }
-    ),
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-success", children: message }),
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-screen h-screen form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-green-400", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "deck", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "board", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Asset Allocation" }) }),
@@ -17680,7 +17680,7 @@ class BarController extends DatasetController {
     this.updateElements(meta.data, 0, meta.data.length, mode);
   }
   updateElements(bars, start, count, mode) {
-    const reset2 = mode === "reset";
+    const reset = mode === "reset";
     const { index: index2, _cachedMeta: { vScale } } = this;
     const base = vScale.getBasePixel();
     const horizontal = vScale.isHorizontal();
@@ -17688,7 +17688,7 @@ class BarController extends DatasetController {
     const { sharedOptions, includeOptions } = this._getSharedOptions(start, mode);
     for (let i = start; i < start + count; i++) {
       const parsed = this.getParsed(i);
-      const vpixels = reset2 || isNullOrUndef(parsed[vScale.axis]) ? {
+      const vpixels = reset || isNullOrUndef(parsed[vScale.axis]) ? {
         base,
         head: base
       } : this._calculateBarValuePixels(i);
@@ -17952,21 +17952,21 @@ class BubbleController extends DatasetController {
     this.updateElements(points, 0, points.length, mode);
   }
   updateElements(points, start, count, mode) {
-    const reset2 = mode === "reset";
+    const reset = mode === "reset";
     const { iScale, vScale } = this._cachedMeta;
     const { sharedOptions, includeOptions } = this._getSharedOptions(start, mode);
     const iAxis = iScale.axis;
     const vAxis = vScale.axis;
     for (let i = start; i < start + count; i++) {
       const point = points[i];
-      const parsed = !reset2 && this.getParsed(i);
+      const parsed = !reset && this.getParsed(i);
       const properties = {};
-      const iPixel = properties[iAxis] = reset2 ? iScale.getPixelForDecimal(0.5) : iScale.getPixelForValue(parsed[iAxis]);
-      const vPixel = properties[vAxis] = reset2 ? vScale.getBasePixel() : vScale.getPixelForValue(parsed[vAxis]);
+      const iPixel = properties[iAxis] = reset ? iScale.getPixelForDecimal(0.5) : iScale.getPixelForValue(parsed[iAxis]);
+      const vPixel = properties[vAxis] = reset ? vScale.getBasePixel() : vScale.getPixelForValue(parsed[vAxis]);
       properties.skip = isNaN(iPixel) || isNaN(vPixel);
       if (includeOptions) {
         properties.options = sharedOptions || this.resolveDataElementOptions(i, point.active ? "active" : mode);
-        if (reset2) {
+        if (reset) {
           properties.options.radius = 0;
         }
       }
@@ -18120,34 +18120,34 @@ class DoughnutController extends DatasetController {
     this.innerRadius = Math.max(this.outerRadius - radiusLength * chartWeight, 0);
     this.updateElements(arcs, 0, arcs.length, mode);
   }
-  _circumference(i, reset2) {
+  _circumference(i, reset) {
     const opts = this.options;
     const meta = this._cachedMeta;
     const circumference = this._getCircumference();
-    if (reset2 && opts.animation.animateRotate || !this.chart.getDataVisibility(i) || meta._parsed[i] === null || meta.data[i].hidden) {
+    if (reset && opts.animation.animateRotate || !this.chart.getDataVisibility(i) || meta._parsed[i] === null || meta.data[i].hidden) {
       return 0;
     }
     return this.calculateCircumference(meta._parsed[i] * circumference / TAU);
   }
   updateElements(arcs, start, count, mode) {
-    const reset2 = mode === "reset";
+    const reset = mode === "reset";
     const chart = this.chart;
     const chartArea = chart.chartArea;
     const opts = chart.options;
     const animationOpts = opts.animation;
     const centerX = (chartArea.left + chartArea.right) / 2;
     const centerY = (chartArea.top + chartArea.bottom) / 2;
-    const animateScale = reset2 && animationOpts.animateScale;
+    const animateScale = reset && animationOpts.animateScale;
     const innerRadius = animateScale ? 0 : this.innerRadius;
     const outerRadius = animateScale ? 0 : this.outerRadius;
     const { sharedOptions, includeOptions } = this._getSharedOptions(start, mode);
     let startAngle = this._getRotation();
     let i;
     for (i = 0; i < start; ++i) {
-      startAngle += this._circumference(i, reset2);
+      startAngle += this._circumference(i, reset);
     }
     for (i = start; i < start + count; ++i) {
-      const circumference = this._circumference(i, reset2);
+      const circumference = this._circumference(i, reset);
       const arc = arcs[i];
       const properties = {
         x: centerX + this.offsetX,
@@ -18347,14 +18347,14 @@ class LineController extends DatasetController {
     this.updateElements(points, start, count, mode);
   }
   updateElements(points, start, count, mode) {
-    const reset2 = mode === "reset";
+    const reset = mode === "reset";
     const { iScale, vScale, _stacked, _dataset } = this._cachedMeta;
     const { sharedOptions, includeOptions } = this._getSharedOptions(start, mode);
     const iAxis = iScale.axis;
     const vAxis = vScale.axis;
     const { spanGaps, segment } = this.options;
     const maxGapLength = isNumber(spanGaps) ? spanGaps : Number.POSITIVE_INFINITY;
-    const directUpdate = this.chart._animationsDisabled || reset2 || mode === "none";
+    const directUpdate = this.chart._animationsDisabled || reset || mode === "none";
     const end = start + count;
     const pointsCount = points.length;
     let prevParsed = start > 0 && this.getParsed(start - 1);
@@ -18368,7 +18368,7 @@ class LineController extends DatasetController {
       const parsed = this.getParsed(i);
       const nullData = isNullOrUndef(parsed[vAxis]);
       const iPixel = properties[iAxis] = iScale.getPixelForValue(parsed[iAxis], i);
-      const vPixel = properties[vAxis] = reset2 || nullData ? vScale.getBasePixel() : vScale.getPixelForValue(_stacked ? this.applyStack(vScale, parsed, _stacked) : parsed[vAxis], i);
+      const vPixel = properties[vAxis] = reset || nullData ? vScale.getBasePixel() : vScale.getPixelForValue(_stacked ? this.applyStack(vScale, parsed, _stacked) : parsed[vAxis], i);
       properties.skip = isNaN(iPixel) || isNaN(vPixel) || nullData;
       properties.stop = i > 0 && Math.abs(parsed[iAxis] - prevParsed[iAxis]) > maxGapLength;
       if (segment) {
@@ -18474,7 +18474,7 @@ class PolarAreaController extends DatasetController {
     this.innerRadius = this.outerRadius - radiusLength;
   }
   updateElements(arcs, start, count, mode) {
-    const reset2 = mode === "reset";
+    const reset = mode === "reset";
     const chart = this.chart;
     const opts = chart.options;
     const animationOpts = opts.animation;
@@ -18494,7 +18494,7 @@ class PolarAreaController extends DatasetController {
       let endAngle = angle + this._computeAngle(i, mode, defaultAngle);
       let outerRadius = chart.getDataVisibility(i) ? scale.getDistanceFromCenterForValue(this.getParsed(i).r) : 0;
       angle = endAngle;
-      if (reset2) {
+      if (reset) {
         if (animationOpts.animateScale) {
           outerRadius = 0;
         }
@@ -18644,13 +18644,13 @@ class RadarController extends DatasetController {
   }
   updateElements(points, start, count, mode) {
     const scale = this._cachedMeta.rScale;
-    const reset2 = mode === "reset";
+    const reset = mode === "reset";
     for (let i = start; i < start + count; i++) {
       const point = points[i];
       const options = this.resolveDataElementOptions(i, point.active ? "active" : mode);
       const pointPosition = scale.getPointPositionForValue(i, this.getParsed(i).r);
-      const x2 = reset2 ? scale.xCenter : pointPosition.x;
-      const y2 = reset2 ? scale.yCenter : pointPosition.y;
+      const x2 = reset ? scale.xCenter : pointPosition.x;
+      const y2 = reset ? scale.yCenter : pointPosition.y;
       const properties = {
         x: x2,
         y: y2,
@@ -18729,7 +18729,7 @@ class ScatterController extends DatasetController {
     super.addElements();
   }
   updateElements(points, start, count, mode) {
-    const reset2 = mode === "reset";
+    const reset = mode === "reset";
     const { iScale, vScale, _stacked, _dataset } = this._cachedMeta;
     const firstOpts = this.resolveDataElementOptions(start, mode);
     const sharedOptions = this.getSharedOptions(firstOpts);
@@ -18738,7 +18738,7 @@ class ScatterController extends DatasetController {
     const vAxis = vScale.axis;
     const { spanGaps, segment } = this.options;
     const maxGapLength = isNumber(spanGaps) ? spanGaps : Number.POSITIVE_INFINITY;
-    const directUpdate = this.chart._animationsDisabled || reset2 || mode === "none";
+    const directUpdate = this.chart._animationsDisabled || reset || mode === "none";
     let prevParsed = start > 0 && this.getParsed(start - 1);
     for (let i = start; i < start + count; ++i) {
       const point = points[i];
@@ -18746,7 +18746,7 @@ class ScatterController extends DatasetController {
       const properties = directUpdate ? point : {};
       const nullData = isNullOrUndef(parsed[vAxis]);
       const iPixel = properties[iAxis] = iScale.getPixelForValue(parsed[iAxis], i);
-      const vPixel = properties[vAxis] = reset2 || nullData ? vScale.getBasePixel() : vScale.getPixelForValue(_stacked ? this.applyStack(vScale, parsed, _stacked) : parsed[vAxis], i);
+      const vPixel = properties[vAxis] = reset || nullData ? vScale.getBasePixel() : vScale.getPixelForValue(_stacked ? this.applyStack(vScale, parsed, _stacked) : parsed[vAxis], i);
       properties.skip = isNaN(iPixel) || isNaN(vPixel) || nullData;
       properties.stop = i > 0 && Math.abs(parsed[iAxis] - prevParsed[iAxis]) > maxGapLength;
       if (segment) {
@@ -22114,8 +22114,8 @@ let Chart$1 = (_a = class {
     let minPadding = 0;
     for (let i = 0, ilen = this.data.datasets.length; i < ilen; i++) {
       const { controller } = this.getDatasetMeta(i);
-      const reset2 = !animsDisabled && newControllers.indexOf(controller) === -1;
-      controller.buildOrUpdateElements(reset2);
+      const reset = !animsDisabled && newControllers.indexOf(controller) === -1;
+      controller.buildOrUpdateElements(reset);
       minPadding = Math.max(+controller.getMaxOverflow(), minPadding);
     }
     minPadding = this._minPadding = options.layout.autoPadding ? minPadding : 0;

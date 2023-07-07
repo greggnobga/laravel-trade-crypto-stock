@@ -13,7 +13,7 @@ import Message from "../../components/interfaces/message.js";
 import useValidate from "../../hooks/use-validate";
 
 /** Action. */
-import { register } from "../../actions/userActions.js";
+import { registerUser } from "../../actions/userActions.js";
 
 const Register = () => {
     /** Map html element to validate hook. */
@@ -98,10 +98,8 @@ const Register = () => {
     const dispatch = useDispatch();
 
     /** Select state from redux. */
-    const userLogin = useSelector((state) => state.userLogin);
-
-    /** Deconstruct state. */
-    const { loading, error, account } = userLogin;
+    const userRegister = useSelector((state) => state.userRegister);
+    const { loading, error, logged, message } = userRegister;
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -122,14 +120,14 @@ const Register = () => {
         }
 
         /** Check account has value. */
-        if (account && account.logged) {
-            if (account.logged === true) {
+        if (logged) {
+            if (logged === true) {
                 navigate("/dashboard");
             } else {
                 navigate("/auth/register");
             }
         }
-    }, [password, confirm, account]);
+    }, [password, confirm, logged]);
 
     /** Set overall form validity. */
     let formIsValid = false;
@@ -172,7 +170,7 @@ const Register = () => {
         }
 
         /** Dispatch action. */
-        dispatch(register(userName, firstName, lastName, email, password));
+        dispatch(registerUser(userName, firstName, lastName, email, password));
 
         /** Reset input. */
         userNameInputReset();
@@ -186,6 +184,7 @@ const Register = () => {
     return (
         <>
             {error && <Message children={error} variant="alert-danger" />}
+            {message && <Message children={message} variant="alert-success" />}
             {loading ? (
                 <Loader />
             ) : (

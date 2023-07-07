@@ -6,7 +6,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 /** Actions. */
-import { clear } from "../actions/userActions";
+import { clearToken } from "../actions/userActions";
 
 const useAuth = () => {
     /** Use dispatch. */
@@ -27,7 +27,7 @@ const useAuth = () => {
             });
         } catch (error) {
             /** Disptach login action to reset the state. */
-            dispatch(clear());
+            dispatch(clearToken());
         }
     };
 

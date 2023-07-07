@@ -22,7 +22,7 @@ import {
     USER_RESET_FAILURE,
 } from "../constants/userConstants";
 
-export const reset = (token, email, password) => async (dispatch) => {
+export const resetPassword = (token, email, password) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
         dispatch({ type: USER_RESET_REQUEST });
@@ -39,6 +39,7 @@ export const reset = (token, email, password) => async (dispatch) => {
 
         /** Dispatch action to set the result into the store. */
         dispatch({ type: USER_RESET_SUCCESS, payload: data });
+        dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
         /** Save to result to local storage. */
         localStorage.setItem("account", JSON.stringify(data));
@@ -54,7 +55,7 @@ export const reset = (token, email, password) => async (dispatch) => {
     }
 };
 
-export const forgot = (email) => async (dispatch) => {
+export const forgotPassword = (email) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
         dispatch({ type: USER_FORGOT_REQUEST });
@@ -83,7 +84,7 @@ export const forgot = (email) => async (dispatch) => {
     }
 };
 
-export const verify = (token) => async (dispatch) => {
+export const verifyEmail = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
         dispatch({ type: USER_VERIFY_REQUEST });
@@ -99,7 +100,7 @@ export const verify = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({ type: USER_VERIFY_SUCCESS, payload: data });
+        dispatch({ type: USER_VERIFY_SUCCESS, payload: data.message });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -112,7 +113,7 @@ export const verify = (token) => async (dispatch) => {
     }
 };
 
-export const register =
+export const registerUser =
     (username, firstname, lastname, email, password) => async (dispatch) => {
         try {
             /** Dispatch action to set inital state. */
@@ -146,7 +147,7 @@ export const register =
         }
     };
 
-export const login = (email, password) => async (dispatch) => {
+export const loginUser = (email, password) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
         dispatch({ type: USER_LOGIN_REQUEST });
@@ -178,7 +179,7 @@ export const login = (email, password) => async (dispatch) => {
     }
 };
 
-export const logout = (token) => async (dispatch) => {
+export const logoutUser = (token) => async (dispatch) => {
     try {
         /** Request data from backend. */
         const { data } = await axios({
@@ -211,7 +212,7 @@ export const logout = (token) => async (dispatch) => {
     }
 };
 
-export const clear = () => async (dispatch) => {
+export const clearToken = () => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
         dispatch({ type: USER_LOGIN_CLEAR });

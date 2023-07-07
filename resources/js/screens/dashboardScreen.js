@@ -17,7 +17,7 @@ import Card from "../components/interfaces/card";
 const Dashboard = () => {
     /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { loading, account } = userLogin;
+    const { loading, logged, access_token, message } = userLogin;
 
     /** Use auth. */
     const { check } = useAuth();
@@ -28,22 +28,22 @@ const Dashboard = () => {
     /** Use effect. */
     useEffect(() => {
         /** If account state set, check if access token is valid. */
-        if (account && account.access_token) {
+        if (access_token) {
             /** Perform check. */
-            check(account.access_token);
+            check(access_token);
         }
 
         /** If become undefined then redirect. */
-        if (loading === undefined) {
+        if (logged === false) {
             const timeout = setTimeout(() => {
                 navigate("/auth/login");
-            }, 1000);
+            }, 2000);
 
             return () => {
                 clearTimeout(timeout);
             };
         }
-    }, [account, loading]);
+    }, [navigate, access_token, logged]);
 
     const cardItems = [
         {
@@ -79,12 +79,11 @@ const Dashboard = () => {
     /** Return something. */
     return (
         <>
-            {account && account.logged && (
+            {logged && (
                 <>
-                    <Message
-                        variant="alert-success"
-                        children={account.message}
-                    />
+                    {message && (
+                        <Message variant="alert-success" children={message} />
+                    )}
                     {loading ? (
                         <div className="w-screen h-screen form-center">
                             <Loader />

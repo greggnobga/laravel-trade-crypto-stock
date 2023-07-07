@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useScreen from "../../hooks/use-screen";
 
 /** Actions. */
-import { logout } from "../../actions/userActions";
+import { logoutUser } from "../../actions/userActions";
 
 /** Component. */
 import Icon from "../icons";
@@ -20,7 +20,7 @@ const Header = () => {
 
     /** Get state. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { account } = userLogin;
+    const { logged, access_token } = userLogin;
 
     /** Use screen hook. */
     const { isMobile } = useScreen();
@@ -45,9 +45,9 @@ const Header = () => {
     /** Logout handler. */
     const logoutHandler = () => {
         /** Check if auth is not empty. */
-        if (account) {
+        if (access_token) {
             /** Dispatch actions. */
-            dispatch(logout(account.access_token));
+            dispatch(logoutUser(access_token));
         }
     };
 
@@ -164,7 +164,7 @@ const Header = () => {
                     </div>
                     <div className="grid grid-cols-2">
                         <div className="hover:text-slate-300">
-                            {account && account.logged && (
+                            {logged && (
                                 <button onClick={controlHandler} type="button">
                                     <span className="p-2">
                                         <Icon
@@ -208,7 +208,7 @@ const Header = () => {
                                         </span>
                                     </Link>
                                 </li>
-                                {account && account.logged ? (
+                                {logged ? (
                                     <>
                                         <li className="px-2">
                                             <Link to="/dashboard">
@@ -282,7 +282,7 @@ const Header = () => {
                         </Link>
                     </div>
                     <div className="p-2">
-                        {account && account.logged ? (
+                        {logged ? (
                             <ul className="grid grid-cols-4 auto-rows-min">
                                 <li className="md:text-xs">
                                     <Link to="#">

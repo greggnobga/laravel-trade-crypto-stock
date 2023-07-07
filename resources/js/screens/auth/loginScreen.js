@@ -13,7 +13,7 @@ import Message from "../../components/interfaces/message.js";
 import useValidate from "../../hooks/use-validate";
 
 /** Action. */
-import { login } from "../../actions/userActions.js";
+import { loginUser } from "../../actions/userActions.js";
 
 const Login = () => {
     /** Map html element to validate hook. */
@@ -63,21 +63,21 @@ const Login = () => {
     const userLogin = useSelector((state) => state.userLogin);
 
     /** Deconstruct state. */
-    const { loading, error, account } = userLogin;
+    const { loading, error, logged } = userLogin;
 
     /** Use navigate. */
     const navigate = useNavigate();
 
     /** Use effect. */
     useEffect(() => {
-        if (account && account.logged) {
-            if (account.logged === true) {
+        if (logged) {
+            if (logged === true) {
                 navigate("/dashboard");
             } else {
                 navigate("/auth/login");
             }
         }
-    }, [account]);
+    }, [logged]);
 
     /** Submit handler. */
     const submitHandler = (event) => {
@@ -94,7 +94,7 @@ const Login = () => {
         }
 
         /** Dispatch action. */
-        dispatch(login(email, password));
+        dispatch(loginUser(email, password));
 
         /** Reset input. */
         emailInputReset();

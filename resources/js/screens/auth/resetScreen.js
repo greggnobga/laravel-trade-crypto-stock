@@ -13,7 +13,7 @@ import Loader from "../../components/interfaces/loader.js";
 import Message from "../../components/interfaces/message.js";
 
 /** Action. */
-import { reset } from "../../actions/userActions.js";
+import { resetPassword } from "../../actions/userActions.js";
 
 const Reset = () => {
     /** Map html element to validate hook. */
@@ -65,10 +65,8 @@ const Reset = () => {
     const dispatch = useDispatch();
 
     /** Select state from redux. */
-    const userLogin = useSelector((state) => state.userLogin);
-
-    /** Deconstruct state. */
-    const { loading, error, account } = userLogin;
+    const userReset = useSelector((state) => state.userReset);
+    const { loading, logged, error, message } = userReset;
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -86,7 +84,18 @@ const Reset = () => {
         } else {
             setPasswordMatched(false);
         }
-    }, [password, confirm]);
+
+        /** If become undefined then redirect. */
+        if (logged === true) {
+            const timeout = setTimeout(() => {
+                navigate("/dashboard");
+            }, 1000);
+
+            return () => {
+                clearTimeout(timeout);
+            };
+        }
+    }, [logged, password, confirm]);
 
     /** Set overall form validity. */
     let formIsValid = false;
@@ -115,8 +124,8 @@ const Reset = () => {
             return;
         }
 
-        /** Perform ajax request. */
-        dispatch(reset(token, email, password));
+        /** Dispatch action. */
+        dispatch(resetPassword(token, email, password));
 
         /** Reset input. */
         emailInputReset();
@@ -127,9 +136,7 @@ const Reset = () => {
     return (
         <>
             {error && <Message children={error} variant="alert-danger" />}
-            {account && (
-                <Message children={account.message} variant="alert-success" />
-            )}
+            {message && <Message children={message} variant="alert-success" />}
             {loading ? (
                 <Loader />
             ) : (

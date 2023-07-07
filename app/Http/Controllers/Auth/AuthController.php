@@ -177,7 +177,7 @@ class AuthController extends Controller {
             }
 
             /** Update password. */
-            $id = Users::where('email', $reset->email)->update(['password' => Hash::make($request->password)]);
+            Users::where('email', $reset->email)->update(['password' => Hash::make($request->password)]);
 
             /** Remove the current token in order for it not to be reused. */
             DB::table('password_resets')->where('token', strip_tags($request->token))->delete();
@@ -298,6 +298,7 @@ class AuthController extends Controller {
             switch ($args['caller']) {
                 case 'register':
                     $message = ' , your account has been established. Please confirm your email address as soon as possible.';
+                    $logged = true;
                     break;
                 case 'login':
                     $message = ' , we are glad you are back and hope you will have a good time with us.';
@@ -305,6 +306,7 @@ class AuthController extends Controller {
                     break;
                 case 'reset':
                     $message = ' , your password has been successfully updated.';
+                    $logged = true;
                     break;
                 default:
                     $message = '';

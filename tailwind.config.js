@@ -8,5 +8,5 @@ module.exports = {
             monster: ["Montserrat"],
         },
     },
-    plugins: [],
+    plugins: [require("tailwindcss-animated")],
 };

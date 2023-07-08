@@ -42,19 +42,23 @@ const Home = () => {
                             and some of the most affordable prices in the
                             sector.
                         </div>
-                        <div className="p-4 text-center">
-                            <button
-                                type="button"
-                                className="font-size btn btn-indigo"
-                            >
-                                Get Started
-                            </button>
-                            <button
-                                type="button"
-                                className="font-size ml-2 btn btn-green"
-                            >
-                                Learn More
-                            </button>
+                        <div className="p-4 grid auto-rows-min sm:grid-cols-2">
+                            <div className="p-2">
+                                <button
+                                    type="button"
+                                    className="font-size btn btn-indigo"
+                                >
+                                    Get Started
+                                </button>
+                            </div>
+                            <div className="p-2">
+                                <button
+                                    type="button"
+                                    className="font-size btn btn-green"
+                                >
+                                    Learn More
+                                </button>
+                            </div>
                         </div>
                     </section>
                     {/** Reason section. */}
@@ -71,10 +75,10 @@ const Home = () => {
                                         alt="Innovative Tools"
                                     />
                                 </div>
-                                <div className="p-2 text-sm md:text-md">
+                                <div className="p-2 font-size">
                                     <Icon id="tool" /> Innovative Tools
                                 </div>
-                                <div className="p-4 text-sm md:text-md bg-rose-800 bg-opacity-30 rounded-b-lg">
+                                <div className="p-4 font-size bg-rose-800 bg-opacity-30 rounded-b-lg">
                                     Eaque ipsa quae ab illo inventore veritatis
                                     et quasi architecto beatae vitae dicta sunt
                                     explicabo.
@@ -88,10 +92,10 @@ const Home = () => {
                                         alt="Transparent Pricing"
                                     />
                                 </div>
-                                <div className="p-2 text-sm md:text-md">
+                                <div className="p-2 font-size">
                                     <Icon id="price" /> Transparent Pricing
                                 </div>
-                                <div className="p-4 text-sm md:text-md bg-green-800 bg-opacity-30 rounded-b-lg">
+                                <div className="p-4 font-size bg-green-800 bg-opacity-30 rounded-b-lg">
                                     Eaque ipsa quae ab illo inventore veritatis
                                     et quasi architecto beatae vitae dicta sunt
                                     explicabo.
@@ -105,10 +109,10 @@ const Home = () => {
                                         alt="Dedicated Support"
                                     />
                                 </div>
-                                <div className="p-2 text-sm md:text-md">
+                                <div className="p-2 font-size">
                                     <Icon id="support" /> Dedicated Support
                                 </div>
-                                <div className="p-4 text-sm md:text-md bg-purple-800 bg-opacity-30 rounded-b-lg">
+                                <div className="p-4 font-size bg-purple-800 bg-opacity-30 rounded-b-lg">
                                     Eaque ipsa quae ab illo inventore veritatis
                                     et quasi architecto beatae vitae dicta sunt
                                     explicabo.
@@ -122,7 +126,7 @@ const Home = () => {
                             Our Stories
                         </div>
                         <div className="p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-stone-200 bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40">
-                            <div className="card">
+                            <div className="card flex flex-col">
                                 <div className="hover:graycale">
                                     <img
                                         className="w-400 h-200 object-cover w-full"
@@ -130,9 +134,9 @@ const Home = () => {
                                         alt="Placeholder Image"
                                     />
                                 </div>
-                                <div className="p-2">
+                                <div className="p-2 flex-1">
                                     <h1 className="pb-2">Story Title</h1>
-                                    <p className="text-sm md:text-md lg:text-lg">
+                                    <p className="font-size">
                                         Sed ut perspiciatis unde omnis iste
                                         natus error sit voluptatem accusantium
                                         doloremque laudantium, totam rem
@@ -145,13 +149,13 @@ const Home = () => {
                                         ratione voluptatem sequi nesciunt.
                                     </p>
                                 </div>
-                                <div className="p-2 text-right">
-                                    <button className="btn btn-orange">
+                                <div className="p-2 text-center sm:text-right">
+                                    <button className="btn btn-orange-outline">
                                         Read More
                                     </button>
                                 </div>
                             </div>
-                            <div className="card">
+                            <div className="card flex flex-col">
                                 <div className="hover:graycale">
                                     <img
                                         className="w-400 h-200 object-cover w-full"
@@ -159,9 +163,9 @@ const Home = () => {
                                         alt="Placeholder Image"
                                     />
                                 </div>
-                                <div className="p-2">
+                                <div className="p-2 flex-1">
                                     <h1 className="pb-2">Story Title</h1>
-                                    <p className="text-sm md:text-md lg:text-lg">
+                                    <p className="font-size">
                                         Neque porro quisquam est, qui dolorem
                                         ipsum quia dolor sit amet, consectetur,
                                         adipisci velit, sed quia non numquam
@@ -173,13 +177,13 @@ const Home = () => {
                                         aliquid ex ea commodi consequatur.
                                     </p>
                                 </div>
-                                <div className="p-2 text-right">
-                                    <button className="btn btn-orange">
+                                <div className="p-2 text-center sm:text-right">
+                                    <button className="btn btn-orange-outline">
                                         Read More
                                     </button>
                                 </div>
                             </div>
-                            <div className="card">
+                            <div className="card flex flex-col">
                                 <div className="hover:graycale">
                                     <img
                                         className="w-400 h-200 object-cover w-full"
@@ -187,9 +191,9 @@ const Home = () => {
                                         alt="Placeholder Image"
                                     />
                                 </div>
-                                <div className="p-2">
+                                <div className="p-2 flex-1">
                                     <h1 className="pb-2">Story Title</h1>
-                                    <p className="text-sm md:text-md lg:text-lg">
+                                    <p className="font-size">
                                         At vero eos et accusamus et iusto odio
                                         dignissimos ducimus qui blanditiis
                                         praesentium voluptatum deleniti atque
@@ -200,8 +204,8 @@ const Home = () => {
                                         laborum et dolorum fuga.
                                     </p>
                                 </div>
-                                <div className="p-2 text-right">
-                                    <button className="btn btn-orange">
+                                <div className="p-2 text-center sm:text-right">
+                                    <button className="btn btn-orange-outline">
                                         Read More
                                     </button>
                                 </div>
@@ -213,7 +217,7 @@ const Home = () => {
                         <div className="p-2 mb-2 uppercase text-center text-purple-700 bg-purple-200 bg-opacity-50">
                             Traditional Finance VS Cryptocurrency?
                         </div>
-                        <div className="p-2 text-sm md:text-md lg:text-lg">
+                        <div className="p-2 font-size">
                             <p className="pb-2">
                                 Lorem ipsum dolor sit amet, consectetur
                                 adipiscing elit, sed do eiusmod tempor

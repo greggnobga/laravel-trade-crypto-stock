@@ -14,14 +14,36 @@ const Trade = () => {
 
     /** Start handler. */
     const startHandler = () => {
-        /** Set disabled state. */
-        setDisabled(true);
-        /** Request data from api. */
-        apiRequest();
+        console.log("Start handler clicked.");
     };
 
     /** Use screen helper. */
     const { isMobile } = useScreen();
+
+    /** Start handler. */
+    const reportHandler = () => {
+        console.log("Report handler clicked.");
+    };
+
+    /** Start handler. */
+    const priceHandler = () => {
+        console.log("Price handler clicked.");
+    };
+
+    /** Start handler. */
+    const dividendHandler = () => {
+        console.log("Dividend handler clicked.");
+    };
+
+    /** Start handler. */
+    const sectorHandler = () => {
+        console.log("Sector handler clicked.");
+    };
+
+    /** Start handler. */
+    const displaySearch = () => {
+        console.log("Display search clicked.");
+    };
 
     /** Return something. */
     return (
@@ -85,27 +107,6 @@ const Trade = () => {
                         </div>
                     </div>
                 </div>
-                {isMobile ? (
-                    <Mobile
-                        data={{ stocks: stocks, display: display }}
-                        handler={{
-                            display: displaySearch,
-                            search: searchHandler,
-                            chart: chartHandler,
-                            view: viewHandler,
-                        }}
-                    />
-                ) : (
-                    <Desktop
-                        data={{ stocks: stocks, display: display }}
-                        handler={{
-                            display: displaySearch,
-                            search: searchHandler,
-                            chart: chartHandler,
-                            view: viewHandler,
-                        }}
-                    />
-                )}
             </div>
         </div>
     );

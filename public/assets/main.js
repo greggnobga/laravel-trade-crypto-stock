@@ -12122,7 +12122,7 @@ const Header = () => {
   const controlTemplate = /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "nav",
     {
-      className: "flex flex-col flex-grow font-size shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0",
+      className: "flex flex-col flex-grow font-size shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0 z-50",
       onClick: controlHandler,
       children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "py-2", children: [
@@ -12204,7 +12204,7 @@ const Header = () => {
     isBurger && /* @__PURE__ */ jsxRuntimeExports.jsx(
       "nav",
       {
-        className: "flex flex-col flex-grow shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0",
+        className: "flex flex-col flex-grow shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0 z-50",
         onClick: burgerHandler,
         children: /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "py-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("li", { className: "px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/stock-explorer", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block border-bottom", children: [
@@ -12373,7 +12373,7 @@ const Message = ({ variant, children }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsx(
     "div",
     {
-      className: "font-size m-2 cursor-pointer",
+      className: "font-size m-2 cursor-pointer hover:animate-pulse",
       onClick: messageHandler,
       children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children })
     }
@@ -12386,10 +12386,10 @@ const stockList = () => async (dispatch) => {
       url: "https://phisix-api4.appspot.com/stocks.json",
       method: "GET"
     });
-    let stocks2 = [];
+    let stocks = [];
     if (data.hasOwnProperty("stock")) {
       for (let i = 0; i < data["stock"].length; i++) {
-        stocks2.push({
+        stocks.push({
           name: data["stock"][i]["name"],
           change: data["stock"][i]["percent_change"],
           price: data["stock"][i]["price"]["amount"],
@@ -12398,7 +12398,7 @@ const stockList = () => async (dispatch) => {
         });
       }
     }
-    dispatch({ type: STOCK_LIST_SUCCESS, payload: stocks2 });
+    dispatch({ type: STOCK_LIST_SUCCESS, payload: stocks });
   } catch (error) {
     console.log(error.message);
     dispatch({
@@ -12419,23 +12419,23 @@ const Home = () => {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "w-full h-64 md:h-96 grid auto-rows-min content-center bg-stone-200 border-one bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40 mb-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl", children: "At little cost, you can accomplish more." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-blue-500 text-sm font-thin sm:font-light text-center sm:text-md md:text-xl", children: "We help your money go further with no yearly fees and some of the most affordable prices in the sector." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 text-center", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 grid auto-rows-min sm:grid-cols-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
             type: "button",
             className: "font-size btn btn-indigo",
             children: "Get Started"
           }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
             type: "button",
-            className: "font-size ml-2 btn btn-green",
+            className: "font-size btn btn-green",
             children: "Learn More"
           }
-        )
+        ) })
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "mb-2 grid auto-rows-min bg-stone-100 bg-opacity-70 border-b border-neutral-100", children: [
@@ -12450,11 +12450,11 @@ const Home = () => {
               alt: "Innovative Tools"
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 font-size", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "tool" }),
             " Innovative Tools"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-rose-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-rose-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -12465,11 +12465,11 @@ const Home = () => {
               alt: "Transparent Pricing"
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 font-size", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
             " Transparent Pricing"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-green-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-green-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -12480,18 +12480,18 @@ const Home = () => {
               alt: "Dedicated Support"
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 font-size", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "support" }),
             " Dedicated Support"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-sm md:text-md bg-purple-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-purple-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
         ] })
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "grid auto-rows-min bg-zinc-200 bg-opacity-50 border-b border-neutral-100", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 mb-2 uppercase text-right text-green-700 bg-green-200 bg-opacity-50", children: "Our Stories" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-stone-200 bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card flex flex-col", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "img",
             {
@@ -12500,13 +12500,13 @@ const Home = () => {
               alt: "Placeholder Image"
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt." })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-size", children: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt." })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center sm:text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange-outline", children: "Read More" }) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card flex flex-col", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "img",
             {
@@ -12515,13 +12515,13 @@ const Home = () => {
               alt: "Placeholder Image"
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur." })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-size", children: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur." })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center sm:text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange-outline", children: "Read More" }) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card flex flex-col", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:graycale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "img",
             {
@@ -12530,17 +12530,17 @@ const Home = () => {
               alt: "Placeholder Image"
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "pb-2", children: "Story Title" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm md:text-md lg:text-lg", children: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga." })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-size", children: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga." })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange", children: "Read More" }) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center sm:text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-orange-outline", children: "Read More" }) })
         ] })
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "mb-2 grid auto-rows-min bg-neutral-200 bg-opacity-50 border-b border-neutral-100", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 mb-2 uppercase text-center text-purple-700 bg-purple-200 bg-opacity-50", children: "Traditional Finance VS Cryptocurrency?" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 text-sm md:text-md lg:text-lg", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 font-size", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt." }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pb-2", children: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur." })
@@ -13258,19 +13258,6 @@ const useAuth = () => {
   };
   return { check };
 };
-const Card = (props) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.Fragment, { children: props.items.map((item) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `items ${item["color"]}`, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "title", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: item["id"] }),
-        " ",
-        item["title"]
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "value", children: item["value"] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "link", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: item["link"], children: "more" }) })
-    ] }, item["id"]);
-  }) });
-};
 const Dashboard = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, logged, access_token, message } = userLogin;
@@ -13289,58 +13276,132 @@ const Dashboard = () => {
       };
     }
   }, [navigate, access_token, logged]);
-  const cardItems = [
-    {
-      title: "stock",
-      id: "stock",
-      value: "100",
-      color: "green",
-      link: "/dashboard/stock-portfolio"
-    },
-    {
-      title: "crypto",
-      id: "crypto",
-      value: "200",
-      color: "red",
-      link: "/dashboard/crypto-portfolio"
-    },
-    {
-      title: "fund",
-      id: "fund",
-      value: "300",
-      color: "blue",
-      link: "/dashboard/crypto-portfolio"
-    },
-    {
-      title: "note",
-      id: "note",
-      value: "10",
-      color: "gold",
-      link: "/dashboard/stock-note"
-    }
-  ];
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-success", children: message }),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-screen h-screen form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-green-400", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "deck", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "board", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Asset Allocation" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "cards", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { items: cardItems }) }) })
+    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-screen h-screen form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min gap-2 h-fit p-2 font-size", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min gap-2 h-fit", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Fetch External Data" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 card grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "btn btn-red-outline",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+                " Start"
+              ]
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "btn btn-green-outline",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
+                " Report"
+              ]
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "btn btn-blue-outline",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
+                " Price"
+              ]
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "btn btn-emerald-outline",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
+                " Dividend"
+              ]
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "btn btn-indigo-outline",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
+                " Sector"
+              ]
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "btn btn-orange-outline",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
+                " Search"
+              ]
+            }
+          ) })
+        ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "chart", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "board", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Graphical Representation" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "account", children: "Account" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "offer", children: "Offers" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "graph", children: "Main Chart" })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min h-fit", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Asset Allocation" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col flex-wrap sm:flex-row justify-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded text-red-500 ", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "stock" }),
+              " Stock"
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "1000" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-portfolio", children: "more" }) }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded text-green-500", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "crypto" }),
+              " Crypto"
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "2000" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/crypto-portfolio", children: "more" }) }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded text-blue-500", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "fund" }),
+              " Fund"
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "3000" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-fund", children: "more" }) }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded text-orange-500", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "note" }),
+              " Note"
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "4000" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-note", children: "more" }) }) })
+          ] })
+        ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rank", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "board", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Philippine Stock Exchange" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "gainer", children: "Top Gainers" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "losser", children: "Top Lossers" })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 sm:col-span-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Graphical Representation" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20 sm:row-start-2 card-rounded", children: "Account" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20 sm:row-start-3 card-rounded", children: "Offers" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded", children: "Doughnut Chart" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rank", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "board", children: "Crypto Currency" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "gainer", children: "Top Gainers" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "losser", children: "Top Lossers" })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 sm:col-span-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Philippine Stock Exchange" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 card-rounded", children: "Top Gainers" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded", children: "Top Lossers" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 sm:col-span-2", children: "Crypto Currency" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 card-rounded", children: "Top Gainers" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded", children: "Top Lossers" })
       ] })
     ] })
   ] }) });
@@ -20285,9 +20346,9 @@ class Scale extends Element {
       height: 0
     };
     const { chart, options: { ticks: tickOpts, title: titleOpts, grid: gridOpts } } = this;
-    const display2 = this._isVisible();
+    const display = this._isVisible();
     const isHorizontal = this.isHorizontal();
-    if (display2) {
+    if (display) {
       const titleHeight = getTitleHeight(titleOpts, chart.options.font);
       if (isHorizontal) {
         minSize.width = this.maxWidth;
@@ -20511,9 +20572,9 @@ class Scale extends Element {
     return this.isHorizontal() ? h3 * cos > w2 * sin ? w2 / cos : h3 / sin : h3 * sin < w2 * cos ? h3 / cos : w2 / sin;
   }
   _isVisible() {
-    const display2 = this.options.display;
-    if (display2 !== "auto") {
-      return !!display2;
+    const display = this.options.display;
+    if (display !== "auto") {
+      return !!display;
     }
     return this.getMatchingVisibleMetas().length > 0;
   }
@@ -26699,7 +26760,7 @@ function buildPointLabelItems(scale, labelSizes, padding) {
   const items = [];
   const valueCount = scale._pointLabels.length;
   const opts = scale.options;
-  const { centerPointLabels, display: display2 } = opts.pointLabels;
+  const { centerPointLabels, display } = opts.pointLabels;
   const itemOpts = {
     extra: getTickBackdropHeight(opts) / 2,
     additionalAngle: centerPointLabels ? PI / valueCount : 0
@@ -26710,7 +26771,7 @@ function buildPointLabelItems(scale, labelSizes, padding) {
     itemOpts.size = labelSizes[i];
     const item = createPointLabelItem(scale, i, itemOpts);
     items.push(item);
-    if (display2 === "auto") {
+    if (display === "auto") {
       item.visible = isNotOverlapped(item, area);
       if (item.visible) {
         area = item;
@@ -27812,7 +27873,7 @@ const Portfolio = () => {
   reactExports.useState([]);
   reactExports.useState([]);
   const [capital, setCapital] = reactExports.useState([]);
-  const [stocks2, setStocks] = reactExports.useState([]);
+  const [stocks, setStocks] = reactExports.useState([]);
   const [total, setTotal] = reactExports.useState([]);
   const [watcher, setWatcher] = reactExports.useState(false);
   const [capitalChart, setCapitalChart] = reactExports.useState({});
@@ -27842,11 +27903,11 @@ const Portfolio = () => {
     };
     setCapitalChart(capitalData);
     const stocksData = {
-      labels: stocks2.map((item) => item.symbol),
+      labels: stocks.map((item) => item.symbol),
       datasets: [
         {
           label: "Capital",
-          data: stocks2.map((item) => item.capital),
+          data: stocks.map((item) => item.capital),
           backgroundColor: [
             "rgba(255, 99, 132, 0.5)",
             "rgba(255, 159, 64, 0.5)",
@@ -27881,7 +27942,7 @@ const Portfolio = () => {
       ]
     };
     setTotalChart(totalData);
-  }, [capital, stocks2, total]);
+  }, [capital, stocks, total]);
   const recordHandler = () => {
     setRecord(!record);
   };
@@ -28021,125 +28082,114 @@ const Trade = () => {
   reactExports.useState([]);
   const [disabled, setDisabled] = reactExports.useState(false);
   const startHandler = () => {
-    setDisabled(true);
-    apiRequest();
+    console.log("Start handler clicked.");
   };
-  const { isMobile } = useScreen();
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "stock-trade", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "trade", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "board", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "items", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "brand", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "name", children: "Trade" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "record", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: startHandler,
-            className: "btn btn-green-outline",
-            type: "button",
-            disabled,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
-              " Start"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: reportHandler,
-            className: "btn btn-red-outline",
-            type: "button",
-            disabled,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
-              " Report"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: priceHandler,
-            className: "btn btn-blue-outline",
-            type: "button",
-            disabled,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
-              " Price"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: dividendHandler,
-            className: "btn btn-green-outline",
-            type: "button",
-            disabled,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
-              " Dividend"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: sectorHandler,
-            className: "btn btn-purple-outline",
-            type: "button",
-            disabled,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
-              " Sector"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: displaySearch,
-            className: "btn btn-gold-outline",
-            type: "button",
-            disabled,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
-              " Search"
-            ]
-          }
-        )
-      ] })
-    ] }) }),
-    isMobile ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Mobile,
-      {
-        data: { stocks, display },
-        handler: {
-          display: displaySearch,
-          search: searchHandler,
-          chart: chartHandler,
-          view: viewHandler
+  useScreen();
+  const reportHandler = () => {
+    console.log("Report handler clicked.");
+  };
+  const priceHandler = () => {
+    console.log("Price handler clicked.");
+  };
+  const dividendHandler = () => {
+    console.log("Dividend handler clicked.");
+  };
+  const sectorHandler = () => {
+    console.log("Sector handler clicked.");
+  };
+  const displaySearch = () => {
+    console.log("Display search clicked.");
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "stock-trade", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "trade", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "board", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "items", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "brand", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "name", children: "Trade" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "record", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: startHandler,
+          className: "btn btn-green-outline",
+          type: "button",
+          disabled,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+            " Start"
+          ]
         }
-      }
-    ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Desktop,
-      {
-        data: { stocks, display },
-        handler: {
-          display: displaySearch,
-          search: searchHandler,
-          chart: chartHandler,
-          view: viewHandler
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: reportHandler,
+          className: "btn btn-red-outline",
+          type: "button",
+          disabled,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
+            " Report"
+          ]
         }
-      }
-    )
-  ] }) });
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: priceHandler,
+          className: "btn btn-blue-outline",
+          type: "button",
+          disabled,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
+            " Price"
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: dividendHandler,
+          className: "btn btn-green-outline",
+          type: "button",
+          disabled,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
+            " Dividend"
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: sectorHandler,
+          className: "btn btn-purple-outline",
+          type: "button",
+          disabled,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
+            " Sector"
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: displaySearch,
+          className: "btn btn-gold-outline",
+          type: "button",
+          disabled,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
+            " Search"
+          ]
+        }
+      )
+    ] })
+  ] }) }) }) });
 };
 const StockTrade = () => {
   const [search, setSearch] = reactExports.useState(false);
-  const searchHandler2 = () => {
+  const searchHandler = () => {
     setSearch(!search);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "stock-chart", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "chart", children: [
@@ -28148,7 +28198,7 @@ const StockTrade = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "record", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
-          onClick: searchHandler2,
+          onClick: searchHandler,
           className: "search",
           type: "button",
           children: "Search"
@@ -28442,13 +28492,13 @@ const CryptoNft = () => {
 };
 const StockNote = () => {
   const [search, setSearch] = reactExports.useState(false);
-  const searchHandler2 = () => {
+  const searchHandler = () => {
     setSearch(!search);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "stock-note", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "note", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "board", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "items", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "name", children: "Note" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "record", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: searchHandler2, className: "search", type: "button", children: "Search" }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "record", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: searchHandler, className: "search", type: "button", children: "Search" }) })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "content", children: [
       search && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "items", children: [

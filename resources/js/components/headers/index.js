@@ -59,7 +59,7 @@ const Header = () => {
     /** Control template. */
     const controlTemplate = (
         <nav
-            className="flex flex-col flex-grow font-size shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0"
+            className="flex flex-col flex-grow font-size shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0 z-50"
             onClick={controlHandler}
         >
             <ul className="py-2">
@@ -190,7 +190,7 @@ const Header = () => {
                     </div>
                     {isBurger && (
                         <nav
-                            className="flex flex-col flex-grow shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0"
+                            className="flex flex-col flex-grow shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0 z-50"
                             onClick={burgerHandler}
                         >
                             <ul className="py-2">

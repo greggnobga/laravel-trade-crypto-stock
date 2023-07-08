@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 
 /*8 Vendor. */
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 /** Hook. */
@@ -12,7 +12,6 @@ import useAuth from "../hooks/use-auth";
 import Icon from "../components/icons";
 import Message from "../components/interfaces/message";
 import Loader from "../components/interfaces/loader";
-import Card from "../components/interfaces/card";
 
 const Dashboard = () => {
     /** Use selector. */
@@ -45,37 +44,6 @@ const Dashboard = () => {
         }
     }, [navigate, access_token, logged]);
 
-    const cardItems = [
-        {
-            title: "stock",
-            id: "stock",
-            value: "100",
-            color: "green",
-            link: "/dashboard/stock-portfolio",
-        },
-        {
-            title: "crypto",
-            id: "crypto",
-            value: "200",
-            color: "red",
-            link: "/dashboard/crypto-portfolio",
-        },
-        {
-            title: "fund",
-            id: "fund",
-            value: "300",
-            color: "blue",
-            link: "/dashboard/crypto-portfolio",
-        },
-        {
-            title: "note",
-            id: "note",
-            value: "10",
-            color: "gold",
-            link: "/dashboard/stock-note",
-        },
-    ];
-
     /** Return something. */
     return (
         <>
@@ -89,36 +57,180 @@ const Dashboard = () => {
                             <Loader />
                         </div>
                     ) : (
-                        <div className="border border-green-400">
-                            <div className="deck">
-                                <div className="board">
-                                    <p>Asset Allocation</p>
+                        <div className="grid auto-rows-min gap-2 h-fit p-2 font-size">
+                            <div className="grid auto-rows-min gap-2 h-fit">
+                                <div className="p-2">
+                                    <span>Fetch External Data</span>
                                 </div>
-                                <div className="cards">
-                                    <div className="card">
-                                        <Card items={cardItems} />
+                                <div className="p-2 card grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2">
+                                    <div className="p-0">
+                                        <button
+                                            className="btn btn-red-outline"
+                                            type="button"
+                                        >
+                                            <Icon id="start" /> Start
+                                        </button>
+                                    </div>
+                                    <div className="p-0">
+                                        <button
+                                            className="btn btn-green-outline"
+                                            type="button"
+                                        >
+                                            <Icon id="report" /> Report
+                                        </button>
+                                    </div>
+                                    <div className="p-0">
+                                        <button
+                                            className="btn btn-blue-outline"
+                                            type="button"
+                                        >
+                                            <Icon id="price" /> Price
+                                        </button>
+                                    </div>
+                                    <div className="p-0">
+                                        <button
+                                            className="btn btn-emerald-outline"
+                                            type="button"
+                                        >
+                                            <Icon id="dividend" /> Dividend
+                                        </button>
+                                    </div>
+                                    <div className="p-0">
+                                        <button
+                                            className="btn btn-indigo-outline"
+                                            type="button"
+                                        >
+                                            <Icon id="sector" /> Sector
+                                        </button>
+                                    </div>
+                                    <div className="p-0">
+                                        <button
+                                            className="btn btn-orange-outline"
+                                            type="button"
+                                        >
+                                            <Icon id="search" /> Search
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div className="chart">
-                                <div className="board">
-                                    <p>Graphical Representation</p>
+                            <div className="grid auto-rows-min h-fit">
+                                <div className="p-2">
+                                    <span>Asset Allocation</span>
                                 </div>
-                                <div className="account">Account</div>
-                                <div className="offer">Offers</div>
-                                <div className="graph">Main Chart</div>
-                            </div>
-                            <div className="rank">
-                                <div className="board">
-                                    <p>Philippine Stock Exchange</p>
+                                <div className="flex flex-col flex-wrap sm:flex-row justify-center gap-2">
+                                    <div className="card-rounded text-red-500 ">
+                                        <div className="h-8 p-2 mb-6">
+                                            <p className="uppercase">
+                                                <Icon id="stock" /> Stock
+                                            </p>
+                                        </div>
+                                        <div className="h-20">
+                                            <p className="uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl">
+                                                1000
+                                            </p>
+                                        </div>
+                                        <div className="h-8 p-2 mb-2">
+                                            <p className="uppercase text-right">
+                                                <Link to="/dashboard/stock-portfolio">
+                                                    more
+                                                </Link>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="card-rounded text-green-500">
+                                        <div className="h-8 p-2 mb-6">
+                                            <p className="uppercase">
+                                                <Icon id="crypto" /> Crypto
+                                            </p>
+                                        </div>
+                                        <div className="h-20">
+                                            <p className="uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl">
+                                                2000
+                                            </p>
+                                        </div>
+                                        <div className="h-8 p-2 mb-2">
+                                            <p className="uppercase text-right">
+                                                <Link to="/dashboard/crypto-portfolio">
+                                                    more
+                                                </Link>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="card-rounded text-blue-500">
+                                        <div className="h-8 p-2 mb-6">
+                                            <p className="uppercase">
+                                                <Icon id="fund" /> Fund
+                                            </p>
+                                        </div>
+                                        <div className="h-20">
+                                            <p className="uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl">
+                                                3000
+                                            </p>
+                                        </div>
+                                        <div className="h-8 p-2 mb-2">
+                                            <p className="uppercase text-right">
+                                                <Link to="/dashboard/stock-fund">
+                                                    more
+                                                </Link>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="card-rounded text-orange-500">
+                                        <div className="h-8 p-2 mb-6">
+                                            <p className="uppercase">
+                                                <Icon id="note" /> Note
+                                            </p>
+                                        </div>
+                                        <div className="h-20">
+                                            <p className="uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl">
+                                                4000
+                                            </p>
+                                        </div>
+                                        <div className="h-8 p-2 mb-2">
+                                            <p className="uppercase text-right">
+                                                <Link to="/dashboard/stock-note">
+                                                    more
+                                                </Link>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="gainer">Top Gainers</div>
-                                <div className="losser">Top Lossers</div>
                             </div>
-                            <div className="rank">
-                                <div className="board">Crypto Currency</div>
-                                <div className="gainer">Top Gainers</div>
-                                <div className="losser">Top Lossers</div>
+                            <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
+                                <div className="h-8 p-2 sm:col-span-2">
+                                    <span>Graphical Representation</span>
+                                </div>
+                                <div className="h-20 sm:row-start-2 card-rounded">
+                                    Account
+                                </div>
+                                <div className="h-20 sm:row-start-3 card-rounded">
+                                    Offers
+                                </div>
+                                <div className="h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded">
+                                    Doughnut Chart
+                                </div>
+                            </div>
+                            <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
+                                <div className="h-8 p-2 sm:col-span-2">
+                                    <span>Philippine Stock Exchange</span>
+                                </div>
+                                <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded">
+                                    Top Gainers
+                                </div>
+                                <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded">
+                                    Top Lossers
+                                </div>
+                            </div>
+                            <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
+                                <div className="h-8 p-2 sm:col-span-2">
+                                    Crypto Currency
+                                </div>
+                                <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded">
+                                    Top Gainers
+                                </div>
+                                <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded">
+                                    Top Lossers
+                                </div>
                             </div>
                         </div>
                     )}

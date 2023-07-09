@@ -1,9 +1,9 @@
 /** React. */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-/*8 Vendor. */
+/** Vendor. */
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 /** Hook. */
 import useAuth from "../hooks/use-auth";
@@ -13,10 +13,17 @@ import Icon from "../components/icons";
 import Message from "../components/interfaces/message";
 import Loader from "../components/interfaces/loader";
 
+/** Action. */
+import { resendEmail } from "../actions/userActions";
+import { stockList } from "../actions/stockActions";
+
 const Dashboard = () => {
     /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { loading, logged, access_token, message } = userLogin;
+    const { loading, logged, access_token, email_verified } = userLogin;
+
+    const showMessage = useSelector((state) => state.showMessage);
+    const { message, error } = showMessage;
 
     /** Use auth. */
     const { check } = useAuth();
@@ -42,15 +49,47 @@ const Dashboard = () => {
                 clearTimeout(timeout);
             };
         }
-    }, [navigate, access_token, logged]);
+    }, [access_token, logged]);
 
-    /** Return something. */
+    /** Use dispatch. */
+    const dispatch = useDispatch();
+
+    /** Use state. */
+    const [verify, setVerify] = useState(email_verified);
+
+    /** Resend email verification. */
+    const resendHandler = () => {
+        /** Set state value. */
+        setVerify(!verify);
+        /** Dispatch action. */
+        dispatch(resendEmail(access_token));
+    };
+
+    const stockListHandler = () => {
+        dispatch(stockList(access_token));
+    };
+
+    /** Return. */
     return (
         <>
             {logged && (
                 <>
+                    {error && (
+                        <Message variant="alert-warning" children={error} />
+                    )}
                     {message && (
                         <Message variant="alert-success" children={message} />
+                    )}
+                    {!verify && (
+                        <div
+                            className="font-size m-2 cursor-pointer hover:animate-pulse"
+                            onClick={resendHandler}
+                        >
+                            <p className="alert-info">
+                                Your email address has not yet been verified.
+                                Click to resend your email verification code.
+                            </p>
+                        </div>
                     )}
                     {loading ? (
                         <div className="w-screen h-screen form-center">
@@ -62,10 +101,11 @@ const Dashboard = () => {
                                 <div className="p-2">
                                     <span>Fetch External Data</span>
                                 </div>
-                                <div className="p-2 card grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2">
+                                <div className="p-2 card-rounded grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2">
                                     <div className="p-0">
                                         <button
-                                            className="btn btn-red-outline"
+                                            onClick={stockListHandler}
+                                            className="btn btn-red"
                                             type="button"
                                         >
                                             <Icon id="start" /> Start
@@ -73,7 +113,7 @@ const Dashboard = () => {
                                     </div>
                                     <div className="p-0">
                                         <button
-                                            className="btn btn-green-outline"
+                                            className="btn btn-green"
                                             type="button"
                                         >
                                             <Icon id="report" /> Report
@@ -81,7 +121,7 @@ const Dashboard = () => {
                                     </div>
                                     <div className="p-0">
                                         <button
-                                            className="btn btn-blue-outline"
+                                            className="btn btn-blue"
                                             type="button"
                                         >
                                             <Icon id="price" /> Price
@@ -89,7 +129,7 @@ const Dashboard = () => {
                                     </div>
                                     <div className="p-0">
                                         <button
-                                            className="btn btn-emerald-outline"
+                                            className="btn btn-emerald"
                                             type="button"
                                         >
                                             <Icon id="dividend" /> Dividend
@@ -97,7 +137,7 @@ const Dashboard = () => {
                                     </div>
                                     <div className="p-0">
                                         <button
-                                            className="btn btn-indigo-outline"
+                                            className="btn btn-indigo"
                                             type="button"
                                         >
                                             <Icon id="sector" /> Sector
@@ -105,7 +145,7 @@ const Dashboard = () => {
                                     </div>
                                     <div className="p-0">
                                         <button
-                                            className="btn btn-orange-outline"
+                                            className="btn btn-orange"
                                             type="button"
                                         >
                                             <Icon id="search" /> Search

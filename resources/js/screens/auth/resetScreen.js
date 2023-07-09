@@ -66,7 +66,13 @@ const Reset = () => {
 
     /** Select state from redux. */
     const userReset = useSelector((state) => state.userReset);
-    const { loading, logged, error, message } = userReset;
+    const { loading, error } = userReset;
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { logged } = userLogin;
+
+    const showMessage = useSelector((state) => state.showMessage);
+    const { message } = showMessage;
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -224,7 +230,7 @@ const Reset = () => {
                             )}
                         </div>
                         <div className="form-button">
-                            <div className="mx-auto">
+                            <div className="p-2">
                                 <button
                                     type="submit"
                                     onClick={submitHandler}
@@ -234,7 +240,7 @@ const Reset = () => {
                                     Reset
                                 </button>
                             </div>
-                            <div className="mx-auto">
+                            <div className="p-2">
                                 <Link to="/">
                                     <button
                                         className="btn btn-stone"

@@ -1,28 +1,20 @@
-/** React. */
-import { useEffect } from "react";
-
 /** Vendor. */
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 /** Component. */
 import Icon from "../components/icons";
 import Loader from "../components/interfaces/loader";
 import Message from "../components/interfaces/message";
 
-/** Action. */
-import { stockList } from "../actions/stockActions";
-
 const Home = () => {
-    const dispatch = useDispatch();
-
+    /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { message, loading } = userLogin;
+    const { loading } = userLogin;
 
-    /** Use effect. */
-    useEffect(() => {
-        dispatch(stockList());
-    }, [dispatch]);
+    const showMessage = useSelector((state) => state.showMessage);
+    const { message } = showMessage;
 
+    /** Return. */
     return (
         <>
             {loading ? (
@@ -33,8 +25,8 @@ const Home = () => {
                         <Message variant="alert-success" children={message} />
                     )}
                     {/** Hero section. */}
-                    <section className="w-full h-64 md:h-96 grid auto-rows-min content-center bg-stone-200 border-one bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40 mb-4">
-                        <div className="p-4 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl">
+                    <section className="w-full h-fit sm:h-64 md:h-96 grid auto-rows-min content-center bg-stone-200 border-one bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40 mb-4">
+                        <div className="p-4 pt-6 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl">
                             At little cost, you can accomplish more.
                         </div>
                         <div className="p-4 text-blue-500 text-sm font-thin sm:font-light text-center sm:text-md md:text-xl">

@@ -98,8 +98,14 @@ const Register = () => {
     const dispatch = useDispatch();
 
     /** Select state from redux. */
+    const userLogin = useSelector((state) => state.userLogin);
+    const { logged } = userLogin;
+
     const userRegister = useSelector((state) => state.userRegister);
-    const { loading, error, logged, message } = userRegister;
+    const { loading, error } = userRegister;
+
+    const showMessage = useSelector((state) => state.showMessage);
+    const { message } = showMessage;
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -127,7 +133,7 @@ const Register = () => {
                 navigate("/auth/register");
             }
         }
-    }, [password, confirm, logged]);
+    }, [navigate, password, confirm, logged]);
 
     /** Set overall form validity. */
     let formIsValid = false;
@@ -343,7 +349,7 @@ const Register = () => {
                             </p>
                         </div>
                         <div className="form-button">
-                            <div className="mx-auto">
+                            <div className="p-2">
                                 <button
                                     type="submit"
                                     onClick={submitHandler}
@@ -353,7 +359,7 @@ const Register = () => {
                                     Register
                                 </button>
                             </div>
-                            <div className="mx-auto">
+                            <div className="p-2">
                                 <Link to="/">
                                     <button
                                         className="btn btn-stone"

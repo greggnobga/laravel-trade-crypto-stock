@@ -5,22 +5,16 @@
 .btn{
     margin-bottom: 0.5rem !important;
     width: 100% !important;
+    --tw-scale-x: .95 !important;
+    --tw-scale-y: .95 !important;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
     border-radius: 0.375rem !important;
     padding: 0.5rem !important;
 }
-@keyframes jump{
-    0%, 100%{
-        transform: scale(100%);
-    }
-    10%{
-        transform: scale(80%);
-    }
-    50%{
-        transform: scale(120%);
-    }
-}
 .btn:hover{
-    animation: jump .5s both !important;
+    --tw-scale-x: 1 !important;
+    --tw-scale-y: 1 !important;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
     border-width: 1px !important;
     --tw-border-opacity: 1 !important;
     border-color: rgb(241 245 249 / var(--tw-border-opacity)) !important;
@@ -29,10 +23,13 @@
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .btn-red{
+    border-width: 1px !important;
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(214 211 209 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(239 68 68 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(185 28 28 / var(--tw-text-opacity)) !important;
+    color: rgb(127 29 29 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -48,24 +45,25 @@
     --tw-border-opacity: 1 !important;
     border-color: rgb(239 68 68 / var(--tw-border-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(185 28 28 / var(--tw-text-opacity)) !important;
+    color: rgb(127 29 29 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .btn-red-outline:hover{
-    --tw-border-opacity: 1 !important;
-    border-color: rgb(248 113 113 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(252 165 165 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
     color: rgb(248 250 252 / var(--tw-text-opacity)) !important;
 }
 .btn-green{
+    border-width: 1px !important;
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(214 211 209 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(34 197 94 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(21 128 61 / var(--tw-text-opacity)) !important;
+    color: rgb(20 83 45 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -81,24 +79,25 @@
     --tw-border-opacity: 1 !important;
     border-color: rgb(34 197 94 / var(--tw-border-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(21 128 61 / var(--tw-text-opacity)) !important;
+    color: rgb(20 83 45 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .btn-green-outline:hover{
-    --tw-border-opacity: 1 !important;
-    border-color: rgb(74 222 128 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(134 239 172 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
     color: rgb(248 250 252 / var(--tw-text-opacity)) !important;
 }
 .btn-blue{
+    border-width: 1px !important;
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(214 211 209 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(59 130 246 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(29 78 216 / var(--tw-text-opacity)) !important;
+    color: rgb(30 58 138 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -114,24 +113,25 @@
     --tw-border-opacity: 1 !important;
     border-color: rgb(59 130 246 / var(--tw-border-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(29 78 216 / var(--tw-text-opacity)) !important;
+    color: rgb(30 58 138 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .btn-blue-outline:hover{
-    --tw-border-opacity: 1 !important;
-    border-color: rgb(96 165 250 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(147 197 253 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
     color: rgb(248 250 252 / var(--tw-text-opacity)) !important;
 }
 .btn-emerald{
+    border-width: 1px !important;
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(214 211 209 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(5 150 105 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(4 120 87 / var(--tw-text-opacity)) !important;
+    color: rgb(6 78 59 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -147,7 +147,7 @@
     --tw-border-opacity: 1 !important;
     border-color: rgb(5 150 105 / var(--tw-border-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(4 120 87 / var(--tw-text-opacity)) !important;
+    color: rgb(6 78 59 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -161,10 +161,13 @@
     color: rgb(248 250 252 / var(--tw-text-opacity)) !important;
 }
 .btn-indigo{
+    border-width: 1px !important;
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(214 211 209 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(99 102 241 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(67 56 202 / var(--tw-text-opacity)) !important;
+    color: rgb(49 46 129 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -180,24 +183,25 @@
     --tw-border-opacity: 1 !important;
     border-color: rgb(99 102 241 / var(--tw-border-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(67 56 202 / var(--tw-text-opacity)) !important;
+    color: rgb(49 46 129 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .btn-indigo-outline:hover{
-    --tw-border-opacity: 1 !important;
-    border-color: rgb(129 140 248 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(165 180 252 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
     color: rgb(248 250 252 / var(--tw-text-opacity)) !important;
 }
 .btn-orange{
+    border-width: 1px !important;
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(214 211 209 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(234 88 12 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(194 65 12 / var(--tw-text-opacity)) !important;
+    color: rgb(124 45 18 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -211,26 +215,27 @@
 .btn-orange-outline{
     border-width: 1px !important;
     --tw-border-opacity: 1 !important;
-    border-color: rgb(234 88 12 / var(--tw-border-opacity)) !important;
+    border-color: rgb(249 115 22 / var(--tw-border-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(194 65 12 / var(--tw-text-opacity)) !important;
+    color: rgb(124 45 18 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .btn-orange-outline:hover{
-    --tw-border-opacity: 1 !important;
-    border-color: rgb(251 146 60 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(253 186 116 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
     color: rgb(248 250 252 / var(--tw-text-opacity)) !important;
 }
 .btn-stone{
+    border-width: 1px !important;
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(120 113 108 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(231 229 228 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(68 64 60 / var(--tw-text-opacity)) !important;
+    color: rgb(28 25 23 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -244,16 +249,14 @@
 .btn-stone-outline{
     border-width: 1px !important;
     --tw-border-opacity: 1 !important;
-    border-color: rgb(231 229 228 / var(--tw-border-opacity)) !important;
+    border-color: rgb(214 211 209 / var(--tw-border-opacity)) !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(68 64 60 / var(--tw-text-opacity)) !important;
+    color: rgb(28 25 23 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .btn-stone-outline:hover{
-    --tw-border-opacity: 1 !important;
-    border-color: rgb(245 245 244 / var(--tw-border-opacity)) !important;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(214 211 209 / var(--tw-bg-opacity)) !important;
     --tw-text-opacity: 1 !important;
@@ -497,7 +500,7 @@
     background-color: rgb(191 219 254 / var(--tw-bg-opacity)) !important;
     padding: 0.5rem !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(59 130 246 / var(--tw-text-opacity)) !important;
+    color: rgb(68 64 60 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -510,7 +513,7 @@
     background-color: rgb(254 202 202 / var(--tw-bg-opacity)) !important;
     padding: 0.5rem !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
+    color: rgb(68 64 60 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -523,7 +526,7 @@
     background-color: rgb(187 247 208 / var(--tw-bg-opacity)) !important;
     padding: 0.5rem !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
+    color: rgb(68 64 60 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -536,7 +539,7 @@
     background-color: rgb(254 215 170 / var(--tw-bg-opacity)) !important;
     padding: 0.5rem !important;
     --tw-text-opacity: 1 !important;
-    color: rgb(249 115 22 / var(--tw-text-opacity)) !important;
+    color: rgb(68 64 60 / var(--tw-text-opacity)) !important;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -1189,6 +1192,9 @@ video {
 .flex{
     display: flex;
 }
+.table{
+    display: table;
+}
 .grid{
     display: grid;
 }
@@ -1206,9 +1212,6 @@ video {
 }
 .h-6{
     height: 1.5rem;
-}
-.h-64{
-    height: 16rem;
 }
 .h-8{
     height: 2rem;
@@ -1374,14 +1377,14 @@ video {
     -o-object-fit: cover;
        object-fit: cover;
 }
+.p-0{
+    padding: 0px;
+}
 .p-2{
     padding: 0.5rem;
 }
 .p-4{
     padding: 1rem;
-}
-.p-0{
-    padding: 0px;
 }
 .px-2{
     padding-left: 0.5rem;
@@ -1399,6 +1402,9 @@ video {
 }
 .pt-2{
     padding-top: 0.5rem;
+}
+.pt-6{
+    padding-top: 1.5rem;
 }
 .text-center{
     text-align: center;
@@ -1539,6 +1545,9 @@ video {
     }
     .sm\:row-start-3{
         grid-row-start: 3;
+    }
+    .sm\:h-64{
+        height: 16rem;
     }
     .sm\:h-full{
         height: 100%;

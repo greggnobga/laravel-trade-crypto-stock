@@ -13,6 +13,9 @@ class TradeController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
+
+            return response(['message' => 'Test message. ' . $request->input('input.name'), 'stocks' => $request->all()], 200);
+
             /** forward insert command. */
             if ($request->input('table') === 'trade' && $request->input('statement') === 'store') {
                 return $this->store(['table' => $request->input('table'), 'input' => $request->input('input')]);
@@ -95,11 +98,11 @@ class TradeController extends Controller {
         /** fetch symbol and name. */
         $symbol = DB::table('stock_trades')
             ->select('symbol', 'name')
-            ->where('symbol', $data['input'][0]['symbol'])
+            ->where('symbol', $data['input']['symbol'])
             ->get();
 
         /** fetch edge id. */
-        $id = collect($this->edge())->firstWhere('symbol', $data['input'][0]['symbol']);
+        $id = collect($this->edge())->firstWhere('symbol', $data['input']['symbol']);
         if (is_null($id)) {
             $id['edge'] = 0;
         }
@@ -108,17 +111,17 @@ class TradeController extends Controller {
         if ($symbol->isEmpty()) {
             $insert = DB::table('stock_trades')
                 ->insertGetId([
-                    'name' => strip_tags($data['input'][0]['name']),
-                    'symbol' => strip_tags($data['input'][0]['symbol']),
+                    'name' => strip_tags($data['input']['name']),
+                    'symbol' => strip_tags($data['input']['symbol']),
                     'edge' => strip_tags($id['edge']),
-                    'price' => strip_tags($data['input'][0]['price']),
-                    'change' => strip_tags($data['input'][0]['change']),
-                    'volume' => strip_tags($data['input'][0]['volume']),
+                    'price' => strip_tags($data['input']['price']),
+                    'change' => strip_tags($data['input']['change']),
+                    'volume' => strip_tags($data['input']['volume']),
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($insert) {
-                return ['message' => $data['input'][0]['name'] . ' has been added to the database.'];
+                return ['message' => $data['input']['name'] . ' has been added to the database.'];
             }
         } else {
             /** forward to update instead. */

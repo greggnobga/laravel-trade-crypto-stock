@@ -103,7 +103,7 @@ const Forgot = () => {
                             )}
                         </div>
                         <div className="form-button">
-                            <div className="mx-auto">
+                            <div className="p-2">
                                 <button
                                     type="submit"
                                     className="btn btn-green"
@@ -112,7 +112,7 @@ const Forgot = () => {
                                     Submit
                                 </button>
                             </div>
-                            <div className="mx-auto">
+                            <div className="p-2">
                                 <Link to="/">
                                     <button
                                         className="btn btn-stone"

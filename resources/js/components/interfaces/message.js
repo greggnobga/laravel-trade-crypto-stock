@@ -4,13 +4,12 @@ import { useState } from "react";
 const Message = ({ variant, children }) => {
     /** Use dispatch. */
     const [show, setShow] = useState(true);
-
     /** Message handles. */
     const messageHandler = () => {
         setShow(!show);
     };
 
-    /** Return something. */
+    /** Return. */
     return (
         <>
             {show && (

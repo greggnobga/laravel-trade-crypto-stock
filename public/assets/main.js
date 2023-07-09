@@ -10496,14 +10496,26 @@ const composeWithDevTools = typeof window !== "undefined" && window.__REDUX_DEVT
 const STOCK_LIST_REQUEST = "STOCK_LIST_REQUEST";
 const STOCK_LIST_SUCCESS = "STOCK_LIST_SUCCESS";
 const STOCK_LIST_FAILURE = "STOCK_LIST_FAILURE";
-const stocksReducer = (state = {}, action) => {
+const stockListReducer = (state = {}, action) => {
   switch (action.type) {
     case STOCK_LIST_REQUEST:
       return { loading: true };
     case STOCK_LIST_SUCCESS:
-      return { loading: false, list: action.payload };
+      return { loading: false, stocks: action.payload };
     case STOCK_LIST_FAILURE:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const MESSAGE_SHOW_SUCCESS = "MESSAGE_SHOW_SUCCESS";
+const MESSAGE_SHOW_FAILURE = "MESSAGE_SHOW_FAILURE";
+const showMessageReducer = (state = {}, action) => {
+  switch (action.type) {
+    case MESSAGE_SHOW_SUCCESS:
+      return { message: action.payload };
+    case MESSAGE_SHOW_FAILURE:
+      return { error: action.payload };
     default:
       return state;
   }
@@ -10582,10 +10594,7 @@ const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_FAILURE:
       return { loading: false, error: action.payload };
     case USER_LOGIN_LOGOUT:
-      return {
-        ...state,
-        ...action.payload
-      };
+      return { loading: false, ...action.payload };
     case USER_LOGIN_CLEAR:
       return { logged: false };
     default:
@@ -10593,12 +10602,13 @@ const userLoginReducer = (state = {}, action) => {
   }
 };
 const reducer = combineReducers({
-  stocks: stocksReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userVerify: userVerifyReducer,
   userForgot: userForgotReducer,
-  userReset: userResetReducer
+  userReset: userResetReducer,
+  stockList: stockListReducer,
+  showMessage: showMessageReducer
 });
 const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : { logged: false };
 const initialState = {
@@ -11954,6 +11964,54 @@ const useScreen = () => {
   }, []);
   return { isMobile };
 };
+const removeIndex = (object, keys) => {
+  const filtered = Object.keys(object).filter((key) => {
+    const item = object[key];
+    for (index in keys) {
+      if (key !== keys[index]) {
+        return item;
+      }
+    }
+  }).reduce((filter2, key) => {
+    filter2[key] = object[key];
+    return filter2;
+  }, {});
+  return filtered;
+};
+const remapStocks = (object) => {
+  let stocks = [];
+  if (object.hasOwnProperty("stock")) {
+    for (let i = 0; i < object["stock"].length; i++) {
+      stocks.push({
+        name: object["stock"][i]["name"],
+        change: object["stock"][i]["percent_change"],
+        price: object["stock"][i]["price"]["amount"],
+        symbol: object["stock"][i]["symbol"],
+        volume: object["stock"][i]["volume"]
+      });
+    }
+  }
+  return stocks;
+};
+const resendEmail = (token) => async (dispatch) => {
+  try {
+    const { data } = await axios$1({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "POST",
+      url: "/api/resend",
+      params: { token }
+    });
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const resetPassword = (token, email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_RESET_REQUEST });
@@ -11965,8 +12023,9 @@ const resetPassword = (token, email, password) => async (dispatch) => {
       url: "/api/reset",
       params: { token, email, password }
     });
-    dispatch({ type: USER_RESET_SUCCESS, payload: data });
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+    const result = removeIndex(data, ["message"]);
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
     localStorage.setItem("account", JSON.stringify(data));
   } catch (error) {
     dispatch({
@@ -12024,8 +12083,9 @@ const registerUser = (username, firstname, lastname, email, password) => async (
       url: "/api/register",
       params: { username, firstname, lastname, email, password }
     });
-    dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+    const result = removeIndex(data, ["message"]);
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
     localStorage.setItem("account", JSON.stringify(data));
   } catch (error) {
     dispatch({
@@ -12045,8 +12105,10 @@ const loginUser = (email, password) => async (dispatch) => {
       url: "/api/login",
       params: { email, password }
     });
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    localStorage.setItem("account", JSON.stringify(data));
+    const result = removeIndex(data, ["message"]);
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
+    localStorage.setItem("account", JSON.stringify(result));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAILURE,
@@ -12065,10 +12127,8 @@ const logoutUser = (token) => async (dispatch) => {
       url: "/api/logout",
       params: { token }
     });
-    dispatch({
-      type: USER_LOGIN_LOGOUT,
-      payload: data
-    });
+    dispatch({ type: USER_LOGIN_LOGOUT, payload: data });
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
     localStorage.removeItem("account");
   } catch (error) {
     dispatch({
@@ -12379,45 +12439,15 @@ const Message = ({ variant, children }) => {
     }
   ) });
 };
-const stockList = () => async (dispatch) => {
-  try {
-    dispatch({ type: STOCK_LIST_REQUEST });
-    const { data } = await axios$1({
-      url: "https://phisix-api4.appspot.com/stocks.json",
-      method: "GET"
-    });
-    let stocks = [];
-    if (data.hasOwnProperty("stock")) {
-      for (let i = 0; i < data["stock"].length; i++) {
-        stocks.push({
-          name: data["stock"][i]["name"],
-          change: data["stock"][i]["percent_change"],
-          price: data["stock"][i]["price"]["amount"],
-          symbol: data["stock"][i]["symbol"],
-          volume: data["stock"][i]["volume"]
-        });
-      }
-    }
-    dispatch({ type: STOCK_LIST_SUCCESS, payload: stocks });
-  } catch (error) {
-    console.log(error.message);
-    dispatch({
-      type: STOCK_LIST_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-  }
-};
 const Home = () => {
-  const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { message, loading } = userLogin;
-  reactExports.useEffect(() => {
-    dispatch(stockList());
-  }, [dispatch]);
+  const { loading } = userLogin;
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message } = showMessage;
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-success", children: message }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "w-full h-64 md:h-96 grid auto-rows-min content-center bg-stone-200 border-one bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40 mb-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl", children: "At little cost, you can accomplish more." }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "w-full h-fit sm:h-64 md:h-96 grid auto-rows-min content-center bg-stone-200 border-one bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40 mb-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 pt-6 uppercase text-purple-500 font-bold md:font-extrabold text-sm text-center sm:text-xl md:text-2xl", children: "At little cost, you can accomplish more." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-blue-500 text-sm font-thin sm:font-light text-center sm:text-md md:text-xl", children: "We help your money go further with no yearly fees and some of the most affordable prices in the sector." }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 grid auto-rows-min sm:grid-cols-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -12688,7 +12718,7 @@ const Login = () => {
             "to reset it."
           ] }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "form-button", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 onClick: submitHandler,
@@ -12698,7 +12728,7 @@ const Login = () => {
                 children: "Login"
               }
             ) }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 className: "btn btn-stone",
@@ -12776,8 +12806,12 @@ const Register = () => {
   const [passwordMatched, setPasswordMatched] = reactExports.useState(false);
   const [passwordLength, setpasswordLength] = reactExports.useState(false);
   const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { logged } = userLogin;
   const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, logged, message } = userRegister;
+  const { loading, error } = userRegister;
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message } = showMessage;
   const navigate = useNavigate();
   reactExports.useEffect(() => {
     if (password.length != 0 && password.length < 10) {
@@ -12797,7 +12831,7 @@ const Register = () => {
         navigate("/auth/register");
       }
     }
-  }, [password, confirm, logged]);
+  }, [navigate, password, confirm, logged]);
   let formIsValid = false;
   if (userNameIsValid && firstNameIsValid && lastNameIsValid && emailIsValid && passwordIsValid && confirmIsValid) {
     formIsValid = true;
@@ -12955,7 +12989,7 @@ const Register = () => {
             "to login."
           ] }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "form-button", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "submit",
@@ -12965,7 +12999,7 @@ const Register = () => {
                 children: "Register"
               }
             ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 className: "btn btn-stone",
@@ -13036,7 +13070,7 @@ const Forgot = () => {
             emailHasError ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "form-alert", children: "Please enter a valid email." }) : ""
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "form-button", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "submit",
@@ -13045,7 +13079,7 @@ const Forgot = () => {
                 children: "Submit"
               }
             ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 className: "btn btn-stone",
@@ -13095,7 +13129,11 @@ const Reset = () => {
   const { token } = useParams();
   const dispatch = useDispatch();
   const userReset = useSelector((state) => state.userReset);
-  const { loading, logged, error, message } = userReset;
+  const { loading, error } = userReset;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { logged } = userLogin;
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message } = showMessage;
   const navigate = useNavigate();
   reactExports.useEffect(() => {
     if (password.length != 0 && password.length < 10) {
@@ -13200,7 +13238,7 @@ const Reset = () => {
             confirmHasError ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "form-alert", children: "Please enter a valid confirm password." }) : passwordMatched && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "form-alert", children: "Password and confirm password do not match." })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "form-button", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "submit",
@@ -13210,7 +13248,7 @@ const Reset = () => {
                 children: "Reset"
               }
             ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 className: "btn btn-stone",
@@ -13231,7 +13269,7 @@ const Verify = () => {
   const dispatch = useDispatch();
   reactExports.useEffect(() => {
     dispatch(verifyEmail(token));
-  }, [dispatch, success]);
+  }, [dispatch]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : success ? /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: success, variant: "alert-success" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center items-center h-40 mt-6 m-2 shadow bg-slate-100 border-slate-50 border-opacity-100", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center", children: "Request being process, just sit and wait for response from the server!" }) })
@@ -13258,9 +13296,74 @@ const useAuth = () => {
   };
   return { check };
 };
+const stockList = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_LIST_REQUEST });
+    const { data } = await axios$1({
+      url: "https://phisix-api4.appspot.com/stocks.json",
+      method: "GET"
+    });
+    let result = remapStocks(data);
+    dispatch({ type: STOCK_LIST_SUCCESS, payload: result });
+    const postStock = async (item) => {
+      const { data: data2 } = await axios$1({
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        method: "POST",
+        url: "/api/stock-trade-store",
+        params: {
+          input: item,
+          table: "trade",
+          statement: "store"
+        }
+      });
+      dispatch({
+        type: MESSAGE_SHOW_SUCCESS,
+        payload: data2.message
+      });
+    };
+    result.map((item, index2) => {
+      let end = result.length - 1;
+      setTimeout(async function() {
+        console.log(token);
+        if (item) {
+          const { data: data2 } = await axios$1({
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            method: "POST",
+            url: "/api/stock-trade-store",
+            params: {
+              input: item,
+              table: "trade",
+              statement: "store"
+            }
+          });
+          dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: data2.message
+          });
+          console.log(data2);
+        }
+        if (index2 === end) {
+          console.log("Finished.");
+        }
+      }, 3e3 * index2);
+    });
+  } catch (error) {
+    dispatch({
+      type: STOCK_LIST_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const Dashboard = () => {
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, logged, access_token, message } = userLogin;
+  const { loading, logged, access_token, email_verified } = userLogin;
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message, error } = showMessage;
   const { check } = useAuth();
   const navigate = useNavigate();
   reactExports.useEffect(() => {
@@ -13275,17 +13378,36 @@ const Dashboard = () => {
         clearTimeout(timeout);
       };
     }
-  }, [navigate, access_token, logged]);
+  }, [access_token, logged]);
+  const dispatch = useDispatch();
+  const [verify, setVerify] = reactExports.useState(email_verified);
+  const resendHandler = () => {
+    setVerify(!verify);
+    dispatch(resendEmail(access_token));
+  };
+  const stockListHandler = () => {
+    dispatch(stockList(access_token));
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-warning", children: error }),
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-success", children: message }),
+    !verify && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "font-size m-2 cursor-pointer hover:animate-pulse",
+        onClick: resendHandler,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "alert-info", children: "Your email address has not yet been verified. Click to resend your email verification code." })
+      }
+    ),
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-screen h-screen form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min gap-2 h-fit p-2 font-size", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min gap-2 h-fit", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Fetch External Data" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 card grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 card-rounded grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              className: "btn btn-red-outline",
+              onClick: stockListHandler,
+              className: "btn btn-red",
               type: "button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
@@ -13296,7 +13418,7 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              className: "btn btn-green-outline",
+              className: "btn btn-green",
               type: "button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
@@ -13307,7 +13429,7 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              className: "btn btn-blue-outline",
+              className: "btn btn-blue",
               type: "button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
@@ -13318,7 +13440,7 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              className: "btn btn-emerald-outline",
+              className: "btn btn-emerald",
               type: "button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
@@ -13329,7 +13451,7 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              className: "btn btn-indigo-outline",
+              className: "btn btn-indigo",
               type: "button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
@@ -13340,7 +13462,7 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              className: "btn btn-orange-outline",
+              className: "btn btn-orange",
               type: "button",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
@@ -24310,7 +24432,7 @@ function interpolatedLineTo(ctx, target, point, property) {
     ctx.lineTo(interpolatedPoint.x, interpolatedPoint.y);
   }
 }
-var index = {
+var index$1 = {
   id: "filler",
   afterDatasetsUpdate(chart, _args, options) {
     const count = (chart.data.datasets || []).length;
@@ -26089,7 +26211,7 @@ var plugins = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   Colors: plugin_colors,
   Decimation: plugin_decimation,
-  Filler: index,
+  Filler: index$1,
   Legend: plugin_legend,
   SubTitle: plugin_subtitle,
   Title: plugin_title,

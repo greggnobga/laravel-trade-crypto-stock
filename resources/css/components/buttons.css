@@ -1,59 +1,59 @@
 .btn {
-    @apply w-full hover:animate-jump hover:border hover:border-slate-100 hover:shadow-md rounded-md mb-2 p-2 !important;
+    @apply w-full scale-95 hover:scale-100 hover:border hover:border-slate-100 hover:shadow-md rounded-md mb-2 p-2 !important;
 }
 
 .btn-red {
-    @apply shadow bg-red-500 hover:bg-red-400 text-red-700 hover:text-slate-50 !important;
+    @apply shadow border border-stone-300 bg-red-500 hover:bg-red-400 text-red-900 hover:text-slate-50 !important;
 }
 
 .btn-red-outline {
-    @apply shadow border border-red-500 hover:bg-red-300 hover:border-red-400 text-red-700 hover:text-slate-50 !important;
+    @apply shadow border border-red-500 hover:bg-red-300 text-red-900 hover:text-slate-50 !important;
 }
 
 .btn-green {
-    @apply shadow bg-green-500 hover:bg-green-400 text-green-700 hover:text-slate-50 !important;
+    @apply shadow border border-stone-300 bg-green-500 hover:bg-green-400 text-green-900 hover:text-slate-50 !important;
 }
 
 .btn-green-outline {
-    @apply shadow border border-green-500 hover:bg-green-300 hover:border-green-400 text-green-700 hover:text-slate-50 !important;
+    @apply shadow border border-green-500 hover:bg-green-300 text-green-900 hover:text-slate-50 !important;
 }
 
 .btn-blue {
-    @apply shadow bg-blue-500 hover:bg-blue-400 text-blue-700 text-blue-700 hover:text-slate-50 !important;
+    @apply shadow border border-stone-300 bg-blue-500 hover:bg-blue-400 text-blue-900 hover:text-slate-50 !important;
 }
 
 .btn-blue-outline {
-    @apply shadow border border-blue-500 hover:bg-blue-300 hover:border-blue-400 text-blue-700 text-blue-700 hover:text-slate-50 !important;
+    @apply shadow border border-blue-500 hover:bg-blue-300 text-blue-900 hover:text-slate-50 !important;
 }
 
 .btn-emerald {
-    @apply shadow bg-emerald-600 hover:bg-emerald-400 text-emerald-700 hover:text-slate-50 !important;
+    @apply shadow border border-stone-300 bg-emerald-600 hover:bg-emerald-400 text-emerald-900 hover:text-slate-50 !important;
 }
 
 .btn-emerald-outline {
-    @apply shadow border border-emerald-600 hover:bg-emerald-300 hover:border-emerald-400 text-emerald-700 hover:text-slate-50 !important;
+    @apply shadow border border-emerald-600 hover:bg-emerald-300 hover:border-emerald-400 text-emerald-900 hover:text-slate-50 !important;
 }
 
 .btn-indigo {
-    @apply shadow bg-indigo-500 hover:bg-indigo-400 text-indigo-700 hover:text-slate-50 !important;
+    @apply shadow border border-stone-300 bg-indigo-500 hover:bg-indigo-400 text-indigo-900 hover:text-slate-50 !important;
 }
 
 .btn-indigo-outline {
-    @apply shadow border border-indigo-500 hover:bg-indigo-300 hover:border-indigo-400 text-indigo-700 hover:text-slate-50 !important;
+    @apply shadow border border-indigo-500 hover:bg-indigo-300 text-indigo-900 hover:text-slate-50 !important;
 }
 
 .btn-orange {
-    @apply shadow bg-orange-600 hover:bg-orange-400 text-orange-700 hover:text-slate-50 !important;
+    @apply shadow border border-stone-300 bg-orange-600 hover:bg-orange-400 text-orange-900 hover:text-slate-50 !important;
 }
 
 .btn-orange-outline {
-    @apply shadow border border-orange-600 hover:bg-orange-300 hover:border-orange-400 text-orange-700 hover:text-slate-50 !important;
+    @apply shadow border border-orange-500 hover:bg-orange-300 text-orange-900 hover:text-slate-50 !important;
 }
 
 .btn-stone {
-    @apply shadow bg-stone-200 hover:bg-stone-100 text-stone-700 hover:text-slate-50 !important;
+    @apply shadow border border-stone-500 bg-stone-200 hover:bg-stone-100 text-stone-900 hover:text-slate-50 !important;
 }
 
 .btn-stone-outline {
-    @apply shadow border border-stone-200 hover:bg-stone-300 hover:border-stone-100 text-stone-700 hover:text-slate-50 !important;
+    @apply shadow border border-stone-300 hover:bg-stone-300 text-stone-900 hover:text-slate-50 !important;
 }

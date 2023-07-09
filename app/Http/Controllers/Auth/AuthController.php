@@ -208,7 +208,7 @@ class AuthController extends Controller {
             $person = Verification::where('token', strip_tags($request->token))->select('userid')->first();
             if (is_null($person)) {
                 /** Return error message. */
-                return response(['message' => 'There is no associated users with the provided verification token.'], 401);
+                return response(['message' => 'There are no associated users with the provided verification token, or maybe it has already been verified.'], 401);
             }
 
             /** Check if Users alredy verified. */
@@ -235,7 +235,7 @@ class AuthController extends Controller {
         /** Check if Users alredy verified. */
         $verified = Users::where('id', $id)->select('email_verified_at')->first();
         if ($verified->email_verified_at === true) {
-            return response(['message' => 'The email has already been verified.'], 401);
+            return response(['message' => 'The email has already been verified.'], 200);
         }
 
         /** Get Users information. */

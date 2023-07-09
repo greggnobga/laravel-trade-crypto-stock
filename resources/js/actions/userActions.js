@@ -1,7 +1,15 @@
 /** Vendor. */
 import axios from "axios";
 
+/** Helper. */
+import { removeIndex } from "../helpers";
+
 /** Constant. */
+import {
+    MESSAGE_SHOW_SUCCESS,
+    MESSAGE_SHOW_FAILURE,
+} from "../constants/messageConstants";
+
 import {
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
@@ -22,6 +30,33 @@ import {
     USER_RESET_FAILURE,
 } from "../constants/userConstants";
 
+export const resendEmail = (token) => async (dispatch) => {
+    try {
+        /** Request data from backend. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "POST",
+            url: "/api/resend",
+            params: { token },
+        });
+
+        /** Dispatch action to set inital state. */
+        dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
 export const resetPassword = (token, email, password) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
@@ -37,9 +72,12 @@ export const resetPassword = (token, email, password) => async (dispatch) => {
             params: { token, email, password },
         });
 
+        /** Helper remove index. */
+        const result = removeIndex(data, ["message"]);
+
         /** Dispatch action to set the result into the store. */
-        dispatch({ type: USER_RESET_SUCCESS, payload: data });
-        dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+        dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
+        dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
 
         /** Save to result to local storage. */
         localStorage.setItem("account", JSON.stringify(data));
@@ -129,9 +167,12 @@ export const registerUser =
                 params: { username, firstname, lastname, email, password },
             });
 
+            /** Helper remove index. */
+            const result = removeIndex(data, ["message"]);
+
             /** Dispatch action to set the result into the store. */
-            dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
-            dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+            dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
+            dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
 
             /** Save to result to local storage. */
             localStorage.setItem("account", JSON.stringify(data));
@@ -162,11 +203,15 @@ export const loginUser = (email, password) => async (dispatch) => {
             params: { email, password },
         });
 
+        /** Helper remove index. */
+        const result = removeIndex(data, ["message"]);
+
         /** Dispatch action to set the result into the store. */
-        dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+        dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
+        dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
 
         /** Save to result to local storage. */
-        localStorage.setItem("account", JSON.stringify(data));
+        localStorage.setItem("account", JSON.stringify(result));
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -193,10 +238,8 @@ export const logoutUser = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set inital state. */
-        dispatch({
-            type: USER_LOGIN_LOGOUT,
-            payload: data,
-        });
+        dispatch({ type: USER_LOGIN_LOGOUT, payload: data });
+        dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
 
         /** Remove data from local storage. */
         localStorage.removeItem("account");

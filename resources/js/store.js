@@ -4,7 +4,8 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension";
 
 /** Reducer. */
-import { stocksReducer } from "./reducers/stockReducers";
+import { stockListReducer } from "./reducers/stockReducers";
+import { showMessageReducer } from "./reducers/messageReducers";
 import {
     userLoginReducer,
     userRegisterReducer,
@@ -14,12 +15,13 @@ import {
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
-    stocks: stocksReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userVerify: userVerifyReducer,
     userForgot: userForgotReducer,
     userReset: userResetReducer,
+    stockList: stockListReducer,
+    showMessage: showMessageReducer,
 });
 
 /** Initial state. */

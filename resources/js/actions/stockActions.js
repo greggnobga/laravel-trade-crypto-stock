@@ -1,14 +1,19 @@
 /** Vendor. */
 import axios from "axios";
 
+/** Helper. */
+import { remapStocks } from "../helpers";
+
 /** Constant. */
+import { MESSAGE_SHOW_SUCCESS } from "../constants/messageConstants";
+
 import {
     STOCK_LIST_REQUEST,
     STOCK_LIST_SUCCESS,
     STOCK_LIST_FAILURE,
 } from "../constants/stockConstants";
 
-export const stockList = () => async (dispatch) => {
+export const stockList = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
         dispatch({ type: STOCK_LIST_REQUEST });
@@ -17,24 +22,71 @@ export const stockList = () => async (dispatch) => {
             url: "https://phisix-api4.appspot.com/stocks.json",
             method: "GET",
         });
-        /** Restructure result into desired key value pairs. */
-        let stocks = [];
-        if (data.hasOwnProperty("stock")) {
-            /** Remap keys before saving to state. */
-            for (let i = 0; i < data["stock"].length; i++) {
-                stocks.push({
-                    name: data["stock"][i]["name"],
-                    change: data["stock"][i]["percent_change"],
-                    price: data["stock"][i]["price"]["amount"],
-                    symbol: data["stock"][i]["symbol"],
-                    volume: data["stock"][i]["volume"],
-                });
-            }
-        }
+        /** Use remap stocks helper. */
+        let result = remapStocks(data);
+
         /** Dispatch action to set the result into the store. */
-        dispatch({ type: STOCK_LIST_SUCCESS, payload: stocks });
+        dispatch({ type: STOCK_LIST_SUCCESS, payload: result });
+
+        const postStock = async (item) => {
+            /** Send request. */
+            const { data } = await axios({
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                method: "POST",
+                url: "/api/stock-trade-store",
+                params: {
+                    input: item,
+                    table: "trade",
+                    statement: "store",
+                },
+            });
+            /** Dispatch action to set the result into the store. */
+            dispatch({
+                type: MESSAGE_SHOW_SUCCESS,
+                payload: data.message,
+            });
+        };
+        /** Save stocks to database. */
+        result.map((item, index) => {
+            /** Get last index. */
+            let end = result.length - 1;
+            /** Call delay item function. */
+            setTimeout(async function () {
+                console.log(token);
+                /** Check if data is not empty. */
+                if (item) {
+                    /** Send request. */
+                    const { data } = await axios({
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        method: "POST",
+                        url: "/api/stock-trade-store",
+                        params: {
+                            input: item,
+                            table: "trade",
+                            statement: "store",
+                        },
+                    });
+
+                    /** Dispatch action to set the result into the store. */
+                    dispatch({
+                        type: MESSAGE_SHOW_SUCCESS,
+                        payload: data.message,
+                    });
+
+                    console.log(data);
+                }
+                /** Set start button state to false. */
+                if (index === end) {
+                    console.log("Finished.");
+                }
+            }, 3000 * index);
+        });
     } catch (error) {
-        console.log(error.message);
         /** Dispatch action if error occurred. */
         dispatch({
             type: STOCK_LIST_FAILURE,

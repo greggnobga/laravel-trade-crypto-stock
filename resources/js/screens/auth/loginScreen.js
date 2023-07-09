@@ -61,8 +61,6 @@ const Login = () => {
 
     /** Select state from redux. */
     const userLogin = useSelector((state) => state.userLogin);
-
-    /** Deconstruct state. */
     const { loading, error, logged } = userLogin;
 
     /** Use navigate. */
@@ -169,7 +167,7 @@ const Login = () => {
                             </p>
                         </div>
                         <div className="form-button">
-                            <div className="mx-auto">
+                            <div className="p-2">
                                 <Link to="/dashboard">
                                     <button
                                         onClick={submitHandler}
@@ -181,7 +179,7 @@ const Login = () => {
                                     </button>
                                 </Link>
                             </div>
-                            <div className="mx-auto">
+                            <div className="p-2">
                                 <Link to="/">
                                     <button
                                         className="btn btn-stone"

@@ -27,7 +27,7 @@ const Verify = () => {
     useEffect(() => {
         /** Use dispatch. */
         dispatch(verifyEmail(token));
-    }, [dispatch, success]);
+    }, [dispatch]);
 
     return (
         <>

@@ -4,7 +4,6 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension";
 
 /** Reducer. */
-import { stockListReducer } from "./reducers/stockReducers";
 import { showMessageReducer } from "./reducers/messageReducers";
 import {
     userLoginReducer,
@@ -13,14 +12,28 @@ import {
     userForgotReducer,
     userResetReducer,
 } from "./reducers/userReducers";
+import {
+    stockStartReducer,
+    stockPriceReducer,
+    stockReportReducer,
+    stockDividendReducer,
+    stockSectorReducer,
+    stockWatchlistReducer,
+} from "./reducers/stockReducers";
 
+/** Combine reducer. */
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userVerify: userVerifyReducer,
     userForgot: userForgotReducer,
     userReset: userResetReducer,
-    stockList: stockListReducer,
+    stockStart: stockStartReducer,
+    stockPrice: stockPriceReducer,
+    stockReport: stockReportReducer,
+    stockDividend: stockDividendReducer,
+    stockSector: stockSectorReducer,
+    stockWatchlist: stockWatchlistReducer,
     showMessage: showMessageReducer,
 });
 

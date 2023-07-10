@@ -10493,21 +10493,6 @@ function extensionComposeStub() {
   return compose(...funcs);
 }
 const composeWithDevTools = typeof window !== "undefined" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : extensionComposeStub;
-const STOCK_LIST_REQUEST = "STOCK_LIST_REQUEST";
-const STOCK_LIST_SUCCESS = "STOCK_LIST_SUCCESS";
-const STOCK_LIST_FAILURE = "STOCK_LIST_FAILURE";
-const stockListReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_LIST_REQUEST:
-      return { loading: true };
-    case STOCK_LIST_SUCCESS:
-      return { loading: false, stocks: action.payload };
-    case STOCK_LIST_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 const MESSAGE_SHOW_SUCCESS = "MESSAGE_SHOW_SUCCESS";
 const MESSAGE_SHOW_FAILURE = "MESSAGE_SHOW_FAILURE";
 const showMessageReducer = (state = {}, action) => {
@@ -10601,13 +10586,108 @@ const userLoginReducer = (state = {}, action) => {
       return state;
   }
 };
+const STOCK_START_REQUEST = "STOCK_START_REQUEST";
+const STOCK_START_SUCCESS = "STOCK_START_SUCCESS";
+const STOCK_START_FAILURE = "STOCK_START_FAILURE";
+const STOCK_PRICE_REQUEST = "STOCK_PRICE_REQUEST";
+const STOCK_PRICE_SUCCESS = "STOCK_PRICE_SUCCESS";
+const STOCK_PRICE_FAILURE = "STOCK_PRICE_FAILURE";
+const STOCK_REPORT_REQUEST = "STOCK_REPORT_REQUEST";
+const STOCK_REPORT_SUCCESS = "STOCK_REPORT_SUCCESS";
+const STOCK_REPORT_FAILURE = "STOCK_REPORT_FAILURE";
+const STOCK_DIVIDEND_REQUEST = "STOCK_DIVIDEND_REQUEST";
+const STOCK_DIVIDEND_SUCCESS = "STOCK_DIVIDEND_SUCCESS";
+const STOCK_DIVIDEND_FAILURE = "STOCK_DIVIDEND_FAILURE";
+const STOCK_SECTOR_REQUEST = "STOCK_SECTOR_REQUEST";
+const STOCK_SECTOR_SUCCESS = "STOCK_SECTOR_SUCCESS";
+const STOCK_SECTOR_FAILURE = "STOCK_SECTOR_FAILURE";
+const STOCK_WATCHLIST_REQUEST = "STOCK_WATCHLIST_REQUEST";
+const STOCK_WATCHLIST_SUCCESS = "STOCK_WATCHLIST_SUCCESS";
+const STOCK_WATCHLIST_FAILURE = "STOCK_WATCHLIST_FAILURE";
+const stockStartReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STOCK_START_REQUEST:
+      return { loading: true };
+    case STOCK_START_SUCCESS:
+      return { loading: false, stocks: action.payload };
+    case STOCK_START_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const stockPriceReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STOCK_PRICE_REQUEST:
+      return { loading: true };
+    case STOCK_PRICE_SUCCESS:
+      return { loading: false, success: action.payload };
+    case STOCK_PRICE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const stockReportReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STOCK_REPORT_REQUEST:
+      return { loading: true };
+    case STOCK_REPORT_SUCCESS:
+      return { loading: false, success: action.payload };
+    case STOCK_REPORT_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const stockDividendReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STOCK_DIVIDEND_REQUEST:
+      return { loading: true };
+    case STOCK_DIVIDEND_SUCCESS:
+      return { loading: false, success: action.payload };
+    case STOCK_DIVIDEND_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const stockSectorReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STOCK_SECTOR_REQUEST:
+      return { loading: true };
+    case STOCK_SECTOR_SUCCESS:
+      return { loading: false, success: action.payload };
+    case STOCK_SECTOR_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const stockWatchlistReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STOCK_WATCHLIST_REQUEST:
+      return { loading: true };
+    case STOCK_WATCHLIST_SUCCESS:
+      return { loading: false, success: action.payload };
+    case STOCK_WATCHLIST_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userVerify: userVerifyReducer,
   userForgot: userForgotReducer,
   userReset: userResetReducer,
-  stockList: stockListReducer,
+  stockStart: stockStartReducer,
+  stockPrice: stockPriceReducer,
+  stockReport: stockReportReducer,
+  stockDividend: stockDividendReducer,
+  stockSector: stockSectorReducer,
+  stockWatchlist: stockWatchlistReducer,
   showMessage: showMessageReducer
 });
 const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : { logged: false };
@@ -12032,6 +12112,10 @@ const resetPassword = (token, email, password) => async (dispatch) => {
       type: USER_RESET_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
   }
 };
 const forgotPassword = (email) => async (dispatch) => {
@@ -12051,6 +12135,10 @@ const forgotPassword = (email) => async (dispatch) => {
       type: USER_FORGOT_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
   }
 };
 const verifyEmail = (token) => async (dispatch) => {
@@ -12068,6 +12156,10 @@ const verifyEmail = (token) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_VERIFY_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
   }
@@ -12092,6 +12184,10 @@ const registerUser = (username, firstname, lastname, email, password) => async (
       type: USER_REGISTER_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
   }
 };
 const loginUser = (email, password) => async (dispatch) => {
@@ -12112,6 +12208,10 @@ const loginUser = (email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
   }
@@ -12135,6 +12235,10 @@ const logoutUser = (token) => async (dispatch) => {
       type: USER_LOGIN_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
   }
 };
 const clearToken = () => async (dispatch) => {
@@ -12144,6 +12248,10 @@ const clearToken = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
   }
@@ -13296,37 +13404,17 @@ const useAuth = () => {
   };
   return { check };
 };
-const stockList = (token) => async (dispatch) => {
+const stockStart = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_LIST_REQUEST });
+    dispatch({ type: STOCK_START_REQUEST });
     const { data } = await axios$1({
       url: "https://phisix-api4.appspot.com/stocks.json",
       method: "GET"
     });
     let result = remapStocks(data);
-    dispatch({ type: STOCK_LIST_SUCCESS, payload: result });
-    const postStock = async (item) => {
-      const { data: data2 } = await axios$1({
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        method: "POST",
-        url: "/api/stock-trade-store",
-        params: {
-          input: item,
-          table: "trade",
-          statement: "store"
-        }
-      });
-      dispatch({
-        type: MESSAGE_SHOW_SUCCESS,
-        payload: data2.message
-      });
-    };
     result.map((item, index2) => {
       let end = result.length - 1;
       setTimeout(async function() {
-        console.log(token);
         if (item) {
           const { data: data2 } = await axios$1({
             headers: {
@@ -13345,16 +13433,300 @@ const stockList = (token) => async (dispatch) => {
             type: MESSAGE_SHOW_SUCCESS,
             payload: data2.message
           });
-          console.log(data2);
         }
         if (index2 === end) {
-          console.log("Finished.");
+          console.log("Process Completed.");
         }
       }, 3e3 * index2);
     });
+    dispatch({ type: STOCK_START_SUCCESS, payload: result });
   } catch (error) {
     dispatch({
-      type: STOCK_LIST_FAILURE,
+      type: STOCK_START_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const stockPrice = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_PRICE_REQUEST });
+    const { data } = await axios$1({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/stock-reports-retrieve",
+      params: { section: "stocks" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    stocks.map((item, index2) => {
+      let end = stocks.length - 1;
+      setTimeout(async function() {
+        if (item) {
+          const { data: data2 } = await axios$1({
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            method: "POST",
+            url: "/stock-reports-store",
+            params: {
+              input: item,
+              section: "prices"
+            }
+          });
+          dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: data2.message
+          });
+        }
+        if (index2 === end) {
+          console.log("Process Completed.");
+        }
+      }, 3e3 * index2);
+    });
+    dispatch({ type: STOCK_PRICE_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: STOCK_PRICE_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const stockReport = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_REPORT_REQUEST });
+    const { data } = await axios$1({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/stock-reports-retrieve",
+      params: { section: "stocks" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    stocks.map((item, index2) => {
+      let end = stocks.length - 1;
+      setTimeout(async function() {
+        if (item) {
+          const { data: data2 } = await axios$1({
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            method: "POST",
+            url: "/stock-reports-store",
+            params: {
+              input: item,
+              section: "reports"
+            }
+          });
+          dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: data2.message
+          });
+        }
+        if (index2 === end) {
+          console.log("Process Completed.");
+        }
+      }, 3e3 * index2);
+    });
+    dispatch({ type: STOCK_REPORT_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: STOCK_REPORT_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const stockDividend = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_DIVIDEND_REQUEST });
+    const { data } = await axios$1({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/stock-reports-retrieve",
+      params: { section: "stocks" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    stocks.map((item, index2) => {
+      let end = stocks.length - 1;
+      setTimeout(async function() {
+        if (item) {
+          const { data: data2 } = await axios$1({
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            method: "POST",
+            url: "/stock-reports-store",
+            params: {
+              input: item,
+              section: "dividends"
+            }
+          });
+          dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: data2.message
+          });
+        }
+        if (index2 === end) {
+          console.log("Process Completed.");
+        }
+      }, 3e3 * index2);
+    });
+    dispatch({ type: STOCK_DIVIDEND_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: STOCK_DIVIDEND_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const stockSector = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_SECTOR_REQUEST });
+    const { data } = await axios$1({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/stock-reports-retrieve",
+      params: { section: "stocks" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    stocks.map((item, index2) => {
+      let end = stocks.length - 1;
+      setTimeout(async function() {
+        if (item) {
+          const { data: data2 } = await axios$1({
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            method: "POST",
+            url: "/stock-reports-store",
+            params: {
+              input: item,
+              section: "sectors"
+            }
+          });
+          dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: data2.message
+          });
+        }
+        if (index2 === end) {
+          console.log("Process Completed.");
+        }
+      }, 3e3 * index2);
+    });
+    dispatch({ type: STOCK_SECTOR_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: STOCK_SECTOR_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const stockWatchlist = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_WATCHLIST_REQUEST });
+    const { data } = await axios$1({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/stock-reports-retrieve",
+      params: { section: "stocks" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    stocks.map((item, index2) => {
+      let end = stocks.length - 1;
+      setTimeout(async function() {
+        if (item) {
+          const { data: data2 } = await axios$1({
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            method: "POST",
+            url: "/stock-reports-store",
+            params: {
+              input: item,
+              section: "watchlist"
+            }
+          });
+          dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: data2.message
+          });
+        }
+        if (index2 === end) {
+          console.log("Process Completed.");
+        }
+      }, 3e3 * index2);
+    });
+    dispatch({ type: STOCK_WATCHLIST_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: STOCK_WATCHLIST_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
   }
@@ -13385,8 +13757,23 @@ const Dashboard = () => {
     setVerify(!verify);
     dispatch(resendEmail(access_token));
   };
-  const stockListHandler = () => {
-    dispatch(stockList(access_token));
+  const stockStartHandler = () => {
+    dispatch(stockStart(access_token));
+  };
+  const stockPriceHandler = () => {
+    dispatch(stockPrice(access_token));
+  };
+  const stockReportHandler = () => {
+    dispatch(stockReport(access_token));
+  };
+  const stockDividendHandler = () => {
+    dispatch(stockDividend(access_token));
+  };
+  const stockSectorHandler = () => {
+    dispatch(stockSector(access_token));
+  };
+  const stockWatchlistHandler = () => {
+    dispatch(stockWatchlist(access_token));
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-warning", children: error }),
@@ -13403,73 +13790,96 @@ const Dashboard = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min gap-2 h-fit", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Fetch External Data" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 card-rounded grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: stockListHandler,
-              className: "btn btn-red",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
-                " Start"
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              className: "btn btn-green",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
-                " Report"
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              className: "btn btn-blue",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
-                " Price"
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              className: "btn btn-emerald",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
-                " Dividend"
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              className: "btn btn-indigo",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
-                " Sector"
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              className: "btn btn-orange",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
-                " Search"
-              ]
-            }
-          ) })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the symbol, name, price, volume, and change." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: stockStartHandler,
+                className: "btn btn-red",
+                type: "button",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+                  " Start"
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get an average and year higher prices." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: stockPriceHandler,
+                className: "btn btn-blue",
+                type: "button",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
+                  " Price"
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get income after tax and earnings per share." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: stockReportHandler,
+                className: "btn btn-green",
+                type: "button",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
+                  " Report"
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the yearly dividend yield." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: stockDividendHandler,
+                className: "btn btn-emerald",
+                type: "button",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
+                  " Dividend"
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the sector to which stock belongs." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: stockSectorHandler,
+                className: "btn btn-indigo",
+                type: "button",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
+                  " Sector"
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get a financial report for the watchlist table." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: stockWatchlistHandler,
+                className: "btn btn-orange",
+                type: "button",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "watchlist" }),
+                  " Watchlist"
+                ]
+              }
+            )
+          ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min h-fit", children: [
@@ -28765,6 +29175,7 @@ const App = () => {
 };
 window.axios = axios$1;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+window.axios.defaults.withCredentials = true;
 if (document.getElementById("root")) {
   const Index = client.createRoot(document.getElementById("root"));
   Index.render(

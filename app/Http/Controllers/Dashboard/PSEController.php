@@ -18,25 +18,29 @@ class PSEController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
-            /** forward reports command. */
-            if ($request->input('section') === 'reports') {
-                return $this->stockreports($request->all());
-            }
             /** forward prices command. */
             if ($request->input('section') === 'prices') {
-                return $this->stockprices($request->all());
+                return $this->stockprices($request->input('input'));
             }
-            /** forward watchlist command. */
-            if ($request->input('section') === 'sectors') {
-                return $this->stocksectors($request->all());
+
+            /** forward reports command. */
+            if ($request->input('section') === 'reports') {
+                return $this->stockreports($request->input('input'));
             }
-            /** forward watchlist command. */
+
+            /** forward dividends command. */
             if ($request->input('section') === 'dividends') {
-                return $this->stockdividends($request->all());
+                return $this->stockdividends($request->input('input'));
             }
+
+            /** forward sectors command. */
+            if ($request->input('section') === 'sectors') {
+                return $this->stocksectors($request->input('input'));
+            }
+
             /** forward watchlist command. */
-            if ($request->input('section') === 'watches') {
-                return $this->stockwatches($request->all());
+            if ($request->input('section') === 'watchlist') {
+                return $this->stockwatchlist($request->input('input'));
             }
         }
         /** check if request contains method equal to post. */
@@ -49,6 +53,130 @@ class PSEController extends Controller {
     }
 
     /**
+     * Declare stocks function.
+     */
+    public function stockprices($data) {
+        /** repository. */
+        $result = [];
+
+        /** create request. */
+        $stockprices = Http::get('https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['edge'])->body();
+
+        /** make it crawlable. */
+        $crawler_prices = new Crawler($stockprices);
+
+        /** filter response. */
+        $stockprice = $crawler_prices->filter('tr > td')->each(function ($node) {
+            return $node->text();
+        });
+
+        if (count($stockprice) != 0) {
+            /** mapping value. */
+            $stockdata['value'] = $stockprice['18'];
+            /** save to database.. */
+            if (array_key_exists("value", $stockdata)) {
+                /** replace comma with nothing. */
+                $price['value'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['value']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $price['value'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $price['value']);
+                    /** then turn negative using abs function. */
+                    $result['value'] = -abs($negative);
+                } else {
+                    $result['value'] = $price['value'];
+                }
+                /** match string if has no value. */
+                if ($price['value'] == '') {
+                    $result['value'] = 0.00;
+                }
+
+                /** convert into float value. */
+                $result['value'] = floatval($result['value']);
+
+                /** save to database. */
+                DB::table('stock_trades')
+                    ->where('edge', '=', $data['edge'])
+                    ->update([
+                        'value' => strip_tags($result['value']),
+                    ]);
+            }
+            /** mapping year high price. */
+            $stockdata['52WeekHigh'] = $stockprice['24'];
+            /** save to database.. */
+            if (array_key_exists("52WeekHigh", $stockdata)) {
+                /** replace comma with nothing. */
+                $price['high'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['52WeekHigh']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $price['high'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $price['high']);
+                    /** then turn negative using abs function. */
+                    $result['high'] = -abs($negative);
+                } else {
+                    $result['high'] = $price['high'];
+                }
+                /** match string if has no value. */
+                if ($price['high'] == '') {
+                    $result['high'] = 0.00;
+                }
+
+                /** convert into float value. */
+                $result['high'] = floatval($result['high']);
+
+                /** save to database. */
+                DB::table('stock_trades')
+                    ->where('edge', '=', $data['edge'])
+                    ->update([
+                        'yearhighprice' => strip_tags($result['high']),
+                    ]);
+            }
+            /** mapping year low price. */
+            $stockdata['52WeekLow'] = $stockprice['24'];
+            /** save to database.. */
+            if (array_key_exists("52WeekLow", $stockdata)) {
+                /** replace comma with nothing. */
+                $price['low'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['52WeekLow']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $price['low'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $price['low']);
+                    /** then turn negative using abs function. */
+                    $result['low'] = -abs($negative);
+                } else {
+                    $result['low'] = $price['low'];
+                }
+                /** match string if has no value. */
+                if ($price['low'] == '') {
+                    $result['low'] = 0.00;
+                }
+
+                /** convert into float value. */
+                $result['low'] = floatval($result['low']);
+
+                /** save to database. */
+                DB::table('stock_trades')
+                    ->where('edge', '=', $data['edge'])
+                    ->update([
+                        'yearlowprice' => strip_tags($result['low']),
+                    ]);
+            }
+        }
+
+        /** fetch stock name. */
+        $reports = DB::table('stock_trades')
+            ->select('name')
+            ->where('edge', '=', $data['edge'])
+            ->first();
+
+        /** return something. */
+        return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
+    }
+
+    /**
      * Declare financials function.
      */
     public function stockreports($data) {
@@ -56,7 +184,7 @@ class PSEController extends Controller {
         $result = [];
 
         /** create request. */
-        $financial = Http::get('https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id'])->body();
+        $financial = Http::get('https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['edge'])->body();
         /** make it crawlable. */
         $crawler_financial = new Crawler($financial);
         /** filter response. */
@@ -113,7 +241,7 @@ class PSEController extends Controller {
 
             /** save to database.. */
             DB::table('stock_trades')
-                ->where('edge', '=', $data['id'])
+                ->where('edge', '=', $data['edge'])
                 ->update([
                     'incomeaftertax' => strip_tags($result['income']['balance']),
                 ]);
@@ -165,7 +293,7 @@ class PSEController extends Controller {
 
             /** save to database.. */
             DB::table('stock_trades')
-                ->where('edge', '=', $data['id'])
+                ->where('edge', '=', $data['edge'])
                 ->update([
                     'earningpershare' => strip_tags($result['earning']['balance']),
                 ]);
@@ -173,7 +301,7 @@ class PSEController extends Controller {
             /** search database. */
             $reports =   DB::table('stock_trades')
                 ->select('name')
-                ->where('edge', '=', $data['id'])
+                ->where('edge', '=', $data['edge'])
                 ->first();
 
             /** return something. */
@@ -184,110 +312,22 @@ class PSEController extends Controller {
     /**
      * Declare stocks function.
      */
-    public function stockprices($data) {
-        /** repository. */
-        $result = [];
-
-        /** create request. */
-        $stockprices = Http::get('https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id'])->body();
-        /** make it crawlable. */
-        $crawler_prices = new Crawler($stockprices);
-        /** filter response. */
-        $stockprice = $crawler_prices->filter('tr > td')->each(function ($node) {
-            return $node->text();
-        });
-
-        if (count($stockprice) != 0) {
-            /** mapping year high price. */
-            $stockdata['52WeekHigh'] = $stockprice['24'];
-            /** save to database.. */
-            if (array_key_exists("52WeekHigh", $stockdata)) {
-                /** replace comma with nothing. */
-                $price['high'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['52WeekHigh']]);
-
-                /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $price['high'])) {
-                    /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $price['high']);
-                    /** then turn negative using abs function. */
-                    $result['high'] = -abs($negative);
-                } else {
-                    $result['high'] = $price['high'];
-                }
-                /** match string if has no value. */
-                if ($price['high'] == '') {
-                    $result['high'] = 0.00;
-                }
-
-                /** convert into float value. */
-                $result['high'] = floatval($result['high']);
-
-                /** save to database. */
-                DB::table('stock_trades')
-                    ->where('edge', '=', $data['id'])
-                    ->update([
-                        'yearhighprice' => strip_tags($result['high']),
-                    ]);
-            }
-            /** mapping average price. */
-            $stockdata['AveragePrice'] = $stockprice['22'];
-            /** save to database.. */
-            if (array_key_exists("AveragePrice", $stockdata)) {
-                /** replace comma with nothing. */
-                $average['price'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['AveragePrice']]);
-
-                /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $average['price'])) {
-                    /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $average['price']);
-                    /** then turn negative using abs function. */
-                    $result['average'] = -abs($negative);
-                } else {
-                    $result['average'] = $average['price'];
-                }
-                /** match string if has no value. */
-                if ($average['price'] == '') {
-                    $result['average'] = 0.00;
-                }
-
-                /** convert into float value. */
-                $result['average'] = floatval($result['average']);
-
-                /** save to database. */
-                DB::table('stock_trades')
-                    ->where('edge', '=', $data['id'])
-                    ->update([
-                        'average' => strip_tags($result['average']),
-                    ]);
-            }
-        }
-
-        /** fetch stock name. */
-        $reports = DB::table('stock_trades')
-            ->select('name')
-            ->where('edge', '=', $data['id'])
-            ->first();
-
-        /** return something. */
-        return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
-    }
-
-    /**
-     * Declare stocks function.
-     */
     public function stockdividends($data) {
         /** create request. */
-        $dividends = Http::get('https://edge.pse.com.ph/companyPage/dividends_and_rights_list.ax?cmpy_id=' . $data['id'])->body();
+        $dividends = Http::get('https://edge.pse.com.ph/companyPage/dividends_and_rights_list.ax?cmpy_id=' . $data['edge'])->body();
+
         /** make it crawlable. */
         $crawler_dividends = new Crawler($dividends);
+
         /** filter response. */
         $dividend = $crawler_dividends->filter('tr > td')->each(function ($node) {
             return $node->text();
         });
 
+        /** get stock name. */
         $stock = DB::table('stock_trades')
             ->select('name')
-            ->where('edge', '=', $data['id'])
+            ->where('edge', '=', $data['edge'])
             ->first();
 
         if (count($dividend) >= 2) {
@@ -298,7 +338,7 @@ class PSEController extends Controller {
 
                 /** fetch price. */
                 $trade = DB::table('stock_trades')
-                    ->where('edge', '=', $data['id'])
+                    ->where('edge', '=', $data['edge'])
                     ->select('price')
                     ->first();
 
@@ -311,13 +351,15 @@ class PSEController extends Controller {
 
             /** save to database. */
             DB::table('stock_trades')
-                ->where('edge', '=', $data['id'])
+                ->where('edge', '=', $data['edge'])
                 ->update([
                     'dividendyield' => strip_tags($yield),
                 ]);
         } else {
+            /** return something. */
             return response(['message' => 'The ' . $stock->name . ' has yet to establish a dividend rate.'], 200);
         }
+
         /** return something. */
         return response(['message' => 'The dividend rate of ' . $stock->name . ' was added.'], 200);
     }
@@ -330,7 +372,7 @@ class PSEController extends Controller {
         $result = [];
 
         /** create request. */
-        $stocksectors = Http::get('https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=' . $data['id'])->body();
+        $stocksectors = Http::get('https://edge.pse.com.ph/companyInformation/form.do?cmpy_id=' . $data['edge'])->body();
 
         /** make it crawlable. */
         $crawler_sectors = new Crawler($stocksectors);
@@ -356,22 +398,24 @@ class PSEController extends Controller {
 
                 /** match string if has no value. */
                 if ($sector['sector'] == '') {
-                    $result['sector'] = 'kolorum';
+                    $result['sector'] = 'unclassified';
                 }
 
                 /** save to database. */
                 DB::table('stock_trades')
-                    ->where('edge', '=', $data['id'])
+                    ->where('edge', '=', $data['edge'])
                     ->update([
                         'sector' => strip_tags($result['sector']),
                     ]);
             }
         }
+
         /** fetch stock name. */
         $reports =   DB::table('stock_trades')
             ->select('name')
-            ->where('edge', '=', $data['id'])
+            ->where('edge', '=', $data['edge'])
             ->first();
+
         /** return something. */
         return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
     }
@@ -379,12 +423,12 @@ class PSEController extends Controller {
     /**
      * Declare financials function.
      */
-    public function stockwatches($data) {
+    public function stockwatchlist($data) {
         /** repository. */
         $result = [];
 
         /** create request. */
-        $financial = Http::get('https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['id'])->body();
+        $financial = Http::get('https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=' . $data['edge'])->body();
 
         /** make it crawlable. */
         $crawler_financial = new Crawler($financial);
@@ -506,37 +550,7 @@ class PSEController extends Controller {
             }
         }
 
-        /** create request. */
-        $prices = Http::get('https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['id'])->body();
-        /** make it crawlable. */
-        $crawler_prices = new Crawler($prices);
-        /** filter response. */
-        $price = $crawler_prices->filter('tr > td')->each(function ($node) {
-            return $node->text();
-        });
-
-        if (count($price) != 0) {
-            /** mapping net after tax . */
-            $annualincomestatement['LastTradedPrice'] = $price['12'];
-            /** check if key exist in array. */
-            if (array_key_exists("LastTradedPrice", $annualincomestatement)) {
-                /** call helper function. */
-                $traded['LastTradedPrice'] = $this->helpers(['sanitized' => 'decimal', 'string' => $annualincomestatement['LastTradedPrice']]);
-
-                /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $traded['LastTradedPrice'])) {
-                    /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $traded['LastTradedPrice']);
-                    /** then turn negative using abs function. */
-                    $result['lasttradedprice'] = -abs($negative);
-                } else {
-                    $result['lasttradedprice'] = $traded['LastTradedPrice'];
-                }
-                /** match string if has no value. */
-                if ($traded['LastTradedPrice'] == '') {
-                    $result['lasttradedprice'] = 0.00;
-                }
-            }
+        if (count($result) > 0) {
             /** check record if exist. */
             $symbol = DB::table('stock_watchlists')
                 ->select('symbol')
@@ -549,12 +563,8 @@ class PSEController extends Controller {
                     ->insertGetId([
                         'userid' => Auth::id(),
                         'symbol' => strip_tags($data['symbol']),
-                        'sector' => strip_tags($data['sector']),
-                        'edge' => strip_tags($data['id']),
-                        'volume' => strip_tags($data['volume']),
                         'totalliabilities' => strip_tags($result['totalliabilities']),
                         'stockholdersequity' => strip_tags($result['stockholderequity']),
-                        'lasttradedprice' => strip_tags($result['lasttradedprice']),
                         'earningspershare' => strip_tags($result['earningpershare']),
                         'netincomebeforetax' => strip_tags($result['incomebeforetax']),
                         'grossrevenue' => strip_tags($result['grossrevenue']),
@@ -596,7 +606,7 @@ class PSEController extends Controller {
     public function stocktrades() {
         /** repository. */
         $stocks = DB::table('stock_trades')
-            ->select('edge', 'symbol', 'sector', 'volume')
+            ->select('edge', 'symbol')
             ->where('edge', '>', '0')
             ->where('updated_at', '<', Carbon::now()->subHour(0))
             ->get()

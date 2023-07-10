@@ -3,7 +3,7 @@
 }
 
 .form-group {
-    @apply px-6 grid rounded-lg shadow border border-slate-50 text-slate-50 !important;
+    @apply px-6 grid auto-rows-min rounded-lg shadow border border-slate-50 text-slate-50 !important;
 }
 
 .form-header {
@@ -11,7 +11,7 @@
 }
 
 .form-control {
-    @apply grid py-2 sm:grid-cols-6 auto-rows-min !important;
+    @apply grid py-2 auto-rows-min sm:grid-cols-6 !important;
 }
 
 .form-input {
@@ -31,5 +31,5 @@
 }
 
 .form-button {
-    @apply grid py-4 sm:grid-cols-2 justify-center auto-rows-min !important;
+    @apply p-4 grid auto-rows-min sm:grid-cols-2 !important;
 }

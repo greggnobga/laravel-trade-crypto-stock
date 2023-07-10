@@ -1,0 +1,7 @@
+.tooltip {
+    @apply invisible absolute shadow p-1 w-fit animate-pulse text-xs bg-stone-700 border border-stone-200 text-slate-50 -mt-8 !important;
+}
+
+.has-tooltip:hover .tooltip {
+    @apply visible z-50 !important;
+}

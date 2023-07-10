@@ -28,6 +28,9 @@
 /** Background Directives. */
 @import "components/backgrounds.css";
 
+/** Tooltip Directives. */
+@import "components/tooltips.css";
+
 /* Hamburgers */
 @import "vendors/hamburgers.css";
 

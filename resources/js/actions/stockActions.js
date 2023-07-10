@@ -5,18 +5,36 @@ import axios from "axios";
 import { remapStocks } from "../helpers";
 
 /** Constant. */
-import { MESSAGE_SHOW_SUCCESS } from "../constants/messageConstants";
+import {
+    MESSAGE_SHOW_SUCCESS,
+    MESSAGE_SHOW_FAILURE,
+} from "../constants/messageConstants";
 
 import {
-    STOCK_LIST_REQUEST,
-    STOCK_LIST_SUCCESS,
-    STOCK_LIST_FAILURE,
+    STOCK_START_REQUEST,
+    STOCK_START_SUCCESS,
+    STOCK_START_FAILURE,
+    STOCK_PRICE_REQUEST,
+    STOCK_PRICE_SUCCESS,
+    STOCK_PRICE_FAILURE,
+    STOCK_REPORT_REQUEST,
+    STOCK_REPORT_SUCCESS,
+    STOCK_REPORT_FAILURE,
+    STOCK_DIVIDEND_REQUEST,
+    STOCK_DIVIDEND_SUCCESS,
+    STOCK_DIVIDEND_FAILURE,
+    STOCK_SECTOR_REQUEST,
+    STOCK_SECTOR_SUCCESS,
+    STOCK_SECTOR_FAILURE,
+    STOCK_WATCHLIST_REQUEST,
+    STOCK_WATCHLIST_SUCCESS,
+    STOCK_WATCHLIST_FAILURE,
 } from "../constants/stockConstants";
 
-export const stockList = (token) => async (dispatch) => {
+export const stockStart = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({ type: STOCK_LIST_REQUEST });
+        dispatch({ type: STOCK_START_REQUEST });
         /** Prepare request to external api data provider. */
         const { data } = await axios({
             url: "https://phisix-api4.appspot.com/stocks.json",
@@ -25,36 +43,12 @@ export const stockList = (token) => async (dispatch) => {
         /** Use remap stocks helper. */
         let result = remapStocks(data);
 
-        /** Dispatch action to set the result into the store. */
-        dispatch({ type: STOCK_LIST_SUCCESS, payload: result });
-
-        const postStock = async (item) => {
-            /** Send request. */
-            const { data } = await axios({
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                method: "POST",
-                url: "/api/stock-trade-store",
-                params: {
-                    input: item,
-                    table: "trade",
-                    statement: "store",
-                },
-            });
-            /** Dispatch action to set the result into the store. */
-            dispatch({
-                type: MESSAGE_SHOW_SUCCESS,
-                payload: data.message,
-            });
-        };
         /** Save stocks to database. */
         result.map((item, index) => {
             /** Get last index. */
             let end = result.length - 1;
             /** Call delay item function. */
             setTimeout(async function () {
-                console.log(token);
                 /** Check if data is not empty. */
                 if (item) {
                     /** Send request. */
@@ -72,24 +66,443 @@ export const stockList = (token) => async (dispatch) => {
                         },
                     });
 
-                    /** Dispatch action to set the result into the store. */
+                    /** Dispatch action to show message in the frontend. */
                     dispatch({
                         type: MESSAGE_SHOW_SUCCESS,
                         payload: data.message,
                     });
-
-                    console.log(data);
                 }
-                /** Set start button state to false. */
+                /** Talk to the console about that task progress. */
                 if (index === end) {
-                    console.log("Finished.");
+                    console.log("Process Completed.");
                 }
             }, 3000 * index);
         });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: STOCK_START_SUCCESS, payload: result });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
-            type: STOCK_LIST_FAILURE,
+            type: STOCK_START_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const stockPrice = (token) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: STOCK_PRICE_REQUEST });
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            url: "/stock-reports-retrieve",
+            params: { section: "stocks" },
+        });
+
+        /** Separate result. */
+        let stocks = data.stocks;
+        let message = data.message;
+
+        /** Dispatch action to show message in the frontend. */
+        dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: message,
+        });
+
+        /** Save stocks to database. */
+        stocks.map((item, index) => {
+            /** Get last index. */
+            let end = stocks.length - 1;
+            /** Call delay item function. */
+            setTimeout(async function () {
+                /** Check if data is not empty. */
+                if (item) {
+                    /** Send request. */
+                    const { data } = await axios({
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        method: "POST",
+                        url: "/stock-reports-store",
+                        params: {
+                            input: item,
+                            section: "prices",
+                        },
+                    });
+
+                    /** Dispatch action to show message in the frontend. */
+                    dispatch({
+                        type: MESSAGE_SHOW_SUCCESS,
+                        payload: data.message,
+                    });
+                }
+                /** Talk to the console about that task progress. */
+                if (index === end) {
+                    console.log("Process Completed.");
+                }
+            }, 3000 * index);
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: STOCK_PRICE_SUCCESS, payload: data.message });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: STOCK_PRICE_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const stockReport = (token) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: STOCK_REPORT_REQUEST });
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            url: "/stock-reports-retrieve",
+            params: { section: "stocks" },
+        });
+
+        /** Separate result. */
+        let stocks = data.stocks;
+        let message = data.message;
+
+        /** Dispatch action to show message in the frontend. */
+        dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: message,
+        });
+
+        /** Save stocks to database. */
+        stocks.map((item, index) => {
+            /** Get last index. */
+            let end = stocks.length - 1;
+            /** Call delay item function. */
+            setTimeout(async function () {
+                /** Check if data is not empty. */
+                if (item) {
+                    /** Send request. */
+                    const { data } = await axios({
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        method: "POST",
+                        url: "/stock-reports-store",
+                        params: {
+                            input: item,
+                            section: "reports",
+                        },
+                    });
+
+                    /** Dispatch action to show message in the frontend. */
+                    dispatch({
+                        type: MESSAGE_SHOW_SUCCESS,
+                        payload: data.message,
+                    });
+                }
+                /** Talk to the console about that task progress. */
+                if (index === end) {
+                    console.log("Process Completed.");
+                }
+            }, 3000 * index);
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: STOCK_REPORT_SUCCESS, payload: data.message });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: STOCK_REPORT_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const stockDividend = (token) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: STOCK_DIVIDEND_REQUEST });
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            url: "/stock-reports-retrieve",
+            params: { section: "stocks" },
+        });
+
+        /** Separate result. */
+        let stocks = data.stocks;
+        let message = data.message;
+
+        /** Dispatch action to show message in the frontend. */
+        dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: message,
+        });
+
+        /** Save stocks to database. */
+        stocks.map((item, index) => {
+            /** Get last index. */
+            let end = stocks.length - 1;
+            /** Call delay item function. */
+            setTimeout(async function () {
+                /** Check if data is not empty. */
+                if (item) {
+                    /** Send request. */
+                    const { data } = await axios({
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        method: "POST",
+                        url: "/stock-reports-store",
+                        params: {
+                            input: item,
+                            section: "dividends",
+                        },
+                    });
+
+                    /** Dispatch action to show message in the frontend. */
+                    dispatch({
+                        type: MESSAGE_SHOW_SUCCESS,
+                        payload: data.message,
+                    });
+                }
+                /** Talk to the console about that task progress. */
+                if (index === end) {
+                    console.log("Process Completed.");
+                }
+            }, 3000 * index);
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: STOCK_DIVIDEND_SUCCESS, payload: data.message });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: STOCK_DIVIDEND_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const stockSector = (token) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: STOCK_SECTOR_REQUEST });
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            url: "/stock-reports-retrieve",
+            params: { section: "stocks" },
+        });
+
+        /** Separate result. */
+        let stocks = data.stocks;
+        let message = data.message;
+
+        /** Dispatch action to show message in the frontend. */
+        dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: message,
+        });
+
+        /** Save stocks to database. */
+        stocks.map((item, index) => {
+            /** Get last index. */
+            let end = stocks.length - 1;
+            /** Call delay item function. */
+            setTimeout(async function () {
+                /** Check if data is not empty. */
+                if (item) {
+                    /** Send request. */
+                    const { data } = await axios({
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        method: "POST",
+                        url: "/stock-reports-store",
+                        params: {
+                            input: item,
+                            section: "sectors",
+                        },
+                    });
+
+                    /** Dispatch action to show message in the frontend. */
+                    dispatch({
+                        type: MESSAGE_SHOW_SUCCESS,
+                        payload: data.message,
+                    });
+                }
+                /** Talk to the console about that task progress. */
+                if (index === end) {
+                    console.log("Process Completed.");
+                }
+            }, 3000 * index);
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: STOCK_SECTOR_SUCCESS, payload: data.message });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: STOCK_SECTOR_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const stockWatchlist = (token) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: STOCK_WATCHLIST_REQUEST });
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            url: "/stock-reports-retrieve",
+            params: { section: "stocks" },
+        });
+
+        /** Separate result. */
+        let stocks = data.stocks;
+        let message = data.message;
+
+        /** Dispatch action to show message in the frontend. */
+        dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: message,
+        });
+
+        /** Save stocks to database. */
+        stocks.map((item, index) => {
+            /** Get last index. */
+            let end = stocks.length - 1;
+            /** Call delay item function. */
+            setTimeout(async function () {
+                /** Check if data is not empty. */
+                if (item) {
+                    /** Send request. */
+                    const { data } = await axios({
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        method: "POST",
+                        url: "/stock-reports-store",
+                        params: {
+                            input: item,
+                            section: "watchlist",
+                        },
+                    });
+
+                    /** Dispatch action to show message in the frontend. */
+                    dispatch({
+                        type: MESSAGE_SHOW_SUCCESS,
+                        payload: data.message,
+                    });
+                }
+                /** Talk to the console about that task progress. */
+                if (index === end) {
+                    console.log("Process Completed.");
+                }
+            }, 3000 * index);
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: STOCK_WATCHLIST_SUCCESS, payload: data.message });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: STOCK_WATCHLIST_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

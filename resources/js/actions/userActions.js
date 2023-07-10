@@ -90,6 +90,14 @@ export const resetPassword = (token, email, password) => async (dispatch) => {
                     ? error.response.data.message
                     : error.message,
         });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
     }
 };
 
@@ -119,6 +127,14 @@ export const forgotPassword = (email) => async (dispatch) => {
                     ? error.response.data.message
                     : error.message,
         });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
     }
 };
 
@@ -143,6 +159,14 @@ export const verifyEmail = (token) => async (dispatch) => {
         /** Dispatch action if error occurred. */
         dispatch({
             type: USER_VERIFY_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
@@ -185,6 +209,14 @@ export const registerUser =
                         ? error.response.data.message
                         : error.message,
             });
+            /** Dispatch action if error occurred. */
+            dispatch({
+                type: MESSAGE_SHOW_FAILURE,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            });
         }
     };
 
@@ -221,6 +253,14 @@ export const loginUser = (email, password) => async (dispatch) => {
                     ? error.response.data.message
                     : error.message,
         });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
     }
 };
 
@@ -252,6 +292,14 @@ export const logoutUser = (token) => async (dispatch) => {
                     ? error.response.data.message
                     : error.message,
         });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
     }
 };
 
@@ -265,6 +313,14 @@ export const clearToken = () => async (dispatch) => {
         /** Dispatch action if error occurred. */
         dispatch({
             type: USER_LOGIN_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

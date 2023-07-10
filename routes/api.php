@@ -25,9 +25,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
 
     Route::get('/dashboard', [App\Http\Controllers\Dashboard\DashboardController::class, 'init'])->name('init');
-});
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/stock-trade-store', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'init']);
     Route::get('/stock-trade-retrieve', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'init']);
 
@@ -36,7 +34,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/stock-portfolio-store', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'init']);
     Route::get('/stock-portfolio-retrieve', [App\Http\Controllers\Dashboard\Stock\PortfolioController::class, 'init']);
+});
 
+// Route::group(['middleware' => 'auth:sanctum'], function () {
     // Route::post('/crypto-portfolio-store', [App\Http\Controllers\Dashboard\Crypto\PortfolioController::class, 'init']);
     // Route::get('/crypto-portfolio-retrieve', [App\Http\Controllers\Dashboard\Crypto\PortfolioController::class, 'init']);
 
@@ -57,4 +57,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Route::post('/stock-overview-store', [App\Http\Controllers\Dashboard\Stock\OverviewController::class, 'init']);
     // Route::get('/stock-overview-retrieve', [App\Http\Controllers\Dashboard\Stock\OverviewController::class, 'init']);
-});
+// });

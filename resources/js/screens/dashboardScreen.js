@@ -15,7 +15,14 @@ import Loader from "../components/interfaces/loader";
 
 /** Action. */
 import { resendEmail } from "../actions/userActions";
-import { stockList } from "../actions/stockActions";
+import {
+    stockStart,
+    stockPrice,
+    stockReport,
+    stockDividend,
+    stockSector,
+    stockWatchlist,
+} from "../actions/stockActions";
 
 const Dashboard = () => {
     /** Use selector. */
@@ -65,10 +72,36 @@ const Dashboard = () => {
         dispatch(resendEmail(access_token));
     };
 
-    const stockListHandler = () => {
-        dispatch(stockList(access_token));
+    /** Fecth data from external endpoint. */
+    const stockStartHandler = () => {
+        /** Dispatch action. */
+        dispatch(stockStart(access_token));
     };
 
+    const stockPriceHandler = () => {
+        /** Dispatch action. */
+        dispatch(stockPrice(access_token));
+    };
+
+    const stockReportHandler = () => {
+        /** Dispatch action. */
+        dispatch(stockReport(access_token));
+    };
+
+    const stockDividendHandler = () => {
+        /** Dispatch action. */
+        dispatch(stockDividend(access_token));
+    };
+
+    const stockSectorHandler = () => {
+        /** Dispatch action. */
+        dispatch(stockSector(access_token));
+    };
+
+    const stockWatchlistHandler = () => {
+        /** Dispatch action. */
+        dispatch(stockWatchlist(access_token));
+    };
     /** Return. */
     return (
         <>
@@ -102,53 +135,81 @@ const Dashboard = () => {
                                     <span>Fetch External Data</span>
                                 </div>
                                 <div className="p-2 card-rounded grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2">
-                                    <div className="p-0">
+                                    <div className="p-0 has-tooltip">
+                                        <span class="tooltip uppercase text-center">
+                                            Get the symbol, name, price, volume,
+                                            and change.
+                                        </span>
                                         <button
-                                            onClick={stockListHandler}
+                                            onClick={stockStartHandler}
                                             className="btn btn-red"
                                             type="button"
                                         >
                                             <Icon id="start" /> Start
                                         </button>
                                     </div>
-                                    <div className="p-0">
+                                    <div className="p-0 has-tooltip">
+                                        <span class="tooltip uppercase text-center">
+                                            Get an average and year high prices.
+                                        </span>
                                         <button
-                                            className="btn btn-green"
-                                            type="button"
-                                        >
-                                            <Icon id="report" /> Report
-                                        </button>
-                                    </div>
-                                    <div className="p-0">
-                                        <button
+                                            onClick={stockPriceHandler}
                                             className="btn btn-blue"
                                             type="button"
                                         >
                                             <Icon id="price" /> Price
                                         </button>
                                     </div>
-                                    <div className="p-0">
+                                    <div className="p-0 has-tooltip">
+                                        <span class="tooltip uppercase text-center">
+                                            Get income after tax and earnings
+                                            per share.
+                                        </span>
                                         <button
+                                            onClick={stockReportHandler}
+                                            className="btn btn-green"
+                                            type="button"
+                                        >
+                                            <Icon id="report" /> Report
+                                        </button>
+                                    </div>
+
+                                    <div className="p-0 has-tooltip">
+                                        <span class="tooltip uppercase text-center">
+                                            Get the yearly dividend yield.
+                                        </span>
+                                        <button
+                                            onClick={stockDividendHandler}
                                             className="btn btn-emerald"
                                             type="button"
                                         >
                                             <Icon id="dividend" /> Dividend
                                         </button>
                                     </div>
-                                    <div className="p-0">
+                                    <div className="p-0 has-tooltip">
+                                        <span class="tooltip uppercase text-center">
+                                            Get the sector to which stock
+                                            belongs.
+                                        </span>
                                         <button
+                                            onClick={stockSectorHandler}
                                             className="btn btn-indigo"
                                             type="button"
                                         >
                                             <Icon id="sector" /> Sector
                                         </button>
                                     </div>
-                                    <div className="p-0">
+                                    <div className="p-0 has-tooltip">
+                                        <span class="tooltip uppercase text-center">
+                                            Get a financial report for the
+                                            watchlist table.
+                                        </span>
                                         <button
+                                            onClick={stockWatchlistHandler}
                                             className="btn btn-orange"
                                             type="button"
                                         >
-                                            <Icon id="search" /> Search
+                                            <Icon id="watchlist" /> Watchlist
                                         </button>
                                     </div>
                                 </div>

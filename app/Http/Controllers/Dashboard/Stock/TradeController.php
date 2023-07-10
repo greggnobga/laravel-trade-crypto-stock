@@ -13,9 +13,6 @@ class TradeController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
-
-            return response(['message' => 'Test message. ' . $request->input('input.name'), 'stocks' => $request->all()], 200);
-
             /** forward insert command. */
             if ($request->input('table') === 'trade' && $request->input('statement') === 'store') {
                 return $this->store(['table' => $request->input('table'), 'input' => $request->input('input')]);
@@ -44,7 +41,7 @@ class TradeController extends Controller {
         if ($check->isNotEmpty()) {
             /** create stock list. */
             $items = DB::table('stock_trades')
-                ->select('edge', 'symbol', 'sector', 'price', 'change', 'volume', 'average', 'incomeaftertax', 'earningpershare', 'yearhighprice',  'dividendyield')
+                ->select('edge', 'symbol', 'price', 'change', 'volume', 'value', 'yearhighprice', 'yearlowprice', 'incomeaftertax', 'earningpershare', 'dividendyield')
                 ->where('edge', '>', 0)
                 ->orderBy('incomeaftertax', 'desc')
                 ->orderBy('dividendyield', 'desc')
@@ -102,9 +99,9 @@ class TradeController extends Controller {
             ->get();
 
         /** fetch edge id. */
-        $id = collect($this->edge())->firstWhere('symbol', $data['input']['symbol']);
-        if (is_null($id)) {
-            $id['edge'] = 0;
+        $edge_id = collect($this->edge())->firstWhere('symbol', $data['input']['symbol']);
+        if (is_null($edge_id)) {
+            $edge_id['edge'] = 0;
         }
 
         /** insert with appropriate data. */
@@ -113,7 +110,7 @@ class TradeController extends Controller {
                 ->insertGetId([
                     'name' => strip_tags($data['input']['name']),
                     'symbol' => strip_tags($data['input']['symbol']),
-                    'edge' => strip_tags($id['edge']),
+                    'edge' => strip_tags($edge_id['edge']),
                     'price' => strip_tags($data['input']['price']),
                     'change' => strip_tags($data['input']['change']),
                     'volume' => strip_tags($data['input']['volume']),
@@ -125,36 +122,36 @@ class TradeController extends Controller {
             }
         } else {
             /** forward to update instead. */
-            return $this->update($data, $id);
+            return $this->update($data, $edge_id);
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update($data, $id) {
+    public function update($data, $edge_id) {
         if ($data['table'] === 'trade') {
             /** run update query.*/
             $update = DB::table('stock_trades')
-                ->where('symbol', '=', $data['input'][0]['symbol'])
+                ->where('symbol', '=', $data['input']['symbol'])
                 ->update([
-                    'name' => strip_tags($data['input'][0]['name']),
-                    'symbol' => strip_tags($data['input'][0]['symbol']),
-                    'edge' => strip_tags($id['edge']),
-                    'price' => strip_tags($data['input'][0]['price']),
-                    'change' => strip_tags($data['input'][0]['change']),
-                    'volume' => strip_tags($data['input'][0]['volume']),
+                    'name' => strip_tags($data['input']['name']),
+                    'symbol' => strip_tags($data['input']['symbol']),
+                    'edge' => strip_tags($edge_id['edge']),
+                    'price' => strip_tags($data['input']['price']),
+                    'change' => strip_tags($data['input']['change']),
+                    'volume' => strip_tags($data['input']['volume']),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             /** if update not empty.*/
             if ($update) {
-                $stock = DB::table('stock_trades')
+                DB::table('stock_trades')
                     ->select('id', 'edge', 'created_at as date', 'name', 'symbol', 'price', 'change', 'volume')
-                    ->where('symbol', '=', $data['input'][0]['symbol'])
+                    ->where('symbol', '=', $data['input']['symbol'])
                     ->get();
-                return ['message' => 'The ' . $data['input'][0]['name'] . ' information was successfully updated.'];
+                return ['message' => 'The ' . $data['input']['name'] . ' information was successfully updated.'];
             } else {
-                return ['message' => 'No modifications were made to the' . $data['input'][0]['name'] . ' data.'];
+                return ['message' => 'No modifications were made to the' . $data['input']['name'] . ' data.'];
             }
         }
     }

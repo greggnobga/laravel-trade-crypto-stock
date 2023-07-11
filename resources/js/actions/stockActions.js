@@ -26,9 +26,6 @@ import {
     STOCK_SECTOR_REQUEST,
     STOCK_SECTOR_SUCCESS,
     STOCK_SECTOR_FAILURE,
-    STOCK_WATCHLIST_REQUEST,
-    STOCK_WATCHLIST_SUCCESS,
-    STOCK_WATCHLIST_FAILURE,
 } from "../constants/stockConstants";
 
 export const stockStart = (token) => async (dispatch) => {
@@ -413,88 +410,6 @@ export const stockSector = (token) => async (dispatch) => {
         /** Dispatch action if error occurred. */
         dispatch({
             type: STOCK_SECTOR_FAILURE,
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        });
-        /** Dispatch action if error occurred. */
-        dispatch({
-            type: MESSAGE_SHOW_FAILURE,
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        });
-    }
-};
-
-export const stockWatchlist = (token) => async (dispatch) => {
-    try {
-        /** Dispatch action to set inital state. */
-        dispatch({ type: STOCK_WATCHLIST_REQUEST });
-        /** Prepare request to external api data provider. */
-        const { data } = await axios({
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            method: "GET",
-            url: "/stock-reports-retrieve",
-            params: { section: "stocks" },
-        });
-
-        /** Separate result. */
-        let stocks = data.stocks;
-        let message = data.message;
-
-        /** Dispatch action to show message in the frontend. */
-        dispatch({
-            type: MESSAGE_SHOW_SUCCESS,
-            payload: message,
-        });
-
-        /** Save stocks to database. */
-        stocks.map((item, index) => {
-            /** Get last index. */
-            let end = stocks.length - 1;
-            /** Call delay item function. */
-            setTimeout(async function () {
-                /** Check if data is not empty. */
-                if (item) {
-                    /** Send request. */
-                    const { data } = await axios({
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        method: "POST",
-                        url: "/stock-reports-store",
-                        params: {
-                            input: item,
-                            section: "watchlist",
-                        },
-                    });
-
-                    /** Dispatch action to show message in the frontend. */
-                    dispatch({
-                        type: MESSAGE_SHOW_SUCCESS,
-                        payload: data.message,
-                    });
-                }
-                /** Talk to the console about that task progress. */
-                if (index === end) {
-                    console.log("Process Completed.");
-                }
-            }, 3000 * index);
-        });
-
-        /** Dispatch action to set the result into the store. */
-        dispatch({ type: STOCK_WATCHLIST_SUCCESS, payload: data.message });
-    } catch (error) {
-        /** Dispatch action if error occurred. */
-        dispatch({
-            type: STOCK_WATCHLIST_FAILURE,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

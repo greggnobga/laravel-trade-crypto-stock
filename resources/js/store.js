@@ -18,7 +18,6 @@ import {
     stockReportReducer,
     stockDividendReducer,
     stockSectorReducer,
-    stockWatchlistReducer,
 } from "./reducers/stockReducers";
 
 /** Combine reducer. */
@@ -33,7 +32,6 @@ const reducer = combineReducers({
     stockReport: stockReportReducer,
     stockDividend: stockDividendReducer,
     stockSector: stockSectorReducer,
-    stockWatchlist: stockWatchlistReducer,
     showMessage: showMessageReducer,
 });
 

@@ -14,9 +14,6 @@ import {
     STOCK_SECTOR_REQUEST,
     STOCK_SECTOR_SUCCESS,
     STOCK_SECTOR_FAILURE,
-    STOCK_WATCHLIST_REQUEST,
-    STOCK_WATCHLIST_SUCCESS,
-    STOCK_WATCHLIST_FAILURE,
 } from "../constants/stockConstants";
 
 export const stockStartReducer = (state = {}, action) => {
@@ -78,19 +75,6 @@ export const stockSectorReducer = (state = {}, action) => {
         case STOCK_SECTOR_SUCCESS:
             return { loading: false, success: action.payload };
         case STOCK_SECTOR_FAILURE:
-            return { loading: false, error: action.payload };
-        default:
-            return state;
-    }
-};
-
-export const stockWatchlistReducer = (state = {}, action) => {
-    switch (action.type) {
-        case STOCK_WATCHLIST_REQUEST:
-            return { loading: true };
-        case STOCK_WATCHLIST_SUCCESS:
-            return { loading: false, success: action.payload };
-        case STOCK_WATCHLIST_FAILURE:
             return { loading: false, error: action.payload };
         default:
             return state;

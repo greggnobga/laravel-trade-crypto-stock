@@ -15,11 +15,6 @@ return new class extends Migration {
             $table->id();
             $table->integer('userid');
             $table->string('symbol');
-            $table->decimal('totalliabilities', 24, 2)->signed()->default(0.00);
-            $table->decimal('stockholdersequity', 24, 2)->signed()->default(0.00);
-            $table->decimal('earningspershare', 24, 2)->signed()->default(0.00);
-            $table->decimal('netincomebeforetax', 24, 2)->signed()->default(0.00);
-            $table->decimal('grossrevenue', 24, 2)->signed()->default(0.00);
             $table->timestamps();
         });
     }

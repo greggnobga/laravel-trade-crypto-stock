@@ -21,7 +21,6 @@ import {
     stockReport,
     stockDividend,
     stockSector,
-    stockWatchlist,
 } from "../actions/stockActions";
 
 const Dashboard = () => {
@@ -96,11 +95,6 @@ const Dashboard = () => {
     const stockSectorHandler = () => {
         /** Dispatch action. */
         dispatch(stockSector(access_token));
-    };
-
-    const stockWatchlistHandler = () => {
-        /** Dispatch action. */
-        dispatch(stockWatchlist(access_token));
     };
     /** Return. */
     return (
@@ -197,19 +191,6 @@ const Dashboard = () => {
                                             type="button"
                                         >
                                             <Icon id="sector" /> Sector
-                                        </button>
-                                    </div>
-                                    <div className="p-0 has-tooltip">
-                                        <span class="tooltip uppercase text-center">
-                                            Get a financial report for the
-                                            watchlist table.
-                                        </span>
-                                        <button
-                                            onClick={stockWatchlistHandler}
-                                            className="btn btn-orange"
-                                            type="button"
-                                        >
-                                            <Icon id="watchlist" /> Watchlist
                                         </button>
                                     </div>
                                 </div>

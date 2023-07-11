@@ -10601,9 +10601,6 @@ const STOCK_DIVIDEND_FAILURE = "STOCK_DIVIDEND_FAILURE";
 const STOCK_SECTOR_REQUEST = "STOCK_SECTOR_REQUEST";
 const STOCK_SECTOR_SUCCESS = "STOCK_SECTOR_SUCCESS";
 const STOCK_SECTOR_FAILURE = "STOCK_SECTOR_FAILURE";
-const STOCK_WATCHLIST_REQUEST = "STOCK_WATCHLIST_REQUEST";
-const STOCK_WATCHLIST_SUCCESS = "STOCK_WATCHLIST_SUCCESS";
-const STOCK_WATCHLIST_FAILURE = "STOCK_WATCHLIST_FAILURE";
 const stockStartReducer = (state = {}, action) => {
   switch (action.type) {
     case STOCK_START_REQUEST:
@@ -10664,18 +10661,6 @@ const stockSectorReducer = (state = {}, action) => {
       return state;
   }
 };
-const stockWatchlistReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_WATCHLIST_REQUEST:
-      return { loading: true };
-    case STOCK_WATCHLIST_SUCCESS:
-      return { loading: false, success: action.payload };
-    case STOCK_WATCHLIST_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -10687,7 +10672,6 @@ const reducer = combineReducers({
   stockReport: stockReportReducer,
   stockDividend: stockDividendReducer,
   stockSector: stockSectorReducer,
-  stockWatchlist: stockWatchlistReducer,
   showMessage: showMessageReducer
 });
 const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : { logged: false };
@@ -13675,62 +13659,6 @@ const stockSector = (token) => async (dispatch) => {
     });
   }
 };
-const stockWatchlist = (token) => async (dispatch) => {
-  try {
-    dispatch({ type: STOCK_WATCHLIST_REQUEST });
-    const { data } = await axios$1({
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      method: "GET",
-      url: "/stock-reports-retrieve",
-      params: { section: "stocks" }
-    });
-    let stocks = data.stocks;
-    let message = data.message;
-    dispatch({
-      type: MESSAGE_SHOW_SUCCESS,
-      payload: message
-    });
-    stocks.map((item, index2) => {
-      let end = stocks.length - 1;
-      setTimeout(async function() {
-        if (item) {
-          const { data: data2 } = await axios$1({
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`
-            },
-            method: "POST",
-            url: "/stock-reports-store",
-            params: {
-              input: item,
-              section: "watchlist"
-            }
-          });
-          dispatch({
-            type: MESSAGE_SHOW_SUCCESS,
-            payload: data2.message
-          });
-        }
-        if (index2 === end) {
-          console.log("Process Completed.");
-        }
-      }, 3e3 * index2);
-    });
-    dispatch({ type: STOCK_WATCHLIST_SUCCESS, payload: data.message });
-  } catch (error) {
-    dispatch({
-      type: STOCK_WATCHLIST_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-    dispatch({
-      type: MESSAGE_SHOW_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-  }
-};
 const Dashboard = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, logged, access_token, email_verified } = userLogin;
@@ -13772,9 +13700,6 @@ const Dashboard = () => {
   const stockSectorHandler = () => {
     dispatch(stockSector(access_token));
   };
-  const stockWatchlistHandler = () => {
-    dispatch(stockWatchlist(access_token));
-  };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-warning", children: error }),
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-success", children: message }),
@@ -13806,7 +13731,7 @@ const Dashboard = () => {
             )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get an average and year higher prices." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get an average and year high prices." }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
               {
@@ -13861,21 +13786,6 @@ const Dashboard = () => {
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
                   " Sector"
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get a financial report for the watchlist table." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: stockWatchlistHandler,
-                className: "btn btn-orange",
-                type: "button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "watchlist" }),
-                  " Watchlist"
                 ]
               }
             )

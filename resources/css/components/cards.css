@@ -1,7 +1,11 @@
 .card {
-    @apply grow bg-slate-50 shadow border border-gray-100 cursor-pointer mb-2 !important;
+    @apply grow bg-slate-50 shadow border border-slate-50 bg-slate-50 cursor-pointer !important;
 }
 
 .card-rounded {
-    @apply grow shadow hover:shadow-lg rounded-lg border border-slate-50 bg-slate-50 scale-95 hover:scale-100 ease-in duration-500 cursor-pointer mb-2 !important;
+    @apply grow shadow hover:shadow-lg rounded-lg border border-slate-50 bg-slate-50 cursor-pointer !important;
+}
+
+.card-rounded-scale {
+    @apply grow shadow hover:shadow-lg rounded-lg border border-slate-50 bg-slate-50 scale-95 hover:scale-100 ease-in duration-500 cursor-pointer !important;
 }

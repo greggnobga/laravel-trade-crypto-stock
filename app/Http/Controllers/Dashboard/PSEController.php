@@ -157,6 +157,7 @@ class PSEController extends Controller {
                 ->update([
                     'value' => strip_tags($result['value']),
                     'pricerange' => strip_tags($result['pricerange']),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
         }
 
@@ -194,6 +195,53 @@ class PSEController extends Controller {
         if (count($finance) != 0) {
             /** variable pointer. */
             $amount = [];
+
+            /** mapping net after tax . */
+            $statement['CurrentTotalAssets'] = $finance['2'];
+            $statement['PreviousTotalAssets'] = $finance['3'];
+
+            /** check if key exist in array. */
+            if (array_key_exists("CurrentTotalAssets", $statement)) {
+                $current['CurrentTotalAssets'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['CurrentTotalAssets']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $current['CurrentTotalAssets'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $current['CurrentTotalAssets']);
+                    /** then turn negative using abs function. */
+                    $amount['assets']['current'] = -abs($negative);
+                } else {
+                    $amount['assets']['current'] = $current['CurrentTotalAssets'];
+                }
+
+                /** match string if has no value. */
+                if ($current['CurrentTotalAssets'] == '') {
+                    $amount['assets']['current'] = 0.00;
+                }
+            }
+
+            /** check if key exist in array. */
+            if (array_key_exists("PreviousTotalAssets", $statement)) {
+                $previous['PreviousTotalAssets'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['PreviousTotalAssets']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $previous['PreviousTotalAssets'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $previous['PreviousTotalAssets']);
+                    /** then turn negative using abs function. */
+                    $amount['assets']['previous'] = -abs($negative);
+                } else {
+                    $amount['assets']['previous'] = $previous['PreviousTotalAssets'];
+                }
+
+                /** match string if has no value. */
+                if ($previous['PreviousTotalAssets'] == '') {
+                    $amount['assets']['previous'] = 0.00;
+                }
+            }
+
+            /** determine if profitable against previous year. */
+            $result['totalassets'] = floatval(bcsub(abs($amount['assets']['current']), abs($amount['assets']['previous']), 2));
 
             /** mapping net after tax . */
             $statement['CurrentYearNetIncomeLossAfterTax'] = $finance['22'];
@@ -398,11 +446,13 @@ class PSEController extends Controller {
             DB::table('stock_trades')
                 ->where('edge', '=', $data['edge'])
                 ->update([
+                    'totalassets' => strip_tags($result['totalassets']),
                     'netincomeaftertax' => strip_tags($result['netincomeaftertax']),
                     'debtequityratio' => strip_tags($result['debtequityratio']),
                     'priceearningratio' => strip_tags($result['priceearningratio']),
                     'netprofitmargin' => strip_tags($result['netprofitmargin']),
                     'returnonequity' => strip_tags($result['returnonequity']),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
 
             /** search database. */
@@ -461,6 +511,7 @@ class PSEController extends Controller {
                 ->where('edge', '=', $data['edge'])
                 ->update([
                     'dividendyield' => strip_tags($yield),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
         } else {
             /** return something. */
@@ -513,6 +564,7 @@ class PSEController extends Controller {
                     ->where('edge', '=', $data['edge'])
                     ->update([
                         'sector' => strip_tags($result['sector']),
+                        'updated_at' => date('Y-m-d H:i:s'),
                     ]);
             }
         }

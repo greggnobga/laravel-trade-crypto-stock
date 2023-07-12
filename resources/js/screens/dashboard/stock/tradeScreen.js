@@ -8,106 +8,104 @@ import useScreen from "../../../hooks/use-screen";
 import Icon from "../../../components/icons";
 
 const Trade = () => {
-    /** Declare result and disabled state. */
-    const [result, setResult] = useState([]);
-    const [disabled, setDisabled] = useState(false);
-
-    /** Start handler. */
-    const startHandler = () => {
-        console.log("Start handler clicked.");
-    };
-
-    /** Use screen helper. */
+    /** Use screen. */
     const { isMobile } = useScreen();
-
-    /** Start handler. */
-    const reportHandler = () => {
-        console.log("Report handler clicked.");
-    };
-
-    /** Start handler. */
-    const priceHandler = () => {
-        console.log("Price handler clicked.");
-    };
-
-    /** Start handler. */
-    const dividendHandler = () => {
-        console.log("Dividend handler clicked.");
-    };
-
-    /** Start handler. */
-    const sectorHandler = () => {
-        console.log("Sector handler clicked.");
-    };
-
-    /** Start handler. */
-    const displaySearch = () => {
-        console.log("Display search clicked.");
-    };
 
     /** Return something. */
     return (
-        <div id="stock-trade">
-            <div className="trade">
-                <div className="board">
-                    <div className="items">
-                        <div className="brand">
-                            <Icon id="trade" />
-                            <span className="name">Trade</span>
-                        </div>
-                        <div className="record">
-                            <button
-                                onClick={startHandler}
-                                className="btn btn-green-outline"
-                                type="button"
-                                disabled={disabled}
-                            >
-                                <Icon id="start" /> Start
-                            </button>
-                            <button
-                                onClick={reportHandler}
-                                className="btn btn-red-outline"
-                                type="button"
-                                disabled={disabled}
-                            >
-                                <Icon id="report" /> Report
-                            </button>
-                            <button
-                                onClick={priceHandler}
-                                className="btn btn-blue-outline"
-                                type="button"
-                                disabled={disabled}
-                            >
-                                <Icon id="price" /> Price
-                            </button>
-                            <button
-                                onClick={dividendHandler}
-                                className="btn btn-green-outline"
-                                type="button"
-                                disabled={disabled}
-                            >
-                                <Icon id="dividend" /> Dividend
-                            </button>
-                            <button
-                                onClick={sectorHandler}
-                                className="btn btn-purple-outline"
-                                type="button"
-                                disabled={disabled}
-                            >
-                                <Icon id="sector" /> Sector
-                            </button>
-                            <button
-                                onClick={displaySearch}
-                                className="btn btn-gold-outline"
-                                type="button"
-                                disabled={disabled}
-                            >
-                                <Icon id="search" /> Search
-                            </button>
-                        </div>
+        <div className="grid auto-rows-min gap-2 h-fit font-size">
+            <div className="p-2 h-12 uppercase">
+                <Icon id="trade" /> Blue Chip Stocks
+            </div>
+            {isMobile ? (
+                <div className="card-rounded m-2 grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2">
+                    <div className="p-2 grid auto-rows-min grid-rows-2">
+                        <span className="uppercase text-[.5rem]">Symbol</span>
+                        <span className="text-center text-base">JFC</span>
+                    </div>
+                    <div className="p-2 grid auto-rows-min grid-rows-2">
+                        <span className="uppercase text-[.5rem]">Price</span>
+                        <span className="text-center text-base">0.00</span>
+                    </div>
+                    <div className="p-2 grid auto-rows-min grid-rows-2">
+                        <span className="uppercase text-[.5rem]">Value</span>
+                        <span className="text-center text-base">0.0</span>
+                    </div>
+                    <div className="p-2 grid auto-rows-min grid-rows-2">
+                        <span className="uppercase text-[.5rem]">
+                            Price Range
+                        </span>
+                        <span className="text-center text-base">0.0</span>
+                    </div>
+                    <div className="p-2 grid auto-rows-min grid-rows-2">
+                        <span className="uppercase text-[.5rem]">
+                            Total Assets
+                        </span>
+                        <span className="text-center text-base">0.0</span>
+                    </div>
+                    <div className="p-2 grid auto-rows-min grid-rows-2">
+                        <span className="uppercase text-[.5rem]">
+                            Net Income
+                        </span>
+                        <span className="text-center text-base">0.0</span>
+                    </div>
+                    <div className="p-2 grid auto-rows-min grid-rows-2">
+                        <span className="uppercase text-[.5rem]">
+                            Debt Equity Ratio
+                        </span>
+                        <span className="text-center text-base">0.0</span>
+                    </div>
+                    <div className="p-2 grid auto-rows-min grid-rows-2">
+                        <span className="uppercase text-[.5rem]">
+                            Dividend Yield
+                        </span>
+                        <span className="text-center text-base">0.0</span>
+                    </div>
+                    <div className="p-2 grid auto-rows-min grid-rows-2 col-span-2 md:col-span-4 justify-center">
+                        <span className="uppercase text-[.5rem]">Action</span>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div className="card grid auto-rows-min grid-cols-9 gap-2 h-fit">
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">Symbol</span>
+                    </div>
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">Price</span>
+                    </div>
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">Value</span>
+                    </div>
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">
+                            Price Range
+                        </span>
+                    </div>
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">
+                            Total Assets
+                        </span>
+                    </div>
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">
+                            Net Income
+                        </span>
+                    </div>
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">
+                            Debt Equity Ratio
+                        </span>
+                    </div>
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">
+                            Dividend Yield
+                        </span>
+                    </div>
+                    <div className="p-2">
+                        <span className="uppercase text-[.5rem]">Action</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -13,7 +13,7 @@ class DashboardController extends Controller {
         if (Auth::id()) {
             return response(['message' => 'Test init response from dashboard controller.'], 200);
         } else {
-            return response(['message' => 'Encountered something unknown..'], 401);
+            return response(['message' => 'Encountered something unknown.'], 401);
         }
     }
 }

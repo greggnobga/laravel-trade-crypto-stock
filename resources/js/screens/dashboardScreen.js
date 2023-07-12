@@ -128,7 +128,7 @@ const Dashboard = () => {
                                 <div className="p-2">
                                     <span>Fetch External Data</span>
                                 </div>
-                                <div className="p-2 card-rounded grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2">
+                                <div className="p-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2">
                                     <div className="p-0 has-tooltip">
                                         <span class="tooltip uppercase text-center">
                                             Get the symbol, name, price, volume,
@@ -144,7 +144,7 @@ const Dashboard = () => {
                                     </div>
                                     <div className="p-0 has-tooltip">
                                         <span class="tooltip uppercase text-center">
-                                            Get an average and year high prices.
+                                            Get value, year high and low prices.
                                         </span>
                                         <button
                                             onClick={stockPriceHandler}
@@ -200,7 +200,7 @@ const Dashboard = () => {
                                     <span>Asset Allocation</span>
                                 </div>
                                 <div className="flex flex-col flex-wrap sm:flex-row justify-center gap-2">
-                                    <div className="card-rounded text-red-500 ">
+                                    <div className="card-rounded-scale text-red-500 ">
                                         <div className="h-8 p-2 mb-6">
                                             <p className="uppercase">
                                                 <Icon id="stock" /> Stock
@@ -219,7 +219,7 @@ const Dashboard = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="card-rounded text-green-500">
+                                    <div className="card-rounded-scale text-green-500">
                                         <div className="h-8 p-2 mb-6">
                                             <p className="uppercase">
                                                 <Icon id="crypto" /> Crypto
@@ -238,7 +238,7 @@ const Dashboard = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="card-rounded text-blue-500">
+                                    <div className="card-rounded-scale text-blue-500">
                                         <div className="h-8 p-2 mb-6">
                                             <p className="uppercase">
                                                 <Icon id="fund" /> Fund
@@ -257,7 +257,7 @@ const Dashboard = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="card-rounded text-orange-500">
+                                    <div className="card-rounded-scale text-orange-500">
                                         <div className="h-8 p-2 mb-6">
                                             <p className="uppercase">
                                                 <Icon id="note" /> Note
@@ -282,13 +282,13 @@ const Dashboard = () => {
                                 <div className="h-8 p-2 sm:col-span-2">
                                     <span>Graphical Representation</span>
                                 </div>
-                                <div className="h-20 sm:row-start-2 card-rounded">
+                                <div className="h-20 sm:row-start-2 card-rounded-scale">
                                     Account
                                 </div>
-                                <div className="h-20 sm:row-start-3 card-rounded">
+                                <div className="h-20 sm:row-start-3 card-rounded-scale">
                                     Offers
                                 </div>
-                                <div className="h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded">
+                                <div className="h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale">
                                     Doughnut Chart
                                 </div>
                             </div>
@@ -296,10 +296,10 @@ const Dashboard = () => {
                                 <div className="h-8 p-2 sm:col-span-2">
                                     <span>Philippine Stock Exchange</span>
                                 </div>
-                                <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded">
+                                <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale">
                                     Top Gainers
                                 </div>
-                                <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded">
+                                <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale">
                                     Top Lossers
                                 </div>
                             </div>
@@ -307,10 +307,10 @@ const Dashboard = () => {
                                 <div className="h-8 p-2 sm:col-span-2">
                                     Crypto Currency
                                 </div>
-                                <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded">
+                                <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale">
                                     Top Gainers
                                 </div>
-                                <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded">
+                                <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale">
                                     Top Lossers
                                 </div>
                             </div>

@@ -22,16 +22,19 @@ class TradeController extends Controller {
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
             /** forward blue command. */
-            if ($request->input('table') === 'blue') {
+            if ($request->input('section') === 'blue') {
                 return $this->blue();
             }
-            /** forward fetch command. */
-            if ($request->input('table') === 'trade') {
-                return $this->fetch();
+            /** forward blue command. */
+            if ($request->input('section') === 'common') {
+                return $this->common();
             }
         }
     }
 
+    /**
+     * Fetch blue chip stocks.
+     */
     public function blue() {
         /** Blue chip default. */
         $blue = [
@@ -118,35 +121,37 @@ class TradeController extends Controller {
 
         /** sort collection based on desired key. */
         $sorted = collect($record)->sortByDesc(function ($item) {
-            return $item->totalassets;
+            return $item->netincomeaftertax;
         });
 
         /** resequence array keys. */
         $stocks = array_values($sorted->toArray());
 
+        /** Call helper function. */
+        $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
+
         /** Return something. */
-        return response(['message' => 'Process completed.', 'data' => $stocks], 200);
+        return response(['message' => 'Process completed.', 'stocks' => $format], 200);
     }
 
     /**
      * Fetch stocks.
      */
-    public function fetch() {
+    public function common() {
         /** repository. */
         $result = [];
         /** check record. */
         $check = DB::table('stock_trades')
             ->select('symbol')
             ->where('symbol', '=', 'PSEi')
-            ->get();
+            ->first();
 
-        if ($check->isNotEmpty()) {
+        if (!is_null($check)) {
             /** create stock list. */
             $items = DB::table('stock_trades')
-                ->select('edge', 'symbol', 'price', 'change', 'volume', 'value', 'yearhighprice', 'yearlowprice', 'incomeaftertax', 'earningpershare', 'dividendyield')
+                ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
                 ->where('edge', '>', 0)
-                ->orderBy('incomeaftertax', 'desc')
-                ->orderBy('dividendyield', 'desc')
+                ->orderBy('netincomeaftertax', 'desc')
                 ->get();
 
             /** ignore indexes. */
@@ -169,21 +174,18 @@ class TradeController extends Controller {
                     case 'M-O':
                         break;
                     default:
-                        $result['stocks'][$key] = $value;
+                        $result[$key] = $value;
                 }
             }
 
-            /** sort data order by volume. */
-            collect($result['stocks'])->sortByDesc('incomeaftertax');
-
-            /** add button array keys. */
-            $result['stocks'] = $this->helpers(['purpose' => 'format', 'source' => 'stocks', 'stock' => $result['stocks']]);
-
             /** resequence array keys. */
-            $result['stocks'] = array_values($result['stocks']);
+            $stocks = array_values($result);
+
+            /** Call helper function. */
+            $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
 
             /** return something. */
-            return array('message' => 'Processed and displayed are all potential stocks that could be listed on the PSE.', 'data' => $result['stocks']);
+            return array('message' => 'Processed and displayed are all potential stocks that could be listed on the PSE.', 'stocks' => $format);
         } else {
             /** return something. */
             return array('message' => 'There was no entry in the database.');
@@ -262,25 +264,29 @@ class TradeController extends Controller {
      * Helper function.
      */
     private function helpers($data) {
-        if ($data['purpose'] === 'format' && $data['source'] === 'stocks') {
+        if ($data['purpose'] === 'format') {
+            /** return variable. */
             $return = [];
-            foreach ($data['stock'] as $key => $value) {
-                $result = collect($value);
+            /** loop through. */
+            foreach ($data['source'] as $key => $value) {
                 foreach ($value as $k => $v) {
-                    if ($k === 'incomeaftertax') {
-                        $result->forget('incomeaftertax');
-                        $result->put('incomeaftertax', number_format($v, 2, ".", ","));
+                    if (preg_match('/[a-zA-Z]+/', $v)) {
+                        $return[$key][$k] = $v;
                     }
-                    if ($k === 'volume') {
-                        $result->forget('volume');
-                        $result->put('volume', number_format($v, 2, ".", ","));
+                    if (preg_match('/[0-9]+/', $v)) {
+                        if ($k === 'symbol') {
+                            $return[$key][$k] = $v;
+                        } else {
+                            $return[$key][$k] = number_format($v, 2, ".", ",");
+                        }
                     }
                 }
-                $return[$key] = $result;
             }
+            /** return. */
             return $return;
         }
     }
+
     /**
      * Edge function.
      */

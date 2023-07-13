@@ -18,6 +18,8 @@ import {
     stockReportReducer,
     stockDividendReducer,
     stockSectorReducer,
+    stockBlueReducer,
+    stockCommonReducer,
 } from "./reducers/stockReducers";
 
 /** Combine reducer. */
@@ -32,6 +34,8 @@ const reducer = combineReducers({
     stockReport: stockReportReducer,
     stockDividend: stockDividendReducer,
     stockSector: stockSectorReducer,
+    stockBlue: stockBlueReducer,
+    stockCommon: stockCommonReducer,
     showMessage: showMessageReducer,
 });
 
@@ -40,8 +44,18 @@ const accountFromStorage = localStorage.getItem("account")
     ? JSON.parse(localStorage.getItem("account"))
     : { logged: false };
 
+const bluechipFromStorage = localStorage.getItem("bluechip")
+    ? JSON.parse(localStorage.getItem("bluechip"))
+    : {};
+
+const commonFromStorage = localStorage.getItem("common")
+    ? JSON.parse(localStorage.getItem("common"))
+    : {};
+
 const initialState = {
     userLogin: accountFromStorage,
+    stockBlue: bluechipFromStorage,
+    stockCommon: commonFromStorage,
 };
 
 /** Middleware. */

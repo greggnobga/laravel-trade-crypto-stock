@@ -14,6 +14,12 @@ import {
     STOCK_SECTOR_REQUEST,
     STOCK_SECTOR_SUCCESS,
     STOCK_SECTOR_FAILURE,
+    STOCK_BLUE_REQUEST,
+    STOCK_BLUE_SUCCESS,
+    STOCK_BLUE_FAILURE,
+    STOCK_COMMON_REQUEST,
+    STOCK_COMMON_SUCCESS,
+    STOCK_COMMON_FAILURE,
 } from "../constants/stockConstants";
 
 export const stockStartReducer = (state = {}, action) => {
@@ -21,7 +27,7 @@ export const stockStartReducer = (state = {}, action) => {
         case STOCK_START_REQUEST:
             return { loading: true };
         case STOCK_START_SUCCESS:
-            return { loading: false, stocks: action.payload };
+            return { loading: false, success: action.payload };
         case STOCK_START_FAILURE:
             return { loading: false, error: action.payload };
         default:
@@ -75,6 +81,32 @@ export const stockSectorReducer = (state = {}, action) => {
         case STOCK_SECTOR_SUCCESS:
             return { loading: false, success: action.payload };
         case STOCK_SECTOR_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const stockBlueReducer = (state = {}, action) => {
+    switch (action.type) {
+        case STOCK_BLUE_REQUEST:
+            return { loading: true };
+        case STOCK_BLUE_SUCCESS:
+            return { loading: false, bluechip: action.payload };
+        case STOCK_BLUE_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const stockCommonReducer = (state = {}, action) => {
+    switch (action.type) {
+        case STOCK_COMMON_REQUEST:
+            return { loading: true };
+        case STOCK_COMMON_SUCCESS:
+            return { loading: false, common: action.payload };
+        case STOCK_COMMON_FAILURE:
             return { loading: false, error: action.payload };
         default:
             return state;

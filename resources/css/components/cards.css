@@ -1,5 +1,5 @@
 .card {
-    @apply grow bg-slate-50 shadow border border-slate-50 bg-slate-50 cursor-pointer !important;
+    @apply grow shadow border border-slate-50 cursor-pointer !important;
 }
 
 .card-rounded {

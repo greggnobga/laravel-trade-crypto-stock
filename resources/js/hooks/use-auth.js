@@ -1,6 +1,3 @@
-/**  React. */
-import { useEffect } from "react";
-
 /** Vendor. */
 import axios from "axios";
 import { useDispatch } from "react-redux";

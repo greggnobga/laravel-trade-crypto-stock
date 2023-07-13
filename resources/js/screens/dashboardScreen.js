@@ -66,7 +66,7 @@ const Dashboard = () => {
     /** Resend email verification. */
     const resendHandler = () => {
         /** Set state value. */
-        setVerify(!verify);
+        setVerify(true);
         /** Dispatch action. */
         dispatch(resendEmail(access_token));
     };

@@ -31,7 +31,7 @@ export default defineConfig({
         },
     },
     build: {
-        minify: true,
+        minify: false,
         outDir: "public",
         emptyOutDir: false,
         rollupOptions: {

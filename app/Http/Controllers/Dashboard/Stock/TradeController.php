@@ -36,102 +36,112 @@ class TradeController extends Controller {
      * Fetch blue chip stocks.
      */
     public function blue() {
-        /** Blue chip default. */
-        $blue = [
-            "0" => "AC",
-            "1" => "AEV",
-            "2" => "AGI",
-            "3" => "ALI",
-            "4" => "AP",
-            "5" => "BDO",
-            "6" => "BLOOM",
-            "7" => "BPI",
-            "8" => "DMC",
-            "9" => "FGEN",
-            "10" => "GLO",
-            "11" => "GTCAP",
-            "12" => "ICT",
-            "13" => "JFC",
-            "14" => "JGS",
-            "15" => "LTG",
-            "16" => "MBT",
-            "17" => "MEG",
-            "18" => "MER",
-            "19" => "MPI",
-            "20" => "PGOLD",
-            "21" => "RLC",
-            "22" => "RRHI",
-            "23" => "SECB",
-            "24" => "SM",
-            "25" => "SMC",
-            "26" => "SMPH",
-            "27" => "TEL",
-            "28" => "URC"
-        ];
-
-        /** Get user id. */
-        $userid = Auth::id();
-        if (is_null($userid)) {
-            $user = DB::table('users')->select('id')->where('username', 'reijo')->first();
-            $userid = $user->id;
-        }
-
-        /** Save to database. */
-        foreach ($blue as $chip) {
-            /** Check if record exist. */
-            $check = DB::table('stock_blues')
-                ->select('symbol')
-                ->where('symbol', '=', $chip)
-                ->first();
-
-            if (is_null($check)) {
-                /** If its not. */
-                DB::table('stock_blues')
-                    ->where('userid', '=', $userid)
-                    ->where('symbol', '=', $chip)
-                    ->insert([
-                        'userid' => $userid,
-                        'symbol' => $chip,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                    ]);
-            }
-        }
-
-        /** Fecth all record in stock blue table. */
-        $record = DB::table('stock_blues')
+        /** check record. */
+        $check = DB::table('stock_trades')
             ->select('symbol')
-            ->where('userid', $userid)
-            ->get()
-            ->toArray();
+            ->where('symbol', '=', 'PSEi')
+            ->first();
+        if (!is_null($check)) {
+            /** Blue chip default. */
+            $blue = [
+                "0" => "AC",
+                "1" => "AEV",
+                "2" => "AGI",
+                "3" => "ALI",
+                "4" => "AP",
+                "5" => "BDO",
+                "6" => "BLOOM",
+                "7" => "BPI",
+                "8" => "DMC",
+                "9" => "FGEN",
+                "10" => "GLO",
+                "11" => "GTCAP",
+                "12" => "ICT",
+                "13" => "JFC",
+                "14" => "JGS",
+                "15" => "LTG",
+                "16" => "MBT",
+                "17" => "MEG",
+                "18" => "MER",
+                "19" => "MPI",
+                "20" => "PGOLD",
+                "21" => "RLC",
+                "22" => "RRHI",
+                "23" => "SECB",
+                "24" => "SM",
+                "25" => "SMC",
+                "26" => "SMPH",
+                "27" => "TEL",
+                "28" => "URC"
+            ];
 
-        if (!is_null($record)) {
-            foreach ($record as $key => $value) {
-                /** Get additional stock data. */
-                $stock = DB::table('stock_trades')
-                    ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
-                    ->where('symbol', $value->symbol)
-                    ->first();
-                /** Push to record array. */
-                $record[$key] = $stock;
+            /** Get user id. */
+            $userid = Auth::id();
+            if (is_null($userid)) {
+                $user = DB::table('users')->select('id')->where('username', 'reijo')->first();
+                $userid = $user->id;
             }
+
+            /** Save to database. */
+            foreach ($blue as $chip) {
+                /** Check if record exist. */
+                $check = DB::table('stock_blues')
+                    ->select('symbol')
+                    ->where('symbol', '=', $chip)
+                    ->first();
+
+                if (is_null($check)) {
+                    /** If its not. */
+                    DB::table('stock_blues')
+                        ->where('userid', '=', $userid)
+                        ->where('symbol', '=', $chip)
+                        ->insert([
+                            'userid' => $userid,
+                            'symbol' => $chip,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+                }
+            }
+
+            /** Fecth all record in stock blue table. */
+            $record = DB::table('stock_blues')
+                ->select('symbol')
+                ->where('userid', $userid)
+                ->get()
+                ->toArray();
+
+            if (!is_null($record)) {
+                foreach ($record as $key => $value) {
+                    /** Get additional stock data. */
+                    $stock = DB::table('stock_trades')
+                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->where('symbol', $value->symbol)
+                        ->first();
+                    /** Push to record array. */
+                    $record[$key] = $stock;
+                }
+            } else {
+                return response(['message' => 'No record found.'], 200);
+            }
+
+            /** sort collection based on desired key. */
+            $sorted = collect($record)->sortByDesc(function ($item) {
+                return $item->netincomeaftertax;
+            });
+
+            /** resequence array keys. */
+            $stocks = array_values($sorted->toArray());
+
+            /** Call helper function. */
+            $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
+
+            /** Return something. */
+            return response(['message' => 'Process completed.', 'stocks' => $format], 200);
         } else {
-            return response(['message' => 'No record found.'], 200);
+            /** return something. */
+            return array('message' => 'There was no entry in the database.');
         }
-
-        /** sort collection based on desired key. */
-        $sorted = collect($record)->sortByDesc(function ($item) {
-            return $item->netincomeaftertax;
-        });
-
-        /** resequence array keys. */
-        $stocks = array_values($sorted->toArray());
-
-        /** Call helper function. */
-        $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
-
-        /** Return something. */
-        return response(['message' => 'Process completed.', 'stocks' => $format], 200);
     }
 
     /**

@@ -2,7 +2,7 @@
 import axios from "axios";
 
 /** Helper. */
-import { remapStocks } from "../helpers";
+import { mapObject } from "../helpers";
 
 /** Constant. */
 import {
@@ -44,7 +44,7 @@ export const stockStart = (token) => async (dispatch) => {
             method: "GET",
         });
         /** Use remap stocks helper. */
-        let result = remapStocks(data);
+        let result = mapObject(data);
 
         /** Save stocks to database. */
         result.map((item, index) => {

@@ -54,8 +54,8 @@ const Home = () => {
                         </div>
                     </section>
                     {/** Reason section. */}
-                    <section className="mb-2 grid auto-rows-min bg-stone-100 bg-opacity-70 border-b border-neutral-100">
-                        <div className="p-2 mb-2 uppercase text-stone-700 bg-stone-200 bg-opacity-50">
+                    <section className="mb-2 grid auto-rows-min bg-stone-100 bg-opacity-70 border-b border-slate-50">
+                        <div className="p-2 mb-2 uppercase text-stone-700 bg-stone-200 bg-opacity-75">
                             <h1>Why Orion Trade?</h1>
                         </div>
                         <div className="p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3">
@@ -114,11 +114,11 @@ const Home = () => {
                     </section>
                     {/** Story section. */}
                     <section className="grid auto-rows-min bg-zinc-200 bg-opacity-50 border-b border-neutral-100">
-                        <div className="p-2 mb-2 uppercase text-right text-green-700 bg-green-200 bg-opacity-50">
+                        <div className="p-2 mb-2 uppercase text-right text-green-700 bg-green-200 bg-opacity-75">
                             Our Stories
                         </div>
                         <div className="p-2 grid auto-rows-min gap-2 sm:grid-cols-2 md:grid-cols-3 border-three bg-stone-200 bg-opacity-40 hover:bg-stone-300 hover:bg-opacity-40">
-                            <div className="card flex flex-col">
+                            <div className="card flex bg-slate-50 flex-col">
                                 <div className="hover:graycale">
                                     <img
                                         className="w-400 h-200 object-cover w-full"
@@ -147,7 +147,7 @@ const Home = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="card flex flex-col">
+                            <div className="card flex bg-slate-50 flex-col">
                                 <div className="hover:graycale">
                                     <img
                                         className="w-400 h-200 object-cover w-full"
@@ -175,7 +175,7 @@ const Home = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="card flex flex-col">
+                            <div className="card flex bg-slate-50 flex-col">
                                 <div className="hover:graycale">
                                     <img
                                         className="w-400 h-200 object-cover w-full"
@@ -205,8 +205,8 @@ const Home = () => {
                         </div>
                     </section>
                     {/** Compare section. */}
-                    <section className="mb-2 grid auto-rows-min bg-neutral-200 bg-opacity-50 border-b border-neutral-100">
-                        <div className="p-2 mb-2 uppercase text-center text-purple-700 bg-purple-200 bg-opacity-50">
+                    <section className="mb-2 grid auto-rows-min bg-stone-100 bg-opacity-70 border-b border-slate-50">
+                        <div className="p-2 mb-2 uppercase text-center text-purple-700 bg-purple-200 bg-opacity-75">
                             Traditional Finance VS Cryptocurrency?
                         </div>
                         <div className="p-2 font-size">

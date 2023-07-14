@@ -283,6 +283,8 @@ export const logoutUser = (token) => async (dispatch) => {
 
         /** Remove data from local storage. */
         localStorage.removeItem("account");
+        localStorage.removeItem("bluechip");
+        localStorage.removeItem("common");
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({

@@ -1,8 +1,8 @@
 const Footer = () => {
     return (
-        <footer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-min gradient-blue-purple">
-            <div className="p-2 mb-2 text-sm md:text-md lg:text-lg">
-                <h3 className="border-bottom pb-2 uppercase text-stone-700 hover:text-stone-200">
+        <footer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-min gradient-blue-purple font-size text-slate-50">
+            <div className="p-2 mb-2">
+                <h3 className="border-bottom pb-2 uppercase text-slate-100 hover:text-stone-200">
                     About
                 </h3>
                 <p className="p-2">
@@ -11,8 +11,8 @@ const Footer = () => {
                     aliqua.
                 </p>
             </div>
-            <div className="p-2 mb-2 text-sm md:text-md lg:text-lg">
-                <h3 className="border-bottom pb-2 uppercase text-stone-700 hover:text-stone-200">
+            <div className="p-2 mb-2">
+                <h3 className="border-bottom pb-2 uppercase text-slate-100 hover:text-stone-200">
                     Resources
                 </h3>
                 <ul>
@@ -33,8 +33,8 @@ const Footer = () => {
                     </li>
                 </ul>
             </div>
-            <div className="p-2 mb-2 text-sm md:text-md lg:text-lg">
-                <h3 className="border-bottom pb-2 uppercase text-stone-700 hover:text-stone-200">
+            <div className="p-2 mb-2">
+                <h3 className="border-bottom pb-2 uppercase text-slate-100 hover:text-stone-200">
                     Socials
                 </h3>
                 <ul>
@@ -55,8 +55,8 @@ const Footer = () => {
                     </li>
                 </ul>
             </div>
-            <div className="p-2 mb-2 text-sm md:text-md lg:text-lg">
-                <h3 className="border-bottom pb-2 uppercase text-stone-700 hover:text-stone-200">
+            <div className="p-2 mb-2">
+                <h3 className="border-bottom pb-2 uppercase text-slate-100 hover:text-stone-200">
                     Contact
                 </h3>
                 <p className="p-2">Hire Me!</p>

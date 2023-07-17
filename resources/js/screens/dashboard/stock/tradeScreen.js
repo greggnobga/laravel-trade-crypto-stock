@@ -18,7 +18,10 @@ import Message from "../../../components/interfaces/message";
 import Loader from "../../../components/interfaces/loader";
 
 /** Action. */
-import { stockBlueChip, stockCommonChip } from "../../../actions/stockActions";
+import {
+    actStockBluechip,
+    actStockCommon,
+} from "../../../actions/stockActions";
 
 const Trade = () => {
     /** Use selector. */
@@ -72,16 +75,17 @@ const Trade = () => {
                 clearTimeout(timeout);
             };
         }
+
         /** Send request if no bluechip stock. */
         if (!bluechip) {
             /** Dispatch action. */
-            dispatch(stockBlueChip(access_token));
+            dispatch(actStockBluechip(access_token));
         }
 
         /** Send request if no common stock. */
         if (!common) {
             /** Dispatch action. */
-            dispatch(stockCommonChip(access_token));
+            dispatch(actStockCommon(access_token));
         }
 
         /** Use helper. */
@@ -276,7 +280,7 @@ const Trade = () => {
             {error && <Message variant="alert-warning" children={error} />}
             {message && <Message variant="alert-success" children={message} />}
             {/** Bluechip section. */}
-            <div className="m-2 grid auto-rows-min h-fit">
+            <div className="m-2 grid auto-rows-min h-fit font-size">
                 <div className="p-2 h-8 sm:10 uppercase">
                     <Icon id="trade" /> Blue Chip Stocks
                 </div>

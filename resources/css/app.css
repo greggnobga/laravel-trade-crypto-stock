@@ -31,6 +31,9 @@
 /** Tooltip Directives. */
 @import "components/tooltips.css";
 
+/** Modal Directives. */
+@import "components/modals.css";
+
 /* Hamburgers */
 @import "vendors/hamburgers.css";
 

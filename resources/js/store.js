@@ -20,6 +20,7 @@ import {
     stockSectorReducer,
     stockBlueReducer,
     stockCommonReducer,
+    stockWatchBuildReducer,
 } from "./reducers/stockReducers";
 
 /** Combine reducer. */
@@ -36,6 +37,7 @@ const reducer = combineReducers({
     stockSector: stockSectorReducer,
     stockBlue: stockBlueReducer,
     stockCommon: stockCommonReducer,
+    stockWatchBuild: stockWatchBuildReducer,
     showMessage: showMessageReducer,
 });
 
@@ -52,10 +54,15 @@ const commonFromStorage = localStorage.getItem("common")
     ? JSON.parse(localStorage.getItem("common"))
     : {};
 
+const buildFromStorage = localStorage.getItem("build")
+    ? JSON.parse(localStorage.getItem("build"))
+    : {};
+
 const initialState = {
     userLogin: accountFromStorage,
     stockBlue: bluechipFromStorage,
     stockCommon: commonFromStorage,
+    stockWatchBuild: buildFromStorage,
 };
 
 /** Middleware. */

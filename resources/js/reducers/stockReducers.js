@@ -20,6 +20,9 @@ import {
     STOCK_COMMON_REQUEST,
     STOCK_COMMON_SUCCESS,
     STOCK_COMMON_FAILURE,
+    STOCK_WATCH_BUILD_REQUEST,
+    STOCK_WATCH_BUILD_SUCCESS,
+    STOCK_WATCH_BUILD_FAILURE,
 } from "../constants/stockConstants";
 
 export const stockStartReducer = (state = {}, action) => {
@@ -107,6 +110,19 @@ export const stockCommonReducer = (state = {}, action) => {
         case STOCK_COMMON_SUCCESS:
             return { loading: false, common: action.payload };
         case STOCK_COMMON_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const stockWatchBuildReducer = (state = {}, action) => {
+    switch (action.type) {
+        case STOCK_WATCH_BUILD_REQUEST:
+            return { loading: true };
+        case STOCK_WATCH_BUILD_SUCCESS:
+            return { loading: false, build: action.payload };
+        case STOCK_WATCH_BUILD_FAILURE:
             return { loading: false, error: action.payload };
         default:
             return state;

@@ -16,11 +16,11 @@ import Loader from "../components/interfaces/loader";
 /** Action. */
 import { resendEmail } from "../actions/userActions";
 import {
-    stockStart,
-    stockPrice,
-    stockReport,
-    stockDividend,
-    stockSector,
+    actStockStart,
+    actStockPrice,
+    actStockReport,
+    actStockDividend,
+    actStockSector,
 } from "../actions/stockActions";
 
 const Dashboard = () => {
@@ -74,27 +74,27 @@ const Dashboard = () => {
     /** Fecth data from external endpoint. */
     const stockStartHandler = () => {
         /** Dispatch action. */
-        dispatch(stockStart(access_token));
+        dispatch(actStockStart(access_token));
     };
 
     const stockPriceHandler = () => {
         /** Dispatch action. */
-        dispatch(stockPrice(access_token));
+        dispatch(actStockPrice(access_token));
     };
 
     const stockReportHandler = () => {
         /** Dispatch action. */
-        dispatch(stockReport(access_token));
+        dispatch(actStockReport(access_token));
     };
 
     const stockDividendHandler = () => {
         /** Dispatch action. */
-        dispatch(stockDividend(access_token));
+        dispatch(actStockDividend(access_token));
     };
 
     const stockSectorHandler = () => {
         /** Dispatch action. */
-        dispatch(stockSector(access_token));
+        dispatch(actStockSector(access_token));
     };
     /** Return. */
     return (

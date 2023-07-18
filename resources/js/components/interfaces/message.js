@@ -3,16 +3,16 @@ import { useState } from "react";
 
 const Message = ({ variant, children }) => {
     /** Use dispatch. */
-    const [show, setShow] = useState(true);
+    const [message, setMessage] = useState(true);
     /** Message handles. */
     const messageHandler = () => {
-        setShow(!show);
+        setMessage(!message);
     };
 
     /** Return. */
     return (
         <>
-            {show && (
+            {message && (
                 <div
                     className="font-size m-2 cursor-pointer hover:animate-pulse"
                     onClick={messageHandler}

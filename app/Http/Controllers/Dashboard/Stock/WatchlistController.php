@@ -14,11 +14,12 @@ class WatchlistController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
-            /** forward destroy command. */
-            if ($request->input('table') === 'watchlist' && $request->input('statement') === 'trash') {
-                return $this->destroy(['table' => 'watchlist', 'input' => $request->input('input')]);
+            /** forward store command. */
+            if ($request->input('section') === 'store') {
+                return $this->store($request->input('symbol'));
             }
         }
+
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
             /** forward fetch command. */
@@ -142,7 +143,7 @@ class WatchlistController extends Controller {
                     /** resequence array keys. */
                     $sector['financials'] = array_values($sector['financials']);
 
-                    /** Call helper function. */
+                    /** call helper function. */
                     $response['financials'] = $this->helpers(['purpose' => 'format', 'source' => $sector['financials']]);
                 }
 
@@ -159,7 +160,7 @@ class WatchlistController extends Controller {
                     /** resequence array keys. */
                     $sector['smallmediumemergingboards'] = array_values($sector['smallmediumemergingboards']);
 
-                    /** Call helper function. */
+                    /** call helper function. */
                     $response['smallmediumemergingboards'] = $this->helpers(['purpose' => 'format', 'source' => $sector['smallmediumemergingboards']]);
                 }
 
@@ -186,6 +187,34 @@ class WatchlistController extends Controller {
         } else {
             /** return something. */
             return response(['message' => 'There were no records discovered.'], 200);
+        }
+    }
+
+    public function store($data) {
+        /** check if record exists. */
+        $check =  DB::table('stock_watchlists')
+            ->select('symbol')
+            ->where('userid', Auth::id())
+            ->where('symbol', $data)
+            ->first();
+
+        /** if null do something. */
+        if (is_null($check)) {
+            $insert = DB::table('stock_watchlists')
+                ->insert([
+                    'userid' => Auth::id(),
+                    'symbol' => strip_tags($data),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+
+            /** return something. */
+            if ($insert) {
+                return ['message' => $data . ' has been added to the database.'];
+            }
+        } else {
+            /** return something. */
+            return response(['message' => 'Record already exits.'], 200);
         }
     }
 

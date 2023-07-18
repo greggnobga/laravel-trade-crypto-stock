@@ -1,3 +1,3 @@
 .font-size {
-    @apply text-[.50rem] sm:text-[.75rem] !important;
+    @apply text-[.60rem] sm:text-[.65rem] md:text-[.70rem] lg:text-[.75rem] !important;
 }

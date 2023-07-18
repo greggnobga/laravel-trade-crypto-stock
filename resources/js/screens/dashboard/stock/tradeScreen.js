@@ -14,8 +14,8 @@ import { chunkObject } from "../../../helpers";
 
 /** Component. */
 import Icon from "../../../components/icons";
-import Message from "../../../components/interfaces/message";
 import Loader from "../../../components/interfaces/loader";
+import Message from "../../../components/interfaces/message";
 
 /** Action. */
 import {
@@ -159,38 +159,38 @@ const Trade = () => {
 
     /** Desktop header. */
     const desktopHeader = (
-        <div className="card grid auto-rows-min grid-cols-8 h-fit rounded-t-md bg-stone-100 font-size">
+        <div className="card grid auto-rows-min grid-cols-8 h-fit rounded-t-md bg-stone-100 uppercase">
             <div className="p-2">
-                <p className="uppercase text-green-500">Symbol</p>
+                <p className="text-green-500">Symbol</p>
             </div>
             <div className="p-2">
-                <p className="uppercase text-green-500">Price</p>
+                <p className="text-green-500">Price</p>
             </div>
             <div className="p-2">
-                <p className="uppercase text-green-500">Value</p>
+                <p className="text-green-500">Value</p>
             </div>
             <div className="p-2">
-                <p className="uppercase text-green-500">Price Range</p>
+                <p className="text-green-500">Price Range</p>
             </div>
             <div className="p-2">
-                <p className="uppercase text-green-500">Total Assets</p>
+                <p className="text-green-500">Total Assets</p>
             </div>
             <div className="p-2">
-                <p className="uppercase text-green-500">Net Income</p>
+                <p className="text-green-500">Net Income</p>
             </div>
             <div className="p-2">
-                <p className="uppercase text-green-500">Debt Equity Ratio</p>
+                <p className="text-green-500">Debt Equity Ratio</p>
             </div>
             <div className="p-2">
-                <p className="uppercase text-green-500">Dividend Yield</p>
+                <p className="text-green-500">Dividend Yield</p>
             </div>
         </div>
     );
 
-    /** Desktop content. */
-    const desktopContent = (item) => {
+    /** Desktop template. */
+    const desktopTemplate = (item) => {
         return (
-            <div className="card grid auto-rows-min grid-cols-8 h-fit border-b border-stone-200 bg-stone-50 hover:text-green-500 font-size">
+            <div className="card grid auto-rows-min grid-cols-8 h-fit border-b border-stone-100 bg-stone-50 hover:text-green-500">
                 <div className="p-2">
                     <span className="uppercase">{item.symbol}</span>
                 </div>
@@ -219,57 +219,57 @@ const Trade = () => {
         );
     };
 
-    /** Mobile content. */
-    const mobileContent = (item) => {
+    /** Mobile template. */
+    const mobileTemplate = (item) => {
         return (
-            <div className="m-1 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-green-500 font-size">
-                <div className="p-1">
-                    <p className="uppercase p-1 rounded-t-md bg-stone-100 border-b border-stone-200 text-green-500">
+            <div className="m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-green-500">
+                <div className="p-2">
+                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                         Symbol
                     </p>
-                    <p className="pt-1 text-center">{item.symbol}</p>
+                    <p className="pt-2 text-center">{item.symbol}</p>
                 </div>
-                <div className="p-1">
-                    <p className="uppercase p-1 rounded-t-md bg-stone-100 border-b border-stone-200 text-green-500">
+                <div className="p-2">
+                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                         Price
                     </p>
-                    <p className="pt-1 text-center">{item.price}</p>
+                    <p className="pt-2 text-center">{item.price}</p>
                 </div>
-                <div className="p-1">
-                    <p className="uppercase p-1 rounded-t-md bg-stone-100 border-b border-stone-200 text-green-500">
+                <div className="p-2">
+                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                         Value
                     </p>
-                    <p className="pt-1 text-center">{item.value}</p>
+                    <p className="pt-2 text-center">{item.value}</p>
                 </div>
-                <div className="p-1">
-                    <p className="uppercase p-1 rounded-t-md bg-stone-100 border-b border-stone-200 text-green-500">
+                <div className="p-2">
+                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                         Price Range
                     </p>
-                    <p className="pt-1 text-center">{item.pricerange}</p>
+                    <p className="pt-2 text-center">{item.pricerange}</p>
                 </div>
-                <div className="p-1">
-                    <p className="uppercase p-1 rounded-t-md bg-stone-100 border-b border-stone-200 text-green-500">
+                <div className="p-2">
+                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                         Total Assets
                     </p>
-                    <p className="pt-1 text-center">{item.totalassets}</p>
+                    <p className="pt-2 text-center">{item.totalassets}</p>
                 </div>
-                <div className="p-1">
-                    <p className="uppercase p-1 rounded-t-md bg-stone-100 border-b border-stone-200 text-green-500">
+                <div className="p-2">
+                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                         Net Income
                     </p>
-                    <p className="pt-1 text-center">{item.netincomeaftertax}</p>
+                    <p className="pt-2 text-center">{item.netincomeaftertax}</p>
                 </div>
-                <div className="p-1">
-                    <p className="uppercase p-1 rounded-t-md bg-stone-100 border-b border-stone-200 text-green-500">
+                <div className="p-2">
+                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                         Debt Equity Ratio
                     </p>
-                    <p className="pt-1 text-center">{item.debtequityratio}</p>
+                    <p className="pt-2 text-center">{item.debtequityratio}</p>
                 </div>
-                <div className="p-1">
-                    <p className="uppercase p-1 rounded-t-md bg-stone-100 border-b border-stone-200 text-green-500">
+                <div className="p-2">
+                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                         Dividend Yield
                     </p>
-                    <p className="pt-1 text-center">{item.dividendyield}</p>
+                    <p className="pt-2 text-center">{item.dividendyield}</p>
                 </div>
             </div>
         );
@@ -280,7 +280,7 @@ const Trade = () => {
             {error && <Message variant="alert-warning" children={error} />}
             {message && <Message variant="alert-success" children={message} />}
             {/** Bluechip section. */}
-            <div className="m-2 grid auto-rows-min h-fit font-size">
+            <div className="m-2 grid auto-rows-min h-fit">
                 <div className="p-2 h-8 sm:10 uppercase">
                     <Icon id="trade" /> Blue Chip Stocks
                 </div>
@@ -293,7 +293,7 @@ const Trade = () => {
                                 {bluechipChunk && bluechipChunk ? (
                                     <>
                                         {bluechipChunk.map((item, index) => {
-                                            return mobileContent(item);
+                                            return mobileTemplate(item);
                                         })}
                                     </>
                                 ) : (
@@ -301,7 +301,7 @@ const Trade = () => {
                                         <>
                                             {bluechipChunks[0].map(
                                                 (item, index) => {
-                                                    return mobileContent(item);
+                                                    return mobileTemplate(item);
                                                 }
                                             )}
                                         </>
@@ -310,7 +310,7 @@ const Trade = () => {
 
                                 {bluechipIndex && (
                                     <div className="grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1">
-                                        <div clasName="flex flex-row font-size gap-1 m-1">
+                                        <div clasName="flex flex-row gap-1 m-1">
                                             {bluechipIndex.map(
                                                 (item, index) => {
                                                     return bluechipPagination(
@@ -332,7 +332,7 @@ const Trade = () => {
                                 <>
                                     {desktopHeader}
                                     {bluechipChunk.map((item, index) => {
-                                        return desktopContent(item);
+                                        return desktopTemplate(item);
                                     })}
                                 </>
                             ) : (
@@ -341,7 +341,7 @@ const Trade = () => {
                                         {desktopHeader}
                                         {bluechipChunks[0].map(
                                             (item, index) => {
-                                                return desktopContent(item);
+                                                return desktopTemplate(item);
                                             }
                                         )}
                                     </>
@@ -349,8 +349,8 @@ const Trade = () => {
                             )}
 
                             {bluechipIndex && (
-                                <div className="card grid auto-rows-min col-span-8 h-fit border-b border-stone-200 bg-stone-50 text-right">
-                                    <div clasName="flex flex-row font-size gap-2 m-2">
+                                <div className="card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right">
+                                    <div clasName="flex flex-row gap-2 m-2">
                                         {bluechipIndex.map((item, index) => {
                                             return bluechipPagination(
                                                 item,
@@ -379,7 +379,7 @@ const Trade = () => {
                                 {commonChunk && commonChunk ? (
                                     <>
                                         {commonChunk.map((item, index) => {
-                                            return mobileContent(item);
+                                            return mobileTemplate(item);
                                         })}
                                     </>
                                 ) : (
@@ -387,7 +387,7 @@ const Trade = () => {
                                         <>
                                             {commonChunks[0].map(
                                                 (item, index) => {
-                                                    return mobileContent(item);
+                                                    return mobileTemplate(item);
                                                 }
                                             )}
                                         </>
@@ -396,7 +396,7 @@ const Trade = () => {
 
                                 {commonIndex && (
                                     <div className="grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1">
-                                        <div clasName="flex flex-row font-size gap-1 m-1">
+                                        <div clasName="flex flex-row gap-1 m-1">
                                             {commonIndex.map((item, index) => {
                                                 return commonPagination(
                                                     item,
@@ -416,7 +416,7 @@ const Trade = () => {
                                 <>
                                     {desktopHeader}
                                     {commonChunk.map((item, index) => {
-                                        return desktopContent(item);
+                                        return desktopTemplate(item);
                                     })}
                                 </>
                             ) : (
@@ -424,15 +424,15 @@ const Trade = () => {
                                     <>
                                         {desktopHeader}
                                         {commonChunks[0].map((item, index) => {
-                                            return desktopContent(item);
+                                            return desktopTemplate(item);
                                         })}
                                     </>
                                 )
                             )}
 
                             {commonIndex && (
-                                <div className="card grid auto-rows-min col-span-8 h-fit border-b border-stone-200 bg-stone-50 text-right">
-                                    <div clasName="flex flex-row font-size gap-2 m-2">
+                                <div className="card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right">
+                                    <div clasName="flex flex-row gap-2 m-2">
                                         {commonIndex.map((item, index) => {
                                             return commonPagination(
                                                 item,

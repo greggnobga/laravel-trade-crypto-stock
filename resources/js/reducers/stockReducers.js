@@ -23,6 +23,9 @@ import {
     STOCK_WATCH_BUILD_REQUEST,
     STOCK_WATCH_BUILD_SUCCESS,
     STOCK_WATCH_BUILD_FAILURE,
+    STOCK_WATCH_STORE_REQUEST,
+    STOCK_WATCH_STORE_SUCCESS,
+    STOCK_WATCH_STORE_FAILURE,
 } from "../constants/stockConstants";
 
 export const stockStartReducer = (state = {}, action) => {
@@ -123,6 +126,19 @@ export const stockWatchBuildReducer = (state = {}, action) => {
         case STOCK_WATCH_BUILD_SUCCESS:
             return { loading: false, build: action.payload };
         case STOCK_WATCH_BUILD_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const stockWatchStoreReducer = (state = {}, action) => {
+    switch (action.type) {
+        case STOCK_WATCH_STORE_REQUEST:
+            return { loading: true };
+        case STOCK_WATCH_STORE_SUCCESS:
+            return { loading: false, success: action.payload };
+        case STOCK_WATCH_STORE_FAILURE:
             return { loading: false, error: action.payload };
         default:
             return state;

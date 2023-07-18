@@ -21,6 +21,7 @@ import {
     stockBlueReducer,
     stockCommonReducer,
     stockWatchBuildReducer,
+    stockWatchStoreReducer,
 } from "./reducers/stockReducers";
 
 /** Combine reducer. */
@@ -38,6 +39,7 @@ const reducer = combineReducers({
     stockBlue: stockBlueReducer,
     stockCommon: stockCommonReducer,
     stockWatchBuild: stockWatchBuildReducer,
+    stockWatchStore: stockWatchStoreReducer,
     showMessage: showMessageReducer,
 });
 

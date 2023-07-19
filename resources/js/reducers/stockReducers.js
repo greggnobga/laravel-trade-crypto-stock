@@ -26,6 +26,12 @@ import {
     STOCK_WATCH_STORE_REQUEST,
     STOCK_WATCH_STORE_SUCCESS,
     STOCK_WATCH_STORE_FAILURE,
+    STOCK_WATCH_FETCH_REQUEST,
+    STOCK_WATCH_FETCH_SUCCESS,
+    STOCK_WATCH_FETCH_FAILURE,
+    STOCK_WATCH_DESTROY_REQUEST,
+    STOCK_WATCH_DESTROY_SUCCESS,
+    STOCK_WATCH_DESTROY_FAILURE,
 } from "../constants/stockConstants";
 
 export const stockStartReducer = (state = {}, action) => {
@@ -139,6 +145,32 @@ export const stockWatchStoreReducer = (state = {}, action) => {
         case STOCK_WATCH_STORE_SUCCESS:
             return { loading: false, success: action.payload };
         case STOCK_WATCH_STORE_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const stockWatchFetchReducer = (state = {}, action) => {
+    switch (action.type) {
+        case STOCK_WATCH_FETCH_REQUEST:
+            return { loading: true };
+        case STOCK_WATCH_FETCH_SUCCESS:
+            return { loading: false, watchlist: action.payload };
+        case STOCK_WATCH_FETCH_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const stockWatchDestroyReducer = (state = {}, action) => {
+    switch (action.type) {
+        case STOCK_WATCH_FETCH_REQUEST:
+            return { loading: true };
+        case STOCK_WATCH_FETCH_SUCCESS:
+            return { loading: false, success: action.payload };
+        case STOCK_WATCH_FETCH_FAILURE:
             return { loading: false, error: action.payload };
         default:
             return state;

@@ -22,6 +22,8 @@ import {
     stockCommonReducer,
     stockWatchBuildReducer,
     stockWatchStoreReducer,
+    stockWatchFetchReducer,
+    stockWatchDestroyReducer,
 } from "./reducers/stockReducers";
 
 /** Combine reducer. */
@@ -40,6 +42,8 @@ const reducer = combineReducers({
     stockCommon: stockCommonReducer,
     stockWatchBuild: stockWatchBuildReducer,
     stockWatchStore: stockWatchStoreReducer,
+    stockWatchFetch: stockWatchFetchReducer,
+    stockWatchDestroy: stockWatchDestroyReducer,
     showMessage: showMessageReducer,
 });
 
@@ -60,11 +64,16 @@ const buildFromStorage = localStorage.getItem("build")
     ? JSON.parse(localStorage.getItem("build"))
     : {};
 
+const fetchFromStorage = localStorage.getItem("fetch")
+    ? JSON.parse(localStorage.getItem("fetch"))
+    : {};
+
 const initialState = {
     userLogin: accountFromStorage,
     stockBlue: bluechipFromStorage,
     stockCommon: commonFromStorage,
     stockWatchBuild: buildFromStorage,
+    stockWatchFetch: fetchFromStorage,
 };
 
 /** Middleware. */

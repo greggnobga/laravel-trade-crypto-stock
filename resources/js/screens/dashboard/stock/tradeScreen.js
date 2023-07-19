@@ -16,11 +16,21 @@ import { chunkObject } from "../../../helpers";
 import Icon from "../../../components/icons";
 import Loader from "../../../components/interfaces/loader";
 import Message from "../../../components/interfaces/message";
+import Container from "../../../components/interfaces/container";
+
+/** Template. */
+import {
+    desktopHeader,
+    desktopTemplate,
+    mobileTemplate,
+    paginationTemplate,
+} from "./template";
 
 /** Action. */
 import {
     actStockBluechip,
     actStockCommon,
+    actStockWatchStore,
 } from "../../../actions/stockActions";
 
 const Trade = () => {
@@ -128,324 +138,218 @@ const Trade = () => {
         setBluechipChunk(bluechipChunks[index]);
     };
 
-    /** Desktop pagination button. */
-    const commonPagination = (item, index) => {
-        return (
-            <button
-                className="p-2 hover:bg-slate-100 text-[.75rem] hover:text-green-500"
-                type="button"
-                onClick={() => {
-                    commonHandler(index);
-                }}
-            >
-                {index + 1}
-            </button>
-        );
+    /** Store handler. */
+    const storeHandler = (symbol) => {
+        dispatch(actStockWatchStore(access_token, symbol));
     };
 
-    const bluechipPagination = (item, index) => {
-        return (
-            <button
-                className="p-2 hover:bg-slate-100 text-[.75rem] hover:text-green-500"
-                type="button"
-                onClick={() => {
-                    bluechipHandler(index);
-                }}
-            >
-                {index + 1}
-            </button>
-        );
-    };
-
-    /** Desktop header. */
-    const desktopHeader = (
-        <div className="card grid auto-rows-min grid-cols-8 h-fit rounded-t-md bg-stone-100 uppercase">
-            <div className="p-2">
-                <p className="text-green-500">Symbol</p>
-            </div>
-            <div className="p-2">
-                <p className="text-green-500">Price</p>
-            </div>
-            <div className="p-2">
-                <p className="text-green-500">Value</p>
-            </div>
-            <div className="p-2">
-                <p className="text-green-500">Price Range</p>
-            </div>
-            <div className="p-2">
-                <p className="text-green-500">Total Assets</p>
-            </div>
-            <div className="p-2">
-                <p className="text-green-500">Net Income</p>
-            </div>
-            <div className="p-2">
-                <p className="text-green-500">Debt Equity Ratio</p>
-            </div>
-            <div className="p-2">
-                <p className="text-green-500">Dividend Yield</p>
-            </div>
-        </div>
+    /** Container header for bluechip. */
+    const containerBluechipHeader = (
+        <>
+            <Icon id="trade" /> Blue Chip Stocks
+        </>
     );
 
-    /** Desktop template. */
-    const desktopTemplate = (item) => {
-        return (
-            <div className="card grid auto-rows-min grid-cols-8 h-fit border-b border-stone-100 bg-stone-50 hover:text-green-500">
-                <div className="p-2">
-                    <span className="uppercase">{item.symbol}</span>
-                </div>
-                <div className="p-2">
-                    <span className="uppercase">{item.price}</span>
-                </div>
-                <div className="p-2">
-                    <span className="uppercase">{item.value}</span>
-                </div>
-                <div className="p-2">
-                    <span className="uppercase">{item.pricerange}</span>
-                </div>
-                <div className="p-2">
-                    <span className="uppercase">{item.totalassets}</span>
-                </div>
-                <div className="p-2">
-                    <span className="uppercase">{item.netincomeaftertax}</span>
-                </div>
-                <div className="p-2">
-                    <span className="uppercase">{item.debtequityratio}</span>
-                </div>
-                <div className="p-2">
-                    <span className="uppercase">{item.dividendyield}</span>
-                </div>
-            </div>
-        );
-    };
+    /** Container header for common. */
+    const containerCommonHeader = (
+        <>
+            <Icon id="trade" /> Common Stocks
+        </>
+    );
 
-    /** Mobile template. */
-    const mobileTemplate = (item) => {
-        return (
-            <div className="m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-green-500">
-                <div className="p-2">
-                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
-                        Symbol
-                    </p>
-                    <p className="pt-2 text-center">{item.symbol}</p>
-                </div>
-                <div className="p-2">
-                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
-                        Price
-                    </p>
-                    <p className="pt-2 text-center">{item.price}</p>
-                </div>
-                <div className="p-2">
-                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
-                        Value
-                    </p>
-                    <p className="pt-2 text-center">{item.value}</p>
-                </div>
-                <div className="p-2">
-                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
-                        Price Range
-                    </p>
-                    <p className="pt-2 text-center">{item.pricerange}</p>
-                </div>
-                <div className="p-2">
-                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
-                        Total Assets
-                    </p>
-                    <p className="pt-2 text-center">{item.totalassets}</p>
-                </div>
-                <div className="p-2">
-                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
-                        Net Income
-                    </p>
-                    <p className="pt-2 text-center">{item.netincomeaftertax}</p>
-                </div>
-                <div className="p-2">
-                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
-                        Debt Equity Ratio
-                    </p>
-                    <p className="pt-2 text-center">{item.debtequityratio}</p>
-                </div>
-                <div className="p-2">
-                    <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
-                        Dividend Yield
-                    </p>
-                    <p className="pt-2 text-center">{item.dividendyield}</p>
-                </div>
-            </div>
-        );
-    };
     /** Return something. */
     return (
         <>
             {error && <Message variant="alert-warning" children={error} />}
             {message && <Message variant="alert-success" children={message} />}
             {/** Bluechip section. */}
-            <div className="m-2 grid auto-rows-min h-fit">
-                <div className="p-2 h-8 sm:10 uppercase">
-                    <Icon id="trade" /> Blue Chip Stocks
-                </div>
-                <div className="p-2">
-                    {isMobile ? (
-                        loadblue ? (
-                            <Loader />
-                        ) : (
-                            <>
-                                {bluechipChunk && bluechipChunk ? (
-                                    <>
-                                        {bluechipChunk.map((item, index) => {
-                                            return mobileTemplate(item);
-                                        })}
-                                    </>
-                                ) : (
-                                    bluechipChunks && (
-                                        <>
-                                            {bluechipChunks[0].map(
-                                                (item, index) => {
-                                                    return mobileTemplate(item);
-                                                }
-                                            )}
-                                        </>
-                                    )
-                                )}
-
-                                {bluechipIndex && (
-                                    <div className="grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1">
-                                        <div clasName="flex flex-row gap-1 m-1">
-                                            {bluechipIndex.map(
-                                                (item, index) => {
-                                                    return bluechipPagination(
-                                                        item,
-                                                        index
-                                                    );
-                                                }
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                            </>
-                        )
-                    ) : loadblue ? (
+            <Container header={containerBluechipHeader}>
+                {isMobile ? (
+                    loadblue ? (
                         <Loader />
                     ) : (
                         <>
                             {bluechipChunk && bluechipChunk ? (
                                 <>
-                                    {desktopHeader}
-                                    {bluechipChunk.map((item, index) => {
-                                        return desktopTemplate(item);
+                                    {bluechipChunk.map((item) => {
+                                        return mobileTemplate({
+                                            item: item,
+                                            action: storeHandler,
+                                            text: "add",
+                                            icon: "add",
+                                        });
                                     })}
                                 </>
                             ) : (
                                 bluechipChunks && (
                                     <>
-                                        {desktopHeader}
-                                        {bluechipChunks[0].map(
-                                            (item, index) => {
-                                                return desktopTemplate(item);
-                                            }
-                                        )}
+                                        {bluechipChunks[0].map((item) => {
+                                            return mobileTemplate({
+                                                item: item,
+                                                action: storeHandler,
+                                                text: "add",
+                                                icon: "add",
+                                            });
+                                        })}
                                     </>
                                 )
                             )}
 
                             {bluechipIndex && (
-                                <div className="card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right">
-                                    <div clasName="flex flex-row gap-2 m-2">
+                                <div className="grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1">
+                                    <div clasName="flex flex-row gap-1 m-1">
                                         {bluechipIndex.map((item, index) => {
-                                            return bluechipPagination(
-                                                item,
-                                                index
-                                            );
+                                            return paginationTemplate({
+                                                index: index,
+                                                turn: bluechipHandler,
+                                            });
                                         })}
                                     </div>
                                 </div>
                             )}
                         </>
-                    )}
-                </div>
-            </div>
-
-            {/** Common section. */}
-            <div className="m-2 grid auto-rows-min h-fit">
-                <div className="p-2 h-8 sm:10 uppercase">
-                    <Icon id="trade" /> Common Stocks
-                </div>
-                <div className="p-2">
-                    {isMobile ? (
-                        loadcommon ? (
-                            <Loader />
-                        ) : (
+                    )
+                ) : loadblue ? (
+                    <Loader />
+                ) : (
+                    <>
+                        {bluechipChunk && bluechipChunk ? (
                             <>
-                                {commonChunk && commonChunk ? (
-                                    <>
-                                        {commonChunk.map((item, index) => {
-                                            return mobileTemplate(item);
-                                        })}
-                                    </>
-                                ) : (
-                                    commonChunks && (
-                                        <>
-                                            {commonChunks[0].map(
-                                                (item, index) => {
-                                                    return mobileTemplate(item);
-                                                }
-                                            )}
-                                        </>
-                                    )
-                                )}
-
-                                {commonIndex && (
-                                    <div className="grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1">
-                                        <div clasName="flex flex-row gap-1 m-1">
-                                            {commonIndex.map((item, index) => {
-                                                return commonPagination(
-                                                    item,
-                                                    index
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                )}
+                                {desktopHeader}
+                                {bluechipChunk.map((item) => {
+                                    return desktopTemplate({
+                                        item: item,
+                                        action: storeHandler,
+                                        text: "add",
+                                        icon: "add",
+                                    });
+                                })}
                             </>
-                        )
-                    ) : loadcommon ? (
+                        ) : (
+                            bluechipChunks && (
+                                <>
+                                    {desktopHeader}
+                                    {bluechipChunks[0].map((item) => {
+                                        return desktopTemplate({
+                                            item: item,
+                                            action: storeHandler,
+                                            text: "add",
+                                            icon: "add",
+                                        });
+                                    })}
+                                </>
+                            )
+                        )}
+
+                        {bluechipIndex && (
+                            <div className="card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right">
+                                <div clasName="flex flex-row gap-2 m-2">
+                                    {bluechipIndex.map((item, index) => {
+                                        return paginationTemplate({
+                                            index: index,
+                                            turn: bluechipHandler,
+                                        });
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </>
+                )}
+            </Container>
+            {/** Common section. */}
+            <Container header={containerCommonHeader}>
+                {isMobile ? (
+                    loadcommon ? (
                         <Loader />
                     ) : (
                         <>
                             {commonChunk && commonChunk ? (
                                 <>
-                                    {desktopHeader}
-                                    {commonChunk.map((item, index) => {
-                                        return desktopTemplate(item);
+                                    {commonChunk.map((item) => {
+                                        return mobileTemplate({
+                                            item: item,
+                                            action: storeHandler,
+                                            text: "add",
+                                            icon: "add",
+                                        });
                                     })}
                                 </>
                             ) : (
                                 commonChunks && (
                                     <>
-                                        {desktopHeader}
-                                        {commonChunks[0].map((item, index) => {
-                                            return desktopTemplate(item);
+                                        {commonChunks[0].map((item) => {
+                                            return mobileTemplate({
+                                                item: item,
+                                                action: storeHandler,
+                                                text: "add",
+                                                icon: "add",
+                                            });
                                         })}
                                     </>
                                 )
                             )}
 
                             {commonIndex && (
-                                <div className="card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right">
-                                    <div clasName="flex flex-row gap-2 m-2">
+                                <div className="grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1">
+                                    <div clasName="flex flex-row gap-1 m-1">
                                         {commonIndex.map((item, index) => {
-                                            return commonPagination(
-                                                item,
-                                                index
-                                            );
+                                            return paginationTemplate({
+                                                index: index,
+                                                turn: commonHandler,
+                                            });
                                         })}
                                     </div>
                                 </div>
                             )}
                         </>
-                    )}
-                </div>
-            </div>
+                    )
+                ) : loadcommon ? (
+                    <Loader />
+                ) : (
+                    <>
+                        {commonChunk && commonChunk ? (
+                            <>
+                                {desktopHeader}
+                                {commonChunk.map((item) => {
+                                    return desktopTemplate({
+                                        item: item,
+                                        action: storeHandler,
+                                        text: "add",
+                                        icon: "add",
+                                    });
+                                })}
+                            </>
+                        ) : (
+                            commonChunks && (
+                                <>
+                                    {desktopHeader}
+                                    {commonChunks[0].map((item) => {
+                                        return desktopTemplate({
+                                            item: item,
+                                            action: storeHandler,
+                                            text: "add",
+                                            icon: "add",
+                                        });
+                                    })}
+                                </>
+                            )
+                        )}
+
+                        {commonIndex && (
+                            <div className="card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right">
+                                <div clasName="flex flex-row gap-2 m-2">
+                                    {commonIndex.map((item, index) => {
+                                        return paginationTemplate({
+                                            index: index,
+                                            turn: commonHandler,
+                                        });
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </>
+                )}
+            </Container>
         </>
     );
 };

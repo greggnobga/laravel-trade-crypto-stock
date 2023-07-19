@@ -16,15 +16,24 @@ class WatchlistController extends Controller {
         if ($request->method() === 'POST') {
             /** forward store command. */
             if ($request->input('section') === 'store') {
-                return $this->store($request->input('symbol'));
+                return $this->store($request->all());
+            }
+            /** forward destroy command. */
+            if ($request->input('section') === 'destroy') {
+                return $this->destroy($request->all());
             }
         }
 
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
-            /** forward fetch command. */
+            /** forward buld command. */
             if ($request->input('section') === 'build') {
                 return $this->build();
+            }
+
+            /** forward fetch command. */
+            if ($request->input('section') === 'fetch') {
+                return $this->fetch();
             }
         }
     }
@@ -190,12 +199,15 @@ class WatchlistController extends Controller {
         }
     }
 
+    /**
+     * Store watchlist.
+     */
     public function store($data) {
         /** check if record exists. */
         $check =  DB::table('stock_watchlists')
             ->select('symbol')
             ->where('userid', Auth::id())
-            ->where('symbol', $data)
+            ->where('symbol', $data['symbol'])
             ->first();
 
         /** if null do something. */
@@ -203,14 +215,14 @@ class WatchlistController extends Controller {
             $insert = DB::table('stock_watchlists')
                 ->insert([
                     'userid' => Auth::id(),
-                    'symbol' => strip_tags($data),
+                    'symbol' => strip_tags($data['symbol']),
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
 
             /** return something. */
             if ($insert) {
-                return ['message' => $data . ' has been added to the database.'];
+                return ['message' => $data['symbol'] . ' has been added to the database.'];
             }
         } else {
             /** return something. */
@@ -225,156 +237,29 @@ class WatchlistController extends Controller {
         /** repository. */
         $response = [];
         /** fetch unique sector. */
-        $sectors =  DB::table('stock_trades')
-            ->select('sector')
-            ->get()
-            ->unique();
+        $watchlist =  DB::table('stock_watchlists')
+            ->select('symbol')
+            ->where('userid', Auth::id())
+            ->get();
+
         /** check if sectors is not empty. */
-        if ($sectors->isNotEmpty()) {
-            /** search record by sector. */
-            foreach ($sectors as $value) {
-                if ($value->sector == 'miningandoil') {
-                    /** fetch stocks. */
-                    $sector['miningandoils'] = DB::table('stock_watchlists')
-                        ->select('id', 'symbol', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                        ->where('userid', '=', Auth::id())
-                        ->where('sector', '=', $value->sector)
-                        ->where('earningspershare', '>', 0)
-                        ->where('netincomebeforetax', '>', 0)
-                        ->orderBy('symbol', 'desc')
-                        ->get()
-                        ->toArray();
+        if (!is_null($watchlist)) {
+            foreach ($watchlist as $key => $value) {
+                /** loop through watchlist. */
+                $items = DB::table('stock_trades')
+                    ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                    ->where('symbol', '=', $value->symbol)
+                    ->first();
 
-                    /** resequence array keys. */
-                    $sector['miningandoils'] = array_values($sector['miningandoils']);
-
-                    /** call helper fucntion. */
-                    $response['miningandoils'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['miningandoils']]);
-                }
-                if ($value->sector == 'holdingfirms') {
-                    /** fetch stocks. */
-                    $sector['holdingfirms'] = DB::table('stock_watchlists')
-                        ->select('id', 'symbol', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                        ->where('userid', '=', Auth::id())
-                        ->where('sector', '=', $value->sector)
-                        ->where('earningspershare', '>', 0)
-                        ->where('netincomebeforetax', '>', 0)
-                        ->orderBy('symbol', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['holdingfirms'] = array_values($sector['holdingfirms']);
-
-                    /** call helper fucntion. */
-                    $response['holdingfirms'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['holdingfirms']]);
-                }
-                if ($value->sector == 'services') {
-                    /** fetch stocks. */
-                    $sector['services'] = DB::table('stock_watchlists')
-                        ->select('id', 'symbol', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                        ->where('userid', '=', Auth::id())
-                        ->where('sector', '=', $value->sector)
-                        ->where('earningspershare', '>', 0)
-                        ->where('netincomebeforetax', '>', 0)
-                        ->orderBy('symbol', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['services'] = array_values($sector['services']);
-
-                    /** call helper fucntion. */
-                    $response['services'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['services']]);
-                }
-                if ($value->sector == 'industrial') {
-                    /** fetch stocks. */
-                    $sector['industrials'] = DB::table('stock_watchlists')
-                        ->select('id', 'symbol', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                        ->where('userid', '=', Auth::id())
-                        ->where('sector', '=', $value->sector)
-                        ->where('earningspershare', '>', 0)
-                        ->where('netincomebeforetax', '>', 0)
-                        ->orderBy('symbol', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['industrials'] = array_values($sector['industrials']);
-
-                    /** call helper fucntion. */
-                    $response['industrials'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['industrials']]);
-                }
-                if ($value->sector == 'property') {
-                    /** fetch stocks. */
-                    $sector['properties'] = DB::table('stock_watchlists')
-                        ->select('id', 'symbol', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                        ->where('userid', '=', Auth::id())
-                        ->where('sector', '=', $value->sector)
-                        ->where('earningspershare', '>', 0)
-                        ->where('netincomebeforetax', '>', 0)
-                        ->orderBy('symbol', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['properties'] = array_values($sector['properties']);
-
-                    /** call helper fucntion. */
-                    $response['properties'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['properties']]);
-                }
-                if ($value->sector == 'financials') {
-                    /** fetch stocks. */
-                    $sector['financials'] = DB::table('stock_watchlists')
-                        ->select('id', 'symbol', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                        ->where('userid', '=', Auth::id())
-                        ->where('sector', '=', $value->sector)
-                        ->where('earningspershare', '>', 0)
-                        ->where('netincomebeforetax', '>', 0)
-                        ->orderBy('symbol', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['financials'] = array_values($sector['financials']);
-
-                    /** call helper fucntion. */
-                    $response['financials'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['financials']]);
-                }
-                if ($value->sector == 'smallmediumemergingboard') {
-                    /** fetch stocks. */
-                    $sector['smallmediumemergingboards'] = DB::table('stock_watchlists')
-                        ->select('id', 'symbol', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                        ->where('userid', '=', Auth::id())
-                        ->where('sector', '=', $value->sector)
-                        ->where('earningspershare', '>', 0)
-                        ->where('netincomebeforetax', '>', 0)
-                        ->orderBy('symbol', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['smallmediumemergingboards'] = array_values($sector['smallmediumemergingboards']);
-
-                    /** call helper fucntion. */
-                    $response['smallmediumemergingboards'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['smallmediumemergingboards']]);
-                }
-                if ($value->sector == 'etf') {
-                    $sector['exchangetradedfunds'] = DB::table('stock_watchlists')
-                        ->select('id', 'symbol', 'totalliabilities', 'stockholdersequity', 'earningspershare', 'netincomebeforetax', 'grossrevenue')
-                        ->where('userid', '=', Auth::id())
-                        ->where('sector', '=', $value->sector)
-                        ->orderBy('symbol', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['exchangetradedfunds'] = array_values($sector['exchangetradedfunds']);
-
-                    /** call helper fucntion. */
-                    $response['exchangetradedfunds'] = $this->helpers(['purpose' => 'iterate', 'source' => 'watchlists', 'stocks' => $sector['exchangetradedfunds']]);
-                }
+                /** save to reponse pointer. */
+                $response[$key] = $items;
             }
+
+            /** resequence array keys. */
+            $response = array_values($response);
+
+            /** Call helper function. */
+            $response = $this->helpers(['purpose' => 'format', 'source' => $response]);
 
             /** return something. */
             return response(['message' => 'Please wait while we process your request.', 'stocks' => $response], 200);
@@ -388,18 +273,25 @@ class WatchlistController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($data) {
-        if ($data['table'] === 'watchlist') {
+        /** query if exists. */
+        $check = DB::table('stock_watchlists')
+            ->select('userid', 'symbol')
+            ->where('symbol', $data['symbol'])
+            ->first();
+
+        if (!is_null($check)) {
             /** delete record. */
             $delete = DB::table('stock_watchlists')
-                ->where('symbol', '=', $data['input'])
-                ->where('userid', '=', Auth::id())
+                ->where('userid', Auth::id())
+                ->where('symbol', strip_tags($data['symbol']))
                 ->delete();
+
             if ($delete) {
                 /** return something. */
-                return response(['message' => 'The ' . $data['input'] . ' record has been removed.'], 200);
+                return response(['message' => 'The ' . $data['symbol'] . ' record has been removed.'], 200);
             } else {
                 /** return something. */
-                return response(['message' => 'Your attempt to delete ' . $data['input'] . ' was unsuccessful.'], 200);
+                return response(['message' => 'Your attempt to delete ' . $data['symbol'] . ' was unsuccessful.'], 200);
             }
         }
     }

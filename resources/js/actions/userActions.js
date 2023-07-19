@@ -80,7 +80,9 @@ export const resetPassword = (token, email, password) => async (dispatch) => {
         dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
 
         /** Save to result to local storage. */
-        localStorage.setItem("account", JSON.stringify(data));
+        if (result) {
+            localStorage.setItem("account", JSON.stringify(result));
+        }
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -199,7 +201,9 @@ export const registerUser =
             dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
 
             /** Save to result to local storage. */
-            localStorage.setItem("account", JSON.stringify(data));
+            if (result) {
+                localStorage.setItem("account", JSON.stringify(result));
+            }
         } catch (error) {
             /** Dispatch action if error occurred. */
             dispatch({
@@ -243,7 +247,9 @@ export const loginUser = (email, password) => async (dispatch) => {
         dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
 
         /** Save to result to local storage. */
-        localStorage.setItem("account", JSON.stringify(result));
+        if (result) {
+            localStorage.setItem("account", JSON.stringify(result));
+        }
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({

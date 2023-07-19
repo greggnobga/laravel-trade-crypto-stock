@@ -36,11 +36,13 @@ class TradeController extends Controller {
      * Fetch blue chip stocks.
      */
     public function blue() {
+
         /** check record. */
         $check = DB::table('stock_trades')
             ->select('symbol')
-            ->where('symbol', '=', 'PSEi')
+            ->where('symbol', 'PSE')
             ->first();
+
         if (!is_null($check)) {
             /** Blue chip default. */
             $blue = [
@@ -153,7 +155,7 @@ class TradeController extends Controller {
         /** check record. */
         $check = DB::table('stock_trades')
             ->select('symbol')
-            ->where('symbol', '=', 'PSEi')
+            ->where('symbol', '=', 'PSE')
             ->first();
 
         if (!is_null($check)) {

@@ -2329,26 +2329,26 @@ function createInstance(defaultConfig) {
   };
   return instance;
 }
-const axios = createInstance(defaults$2);
-axios.Axios = Axios$1;
-axios.CanceledError = CanceledError;
-axios.CancelToken = CancelToken$1;
-axios.isCancel = isCancel;
-axios.VERSION = VERSION;
-axios.toFormData = toFormData;
-axios.AxiosError = AxiosError;
-axios.Cancel = axios.CanceledError;
-axios.all = function all(promises) {
+const axios$1 = createInstance(defaults$2);
+axios$1.Axios = Axios$1;
+axios$1.CanceledError = CanceledError;
+axios$1.CancelToken = CancelToken$1;
+axios$1.isCancel = isCancel;
+axios$1.VERSION = VERSION;
+axios$1.toFormData = toFormData;
+axios$1.AxiosError = AxiosError;
+axios$1.Cancel = axios$1.CanceledError;
+axios$1.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = spread;
-axios.isAxiosError = isAxiosError;
-axios.mergeConfig = mergeConfig;
-axios.AxiosHeaders = AxiosHeaders$1;
-axios.formToJSON = (thing) => formDataToJSON(utils.isHTMLForm(thing) ? new FormData(thing) : thing);
-axios.HttpStatusCode = HttpStatusCode$1;
-axios.default = axios;
-const axios$1 = axios;
+axios$1.spread = spread;
+axios$1.isAxiosError = isAxiosError;
+axios$1.mergeConfig = mergeConfig;
+axios$1.AxiosHeaders = AxiosHeaders$1;
+axios$1.formToJSON = (thing) => formDataToJSON(utils.isHTMLForm(thing) ? new FormData(thing) : thing);
+axios$1.HttpStatusCode = HttpStatusCode$1;
+axios$1.default = axios$1;
+const axios$2 = axios$1;
 var client = {};
 var reactDom = { exports: {} };
 var reactDom_production_min = {};
@@ -10586,21 +10586,111 @@ const userLoginReducer = (state = {}, action) => {
       return state;
   }
 };
-const STOCK_START_REQUEST = "STOCK_START_REQUEST";
-const STOCK_START_SUCCESS = "STOCK_START_SUCCESS";
-const STOCK_START_FAILURE = "STOCK_START_FAILURE";
-const STOCK_PRICE_REQUEST = "STOCK_PRICE_REQUEST";
-const STOCK_PRICE_SUCCESS = "STOCK_PRICE_SUCCESS";
-const STOCK_PRICE_FAILURE = "STOCK_PRICE_FAILURE";
-const STOCK_REPORT_REQUEST = "STOCK_REPORT_REQUEST";
-const STOCK_REPORT_SUCCESS = "STOCK_REPORT_SUCCESS";
-const STOCK_REPORT_FAILURE = "STOCK_REPORT_FAILURE";
-const STOCK_DIVIDEND_REQUEST = "STOCK_DIVIDEND_REQUEST";
-const STOCK_DIVIDEND_SUCCESS = "STOCK_DIVIDEND_SUCCESS";
-const STOCK_DIVIDEND_FAILURE = "STOCK_DIVIDEND_FAILURE";
-const STOCK_SECTOR_REQUEST = "STOCK_SECTOR_REQUEST";
-const STOCK_SECTOR_SUCCESS = "STOCK_SECTOR_SUCCESS";
-const STOCK_SECTOR_FAILURE = "STOCK_SECTOR_FAILURE";
+const DASHBOARD_START_REQUEST = "DASHBOARD_START_REQUEST";
+const DASHBOARD_START_SUCCESS = "DASHBOARD_START_SUCCESS";
+const DASHBOARD_START_FAILURE = "DASHBOARD_START_FAILURE";
+const DASHBOARD_PRICE_REQUEST = "DASHBOARD_PRICE_REQUEST";
+const DASHBOARD_PRICE_SUCCESS = "DASHBOARD_PRICE_SUCCESS";
+const DASHBOARD_PRICE_FAILURE = "DASHBOARD_PRICE_FAILURE";
+const DASHBOARD_REPORT_REQUEST = "DASHBOARD_REPORT_REQUEST";
+const DASHBOARD_REPORT_SUCCESS = "DASHBOARD_REPORT_SUCCESS";
+const DASHBOARD_REPORT_FAILURE = "DASHBOARD_REPORT_FAILURE";
+const DASHBOARD_DIVIDEND_REQUEST = "DASHBOARD_DIVIDEND_REQUEST";
+const DASHBOARD_DIVIDEND_SUCCESS = "DASHBOARD_DIVIDEND_SUCCESS";
+const DASHBOARD_DIVIDEND_FAILURE = "DASHBOARD_DIVIDEND_FAILURE";
+const DASHBOARD_SECTOR_REQUEST = "DASHBOARD_SECTOR_REQUEST";
+const DASHBOARD_SECTOR_SUCCESS = "DASHBOARD_SECTOR_SUCCESS";
+const DASHBOARD_SECTOR_FAILURE = "DASHBOARD_SECTOR_FAILURE";
+const DASHBOARD_BLUE_REQUEST = "DASHBOARD_BLUE_REQUEST";
+const DASHBOARD_BLUE_SUCCESS = "DASHBOARD_BLUE_SUCCESS";
+const DASHBOARD_BLUE_FAILURE = "DASHBOARD_BLUE_FAILURE";
+const DASHBOARD_EDGE_REQUEST = "DASHBOARD_EDGE_REQUEST";
+const DASHBOARD_EDGE_SUCCESS = "DASHBOARD_EDGE_SUCCESS";
+const DASHBOARD_EDGE_FAILURE = "DASHBOARD_EDGE_FAILURE";
+const dashboardStartReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_START_REQUEST:
+      return { loading: true };
+    case DASHBOARD_START_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_START_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardPriceReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_PRICE_REQUEST:
+      return { loading: true };
+    case DASHBOARD_PRICE_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_PRICE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardReportReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_REPORT_REQUEST:
+      return { loading: true };
+    case DASHBOARD_REPORT_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_REPORT_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardDividendReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_DIVIDEND_REQUEST:
+      return { loading: true };
+    case DASHBOARD_DIVIDEND_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_DIVIDEND_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardSectorReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_SECTOR_REQUEST:
+      return { loading: true };
+    case DASHBOARD_SECTOR_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_SECTOR_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardBlueReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_BLUE_REQUEST:
+      return { loading: true };
+    case DASHBOARD_BLUE_SUCCESS:
+      return { loading: false, bluedash: action.payload };
+    case DASHBOARD_BLUE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardEdgeReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_EDGE_REQUEST:
+      return { loading: true };
+    case DASHBOARD_EDGE_SUCCESS:
+      return { loading: false, edge: action.payload };
+    case DASHBOARD_EDGE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 const STOCK_BLUE_REQUEST = "STOCK_BLUE_REQUEST";
 const STOCK_BLUE_SUCCESS = "STOCK_BLUE_SUCCESS";
 const STOCK_BLUE_FAILURE = "STOCK_BLUE_FAILURE";
@@ -10619,66 +10709,6 @@ const STOCK_WATCH_FETCH_FAILURE = "STOCK_WATCH_FETCH_FAILURE";
 const STOCK_WATCH_DESTROY_REQUEST = "STOCK_WATCH_DESTROY_REQUEST";
 const STOCK_WATCH_DESTROY_SUCCESS = "STOCK_WATCH_DESTROY_SUCCESS";
 const STOCK_WATCH_DESTROY_FAILURE = "STOCK_WATCH_DESTROY_FAILURE";
-const stockStartReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_START_REQUEST:
-      return { loading: true };
-    case STOCK_START_SUCCESS:
-      return { loading: false, success: action.payload };
-    case STOCK_START_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-const stockPriceReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_PRICE_REQUEST:
-      return { loading: true };
-    case STOCK_PRICE_SUCCESS:
-      return { loading: false, success: action.payload };
-    case STOCK_PRICE_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-const stockReportReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_REPORT_REQUEST:
-      return { loading: true };
-    case STOCK_REPORT_SUCCESS:
-      return { loading: false, success: action.payload };
-    case STOCK_REPORT_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-const stockDividendReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_DIVIDEND_REQUEST:
-      return { loading: true };
-    case STOCK_DIVIDEND_SUCCESS:
-      return { loading: false, success: action.payload };
-    case STOCK_DIVIDEND_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-const stockSectorReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_SECTOR_REQUEST:
-      return { loading: true };
-    case STOCK_SECTOR_SUCCESS:
-      return { loading: false, success: action.payload };
-    case STOCK_SECTOR_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 const stockBlueReducer = (state = {}, action) => {
   switch (action.type) {
     case STOCK_BLUE_REQUEST:
@@ -10757,11 +10787,13 @@ const reducer = combineReducers({
   userVerify: userVerifyReducer,
   userForgot: userForgotReducer,
   userReset: userResetReducer,
-  stockStart: stockStartReducer,
-  stockPrice: stockPriceReducer,
-  stockReport: stockReportReducer,
-  stockDividend: stockDividendReducer,
-  stockSector: stockSectorReducer,
+  dashboardStart: dashboardStartReducer,
+  dashboardPrice: dashboardPriceReducer,
+  dashboardReport: dashboardReportReducer,
+  dashboardDividend: dashboardDividendReducer,
+  dashboardSector: dashboardSectorReducer,
+  dashboardBlue: dashboardBlueReducer,
+  dashboardEdge: dashboardEdgeReducer,
   stockBlue: stockBlueReducer,
   stockCommon: stockCommonReducer,
   stockWatchBuild: stockWatchBuildReducer,
@@ -10775,8 +10807,12 @@ const bluechipFromStorage = localStorage.getItem("bluechip") ? JSON.parse(localS
 const commonFromStorage = localStorage.getItem("common") ? JSON.parse(localStorage.getItem("common")) : {};
 const buildFromStorage = localStorage.getItem("build") ? JSON.parse(localStorage.getItem("build")) : {};
 const fetchFromStorage = localStorage.getItem("fetch") ? JSON.parse(localStorage.getItem("fetch")) : {};
+const bluedashFromStorage = localStorage.getItem("bluedash") ? JSON.parse(localStorage.getItem("bluedash")) : {};
+const edgeFromStorage = localStorage.getItem("edge") ? JSON.parse(localStorage.getItem("edge")) : {};
 const initialState = {
   userLogin: accountFromStorage,
+  dashboardBlue: bluedashFromStorage,
+  dashboardEdge: edgeFromStorage,
   stockBlue: bluechipFromStorage,
   stockCommon: commonFromStorage,
   stockWatchBuild: buildFromStorage,
@@ -12172,7 +12208,7 @@ const chunkObject = ({ divide, data }) => {
 };
 const resendEmail = (token) => async (dispatch) => {
   try {
-    const { data } = await axios$1({
+    const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
@@ -12192,7 +12228,7 @@ const resendEmail = (token) => async (dispatch) => {
 const resetPassword = (token, email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_RESET_REQUEST });
-    const { data } = await axios$1({
+    const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json"
       },
@@ -12220,7 +12256,7 @@ const resetPassword = (token, email, password) => async (dispatch) => {
 const forgotPassword = (email) => async (dispatch) => {
   try {
     dispatch({ type: USER_FORGOT_REQUEST });
-    const { data } = await axios$1({
+    const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json"
       },
@@ -12243,7 +12279,7 @@ const forgotPassword = (email) => async (dispatch) => {
 const verifyEmail = (token) => async (dispatch) => {
   try {
     dispatch({ type: USER_VERIFY_REQUEST });
-    const { data } = await axios$1({
+    const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json"
       },
@@ -12266,7 +12302,7 @@ const verifyEmail = (token) => async (dispatch) => {
 const registerUser = (username, firstname, lastname, email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
-    const { data } = await axios$1({
+    const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json"
       },
@@ -12294,7 +12330,7 @@ const registerUser = (username, firstname, lastname, email, password) => async (
 const loginUser = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
-    const { data } = await axios$1({
+    const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json"
       },
@@ -12321,7 +12357,7 @@ const loginUser = (email, password) => async (dispatch) => {
 };
 const logoutUser = (token) => async (dispatch) => {
   try {
-    const { data } = await axios$1({
+    const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
@@ -12336,6 +12372,8 @@ const logoutUser = (token) => async (dispatch) => {
     localStorage.removeItem("bluechip");
     localStorage.removeItem("common");
     localStorage.removeItem("build");
+    localStorage.removeItem("bluedash");
+    localStorage.removeItem("edge");
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAILURE,
@@ -12647,7 +12685,7 @@ const Message = ({ variant, children }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: message && /* @__PURE__ */ jsxRuntimeExports.jsx(
     "div",
     {
-      className: "font-size m-2 cursor-pointer hover:animate-pulse",
+      className: "font-size m-2 cursor-pointer hover:animate-pulse z-50",
       onClick: messageHandler,
       children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children })
     }
@@ -12689,7 +12727,7 @@ const Home = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "img",
             {
-              className: "object-cover w-full rounded-t-lg",
+              className: "object-cover w-full rounded-t",
               src: "/public/images/tools.jpeg",
               alt: "Innovative Tools"
             }
@@ -12698,13 +12736,13 @@ const Home = () => {
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "tool" }),
             " Innovative Tools"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-rose-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-rose-800 bg-opacity-30 rounded-b", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "img",
             {
-              className: "object-cover w-full rounded-t-lg",
+              className: "object-cover w-full rounded-t",
               src: "/public/images/price.jpeg",
               alt: "Transparent Pricing"
             }
@@ -12713,13 +12751,13 @@ const Home = () => {
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
             " Transparent Pricing"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-green-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-green-800 bg-opacity-30 rounded-b", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:grayscale", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "img",
             {
-              className: "object-cover w-full rounded-t-lg",
+              className: "object-cover w-full rounded-t",
               src: "/public/images/support.jpeg",
               alt: "Dedicated Support"
             }
@@ -12728,7 +12766,7 @@ const Home = () => {
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "support" }),
             " Dedicated Support"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-purple-800 bg-opacity-30 rounded-b-lg", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 font-size bg-purple-800 bg-opacity-30 rounded-b", children: "Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo." })
         ] })
       ] })
     ] }),
@@ -13496,7 +13534,7 @@ const useAuth = () => {
   const dispatch = useDispatch();
   const check = async (token) => {
     try {
-      const { data } = await axios$1({
+      const { data } = await axios$2({
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
@@ -13510,10 +13548,45 @@ const useAuth = () => {
   };
   return { check };
 };
-const actStockStart = (token) => async (dispatch) => {
+const Modal = ({ children }) => {
+  return reactDomExports.createPortal(
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-container", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-content", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-scrollable", children }) }) }),
+    document.getElementById("modal")
+  );
+};
+const Container = ({ header, children }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "m-2 grid auto-rows-min h-fit", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 h-8 sm:10 uppercase", children: [
+      " ",
+      header
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children })
+  ] });
+};
+const desktopModalTemplate$1 = ({ data, header, close }) => {
+  console.log(data);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-bottom", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row justify-between", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl", children: header }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "pl-2", onClick: close, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
+        " Close"
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row items-center justify-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow", children: "Index" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow", children: "Symbol" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow", children: "Action" })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: data && Object.entries(data).map((item, index2) => {
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: item[1].symbol });
+    }) })
+  ] });
+};
+const actDashboardStart = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_START_REQUEST });
-    const { data } = await axios$1({
+    dispatch({ type: DASHBOARD_START_REQUEST });
+    const { data } = await axios({
       url: "https://phisix-api4.appspot.com/stocks.json",
       method: "GET"
     });
@@ -13522,7 +13595,7 @@ const actStockStart = (token) => async (dispatch) => {
       let end = result.length - 1;
       setTimeout(async function() {
         if (item) {
-          const { data: data2 } = await axios$1({
+          const { data: data2 } = await axios({
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`
@@ -13545,10 +13618,10 @@ const actStockStart = (token) => async (dispatch) => {
         }
       }, 3e3 * index2);
     });
-    dispatch({ type: STOCK_START_SUCCESS, payload: data.message });
+    dispatch({ type: DASHBOARD_START_SUCCESS, payload: data.message });
   } catch (error) {
     dispatch({
-      type: STOCK_START_FAILURE,
+      type: DASHBOARD_START_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -13557,10 +13630,10 @@ const actStockStart = (token) => async (dispatch) => {
     });
   }
 };
-const actStockPrice = (token) => async (dispatch) => {
+const actDashboardPrice = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_PRICE_REQUEST });
-    const { data } = await axios$1({
+    dispatch({ type: DASHBOARD_PRICE_REQUEST });
+    const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
@@ -13579,7 +13652,7 @@ const actStockPrice = (token) => async (dispatch) => {
       let end = stocks.length - 1;
       setTimeout(async function() {
         if (item) {
-          const { data: data2 } = await axios$1({
+          const { data: data2 } = await axios({
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`
@@ -13601,10 +13674,10 @@ const actStockPrice = (token) => async (dispatch) => {
         }
       }, 3e3 * index2);
     });
-    dispatch({ type: STOCK_PRICE_SUCCESS, payload: data.message });
+    dispatch({ type: DASHBOARD_PRICE_SUCCESS, payload: data.message });
   } catch (error) {
     dispatch({
-      type: STOCK_PRICE_FAILURE,
+      type: DASHBOARD_PRICE_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -13613,10 +13686,10 @@ const actStockPrice = (token) => async (dispatch) => {
     });
   }
 };
-const actStockReport = (token) => async (dispatch) => {
+const actDashboardReport = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_REPORT_REQUEST });
-    const { data } = await axios$1({
+    dispatch({ type: DASHBOARD_REPORT_REQUEST });
+    const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
@@ -13635,7 +13708,7 @@ const actStockReport = (token) => async (dispatch) => {
       let end = stocks.length - 1;
       setTimeout(async function() {
         if (item) {
-          const { data: data2 } = await axios$1({
+          const { data: data2 } = await axios({
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`
@@ -13657,10 +13730,10 @@ const actStockReport = (token) => async (dispatch) => {
         }
       }, 3e3 * index2);
     });
-    dispatch({ type: STOCK_REPORT_SUCCESS, payload: data.message });
+    dispatch({ type: DASHBOARD_REPORT_SUCCESS, payload: data.message });
   } catch (error) {
     dispatch({
-      type: STOCK_REPORT_FAILURE,
+      type: DASHBOARD_REPORT_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -13669,10 +13742,10 @@ const actStockReport = (token) => async (dispatch) => {
     });
   }
 };
-const actStockDividend = (token) => async (dispatch) => {
+const actDashboardDividend = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_DIVIDEND_REQUEST });
-    const { data } = await axios$1({
+    dispatch({ type: DASHBOARD_DIVIDEND_REQUEST });
+    const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
@@ -13691,7 +13764,7 @@ const actStockDividend = (token) => async (dispatch) => {
       let end = stocks.length - 1;
       setTimeout(async function() {
         if (item) {
-          const { data: data2 } = await axios$1({
+          const { data: data2 } = await axios({
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`
@@ -13713,10 +13786,10 @@ const actStockDividend = (token) => async (dispatch) => {
         }
       }, 3e3 * index2);
     });
-    dispatch({ type: STOCK_DIVIDEND_SUCCESS, payload: data.message });
+    dispatch({ type: DASHBOARD_DIVIDEND_SUCCESS, payload: data.message });
   } catch (error) {
     dispatch({
-      type: STOCK_DIVIDEND_FAILURE,
+      type: DASHBOARD_DIVIDEND_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -13725,10 +13798,10 @@ const actStockDividend = (token) => async (dispatch) => {
     });
   }
 };
-const actStockSector = (token) => async (dispatch) => {
+const actDashboardSector = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_SECTOR_REQUEST });
-    const { data } = await axios$1({
+    dispatch({ type: DASHBOARD_SECTOR_REQUEST });
+    const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
@@ -13747,7 +13820,7 @@ const actStockSector = (token) => async (dispatch) => {
       let end = stocks.length - 1;
       setTimeout(async function() {
         if (item) {
-          const { data: data2 } = await axios$1({
+          const { data: data2 } = await axios({
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`
@@ -13769,10 +13842,10 @@ const actStockSector = (token) => async (dispatch) => {
         }
       }, 3e3 * index2);
     });
-    dispatch({ type: STOCK_SECTOR_SUCCESS, payload: data.message });
+    dispatch({ type: DASHBOARD_SECTOR_SUCCESS, payload: data.message });
   } catch (error) {
     dispatch({
-      type: STOCK_SECTOR_FAILURE,
+      type: DASHBOARD_SECTOR_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -13781,17 +13854,17 @@ const actStockSector = (token) => async (dispatch) => {
     });
   }
 };
-const actStockBluechip = (token) => async (dispatch) => {
+const actDashboardBlue = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_BLUE_REQUEST });
-    const { data } = await axios$1({
+    dispatch({ type: DASHBOARD_BLUE_REQUEST });
+    const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
       method: "GET",
-      url: "/api/stock-trade-retrieve",
-      params: { section: "blue" }
+      url: "/api/dashboard",
+      params: { section: "bluechip", statement: "select" }
     });
     let stocks = data.stocks;
     let message = data.message;
@@ -13799,13 +13872,13 @@ const actStockBluechip = (token) => async (dispatch) => {
       type: MESSAGE_SHOW_SUCCESS,
       payload: message
     });
-    dispatch({ type: STOCK_BLUE_SUCCESS, payload: stocks });
+    dispatch({ type: DASHBOARD_BLUE_SUCCESS, payload: stocks });
     if (stocks) {
-      localStorage.setItem("bluechip", JSON.stringify(stocks));
+      localStorage.setItem("bluedash", JSON.stringify(stocks));
     }
   } catch (error) {
     dispatch({
-      type: STOCK_BLUE_FAILURE,
+      type: DASHBOARD_BLUE_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -13814,17 +13887,17 @@ const actStockBluechip = (token) => async (dispatch) => {
     });
   }
 };
-const actStockCommon = (token) => async (dispatch) => {
+const actDashboardEdge = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_COMMON_REQUEST });
-    const { data } = await axios$1({
+    dispatch({ type: DASHBOARD_EDGE_REQUEST });
+    const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
       method: "GET",
-      url: "/api/stock-trade-retrieve",
-      params: { section: "common" }
+      url: "/api/dashboard",
+      params: { section: "edge", statement: "select" }
     });
     let stocks = data.stocks;
     let message = data.message;
@@ -13832,137 +13905,13 @@ const actStockCommon = (token) => async (dispatch) => {
       type: MESSAGE_SHOW_SUCCESS,
       payload: message
     });
-    dispatch({ type: STOCK_COMMON_SUCCESS, payload: stocks });
+    dispatch({ type: DASHBOARD_EDGE_SUCCESS, payload: stocks });
     if (stocks) {
-      localStorage.setItem("common", JSON.stringify(stocks));
+      localStorage.setItem("edge", JSON.stringify(stocks));
     }
   } catch (error) {
     dispatch({
-      type: STOCK_COMMON_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-    dispatch({
-      type: MESSAGE_SHOW_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-  }
-};
-const actStockWatchBuild = (token) => async (dispatch) => {
-  try {
-    dispatch({ type: STOCK_WATCH_BUILD_REQUEST });
-    const { data } = await axios$1({
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      method: "GET",
-      url: "/api/stock-watchlist-retrieve",
-      params: { section: "build" }
-    });
-    let stocks = data.stocks;
-    let message = data.message;
-    dispatch({
-      type: MESSAGE_SHOW_SUCCESS,
-      payload: message
-    });
-    dispatch({ type: STOCK_WATCH_BUILD_SUCCESS, payload: stocks });
-    if (stocks) {
-      localStorage.setItem("build", JSON.stringify(stocks));
-    }
-  } catch (error) {
-    dispatch({
-      type: STOCK_WATCH_BUILD_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-    dispatch({
-      type: MESSAGE_SHOW_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-  }
-};
-const actStockWatchStore = (token, input) => async (dispatch) => {
-  try {
-    dispatch({ type: STOCK_WATCH_STORE_REQUEST });
-    const { data } = await axios$1({
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      method: "POST",
-      url: "/api/stock-watchlist-store",
-      params: { section: "store", symbol: input }
-    });
-    let message = data.message;
-    dispatch({
-      type: MESSAGE_SHOW_SUCCESS,
-      payload: message
-    });
-    dispatch({ type: STOCK_WATCH_STORE_SUCCESS, payload: message });
-  } catch (error) {
-    dispatch({
-      type: STOCK_WATCH_STORE_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-    dispatch({
-      type: MESSAGE_SHOW_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-  }
-};
-const actStockWatchFetch = (token) => async (dispatch) => {
-  try {
-    dispatch({ type: STOCK_WATCH_FETCH_REQUEST });
-    const { data } = await axios$1({
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      method: "GET",
-      url: "/api/stock-watchlist-retrieve",
-      params: { section: "fetch" }
-    });
-    let stocks = data.stocks;
-    let message = data.message;
-    dispatch({
-      type: MESSAGE_SHOW_SUCCESS,
-      payload: message
-    });
-    dispatch({ type: STOCK_WATCH_FETCH_SUCCESS, payload: stocks });
-    if (stocks) {
-      localStorage.setItem("fetch", JSON.stringify(stocks));
-    }
-  } catch (error) {
-    dispatch({
-      type: STOCK_WATCH_FETCH_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-    dispatch({
-      type: MESSAGE_SHOW_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-  }
-};
-const actStockWatchDestroy = (token, input) => async (dispatch) => {
-  try {
-    dispatch({ type: STOCK_WATCH_DESTROY_REQUEST });
-    const { data } = await axios$1({
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      method: "POST",
-      url: "/api/stock-watchlist-store",
-      params: { section: "destroy", symbol: input }
-    });
-    let message = data.message;
-    dispatch({
-      type: MESSAGE_SHOW_SUCCESS,
-      payload: message
-    });
-    dispatch({ type: STOCK_WATCH_DESTROY_SUCCESS, payload: message });
-  } catch (error) {
-    dispatch({
-      type: STOCK_WATCH_DESTROY_FAILURE,
+      type: DASHBOARD_EDGE_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -13974,10 +13923,15 @@ const actStockWatchDestroy = (token, input) => async (dispatch) => {
 const Dashboard = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, logged, access_token, email_verified } = userLogin;
+  const dashboardBlue = useSelector((state) => state.dashboardBlue);
+  const { loading: loadBlue, bluedash } = dashboardBlue;
+  const dashboardEdge = useSelector((state) => state.dashboardEdge);
+  const { loading: loadEdge, edge } = dashboardEdge;
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
   const { check } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   reactExports.useEffect(() => {
     if (access_token) {
       check(access_token);
@@ -13990,27 +13944,44 @@ const Dashboard = () => {
         clearTimeout(timeout);
       };
     }
-  }, [access_token, logged]);
-  const dispatch = useDispatch();
+    if (!bluedash) {
+      dispatch(actDashboardBlue(access_token));
+    }
+    if (!edge) {
+      dispatch(actDashboardEdge(access_token));
+    }
+  }, [access_token, logged, bluedash, edge]);
   const [verify, setVerify] = reactExports.useState(email_verified);
   const resendHandler = () => {
     setVerify(true);
     dispatch(resendEmail(access_token));
   };
-  const stockStartHandler = () => {
-    dispatch(actStockStart(access_token));
+  const dashboardStartHandler = () => {
+    dispatch(actDashboardStart(access_token));
   };
-  const stockPriceHandler = () => {
-    dispatch(actStockPrice(access_token));
+  const dashboardPriceHandler = () => {
+    dispatch(actDashboardPrice(access_token));
   };
-  const stockReportHandler = () => {
-    dispatch(actStockReport(access_token));
+  const dashboardReportHandler = () => {
+    dispatch(actDashboardReport(access_token));
   };
-  const stockDividendHandler = () => {
-    dispatch(actStockDividend(access_token));
+  const dashboardDividendHandler = () => {
+    dispatch(actDashboardDividend(access_token));
   };
-  const stockSectorHandler = () => {
-    dispatch(actStockSector(access_token));
+  const dashboardSectorHandler = () => {
+    dispatch(actDashboardSector(access_token));
+  };
+  const [modalBlue, setModalBlue] = reactExports.useState(false);
+  const [modalEdge, setModalEdge] = reactExports.useState(false);
+  const bluechipModalHandler = () => {
+    setModalBlue(true);
+  };
+  const edgeModalHandler = () => {
+    setModalEdge(true);
+  };
+  const closeModalHandler = () => {
+    setModalBlue(false);
+    setModalEdge(false);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-warning", children: error }),
@@ -14018,145 +13989,170 @@ const Dashboard = () => {
     !verify && /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
       {
-        className: "font-size m-2 cursor-pointer hover:animate-pulse",
+        className: "m-2 cursor-pointer hover:animate-pulse",
         onClick: resendHandler,
         children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "alert-info", children: "Your email address has not yet been verified. Click to resend your email verification code." })
       }
     ),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-screen h-screen form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min gap-2 h-fit p-2 font-size", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min gap-2 h-fit", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Fetch External Data" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the symbol, name, price, volume, and change." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: stockStartHandler,
-                className: "btn btn-red",
-                type: "button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
-                  " Start"
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get value, year high and low prices." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: stockPriceHandler,
-                className: "btn btn-blue",
-                type: "button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
-                  " Price"
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get income after tax and earnings per share." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: stockReportHandler,
-                className: "btn btn-green",
-                type: "button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
-                  " Report"
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the yearly dividend yield." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: stockDividendHandler,
-                className: "btn btn-emerald",
-                type: "button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
-                  " Dividend"
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0 has-tooltip", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the sector to which stock belongs." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: stockSectorHandler,
-                className: "btn btn-indigo",
-                type: "button",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
-                  " Sector"
-                ]
-              }
-            )
-          ] })
+    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-screen h-screen form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Fetch External Data", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "py-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the symbol, name, price, volume, and change." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: dashboardStartHandler,
+              className: "btn btn-red",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+                " Start"
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get value, year high and low prices." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: dashboardPriceHandler,
+              className: "btn btn-blue",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
+                " Price"
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get income after tax and earnings per share." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: dashboardReportHandler,
+              className: "btn btn-green",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
+                " Report"
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the yearly dividend yield." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: dashboardDividendHandler,
+              className: "btn btn-emerald",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
+                " Dividend"
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the sector to which stock belongs." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: dashboardSectorHandler,
+              className: "btn btn-indigo",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
+                " Sector"
+              ]
+            }
+          )
         ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min h-fit", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Asset Allocation" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col flex-wrap sm:flex-row justify-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded-scale text-red-500 ", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "stock" }),
-              " Stock"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "1000" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-portfolio", children: "more" }) }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded-scale text-green-500", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "crypto" }),
-              " Crypto"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "2000" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/crypto-portfolio", children: "more" }) }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded-scale text-blue-500", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "fund" }),
-              " Fund"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "3000" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-fund", children: "more" }) }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded-scale text-orange-500", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "note" }),
-              " Note"
-            ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "4000" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-note", children: "more" }) }) })
-          ] })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Asset Allocation", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col flex-wrap sm:flex-row justify-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded-scale text-red-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "stock" }),
+            " Stock"
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "1000" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-portfolio", children: "more" }) }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded-scale text-green-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "crypto" }),
+            " Crypto"
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "2000" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/crypto-portfolio", children: "more" }) }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded-scale text-blue-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "fund" }),
+            " Fund"
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "3000" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-fund", children: "more" }) }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-rounded-scale text-orange-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "note" }),
+            " Note"
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl", children: "4000" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "uppercase text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard/stock-note", children: "more" }) }) })
         ] })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Container, { header: "Account Information", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20 sm:row-start-2 card-rounded-scale", children: "Account" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sm:row-start-3 card-rounded-scale", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: "Data" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grid auto-rows-min sm:grid-cols-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  className: "btn btn-indigo",
+                  onClick: bluechipModalHandler,
+                  children: "View Bluechip Stocks"
+                }
+              ) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  className: "btn btn-green",
+                  onClick: edgeModalHandler,
+                  children: "Set Edge ID"
+                }
+              ) })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale", children: "Doughnut Chart" })
+        ] }),
+        modalBlue && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: desktopModalTemplate$1({
+          data: bluedash,
+          header: "List Of Bluechip Stocks",
+          close: closeModalHandler
+        }) }),
+        modalEdge && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: desktopModalTemplate$1({
+          data: edge,
+          header: "Stocks Without Edge ID",
+          close: closeModalHandler
+        }) })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 sm:col-span-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Graphical Representation" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20 sm:row-start-2 card-rounded-scale", children: "Account" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-20 sm:row-start-3 card-rounded-scale", children: "Offers" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale", children: "Doughnut Chart" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 sm:col-span-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Philippine Stock Exchange" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Philippine Stock Exchange", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale", children: "Top Gainers" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale", children: "Top Lossers" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 p-2 sm:col-span-2", children: "Crypto Currency" }),
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Crypto Currency", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale", children: "Top Gainers" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale", children: "Top Lossers" })
-      ] })
+      ] }) })
     ] })
   ] }) });
 };
@@ -28741,12 +28737,6 @@ const Portfolio = () => {
     ] })
   ] });
 };
-const Modal = ({ children }) => {
-  return reactDomExports.createPortal(
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-container", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-content", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-scrollable", children }) }) }),
-    document.getElementById("modal")
-  );
-};
 const Notice = ({ variant, children, duration, show }) => {
   const [notice, setNotice] = reactExports.useState(show);
   reactExports.useEffect(() => {
@@ -28760,16 +28750,7 @@ const Notice = ({ variant, children, duration, show }) => {
       return () => clearTimeout(timer);
     }
   }, [show, duration, children]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: notice && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-0 right-0 m-2 cursor-pointer hover:animate-pulse", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children }) }) });
-};
-const Container = ({ header, children }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "m-2 grid auto-rows-min h-fit", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 h-8 sm:10 uppercase", children: [
-      " ",
-      header
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children })
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: notice && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-0 right-0 m-2 cursor-pointer hover:animate-pulse z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children }) }) });
 };
 const desktopHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min grid-cols-9 h-fit rounded-t-md bg-stone-100 uppercase", children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Symbol" }) }),
@@ -29084,6 +29065,196 @@ const mobileModalTemplate = ({ item, action, close, icon, text }) => {
     })
   ] });
 };
+const actStockBluechip = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_BLUE_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/stock-trade-retrieve",
+      params: { section: "blue" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: STOCK_BLUE_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("bluechip", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: STOCK_BLUE_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const actStockCommon = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_COMMON_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/stock-trade-retrieve",
+      params: { section: "common" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: STOCK_COMMON_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("common", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: STOCK_COMMON_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const actStockWatchBuild = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_WATCH_BUILD_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/stock-watchlist-retrieve",
+      params: { section: "build" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: STOCK_WATCH_BUILD_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("build", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: STOCK_WATCH_BUILD_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const actStockWatchStore = (token, input) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_WATCH_STORE_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "POST",
+      url: "/api/stock-watchlist-store",
+      params: { section: "store", symbol: input }
+    });
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: STOCK_WATCH_STORE_SUCCESS, payload: message });
+  } catch (error) {
+    dispatch({
+      type: STOCK_WATCH_STORE_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const actStockWatchFetch = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_WATCH_FETCH_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/stock-watchlist-retrieve",
+      params: { section: "fetch" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: STOCK_WATCH_FETCH_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("fetch", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: STOCK_WATCH_FETCH_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const actStockWatchDestroy = (token, input) => async (dispatch) => {
+  try {
+    dispatch({ type: STOCK_WATCH_DESTROY_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "POST",
+      url: "/api/stock-watchlist-store",
+      params: { section: "destroy", symbol: input }
+    });
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: STOCK_WATCH_DESTROY_SUCCESS, payload: message });
+  } catch (error) {
+    dispatch({
+      type: STOCK_WATCH_DESTROY_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const Watchlist = () => {
   const [modal, setModal] = reactExports.useState(false);
   const [notice, setNotice] = reactExports.useState(false);
@@ -29188,7 +29359,7 @@ const Watchlist = () => {
         show: notice
       }
     ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: containerReminderHeader, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-t-md bg-slate-50", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: containerReminderHeader, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-t-md bg-slate-50 cursor-pointer", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Debt Equity Ratio - Always try to find a company to invest which has debt equity ratio of less than one." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Price Range - Year low minus year high, when the range is getting near to zero or even turning positive, it indicates that the price is going down and that it is a good idea to add to your stack." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Total Assets - Total assets less total assets previously held If it's negative, either the company is having a cash flow problem or it's having a bad year." }),
@@ -29865,7 +30036,7 @@ const App = () => {
     ] })
   ] }) });
 };
-window.axios = axios$1;
+window.axios = axios$2;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 window.axios.defaults.withCredentials = true;
 if (document.getElementById("root")) {

@@ -23,7 +23,7 @@ import {
     mobileTemplate,
     desktopModalTemplate,
     mobileModalTemplate,
-} from "./template";
+} from "../../template/stocks";
 
 /** Action. */
 import {
@@ -193,7 +193,7 @@ const Watchlist = () => {
 
             {/** Reminder section. */}
             <Container header={containerReminderHeader}>
-                <div className="rounded-t-md bg-slate-50">
+                <div className="rounded-t-md bg-slate-50 cursor-pointer">
                     <div className="p-2 border-b border-slate-100 hover:text-purple-500">
                         Debt Equity Ratio - Always try to find a company to
                         invest which has debt equity ratio of less than one.

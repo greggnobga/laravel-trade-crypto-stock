@@ -1,5 +1,5 @@
 /** Component. */
-import Icon from "../../../../components/icons";
+import Icon from "../../components/icons";
 
 /** Desktop header. */
 export const desktopHeader = (

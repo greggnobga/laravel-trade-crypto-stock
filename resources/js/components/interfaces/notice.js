@@ -26,7 +26,7 @@ const Notice = ({ variant, children, duration, show }) => {
     return (
         <>
             {notice && (
-                <div className="fixed top-0 right-0 m-2 cursor-pointer hover:animate-pulse">
+                <div className="fixed top-0 right-0 m-2 cursor-pointer hover:animate-pulse z-50">
                     <p className={variant ? variant : "alert-danger"}>
                         {children}
                     </p>

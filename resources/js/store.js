@@ -12,12 +12,18 @@ import {
     userForgotReducer,
     userResetReducer,
 } from "./reducers/userReducers";
+
 import {
-    stockStartReducer,
-    stockPriceReducer,
-    stockReportReducer,
-    stockDividendReducer,
-    stockSectorReducer,
+    dashboardStartReducer,
+    dashboardPriceReducer,
+    dashboardReportReducer,
+    dashboardDividendReducer,
+    dashboardSectorReducer,
+    dashboardBlueReducer,
+    dashboardEdgeReducer,
+} from "./reducers/dashboardReducers";
+
+import {
     stockBlueReducer,
     stockCommonReducer,
     stockWatchBuildReducer,
@@ -33,11 +39,13 @@ const reducer = combineReducers({
     userVerify: userVerifyReducer,
     userForgot: userForgotReducer,
     userReset: userResetReducer,
-    stockStart: stockStartReducer,
-    stockPrice: stockPriceReducer,
-    stockReport: stockReportReducer,
-    stockDividend: stockDividendReducer,
-    stockSector: stockSectorReducer,
+    dashboardStart: dashboardStartReducer,
+    dashboardPrice: dashboardPriceReducer,
+    dashboardReport: dashboardReportReducer,
+    dashboardDividend: dashboardDividendReducer,
+    dashboardSector: dashboardSectorReducer,
+    dashboardBlue: dashboardBlueReducer,
+    dashboardEdge: dashboardEdgeReducer,
     stockBlue: stockBlueReducer,
     stockCommon: stockCommonReducer,
     stockWatchBuild: stockWatchBuildReducer,
@@ -68,8 +76,18 @@ const fetchFromStorage = localStorage.getItem("fetch")
     ? JSON.parse(localStorage.getItem("fetch"))
     : {};
 
+const bluedashFromStorage = localStorage.getItem("bluedash")
+    ? JSON.parse(localStorage.getItem("bluedash"))
+    : {};
+
+const edgeFromStorage = localStorage.getItem("edge")
+    ? JSON.parse(localStorage.getItem("edge"))
+    : {};
+
 const initialState = {
     userLogin: accountFromStorage,
+    dashboardBlue: bluedashFromStorage,
+    dashboardEdge: edgeFromStorage,
     stockBlue: bluechipFromStorage,
     stockCommon: commonFromStorage,
     stockWatchBuild: buildFromStorage,

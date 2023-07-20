@@ -24,7 +24,7 @@ import {
     desktopTemplate,
     mobileTemplate,
     paginationTemplate,
-} from "./template";
+} from "../../template/stocks";
 
 /** Action. */
 import {

@@ -10,23 +10,36 @@ import useAuth from "../hooks/use-auth";
 
 /** Component. */
 import Icon from "../components/icons";
-import Message from "../components/interfaces/message";
+import Modal from "../components/interfaces/modal";
 import Loader from "../components/interfaces/loader";
+import Message from "../components/interfaces/message";
+import Container from "../components/interfaces/container";
+
+/** Template. */
+import { desktopModalTemplate } from "./template/dashboard";
 
 /** Action. */
 import { resendEmail } from "../actions/userActions";
 import {
-    actStockStart,
-    actStockPrice,
-    actStockReport,
-    actStockDividend,
-    actStockSector,
-} from "../actions/stockActions";
+    actDashboardStart,
+    actDashboardPrice,
+    actDashboardReport,
+    actDashboardDividend,
+    actDashboardSector,
+    actDashboardBlue,
+    actDashboardEdge,
+} from "../actions/dashboardActions";
 
 const Dashboard = () => {
     /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
     const { loading, logged, access_token, email_verified } = userLogin;
+
+    const dashboardBlue = useSelector((state) => state.dashboardBlue);
+    const { loading: loadBlue, bluedash } = dashboardBlue;
+
+    const dashboardEdge = useSelector((state) => state.dashboardEdge);
+    const { loading: loadEdge, edge } = dashboardEdge;
 
     const showMessage = useSelector((state) => state.showMessage);
     const { message, error } = showMessage;
@@ -36,6 +49,9 @@ const Dashboard = () => {
 
     /** Use navigate. */
     const navigate = useNavigate();
+
+    /** Use dispatch. */
+    const dispatch = useDispatch();
 
     /** Use effect. */
     useEffect(() => {
@@ -55,10 +71,16 @@ const Dashboard = () => {
                 clearTimeout(timeout);
             };
         }
-    }, [access_token, logged]);
 
-    /** Use dispatch. */
-    const dispatch = useDispatch();
+        /** If not edge does not have value. */
+        if (!bluedash) {
+            dispatch(actDashboardBlue(access_token));
+        }
+        /** If not edge does not have value. */
+        if (!edge) {
+            dispatch(actDashboardEdge(access_token));
+        }
+    }, [access_token, logged, bluedash, edge]);
 
     /** Use state. */
     const [verify, setVerify] = useState(email_verified);
@@ -72,30 +94,51 @@ const Dashboard = () => {
     };
 
     /** Fecth data from external endpoint. */
-    const stockStartHandler = () => {
+    const dashboardStartHandler = () => {
         /** Dispatch action. */
-        dispatch(actStockStart(access_token));
+        dispatch(actDashboardStart(access_token));
     };
 
-    const stockPriceHandler = () => {
+    const dashboardPriceHandler = () => {
         /** Dispatch action. */
-        dispatch(actStockPrice(access_token));
+        dispatch(actDashboardPrice(access_token));
     };
 
-    const stockReportHandler = () => {
+    const dashboardReportHandler = () => {
         /** Dispatch action. */
-        dispatch(actStockReport(access_token));
+        dispatch(actDashboardReport(access_token));
     };
 
-    const stockDividendHandler = () => {
+    const dashboardDividendHandler = () => {
         /** Dispatch action. */
-        dispatch(actStockDividend(access_token));
+        dispatch(actDashboardDividend(access_token));
     };
 
-    const stockSectorHandler = () => {
+    const dashboardSectorHandler = () => {
         /** Dispatch action. */
-        dispatch(actStockSector(access_token));
+        dispatch(actDashboardSector(access_token));
     };
+
+    /** Use state. */
+    const [modalBlue, setModalBlue] = useState(false);
+    const [modalEdge, setModalEdge] = useState(false);
+
+    /** Bluechip modal handler. */
+    const bluechipModalHandler = () => {
+        setModalBlue(true);
+    };
+
+    /** Edge modal handler. */
+    const edgeModalHandler = () => {
+        setModalEdge(true);
+    };
+
+    /** Close modal handler. */
+    const closeModalHandler = () => {
+        setModalBlue(false);
+        setModalEdge(false);
+    };
+
     /** Return. */
     return (
         <>
@@ -109,7 +152,7 @@ const Dashboard = () => {
                     )}
                     {!verify && (
                         <div
-                            className="font-size m-2 cursor-pointer hover:animate-pulse"
+                            className="m-2 cursor-pointer hover:animate-pulse"
                             onClick={resendHandler}
                         >
                             <p className="alert-info">
@@ -123,44 +166,41 @@ const Dashboard = () => {
                             <Loader />
                         </div>
                     ) : (
-                        <div className="grid auto-rows-min gap-2 h-fit p-2 font-size">
-                            <div className="grid auto-rows-min gap-2 h-fit">
-                                <div className="p-2">
-                                    <span>Fetch External Data</span>
-                                </div>
-                                <div className="p-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4 gap-2">
-                                    <div className="p-0 has-tooltip">
+                        <>
+                            <Container header="Fetch External Data">
+                                <div className="py-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4">
+                                    <div className="has-tooltip">
                                         <span class="tooltip uppercase text-center">
                                             Get the symbol, name, price, volume,
                                             and change.
                                         </span>
                                         <button
-                                            onClick={stockStartHandler}
+                                            onClick={dashboardStartHandler}
                                             className="btn btn-red"
                                             type="button"
                                         >
                                             <Icon id="start" /> Start
                                         </button>
                                     </div>
-                                    <div className="p-0 has-tooltip">
+                                    <div className="has-tooltip">
                                         <span class="tooltip uppercase text-center">
                                             Get value, year high and low prices.
                                         </span>
                                         <button
-                                            onClick={stockPriceHandler}
+                                            onClick={dashboardPriceHandler}
                                             className="btn btn-blue"
                                             type="button"
                                         >
                                             <Icon id="price" /> Price
                                         </button>
                                     </div>
-                                    <div className="p-0 has-tooltip">
+                                    <div className="has-tooltip">
                                         <span class="tooltip uppercase text-center">
                                             Get income after tax and earnings
                                             per share.
                                         </span>
                                         <button
-                                            onClick={stockReportHandler}
+                                            onClick={dashboardReportHandler}
                                             className="btn btn-green"
                                             type="button"
                                         >
@@ -168,25 +208,25 @@ const Dashboard = () => {
                                         </button>
                                     </div>
 
-                                    <div className="p-0 has-tooltip">
+                                    <div className="has-tooltip">
                                         <span class="tooltip uppercase text-center">
                                             Get the yearly dividend yield.
                                         </span>
                                         <button
-                                            onClick={stockDividendHandler}
+                                            onClick={dashboardDividendHandler}
                                             className="btn btn-emerald"
                                             type="button"
                                         >
                                             <Icon id="dividend" /> Dividend
                                         </button>
                                     </div>
-                                    <div className="p-0 has-tooltip">
+                                    <div className="has-tooltip">
                                         <span class="tooltip uppercase text-center">
                                             Get the sector to which stock
                                             belongs.
                                         </span>
                                         <button
-                                            onClick={stockSectorHandler}
+                                            onClick={dashboardSectorHandler}
                                             className="btn btn-indigo"
                                             type="button"
                                         >
@@ -194,13 +234,10 @@ const Dashboard = () => {
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="grid auto-rows-min h-fit">
-                                <div className="p-2">
-                                    <span>Asset Allocation</span>
-                                </div>
+                            </Container>
+                            <Container header="Asset Allocation">
                                 <div className="flex flex-col flex-wrap sm:flex-row justify-center gap-2">
-                                    <div className="card-rounded-scale text-red-500 ">
+                                    <div className="card-rounded-scale text-red-500">
                                         <div className="h-8 p-2 mb-6">
                                             <p className="uppercase">
                                                 <Icon id="stock" /> Stock
@@ -277,44 +314,81 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
-                                <div className="h-8 p-2 sm:col-span-2">
-                                    <span>Graphical Representation</span>
+                            </Container>
+                            <Container header="Account Information">
+                                <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
+                                    <div className="h-20 sm:row-start-2 card-rounded-scale">
+                                        Account
+                                    </div>
+                                    <div className="sm:row-start-3 card-rounded-scale">
+                                        <div className="p-2">Data</div>
+                                        <div className="p-2 grid auto-rows-min sm:grid-cols-2">
+                                            <div className="p-2">
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-indigo"
+                                                    onClick={
+                                                        bluechipModalHandler
+                                                    }
+                                                >
+                                                    View Bluechip Stocks
+                                                </button>
+                                            </div>
+                                            <div className="p-2">
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-green"
+                                                    onClick={edgeModalHandler}
+                                                >
+                                                    Set Edge ID
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale">
+                                        Doughnut Chart
+                                    </div>
                                 </div>
-                                <div className="h-20 sm:row-start-2 card-rounded-scale">
-                                    Account
+                                {modalBlue && (
+                                    <Modal>
+                                        {desktopModalTemplate({
+                                            data: bluedash,
+                                            header: "List Of Bluechip Stocks",
+                                            close: closeModalHandler,
+                                        })}
+                                    </Modal>
+                                )}
+                                {modalEdge && (
+                                    <Modal>
+                                        {desktopModalTemplate({
+                                            data: edge,
+                                            header: "Stocks Without Edge ID",
+                                            close: closeModalHandler,
+                                        })}
+                                    </Modal>
+                                )}
+                            </Container>
+                            <Container header="Philippine Stock Exchange">
+                                <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
+                                    <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale">
+                                        Top Gainers
+                                    </div>
+                                    <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale">
+                                        Top Lossers
+                                    </div>
                                 </div>
-                                <div className="h-20 sm:row-start-3 card-rounded-scale">
-                                    Offers
+                            </Container>
+                            <Container header="Crypto Currency">
+                                <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
+                                    <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale">
+                                        Top Gainers
+                                    </div>
+                                    <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale">
+                                        Top Lossers
+                                    </div>
                                 </div>
-                                <div className="h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale">
-                                    Doughnut Chart
-                                </div>
-                            </div>
-                            <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
-                                <div className="h-8 p-2 sm:col-span-2">
-                                    <span>Philippine Stock Exchange</span>
-                                </div>
-                                <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale">
-                                    Top Gainers
-                                </div>
-                                <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale">
-                                    Top Lossers
-                                </div>
-                            </div>
-                            <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
-                                <div className="h-8 p-2 sm:col-span-2">
-                                    Crypto Currency
-                                </div>
-                                <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale">
-                                    Top Gainers
-                                </div>
-                                <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale">
-                                    Top Lossers
-                                </div>
-                            </div>
-                        </div>
+                            </Container>
+                        </>
                     )}
                 </>
             )}

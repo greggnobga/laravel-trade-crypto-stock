@@ -77,13 +77,6 @@ class TradeController extends Controller {
                 "28" => "URC"
             ];
 
-            /** Get user id. */
-            $userid = Auth::id();
-            if (is_null($userid)) {
-                $user = DB::table('users')->select('id')->where('username', 'reijo')->first();
-                $userid = $user->id;
-            }
-
             /** Save to database. */
             foreach ($blue as $chip) {
                 /** Check if record exist. */
@@ -95,10 +88,10 @@ class TradeController extends Controller {
                 if (is_null($check)) {
                     /** If its not. */
                     DB::table('stock_blues')
-                        ->where('userid', '=', $userid)
+                        ->where('userid', '=', Auth::id())
                         ->where('symbol', '=', $chip)
                         ->insert([
-                            'userid' => $userid,
+                            'userid' => Auth::id(),
                             'symbol' => $chip,
                             'created_at' => date('Y-m-d H:i:s'),
                             'updated_at' => date('Y-m-d H:i:s'),
@@ -109,7 +102,7 @@ class TradeController extends Controller {
             /** Fecth all record in stock blue table. */
             $record = DB::table('stock_blues')
                 ->select('symbol')
-                ->where('userid', $userid)
+                ->where('userid', Auth::id())
                 ->get()
                 ->toArray();
 

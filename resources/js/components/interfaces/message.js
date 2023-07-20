@@ -14,7 +14,7 @@ const Message = ({ variant, children }) => {
         <>
             {message && (
                 <div
-                    className="font-size m-2 cursor-pointer hover:animate-pulse"
+                    className="font-size m-2 cursor-pointer hover:animate-pulse z-50"
                     onClick={messageHandler}
                 >
                     <p className={variant ? variant : "alert-danger"}>

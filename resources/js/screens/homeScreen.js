@@ -62,7 +62,7 @@ const Home = () => {
                             <div className="card-rounded">
                                 <div className="hover:grayscale">
                                     <img
-                                        className="object-cover w-full rounded-t-lg"
+                                        className="object-cover w-full rounded-t"
                                         src="/public/images/tools.jpeg"
                                         alt="Innovative Tools"
                                     />
@@ -70,7 +70,7 @@ const Home = () => {
                                 <div className="p-2 font-size">
                                     <Icon id="tool" /> Innovative Tools
                                 </div>
-                                <div className="p-4 font-size bg-rose-800 bg-opacity-30 rounded-b-lg">
+                                <div className="p-4 font-size bg-rose-800 bg-opacity-30 rounded-b">
                                     Eaque ipsa quae ab illo inventore veritatis
                                     et quasi architecto beatae vitae dicta sunt
                                     explicabo.
@@ -79,7 +79,7 @@ const Home = () => {
                             <div className="card-rounded">
                                 <div className="hover:grayscale">
                                     <img
-                                        className="object-cover w-full rounded-t-lg"
+                                        className="object-cover w-full rounded-t"
                                         src="/public/images/price.jpeg"
                                         alt="Transparent Pricing"
                                     />
@@ -87,7 +87,7 @@ const Home = () => {
                                 <div className="p-2 font-size">
                                     <Icon id="price" /> Transparent Pricing
                                 </div>
-                                <div className="p-4 font-size bg-green-800 bg-opacity-30 rounded-b-lg">
+                                <div className="p-4 font-size bg-green-800 bg-opacity-30 rounded-b">
                                     Eaque ipsa quae ab illo inventore veritatis
                                     et quasi architecto beatae vitae dicta sunt
                                     explicabo.
@@ -96,7 +96,7 @@ const Home = () => {
                             <div className="card-rounded">
                                 <div className="hover:grayscale">
                                     <img
-                                        className="object-cover w-full rounded-t-lg"
+                                        className="object-cover w-full rounded-t"
                                         src="/public/images/support.jpeg"
                                         alt="Dedicated Support"
                                     />
@@ -104,7 +104,7 @@ const Home = () => {
                                 <div className="p-2 font-size">
                                     <Icon id="support" /> Dedicated Support
                                 </div>
-                                <div className="p-4 font-size bg-purple-800 bg-opacity-30 rounded-b-lg">
+                                <div className="p-4 font-size bg-purple-800 bg-opacity-30 rounded-b">
                                     Eaque ipsa quae ab illo inventore veritatis
                                     et quasi architecto beatae vitae dicta sunt
                                     explicabo.

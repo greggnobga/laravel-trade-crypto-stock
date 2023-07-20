@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
 
     Route::get('/dashboard', [App\Http\Controllers\Dashboard\DashboardController::class, 'init'])->name('init');
+    Route::post('/dashboard', [App\Http\Controllers\Dashboard\DashboardController::class, 'init'])->name('init');
 
     Route::post('/stock-trade-store', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'init']);
     Route::get('/stock-trade-retrieve', [App\Http\Controllers\Dashboard\Stock\TradeController::class, 'init']);

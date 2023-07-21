@@ -21,6 +21,7 @@ import {
     dashboardSectorReducer,
     dashboardBlueReducer,
     dashboardEdgeReducer,
+    dashboardEdgeUpdateReducer,
 } from "./reducers/dashboardReducers";
 
 import {
@@ -46,6 +47,7 @@ const reducer = combineReducers({
     dashboardSector: dashboardSectorReducer,
     dashboardBlue: dashboardBlueReducer,
     dashboardEdge: dashboardEdgeReducer,
+    dashboardEdgeUpdate: dashboardEdgeUpdateReducer,
     stockBlue: stockBlueReducer,
     stockCommon: stockCommonReducer,
     stockWatchBuild: stockWatchBuildReducer,

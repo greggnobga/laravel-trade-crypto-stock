@@ -20,6 +20,9 @@ import {
     DASHBOARD_EDGE_REQUEST,
     DASHBOARD_EDGE_SUCCESS,
     DASHBOARD_EDGE_FAILURE,
+    DASHBOARD_EDGE_UPDATE_REQUEST,
+    DASHBOARD_EDGE_UPDATE_SUCCESS,
+    DASHBOARD_EDGE_UPDATE_FAILURE,
 } from "../constants/dashboardConstants";
 
 export const dashboardStartReducer = (state = {}, action) => {
@@ -107,6 +110,19 @@ export const dashboardEdgeReducer = (state = {}, action) => {
         case DASHBOARD_EDGE_SUCCESS:
             return { loading: false, edge: action.payload };
         case DASHBOARD_EDGE_FAILURE:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const dashboardEdgeUpdateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DASHBOARD_EDGE_UPDATE_REQUEST:
+            return { loading: true };
+        case DASHBOARD_EDGE_UPDATE_SUCCESS:
+            return { loading: false, success: action.payload };
+        case DASHBOARD_EDGE_UPDATE_FAILURE:
             return { loading: false, error: action.payload };
         default:
             return state;

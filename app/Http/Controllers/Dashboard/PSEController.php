@@ -18,35 +18,127 @@ class PSEController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
-            /** forward prices command. */
+            /** forward prices function */
             if ($request->input('section') === 'prices') {
                 return $this->stockprices($request->input('input'));
             }
 
-            /** forward reports command. */
+            /** forward reports function */
             if ($request->input('section') === 'reports') {
                 return $this->stockreports($request->input('input'));
             }
 
-            /** forward dividends command. */
+            /** forward dividends function */
             if ($request->input('section') === 'dividends') {
                 return $this->stockdividends($request->input('input'));
             }
 
-            /** forward sectors command. */
+            /** forward sectors function */
             if ($request->input('section') === 'sectors') {
                 return $this->stocksectors($request->input('input'));
             }
         }
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
-            /** forward trades command. */
+            /** forward trades function */
             if ($request->input('section') === 'stocks') {
                 return $this->stocktrades();
+            }
+            /** forward trades function */
+            if ($request->input('section') === 'lists') {
+                return $this->stocklists();
             }
         }
     }
 
+    /**
+     * Declare stocklists function.
+     */
+    public function stocklists() {
+        /** repository. */
+        $result = [];
+
+        /** create request. */
+        $pages = Http::get('https://edge.pse.com.ph/cm/companySearch.ax?pNum=1')->body();
+
+        /** make it crawlable. */
+        $crawlerpages = new Crawler($pages);
+
+        /** filter response. */
+        $page = $crawlerpages->filter('span')->each(function ($node) {
+            return $node->text();
+        });
+
+        if (!is_null($page)) {
+            /** remove unwanted characters. */
+            $replace = preg_replace("/[^\/\[\]0-9]/", "", $page[0]);
+
+            /** explode in order to convert string to array. */
+            $pieces = explode("/", $replace);
+
+            /** explode again to get the desired array. */
+            $expode = explode("][", $pieces[1]);
+
+            /** save the pages count. */
+            $result['count'] = $expode[0];
+        }
+
+        if (!is_null($result['count'])) {
+            /** loop through the pages. */
+            for ($i = 1; $i < $result['count']; $i++) {
+                /** create request. */
+                $lists = Http::get('https://edge.pse.com.ph/cm/companySearch.ax?pNum=' . $i)->body();
+
+                /** make it crawlable. */
+                $crawlerlists = new Crawler($lists);
+
+                /** filter response. */
+                $list = $crawlerlists->filter('tr > td')->each(function ($node) {
+                    return $node->text();
+                });
+
+                /** add to temporary pointer. */
+                $ticker = [];
+
+                /** loop the list. */
+                foreach ($list as $key => $value) {
+                    if ($key === 1) $ticker[$i][$key] = $value;
+                    if ($key === 4) $ticker[$i][$key] = $value;
+                    if ($key === 7) $ticker[$i][$key] = $value;
+                    if ($key === 10) $ticker[$i][$key] = $value;
+                    if ($key === 13) $ticker[$i][$key] = $value;
+                    if ($key === 16) $ticker[$i][$key] = $value;
+                    if ($key === 19) $ticker[$i][$key] = $value;
+                    if ($key === 22) $ticker[$i][$key] = $value;
+                    if ($key === 25) $ticker[$i][$key] = $value;
+                    if ($key === 28) $ticker[$i][$key] = $value;
+                }
+
+                /** save to database if does not  exist. */
+                foreach ($ticker[$i] as $symbol) {
+                    /** query database to see if record exist. */
+                    $check = DB::table('stock_trades')
+                        ->select('symbol')
+                        ->where('symbol', $symbol)
+                        ->first();
+
+                    /** if not then inster. */
+                    if (is_null($check)) {
+                        $check = DB::table('stock_trades')
+                            ->insert([
+                                'name' => strip_tags($symbol),
+                                'symbol' => strip_tags($symbol),
+                                'created_at' => date('Y-m-d H:i:s'),
+                                'updated_at' => date('Y-m-d H:i:s'),
+                            ]);
+                    }
+                }
+            }
+        }
+
+        /** return something. */
+        return response(['message' => 'All possible stocks were successfully added to the database.'], 200);
+    }
     /**
      * Declare stocks function.
      */

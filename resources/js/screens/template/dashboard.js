@@ -1,31 +1,249 @@
 /** Component. */
 import Icon from "../../components/icons";
 
-/** Desktop modale template. */
-export const desktopModalTemplate = ({ data, header, close }) => {
-    console.log(data);
+/** Modal edge template. */
+export const modalEdgeTemplate = (props) => {
+    /** Return. */
     return (
-        <div className="card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase">
-            <div className="p-2 border-bottom">
-                <div className="flex flex-row justify-between">
-                    <h1 className="text-xl">{header}</h1>
-                    <p className="pl-2" onClick={close}>
-                        <Icon id="close" /> Close
+        <div className="card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase cursor-pointer">
+            <div className="p-0">
+                <div className="p-2 flex flex-row justify-between border-b border-stone-200">
+                    <h1 className="text-xl">{props.header}</h1>
+                    <p className="sm:pl-2" onClick={props.close}>
+                        <Icon id="close" />{" "}
+                        <span className="invisible sm:visible">Close</span>
                     </p>
                 </div>
             </div>
-            <div className="p-2">
-                <div className="flex flex-row items-center justify-center">
-                    <div className="grow">Index</div>
-                    <div className="grow">Symbol</div>
-                    <div className="grow">Action</div>
+            <div className="p-0">
+                <div className="p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500">
+                    <div className="p-2 w-4/12">Index</div>
+                    <div className="p-2 w-4/12">Symbol</div>
+                    <div className="p-2 w-4/12">Action</div>
                 </div>
             </div>
-            <div className="p-2">
-                {data &&
-                    Object.entries(data).map((item, index) => {
-                        return <p>{item[1].symbol}</p>;
+            <div className="p-0">
+                {props.data &&
+                    props.data.map((item, index) => {
+                        /** Return. */
+                        return (
+                            <>
+                                {props.shown ? (
+                                    props.index === index && (
+                                        <>
+                                            <div className="p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500">
+                                                <div className="p-2 w-4/12">
+                                                    {index + 1}
+                                                </div>
+                                                <div className="p-2 w-4/12">
+                                                    {item.symbol}
+                                                </div>
+                                                <div className="p-2 w-4/12">
+                                                    <span
+                                                        className="uppercase"
+                                                        onClick={() =>
+                                                            props.form(false)
+                                                        }
+                                                    >
+                                                        <Icon id="cancel" />{" "}
+                                                        <span className="invisible sm:visible">
+                                                            Cancel
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="p-2 flex flex-col sm:flex-row items-center justify-center w-full hover:text-green-500">
+                                                <div className="p-2 grow sm:w-4/12">
+                                                    {item.symbol}
+                                                </div>
+                                                <div className="p-2 grow sm:w-4/12">
+                                                    <input
+                                                        className={`p-2 rounded shadow ${
+                                                            props.error
+                                                                ? "border border-red-500 text-red"
+                                                                : "border border-green-500 text-green"
+                                                        }`}
+                                                        id="edge"
+                                                        name="edge"
+                                                        type="text"
+                                                        placeholder="Enter Edge ID"
+                                                        onBlur={props.blur}
+                                                        onChange={props.change}
+                                                        value={props.value}
+                                                        autoComplete="off"
+                                                    />
+                                                    {props.error && (
+                                                        <p className="pt-1 text-red-500 text-[.50rem]">
+                                                            Please enter a valid
+                                                            edge id.
+                                                        </p>
+                                                    )}
+                                                </div>
+                                                <div className="p-2 grow sm:w-4/12">
+                                                    <button
+                                                        className="uppercase"
+                                                        onClick={() => {
+                                                            props.action({
+                                                                symbol: item.symbol,
+                                                                value: props.value,
+                                                            });
+                                                            props.form(false);
+                                                            props.reset();
+                                                        }}
+                                                        disabled={props.error}
+                                                    >
+                                                        <Icon id="submit" />{" "}
+                                                        <span className="invisible sm:visible">
+                                                            Submit
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                ) : (
+                                    <div className="p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500">
+                                        <div className="w-4/12">
+                                            {index + 1}
+                                        </div>
+                                        <div className="w-4/12">
+                                            {item.symbol}
+                                        </div>
+                                        <div className="w-4/12">
+                                            <span
+                                                className="uppercase"
+                                                onClick={() => {
+                                                    props.form(true);
+                                                    props.set(index);
+                                                }}
+                                            >
+                                                <Icon id="add" />{" "}
+                                                <span className="invisible sm:visible">
+                                                    Update
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        );
                     })}
+            </div>
+        </div>
+    );
+};
+
+/** Desktop modale template. */
+export const modalBlueTemplate = (props) => {
+    /** Show form hadler. */
+    const showFormHandler = (symbol) => {
+        props.form(true);
+        console.log(symbol);
+    };
+
+    /** Return. */
+    return (
+        <div className="card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase cursor-pointer">
+            <div className="p-0">
+                <div className="p-2 flex flex-row justify-between border-b border-stone-200 hover:text-purple-500">
+                    <h1 className="text-xl">{props.header}</h1>
+                    <div className="p-0">
+                        <span
+                            className="text-right sm:pl-2"
+                            onClick={() => props.form(!props.shown)}
+                        >
+                            {props.shown ? (
+                                <>
+                                    <Icon id="cancel" />{" "}
+                                    <span className="invisible sm:visible">
+                                        Cancel
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    <Icon id="add" />{" "}
+                                    <span className="invisible sm:visible">
+                                        Add
+                                    </span>
+                                </>
+                            )}
+                        </span>
+                        <span
+                            className="text-right sm:pl-2"
+                            onClick={props.close}
+                        >
+                            <Icon id="close" />{" "}
+                            <span className="invisible sm:visible">Close</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div className="p-0">
+                <div className="p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500">
+                    <div className="w-4/12">Index</div>
+                    <div className="w-4/12">Symbol</div>
+                    <div className="w-4/12">Action</div>
+                </div>
+            </div>
+            <div className="p-0">
+                {props.shown ? (
+                    <div className="p-2 flex flex-col sm:flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500">
+                        <div className="p-2 grow sm:w-4/12 uppercase">
+                            Add Bluechip
+                        </div>
+                        <div className="p-2 grow sm:w-4/12">
+                            <input
+                                className={`p-2 rounded shadow ${
+                                    props.error
+                                        ? "border border-red-500 text-red"
+                                        : "border border-green-500 text-green"
+                                }`}
+                                id="bluechip"
+                                name="bluechip"
+                                type="text"
+                                placeholder="Enter Symbol"
+                                onBlur={props.blur}
+                                onChange={props.change}
+                                value={props.value}
+                                autoComplete="off"
+                            />
+                            {props.error && (
+                                <p className="pt-1 text-red-500 text-[.50rem]">
+                                    Please enter a valid symbol.
+                                </p>
+                            )}
+                        </div>
+                        <div className="p-2 grow sm:w-4/12">
+                            <button
+                                className="uppercase"
+                                onClick={() => {
+                                    props.action({
+                                        value: props.value,
+                                    });
+                                    props.form(false);
+                                    props.reset();
+                                }}
+                                disabled={props.error}
+                            >
+                                <Icon id="submit" />{" "}
+                                <span className="invisible sm:visible">
+                                    Submit
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    props.data &&
+                    props.data.map((item, index) => {
+                        return (
+                            <div className="p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500">
+                                <div className="w-4/12">{index + 1}</div>
+                                <div className="w-4/12">{item.symbol}</div>
+                                <div className="w-4/12"></div>
+                            </div>
+                        );
+                    })
+                )}
             </div>
         </div>
     );

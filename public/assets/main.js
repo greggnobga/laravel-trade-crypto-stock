@@ -10607,6 +10607,9 @@ const DASHBOARD_BLUE_FAILURE = "DASHBOARD_BLUE_FAILURE";
 const DASHBOARD_EDGE_REQUEST = "DASHBOARD_EDGE_REQUEST";
 const DASHBOARD_EDGE_SUCCESS = "DASHBOARD_EDGE_SUCCESS";
 const DASHBOARD_EDGE_FAILURE = "DASHBOARD_EDGE_FAILURE";
+const DASHBOARD_EDGE_UPDATE_REQUEST = "DASHBOARD_EDGE_UPDATE_REQUEST";
+const DASHBOARD_EDGE_UPDATE_SUCCESS = "DASHBOARD_EDGE_UPDATE_SUCCESS";
+const DASHBOARD_EDGE_UPDATE_FAILURE = "DASHBOARD_EDGE_UPDATE_FAILURE";
 const dashboardStartReducer = (state = {}, action) => {
   switch (action.type) {
     case DASHBOARD_START_REQUEST:
@@ -10686,6 +10689,18 @@ const dashboardEdgeReducer = (state = {}, action) => {
     case DASHBOARD_EDGE_SUCCESS:
       return { loading: false, edge: action.payload };
     case DASHBOARD_EDGE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardEdgeUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_EDGE_UPDATE_REQUEST:
+      return { loading: true };
+    case DASHBOARD_EDGE_UPDATE_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_EDGE_UPDATE_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -10794,6 +10809,7 @@ const reducer = combineReducers({
   dashboardSector: dashboardSectorReducer,
   dashboardBlue: dashboardBlueReducer,
   dashboardEdge: dashboardEdgeReducer,
+  dashboardEdgeUpdate: dashboardEdgeUpdateReducer,
   stockBlue: stockBlueReducer,
   stockCommon: stockCommonReducer,
   stockWatchBuild: stockWatchBuildReducer,
@@ -12368,12 +12384,15 @@ const logoutUser = (token) => async (dispatch) => {
     });
     dispatch({ type: USER_LOGIN_LOGOUT, payload: data });
     dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
-    localStorage.removeItem("account");
-    localStorage.removeItem("bluechip");
-    localStorage.removeItem("common");
-    localStorage.removeItem("build");
-    localStorage.removeItem("bluedash");
-    localStorage.removeItem("edge");
+    if (data) {
+      localStorage.removeItem("account");
+      localStorage.removeItem("bluechip");
+      localStorage.removeItem("fetch");
+      localStorage.removeItem("common");
+      localStorage.removeItem("build");
+      localStorage.removeItem("bluedash");
+      localStorage.removeItem("edge");
+    }
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAILURE,
@@ -13563,23 +13582,200 @@ const Container = ({ header, children }) => {
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children })
   ] });
 };
-const desktopModalTemplate$1 = ({ data, header, close }) => {
-  console.log(data);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-bottom", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row justify-between", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl", children: header }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "pl-2", onClick: close, children: [
+const Notice = ({ variant, children, duration, show }) => {
+  const [notice, setNotice] = reactExports.useState(show);
+  reactExports.useEffect(() => {
+    if (show) {
+      setNotice(true);
+    }
+    if (children) {
+      const timer = setTimeout(() => {
+        setNotice(false);
+      }, duration);
+      return () => clearTimeout(timer);
+    }
+  }, [show, duration, children]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: notice && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-0 right-0 m-2 cursor-pointer hover:animate-pulse z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children }) }) });
+};
+const modalEdgeTemplate = (props) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase cursor-pointer", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl", children: props.header }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "sm:pl-2", onClick: props.close, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
-        " Close"
+        " ",
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
       ] })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row items-center justify-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow", children: "Index" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow", children: "Symbol" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow", children: "Action" })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: "Index" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: "Symbol" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: "Action" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: data && Object.entries(data).map((item, index2) => {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: item[1].symbol });
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: props.data && props.data.map((item, index2) => {
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: props.shown ? props.index === index2 && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: index2 + 1 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: item.symbol }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "span",
+            {
+              className: "uppercase",
+              onClick: () => props.form(false),
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "cancel" }),
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Cancel" })
+              ]
+            }
+          ) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-col sm:flex-row items-center justify-center w-full hover:text-green-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow sm:w-4/12", children: item.symbol }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grow sm:w-4/12", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                className: `p-2 rounded shadow ${props.error ? "border border-red-500 text-red" : "border border-green-500 text-green"}`,
+                id: "edge",
+                name: "edge",
+                type: "text",
+                placeholder: "Enter Edge ID",
+                onBlur: props.blur,
+                onChange: props.change,
+                value: props.value,
+                autoComplete: "off"
+              }
+            ),
+            props.error && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-1 text-red-500 text-[.50rem]", children: "Please enter a valid edge id." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow sm:w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "uppercase",
+              onClick: () => {
+                props.action({
+                  symbol: item.symbol,
+                  value: props.value
+                });
+                props.form(false);
+                props.reset();
+              },
+              disabled: props.error,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "submit" }),
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Submit" })
+              ]
+            }
+          ) })
+        ] })
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: index2 + 1 }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: item.symbol }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "span",
+          {
+            className: "uppercase",
+            onClick: () => {
+              props.form(true);
+              props.set(index2);
+            },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "add" }),
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Update" })
+            ]
+          }
+        ) })
+      ] }) });
+    }) })
+  ] });
+};
+const modalBlueTemplate = (props) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase cursor-pointer", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200 hover:text-purple-500", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl", children: props.header }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "span",
+          {
+            className: "text-right sm:pl-2",
+            onClick: () => props.form(!props.shown),
+            children: props.shown ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "cancel" }),
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Cancel" })
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "add" }),
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Add" })
+            ] })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "span",
+          {
+            className: "text-right sm:pl-2",
+            onClick: props.close,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
+            ]
+          }
+        )
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Index" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Symbol" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Action" })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: props.shown ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-col sm:flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow sm:w-4/12 uppercase", children: "Add Bluechip" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grow sm:w-4/12", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            className: `p-2 rounded shadow ${props.error ? "border border-red-500 text-red" : "border border-green-500 text-green"}`,
+            id: "bluechip",
+            name: "bluechip",
+            type: "text",
+            placeholder: "Enter Symbol",
+            onBlur: props.blur,
+            onChange: props.change,
+            value: props.value,
+            autoComplete: "off"
+          }
+        ),
+        props.error && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-1 text-red-500 text-[.50rem]", children: "Please enter a valid symbol." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow sm:w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          className: "uppercase",
+          onClick: () => {
+            props.action({
+              value: props.value
+            });
+            props.form(false);
+            props.reset();
+          },
+          disabled: props.error,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "submit" }),
+            " ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Submit" })
+          ]
+        }
+      ) })
+    ] }) : props.data && props.data.map((item, index2) => {
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: index2 + 1 }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: item.symbol }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12" })
+      ] });
     }) })
   ] });
 };
@@ -13920,6 +14116,37 @@ const actDashboardEdge = (token) => async (dispatch) => {
     });
   }
 };
+const actDashboardEdgeUpdate = ({ token, symbol, edge }) => async (dispatch) => {
+  try {
+    dispatch({ type: DASHBOARD_EDGE_UPDATE_REQUEST });
+    const { data } = await axios({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "POST",
+      url: "/api/dashboard",
+      params: {
+        section: "edge",
+        statement: "update",
+        symbol,
+        edge
+      }
+    });
+    let message = data.message;
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
+    dispatch({ type: DASHBOARD_EDGE_UPDATE_SUCCESS, payload: message });
+  } catch (error) {
+    dispatch({
+      type: DASHBOARD_EDGE_UPDATE_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const Dashboard = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, logged, access_token, email_verified } = userLogin;
@@ -13929,6 +14156,31 @@ const Dashboard = () => {
   const { loading: loadEdge, edge } = dashboardEdge;
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
+  const [modalBlue, setModalBlue] = reactExports.useState(false);
+  const [modalEdge, setModalEdge] = reactExports.useState(false);
+  const [modalForm, setModalForm] = reactExports.useState(false);
+  const [modalIndex, setModalIndex] = reactExports.useState(0);
+  const [notice, setNotice] = reactExports.useState(false);
+  const {
+    value: modalBlueInput,
+    hasError: modalBlueInputHasError,
+    isValid: modalBlueInputIsValid,
+    valueChangeHandler: modalBlueInputChangeHandler,
+    inputBlurHandler: modalBlueInputBlurHandler,
+    resetHandler: modalBlueInputInputReset
+  } = useValidate(
+    (value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/)
+  );
+  const {
+    value: modalEdgeInput,
+    hasError: modalEdgeInputHasError,
+    isValid: modalEdgeInputIsValid,
+    valueChangeHandler: modalEdgeInputChangeHandler,
+    inputBlurHandler: modalEdgeInputBlurHandler,
+    resetHandler: modalEdgeInputInputReset
+  } = useValidate(
+    (value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/)
+  );
   const { check } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -13950,7 +14202,13 @@ const Dashboard = () => {
     if (!edge) {
       dispatch(actDashboardEdge(access_token));
     }
-  }, [access_token, logged, bluedash, edge]);
+    if (message) {
+      setNotice(true);
+      setTimeout(() => {
+        setNotice(false);
+      }, 3e3);
+    }
+  }, [access_token, logged, bluedash, edge, message]);
   const [verify, setVerify] = reactExports.useState(email_verified);
   const resendHandler = () => {
     setVerify(true);
@@ -13971,21 +14229,58 @@ const Dashboard = () => {
   const dashboardSectorHandler = () => {
     dispatch(actDashboardSector(access_token));
   };
-  const [modalBlue, setModalBlue] = reactExports.useState(false);
-  const [modalEdge, setModalEdge] = reactExports.useState(false);
   const bluechipModalHandler = () => {
     setModalBlue(true);
   };
   const edgeModalHandler = () => {
     setModalEdge(true);
   };
+  const updateBlueHandler = ({ value }) => {
+    if (value) {
+      console.log("state: ", modalBlueInput);
+      console.log("props value: ", value);
+    }
+  };
+  const storeEdgeHandler = ({ symbol, value }) => {
+    if (symbol && value) {
+      dispatch(
+        actDashboardEdgeUpdate({
+          token: access_token,
+          symbol,
+          edge: value
+        })
+      );
+      const timeout = setTimeout(() => {
+        dispatch(actDashboardEdge(access_token));
+      }, 2e3);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  };
   const closeModalHandler = () => {
     setModalBlue(false);
     setModalEdge(false);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-warning", children: error }),
-    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-success", children: message }),
+    error && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Notice,
+      {
+        variant: "alert-warning",
+        children: error,
+        duration: 3e3,
+        show: notice
+      }
+    ),
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Notice,
+      {
+        variant: "alert-success",
+        children: message,
+        duration: 3e3,
+        show: notice
+      }
+    ),
     !verify && /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
       {
@@ -14070,6 +14365,20 @@ const Dashboard = () => {
               ]
             }
           )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Fetch stock list from pse edge." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "btn btn-green",
+              type: "button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+                " Lists"
+              ]
+            }
+          )
         ] })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Asset Allocation", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col flex-wrap sm:flex-row justify-center gap-2", children: [
@@ -14134,15 +14443,35 @@ const Dashboard = () => {
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale", children: "Doughnut Chart" })
         ] }),
-        modalBlue && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: desktopModalTemplate$1({
+        modalBlue && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: modalBlueTemplate({
           data: bluedash,
-          header: "List Of Bluechip Stocks",
-          close: closeModalHandler
+          header: "Bluechip",
+          close: closeModalHandler,
+          action: updateBlueHandler,
+          form: setModalForm,
+          shown: modalForm,
+          value: modalBlueInput,
+          change: modalBlueInputChangeHandler,
+          blur: modalBlueInputBlurHandler,
+          error: modalBlueInputHasError,
+          reset: modalBlueInputInputReset,
+          autoComplete: "off"
         }) }),
-        modalEdge && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: desktopModalTemplate$1({
+        modalEdge && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: modalEdgeTemplate({
           data: edge,
-          header: "Stocks Without Edge ID",
-          close: closeModalHandler
+          header: "Stocks",
+          close: closeModalHandler,
+          action: storeEdgeHandler,
+          form: setModalForm,
+          shown: modalForm,
+          set: setModalIndex,
+          index: modalIndex,
+          value: modalEdgeInput,
+          change: modalEdgeInputChangeHandler,
+          blur: modalEdgeInputBlurHandler,
+          error: modalEdgeInputHasError,
+          reset: modalEdgeInputInputReset,
+          autoComplete: "off"
         }) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Philippine Stock Exchange", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
@@ -28736,21 +29065,6 @@ const Portfolio = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: screen, children: /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Order form " }) })
     ] })
   ] });
-};
-const Notice = ({ variant, children, duration, show }) => {
-  const [notice, setNotice] = reactExports.useState(show);
-  reactExports.useEffect(() => {
-    if (show) {
-      setNotice(true);
-    }
-    if (children) {
-      const timer = setTimeout(() => {
-        setNotice(false);
-      }, duration);
-      return () => clearTimeout(timer);
-    }
-  }, [show, duration, children]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: notice && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-0 right-0 m-2 cursor-pointer hover:animate-pulse z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children }) }) });
 };
 const desktopHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min grid-cols-9 h-fit rounded-t-md bg-stone-100 uppercase", children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Symbol" }) }),

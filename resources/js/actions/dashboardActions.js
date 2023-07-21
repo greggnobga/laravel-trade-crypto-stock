@@ -29,6 +29,9 @@ import {
     DASHBOARD_EDGE_REQUEST,
     DASHBOARD_EDGE_SUCCESS,
     DASHBOARD_EDGE_FAILURE,
+    DASHBOARD_EDGE_UPDATE_REQUEST,
+    DASHBOARD_EDGE_UPDATE_SUCCESS,
+    DASHBOARD_EDGE_UPDATE_FAILURE,
 } from "../constants/dashboardConstants";
 
 export const actDashboardStart = (token) => async (dispatch) => {
@@ -543,3 +546,54 @@ export const actDashboardEdge = (token) => async (dispatch) => {
         });
     }
 };
+
+export const actDashboardEdgeUpdate =
+    ({ token, symbol, edge }) =>
+    async (dispatch) => {
+        try {
+            /** Dispatch action to set inital state. */
+            dispatch({ type: DASHBOARD_EDGE_UPDATE_REQUEST });
+
+            /** Prepare request to external api data provider. */
+            const { data } = await axios({
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                method: "POST",
+                url: "/api/dashboard",
+                params: {
+                    section: "edge",
+                    statement: "update",
+                    symbol: symbol,
+                    edge: edge,
+                },
+            });
+
+            /** Separate result. */
+            let message = data.message;
+
+            /** Dispatch action to show message in the frontend. */
+            dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
+
+            /** Dispatch action to set the result into the store. */
+            dispatch({ type: DASHBOARD_EDGE_UPDATE_SUCCESS, payload: message });
+        } catch (error) {
+            /** Dispatch action if error occurred. */
+            dispatch({
+                type: DASHBOARD_EDGE_UPDATE_FAILURE,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            });
+            /** Dispatch action if error occurred. */
+            dispatch({
+                type: MESSAGE_SHOW_FAILURE,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            });
+        }
+    };

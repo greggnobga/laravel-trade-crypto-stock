@@ -14,25 +14,28 @@ class DashboardController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
-            /** forward insert command. */
-            if ($request->input('section') === 'bluechip' && $request->input('statement') === 'store') {
-                // return $this->store(['table' => $request->input('table'), 'input' => $request->input('input')]);
+            /** forward edge  function. */
+            if ($request->input('section') === 'edge' && $request->input('statement') === 'update') {
+                return $this->edge($request->all());
             }
         }
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
-            /** forward blue command. */
+            /** forward blue function. */
             if ($request->input('section') === 'bluechip' && $request->input('statement') === 'select') {
                 return $this->bluechip($request->all());
             }
 
-            /** forward blue command. */
+            /** forward blue function. */
             if ($request->input('section') === 'edge' && $request->input('statement') === 'select') {
                 return $this->edge($request->all());
             }
         }
     }
 
+    /**
+     * Declare bluechip function.
+     */
     public function bluechip($data) {
         /** check if statement is select. */
         if ($data['statement'] === 'select') {
@@ -41,6 +44,7 @@ class DashboardController extends Controller {
                 ->select('symbol')
                 ->where('userid', Auth::id())
                 ->get();
+
             if (!is_null($bluehip)) {
                 /** return something. */
                 return response(['message' => 'Processed and displayed are all potential bluechip stocks that could be listed on the PSE.', 'stocks' => $bluehip], 200);
@@ -51,15 +55,18 @@ class DashboardController extends Controller {
         }
     }
 
+    /**
+     * Declare edge function.
+     */
     public function edge($data) {
+        /** query logged user role. */
+        $admin = DB::table('users')
+            ->select('role')
+            ->where('id', Auth::id())
+            ->first();
+
         /** check if statement is select. */
         if ($data['statement'] === 'select') {
-            /** query logged user role. */
-            $admin = DB::table('users')
-                ->select('role')
-                ->where('id', Auth::id())
-                ->first();
-
             /** check if user found. */
             if (!is_null($admin)) {
                 /** if role is admin then proceed. */
@@ -79,6 +86,36 @@ class DashboardController extends Controller {
                 }
             } else {
                 /** return something. */
+                return response(['message' => 'No logged user found.'], 200);
+            }
+        }
+
+        if ($data['statement'] === 'update') {
+            if (!is_null($admin)) {
+                /** fetch symbol and name. */
+                $update = DB::table('stock_trades')
+                    ->select('symbol')
+                    ->where('symbol', $data['symbol'])
+                    ->first();
+
+                /** insert with appropriate data. */
+                if (!is_null($update)) {
+                    $statement = DB::table('stock_trades')
+                        ->where('symbol', $data['symbol'])
+                        ->update([
+                            'edge' => strip_tags($data['edge']),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+                    if ($statement) {
+                        /** return success message. */
+                        return ['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'];
+                    }
+                } else {
+                    /** return error message. */
+                    return ['message' => 'No modifications were made to the ' . $data['symbol'] . ' data.'];
+                }
+            } else {
+                /** return if logged user is not admin */
                 return response(['message' => 'No logged user found.'], 200);
             }
         }

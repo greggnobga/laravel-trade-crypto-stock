@@ -7,16 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 /** Hook. */
 import useAuth from "../hooks/use-auth";
+import useValidate from "../hooks/use-validate";
 
 /** Component. */
 import Icon from "../components/icons";
 import Modal from "../components/interfaces/modal";
 import Loader from "../components/interfaces/loader";
-import Message from "../components/interfaces/message";
 import Container from "../components/interfaces/container";
+import Notice from "../components/interfaces/notice";
 
 /** Template. */
-import { desktopModalTemplate } from "./template/dashboard";
+import { modalBlueTemplate, modalEdgeTemplate } from "./template/dashboard";
 
 /** Action. */
 import { resendEmail } from "../actions/userActions";
@@ -28,6 +29,7 @@ import {
     actDashboardSector,
     actDashboardBlue,
     actDashboardEdge,
+    actDashboardEdgeUpdate,
 } from "../actions/dashboardActions";
 
 const Dashboard = () => {
@@ -43,6 +45,38 @@ const Dashboard = () => {
 
     const showMessage = useSelector((state) => state.showMessage);
     const { message, error } = showMessage;
+
+    /** Use state. */
+    const [modalBlue, setModalBlue] = useState(false);
+    const [modalEdge, setModalEdge] = useState(false);
+    const [modalForm, setModalForm] = useState(false);
+    const [modalIndex, setModalIndex] = useState(0);
+    const [notice, setNotice] = useState(false);
+
+    /** Map html element to validate hook. */
+    const {
+        value: modalBlueInput,
+        hasError: modalBlueInputHasError,
+        isValid: modalBlueInputIsValid,
+        valueChangeHandler: modalBlueInputChangeHandler,
+        inputBlurHandler: modalBlueInputBlurHandler,
+        resetHandler: modalBlueInputInputReset,
+    } = useValidate(
+        (value) =>
+            value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/)
+    );
+
+    const {
+        value: modalEdgeInput,
+        hasError: modalEdgeInputHasError,
+        isValid: modalEdgeInputIsValid,
+        valueChangeHandler: modalEdgeInputChangeHandler,
+        inputBlurHandler: modalEdgeInputBlurHandler,
+        resetHandler: modalEdgeInputInputReset,
+    } = useValidate(
+        (value) =>
+            value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/)
+    );
 
     /** Use auth. */
     const { check } = useAuth();
@@ -80,7 +114,17 @@ const Dashboard = () => {
         if (!edge) {
             dispatch(actDashboardEdge(access_token));
         }
-    }, [access_token, logged, bluedash, edge]);
+        /** Monitor new message. */
+        if (message) {
+            /** Set state. */
+            setNotice(true);
+
+            /** Reset state. */
+            setTimeout(() => {
+                setNotice(false);
+            }, 3000);
+        }
+    }, [access_token, logged, bluedash, edge, message]);
 
     /** Use state. */
     const [verify, setVerify] = useState(email_verified);
@@ -119,10 +163,6 @@ const Dashboard = () => {
         dispatch(actDashboardSector(access_token));
     };
 
-    /** Use state. */
-    const [modalBlue, setModalBlue] = useState(false);
-    const [modalEdge, setModalEdge] = useState(false);
-
     /** Bluechip modal handler. */
     const bluechipModalHandler = () => {
         setModalBlue(true);
@@ -131,6 +171,39 @@ const Dashboard = () => {
     /** Edge modal handler. */
     const edgeModalHandler = () => {
         setModalEdge(true);
+    };
+
+    /** Update bluechip handler. */
+    const updateBlueHandler = ({ value }) => {
+        /** Check props is not empty. */
+        if (value) {
+            console.log("state: ", modalBlueInput);
+            console.log("props value: ", value);
+        }
+    };
+
+    /** Store edge id handler. */
+    const storeEdgeHandler = ({ symbol, value }) => {
+        /** Check props is not empty. */
+        if (symbol && value) {
+            /** Dispatch action to send update request. */
+            dispatch(
+                actDashboardEdgeUpdate({
+                    token: access_token,
+                    symbol: symbol,
+                    edge: value,
+                })
+            );
+
+            /** Dispatch action to update the state. */
+            const timeout = setTimeout(() => {
+                dispatch(actDashboardEdge(access_token));
+            }, 2000);
+
+            return () => {
+                clearTimeout(timeout);
+            };
+        }
     };
 
     /** Close modal handler. */
@@ -144,11 +217,24 @@ const Dashboard = () => {
         <>
             {logged && (
                 <>
+                    {/**Show error. */}
                     {error && (
-                        <Message variant="alert-warning" children={error} />
+                        <Notice
+                            variant="alert-warning"
+                            children={error}
+                            duration={3000}
+                            show={notice}
+                        />
                     )}
+
+                    {/**Show message. */}
                     {message && (
-                        <Message variant="alert-success" children={message} />
+                        <Notice
+                            variant="alert-success"
+                            children={message}
+                            duration={3000}
+                            show={notice}
+                        />
                     )}
                     {!verify && (
                         <div
@@ -231,6 +317,17 @@ const Dashboard = () => {
                                             type="button"
                                         >
                                             <Icon id="sector" /> Sector
+                                        </button>
+                                    </div>
+                                    <div className="has-tooltip">
+                                        <span class="tooltip uppercase text-center">
+                                            Fetch stock list from pse edge.
+                                        </span>
+                                        <button
+                                            className="btn btn-green"
+                                            type="button"
+                                        >
+                                            <Icon id="start" /> Lists
                                         </button>
                                     </div>
                                 </div>
@@ -351,19 +448,39 @@ const Dashboard = () => {
                                 </div>
                                 {modalBlue && (
                                     <Modal>
-                                        {desktopModalTemplate({
+                                        {modalBlueTemplate({
                                             data: bluedash,
-                                            header: "List Of Bluechip Stocks",
+                                            header: "Bluechip",
                                             close: closeModalHandler,
+                                            action: updateBlueHandler,
+                                            form: setModalForm,
+                                            shown: modalForm,
+                                            value: modalBlueInput,
+                                            change: modalBlueInputChangeHandler,
+                                            blur: modalBlueInputBlurHandler,
+                                            error: modalBlueInputHasError,
+                                            reset: modalBlueInputInputReset,
+                                            autoComplete: "off",
                                         })}
                                     </Modal>
                                 )}
                                 {modalEdge && (
                                     <Modal>
-                                        {desktopModalTemplate({
+                                        {modalEdgeTemplate({
                                             data: edge,
-                                            header: "Stocks Without Edge ID",
+                                            header: "Stocks",
                                             close: closeModalHandler,
+                                            action: storeEdgeHandler,
+                                            form: setModalForm,
+                                            shown: modalForm,
+                                            set: setModalIndex,
+                                            index: modalIndex,
+                                            value: modalEdgeInput,
+                                            change: modalEdgeInputChangeHandler,
+                                            blur: modalEdgeInputBlurHandler,
+                                            error: modalEdgeInputHasError,
+                                            reset: modalEdgeInputInputReset,
+                                            autoComplete: "off",
                                         })}
                                     </Modal>
                                 )}

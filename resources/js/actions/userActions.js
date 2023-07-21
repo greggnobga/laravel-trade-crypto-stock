@@ -288,12 +288,15 @@ export const logoutUser = (token) => async (dispatch) => {
         dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
 
         /** Remove data from local storage. */
-        localStorage.removeItem("account");
-        localStorage.removeItem("bluechip");
-        localStorage.removeItem("common");
-        localStorage.removeItem("build");
-        localStorage.removeItem("bluedash");
-        localStorage.removeItem("edge");
+        if (data) {
+            localStorage.removeItem("account");
+            localStorage.removeItem("bluechip");
+            localStorage.removeItem("fetch");
+            localStorage.removeItem("common");
+            localStorage.removeItem("build");
+            localStorage.removeItem("bluedash");
+            localStorage.removeItem("edge");
+        }
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({

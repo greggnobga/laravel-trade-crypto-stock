@@ -14,6 +14,15 @@ class DashboardController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
+            /** forward bluechip function. */
+            if ($request->input('section') === 'bluechip' && $request->input('statement') === 'store') {
+                return $this->bluechip($request->all());
+            }
+
+            if ($request->input('section') === 'bluechip' && $request->input('statement') === 'destroy') {
+                return $this->bluechip($request->all());
+            }
+
             /** forward edge  function. */
             if ($request->input('section') === 'edge' && $request->input('statement') === 'update') {
                 return $this->edge($request->all());
@@ -48,6 +57,62 @@ class DashboardController extends Controller {
             if (!is_null($bluehip)) {
                 /** return something. */
                 return response(['message' => 'Processed and displayed are all potential bluechip stocks that could be listed on the PSE.', 'stocks' => $bluehip], 200);
+            } else {
+                /** return something. */
+                return response(['message' => 'There was no entry in the database.'], 200);
+            }
+        }
+
+        /** check if statement is store. */
+        if ($data['statement'] === 'store') {
+            /** get all bluechip stocks. */
+            $store = DB::table('stock_blues')
+                ->select('symbol')
+                ->where('userid', Auth::id())
+                ->where('symbol', $data['symbol'])
+                ->first();
+
+            if (is_null($store)) {
+                $insert = DB::table('stock_blues')
+                    ->insert([
+                        'userid' => Auth::id(),
+                        'symbol' => strip_tags($data['symbol']),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                if ($insert) {
+                    /** return something. */
+                    return response(['message' => $data['symbol'] . ' has been added to the database.'], 200);
+                }
+            } else {
+                /** return something. */
+                return response(['message' => 'The stock ' . $data['symbol'] . ' already exists in the database.'], 200);
+            }
+        }
+
+        /** check if statement is select. */
+        if ($data['statement'] === 'destroy') {
+            /** get all bluechip stocks. */
+            $destroy = DB::table('stock_blues')
+                ->select('symbol')
+                ->where('userid', Auth::id())
+                ->where('symbol', $data['symbol'])
+                ->first();
+
+            if (!is_null($destroy)) {
+                /** delete record. */
+                $delete = DB::table('stock_blues')
+                    ->where('userid', Auth::id())
+                    ->where('symbol', strip_tags($data['symbol']))
+                    ->delete();
+
+                if ($delete) {
+                    /** return something. */
+                    return response(['message' => 'The ' . $data['symbol'] . ' record has been removed.'], 200);
+                } else {
+                    /** return something. */
+                    return response(['message' => 'Your attempt to delete ' . $data['symbol'] . ' was unsuccessful.'], 200);
+                }
             } else {
                 /** return something. */
                 return response(['message' => 'There was no entry in the database.'], 200);

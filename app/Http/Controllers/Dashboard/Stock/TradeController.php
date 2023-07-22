@@ -23,7 +23,7 @@ class TradeController extends Controller {
         if ($request->method() === 'GET') {
             /** forward blue command. */
             if ($request->input('section') === 'blue') {
-                return $this->blue();
+                return $this->bluechip();
             }
             /** forward blue command. */
             if ($request->input('section') === 'common') {
@@ -35,7 +35,7 @@ class TradeController extends Controller {
     /**
      * Fetch blue chip stocks.
      */
-    public function blue() {
+    public function bluechip() {
 
         /** check record. */
         $check = DB::table('stock_trades')
@@ -44,61 +44,6 @@ class TradeController extends Controller {
             ->first();
 
         if (!is_null($check)) {
-            /** Blue chip default. */
-            $blue = [
-                "0" => "AC",
-                "1" => "AEV",
-                "2" => "AGI",
-                "3" => "ALI",
-                "4" => "AP",
-                "5" => "BDO",
-                "6" => "BLOOM",
-                "7" => "BPI",
-                "8" => "DMC",
-                "9" => "FGEN",
-                "10" => "GLO",
-                "11" => "GTCAP",
-                "12" => "ICT",
-                "13" => "JFC",
-                "14" => "JGS",
-                "15" => "LTG",
-                "16" => "MBT",
-                "17" => "MEG",
-                "18" => "MER",
-                "19" => "MPI",
-                "20" => "PGOLD",
-                "21" => "RLC",
-                "22" => "RRHI",
-                "23" => "SECB",
-                "24" => "SM",
-                "25" => "SMC",
-                "26" => "SMPH",
-                "27" => "TEL",
-                "28" => "URC"
-            ];
-
-            /** Save to database. */
-            foreach ($blue as $chip) {
-                /** Check if record exist. */
-                $check = DB::table('stock_blues')
-                    ->select('symbol')
-                    ->where('symbol', '=', $chip)
-                    ->first();
-
-                if (is_null($check)) {
-                    /** If its not. */
-                    DB::table('stock_blues')
-                        ->where('userid', '=', Auth::id())
-                        ->where('symbol', '=', $chip)
-                        ->insert([
-                            'userid' => Auth::id(),
-                            'symbol' => $chip,
-                            'created_at' => date('Y-m-d H:i:s'),
-                            'updated_at' => date('Y-m-d H:i:s'),
-                        ]);
-                }
-            }
-
             /** Fecth all record in stock blue table. */
             $record = DB::table('stock_blues')
                 ->select('symbol')
@@ -132,7 +77,7 @@ class TradeController extends Controller {
             $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
 
             /** Return something. */
-            return response(['message' => 'Process completed.', 'stocks' => $format], 200);
+            return response(['message' => 'Processed and displayed are all potential bluechip stocks that could be listed on the PSE.', 'stocks' => $format], 200);
         } else {
             /** return something. */
             return array('message' => 'There was no entry in the database.');
@@ -205,21 +150,14 @@ class TradeController extends Controller {
         $symbol = DB::table('stock_trades')
             ->select('symbol', 'name')
             ->where('symbol', $data['input']['symbol'])
-            ->get();
-
-        /** fetch edge id. */
-        $edge_id = collect($this->edge())->firstWhere('symbol', $data['input']['symbol']);
-        if (is_null($edge_id)) {
-            $edge_id['edge'] = 0;
-        }
+            ->first();
 
         /** insert with appropriate data. */
-        if ($symbol->isEmpty()) {
+        if (is_null($symbol)) {
             $insert = DB::table('stock_trades')
                 ->insert([
                     'name' => strip_tags($data['input']['name']),
                     'symbol' => strip_tags($data['input']['symbol']),
-                    'edge' => strip_tags($edge_id['edge']),
                     'price' => strip_tags($data['input']['price']),
                     'change' => strip_tags($data['input']['change']),
                     'volume' => strip_tags($data['input']['volume']),
@@ -231,14 +169,14 @@ class TradeController extends Controller {
             }
         } else {
             /** forward to update instead. */
-            return $this->update($data, $edge_id);
+            return $this->update($data);
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update($data, $edge_id) {
+    public function update($data) {
         if ($data['table'] === 'trade') {
             /** run update query.*/
             $update = DB::table('stock_trades')
@@ -246,20 +184,18 @@ class TradeController extends Controller {
                 ->update([
                     'name' => strip_tags($data['input']['name']),
                     'symbol' => strip_tags($data['input']['symbol']),
-                    'edge' => strip_tags($edge_id['edge']),
                     'price' => strip_tags($data['input']['price']),
                     'change' => strip_tags($data['input']['change']),
                     'volume' => strip_tags($data['input']['volume']),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
+
             /** if update not empty.*/
             if ($update) {
-                DB::table('stock_trades')
-                    ->select('id', 'edge', 'created_at as date', 'name', 'symbol', 'price', 'change', 'volume')
-                    ->where('symbol', '=', $data['input']['symbol'])
-                    ->get();
+                /** return something.*/
                 return ['message' => 'The ' . $data['input']['name'] . ' information was successfully updated.'];
             } else {
+                /** return something.*/
                 return ['message' => 'No modifications were made to the' . $data['input']['name'] . ' data.'];
             }
         }
@@ -614,6 +550,79 @@ class TradeController extends Controller {
             ['symbol' => 'ENEX', 'edge' => 653],
             ['symbol' => 'PREIT', 'edge' => 699],
             ['symbol' => 'UPSON', 'edge' => 700],
+            ['symbol' => 'ATNB', 'edge' => -1],
+            ['symbol' => 'BCB', 'edge' => -1],
+            ['symbol' => 'BCP', 'edge' => -1],
+            ['symbol' => 'DHI', 'edge' => -1],
+            ['symbol' => 'DMCP', 'edge' => -1],
+            ['symbol' => 'DTEL', 'edge' => -1],
+            ['symbol' => 'FGENG', 'edge' => -1],
+            ['symbol' => 'FJPB', 'edge' => -1],
+            ['symbol' => 'FYNB', 'edge' => -1],
+            ['symbol' => 'GLOPA', 'edge' => -1],
+            ['symbol' => 'GLOPP', 'edge' => -1],
+            ['symbol' => 'KPHB', 'edge' => -1],
+            ['symbol' => 'MAB', 'edge' => -1],
+            ['symbol' => 'MAHB', 'edge' => -1],
+            ['symbol' => 'MWP', 'edge' => -1],
+            ['symbol' => 'OPMB', 'edge' => -1],
+            ['symbol' => 'PRF2B', 'edge' => -1],
+            ['symbol' => 'FBP', 'edge' => -1],
+            ['symbol' => 'FBP2', 'edge' => -1],
+            ['symbol' => 'PNXP', 'edge' => -1],
+            ['symbol' => 'SFIP', 'edge' => -1],
+            ['symbol' => 'SMC2A', 'edge' => -1],
+            ['symbol' => 'SMC2B', 'edge' => -1],
+            ['symbol' => 'SMC2C', 'edge' => -1],
+            ['symbol' => 'SMCP1', 'edge' => -1],
+            ['symbol' => 'TLII', 'edge' => -1],
+            ['symbol' => 'SMC2D', 'edge' => -1],
+            ['symbol' => 'SMC2E', 'edge' => -1],
+            ['symbol' => 'SMC2F', 'edge' => -1],
+            ['symbol' => 'PNX3A', 'edge' => -1],
+            ['symbol' => 'PNX3B', 'edge' => -1],
+            ['symbol' => 'SMC2G', 'edge' => -1],
+            ['symbol' => 'SMC2H', 'edge' => -1],
+            ['symbol' => 'SMC2I', 'edge' => -1],
+            ['symbol' => 'DDPR', 'edge' => -1],
+            ['symbol' => 'GTPPA', 'edge' => -1],
+            ['symbol' => 'GTPPB', 'edge' => -1],
+            ['symbol' => 'ALCPB', 'edge' => -1],
+            ['symbol' => 'DMPA1', 'edge' => -1],
+            ['symbol' => '8990P', 'edge' => -1],
+            ['symbol' => 'TCB2A', 'edge' => -1],
+            ['symbol' => 'DMPA2', 'edge' => -1],
+            ['symbol' => 'DMPI', 'edge' => -1],
+            ['symbol' => 'PRF3A', 'edge' => -1],
+            ['symbol' => 'PRF3B', 'edge' => -1],
+            ['symbol' => 'ALCPC', 'edge' => -1],
+            ['symbol' => 'PNX4', 'edge' => -1],
+            ['symbol' => 'APB2R', 'edge' => -1],
+            ['symbol' => 'CPGP', 'edge' => -1],
+            ['symbol' => 'SMC2J', 'edge' => -1],
+            ['symbol' => 'MWP2A', 'edge' => -1],
+            ['symbol' => 'MWP2B', 'edge' => -1],
+            ['symbol' => 'SMC2K', 'edge' => -1],
+            ['symbol' => '8990B', 'edge' => -1],
+            ['symbol' => 'TCB2B', 'edge' => -1],
+            ['symbol' => 'CEBCP', 'edge' => -1],
+            ['symbol' => 'TECHW', 'edge' => -1],
+            ['symbol' => 'JFCPA', 'edge' => -1],
+            ['symbol' => 'JFCPB', 'edge' => -1],
+            ['symbol' => 'MWP4', 'edge' => -1],
+            ['symbol' => 'BRNP', 'edge' => -1],
+            ['symbol' => 'ALCPD', 'edge' => -1],
+            ['symbol' => 'TCB2C', 'edge' => -1],
+            ['symbol' => 'TCB2D', 'edge' => -1],
+            ['symbol' => 'EEIPA', 'edge' => -1],
+            ['symbol' => 'EEIPB', 'edge' => -1],
+            ['symbol' => 'MWP5', 'edge' => -1],
+            ['symbol' => 'ACPAR', 'edge' => -1],
+            ['symbol' => 'PRF4A', 'edge' => -1],
+            ['symbol' => 'PRF4B', 'edge' => -1],
+            ['symbol' => 'PRF4C', 'edge' => -1],
+            ['symbol' => 'ACPA', 'edge' => -1],
+            ['symbol' => 'ACPB1', 'edge' => -1],
         ];
     }
 }

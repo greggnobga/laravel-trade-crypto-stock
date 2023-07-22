@@ -23,9 +23,18 @@ import {
     DASHBOARD_SECTOR_REQUEST,
     DASHBOARD_SECTOR_SUCCESS,
     DASHBOARD_SECTOR_FAILURE,
+    DASHBOARD_LIST_REQUEST,
+    DASHBOARD_LIST_SUCCESS,
+    DASHBOARD_LIST_FAILURE,
     DASHBOARD_BLUE_REQUEST,
     DASHBOARD_BLUE_SUCCESS,
     DASHBOARD_BLUE_FAILURE,
+    DASHBOARD_BLUE_STORE_REQUEST,
+    DASHBOARD_BLUE_STORE_SUCCESS,
+    DASHBOARD_BLUE_STORE_FAILURE,
+    DASHBOARD_BLUE_DESTROY_REQUEST,
+    DASHBOARD_BLUE_DESTROY_SUCCESS,
+    DASHBOARD_BLUE_DESTROY_FAILURE,
     DASHBOARD_EDGE_REQUEST,
     DASHBOARD_EDGE_SUCCESS,
     DASHBOARD_EDGE_FAILURE,
@@ -441,6 +450,53 @@ export const actDashboardSector = (token) => async (dispatch) => {
     }
 };
 
+export const actDashboardList = (token) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: DASHBOARD_LIST_REQUEST });
+
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            url: "/stock-reports-retrieve",
+            params: { section: "lists" },
+        });
+
+        /** Separate result. */
+        let message = data.message;
+
+        /** Dispatch action to show message in the frontend. */
+        dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: message,
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: DASHBOARD_LIST_SUCCESS, payload: message });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: DASHBOARD_LIST_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
 export const actDashboardBlue = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
@@ -493,6 +549,109 @@ export const actDashboardBlue = (token) => async (dispatch) => {
         });
     }
 };
+
+export const actDashboardBlueStore =
+    ({ token, symbol }) =>
+    async (dispatch) => {
+        try {
+            /** Dispatch action to set inital state. */
+            dispatch({ type: DASHBOARD_BLUE_STORE_REQUEST });
+
+            /** Prepare request to external api data provider. */
+            const { data } = await axios({
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                method: "POST",
+                url: "/api/dashboard",
+                params: {
+                    section: "bluechip",
+                    statement: "store",
+                    symbol: symbol,
+                },
+            });
+
+            /** Separate result. */
+            let message = data.message;
+
+            /** Dispatch action to show message in the frontend. */
+            dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
+
+            /** Dispatch action to set the result into the store. */
+            dispatch({ type: DASHBOARD_BLUE_STORE_SUCCESS, payload: message });
+        } catch (error) {
+            /** Dispatch action if error occurred. */
+            dispatch({
+                type: DASHBOARD_BLUE_STORE_FAILURE,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            });
+            /** Dispatch action if error occurred. */
+            dispatch({
+                type: MESSAGE_SHOW_FAILURE,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            });
+        }
+    };
+
+export const actDashboardBlueDestroy =
+    ({ token, symbol }) =>
+    async (dispatch) => {
+        try {
+            /** Dispatch action to set inital state. */
+            dispatch({ type: DASHBOARD_BLUE_DESTROY_REQUEST });
+
+            /** Prepare request to external api data provider. */
+            const { data } = await axios({
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                method: "POST",
+                url: "/api/dashboard",
+                params: {
+                    section: "bluechip",
+                    statement: "destroy",
+                    symbol: symbol,
+                },
+            });
+
+            /** Separate result. */
+            let message = data.message;
+
+            /** Dispatch action to show message in the frontend. */
+            dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
+
+            /** Dispatch action to set the result into the store. */
+            dispatch({
+                type: DASHBOARD_BLUE_DESTROY_SUCCESS,
+                payload: message,
+            });
+        } catch (error) {
+            /** Dispatch action if error occurred. */
+            dispatch({
+                type: DASHBOARD_BLUE_DESTROY_FAILURE,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            });
+            /** Dispatch action if error occurred. */
+            dispatch({
+                type: MESSAGE_SHOW_FAILURE,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            });
+        }
+    };
 
 export const actDashboardEdge = (token) => async (dispatch) => {
     try {

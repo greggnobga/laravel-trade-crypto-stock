@@ -10601,9 +10601,18 @@ const DASHBOARD_DIVIDEND_FAILURE = "DASHBOARD_DIVIDEND_FAILURE";
 const DASHBOARD_SECTOR_REQUEST = "DASHBOARD_SECTOR_REQUEST";
 const DASHBOARD_SECTOR_SUCCESS = "DASHBOARD_SECTOR_SUCCESS";
 const DASHBOARD_SECTOR_FAILURE = "DASHBOARD_SECTOR_FAILURE";
+const DASHBOARD_LIST_REQUEST = "DASHBOARD_LIST_REQUEST";
+const DASHBOARD_LIST_SUCCESS = "DASHBOARD_LIST_SUCCESS";
+const DASHBOARD_LIST_FAILURE = "DASHBOARD_LIST_FAILURE";
 const DASHBOARD_BLUE_REQUEST = "DASHBOARD_BLUE_REQUEST";
 const DASHBOARD_BLUE_SUCCESS = "DASHBOARD_BLUE_SUCCESS";
 const DASHBOARD_BLUE_FAILURE = "DASHBOARD_BLUE_FAILURE";
+const DASHBOARD_BLUE_STORE_REQUEST = "DASHBOARD_BLUE_STORE_REQUEST";
+const DASHBOARD_BLUE_STORE_SUCCESS = "DASHBOARD_BLUE_STORE_SUCCESS";
+const DASHBOARD_BLUE_STORE_FAILURE = "DASHBOARD_BLUE_STORE_FAILURE";
+const DASHBOARD_BLUE_DESTROY_REQUEST = "DASHBOARD_BLUE_DESTROY_REQUEST";
+const DASHBOARD_BLUE_DESTROY_SUCCESS = "DASHBOARD_BLUE_DESTROY_SUCCESS";
+const DASHBOARD_BLUE_DESTROY_FAILURE = "DASHBOARD_BLUE_DESTROY_FAILURE";
 const DASHBOARD_EDGE_REQUEST = "DASHBOARD_EDGE_REQUEST";
 const DASHBOARD_EDGE_SUCCESS = "DASHBOARD_EDGE_SUCCESS";
 const DASHBOARD_EDGE_FAILURE = "DASHBOARD_EDGE_FAILURE";
@@ -10670,6 +10679,18 @@ const dashboardSectorReducer = (state = {}, action) => {
       return state;
   }
 };
+const dashboardListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_LIST_REQUEST:
+      return { loading: true };
+    case DASHBOARD_LIST_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_LIST_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 const dashboardBlueReducer = (state = {}, action) => {
   switch (action.type) {
     case DASHBOARD_BLUE_REQUEST:
@@ -10677,6 +10698,30 @@ const dashboardBlueReducer = (state = {}, action) => {
     case DASHBOARD_BLUE_SUCCESS:
       return { loading: false, bluedash: action.payload };
     case DASHBOARD_BLUE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardBlueStoreReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_BLUE_STORE_REQUEST:
+      return { loading: true };
+    case DASHBOARD_BLUE_STORE_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_BLUE_STORE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardBlueDestroyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_BLUE_DESTROY_REQUEST:
+      return { loading: true };
+    case DASHBOARD_BLUE_DESTROY_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_BLUE_DESTROY_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -10807,7 +10852,10 @@ const reducer = combineReducers({
   dashboardReport: dashboardReportReducer,
   dashboardDividend: dashboardDividendReducer,
   dashboardSector: dashboardSectorReducer,
+  dashboardList: dashboardListReducer,
   dashboardBlue: dashboardBlueReducer,
+  dashboardBlueStore: dashboardBlueStoreReducer,
+  dashboardBlueDestroy: dashboardBlueDestroyReducer,
   dashboardEdge: dashboardEdgeReducer,
   dashboardEdgeUpdate: dashboardEdgeUpdateReducer,
   stockBlue: stockBlueReducer,
@@ -13608,31 +13656,47 @@ const modalEdgeTemplate = (props) => {
       ] })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: "Index" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: "Symbol" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: "Action" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Index" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Symbol" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Action" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: props.data && props.data.map((item, index2) => {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: props.shown ? props.index === index2 && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: props.data ? props.data.map((item, index2) => {
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: index2 + 1 }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: item.symbol }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: index2 + 1 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: item.symbol }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: props.index === index2 && props.shown ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "span",
             {
               className: "uppercase",
-              onClick: () => props.form(false),
+              onClick: () => {
+                props.form(false);
+              },
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "cancel" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "add" }),
                 " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Cancel" })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
+              ]
+            }
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "span",
+            {
+              className: "uppercase",
+              onClick: () => {
+                props.form(true);
+                props.set(index2);
+              },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "add" }),
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Update" })
               ]
             }
           ) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-col sm:flex-row items-center justify-center w-full hover:text-green-500", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow sm:w-4/12", children: item.symbol }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grow sm:w-4/12", children: [
+        props.shown && props.index === index2 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-col sm:flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow sm:w-4/12", children: item.symbol }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow sm:w-4/12", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "input",
               {
@@ -13649,7 +13713,7 @@ const modalEdgeTemplate = (props) => {
             ),
             props.error && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-1 text-red-500 text-[.50rem]", children: "Please enter a valid edge id." })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow sm:w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow sm:w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               className: "uppercase",
@@ -13670,31 +13734,13 @@ const modalEdgeTemplate = (props) => {
             }
           ) })
         ] })
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: index2 + 1 }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: item.symbol }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "span",
-          {
-            className: "uppercase",
-            onClick: () => {
-              props.form(true);
-              props.set(index2);
-            },
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "add" }),
-              " ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Update" })
-            ]
-          }
-        ) })
-      ] }) });
-    }) })
+      ] });
+    }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "No record found." }) }) })
   ] });
 };
 const modalBlueTemplate = (props) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase cursor-pointer", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200 hover:text-purple-500", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl", children: props.header }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -13727,14 +13773,14 @@ const modalBlueTemplate = (props) => {
         )
       ] })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Index" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Symbol" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Action" })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: props.shown ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-col sm:flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow sm:w-4/12 uppercase", children: "Add Bluechip" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grow sm:w-4/12", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow sm:w-4/12 uppercase", children: "Add Bluechip" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow sm:w-4/12", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "input",
           {
@@ -13751,12 +13797,13 @@ const modalBlueTemplate = (props) => {
         ),
         props.error && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-1 text-red-500 text-[.50rem]", children: "Please enter a valid symbol." })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow sm:w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow sm:w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
           className: "uppercase",
           onClick: () => {
             props.action({
+              statement: "store",
               value: props.value
             });
             props.form(false);
@@ -13770,13 +13817,32 @@ const modalBlueTemplate = (props) => {
           ]
         }
       ) })
-    ] }) : props.data && props.data.map((item, index2) => {
+    ] }) : props.data ? props.data.map((item, index2) => {
       return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: index2 + 1 }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: item.symbol }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            className: "uppercase",
+            onClick: () => {
+              props.action({
+                statement: "destroy",
+                value: item.symbol
+              });
+              props.form(false);
+              props.reset();
+            },
+            disabled: props.error,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "destroy" }),
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Delete" })
+            ]
+          }
+        ) })
       ] });
-    }) })
+    }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "No record found." }) }) })
   ] });
 };
 const actDashboardStart = (token) => async (dispatch) => {
@@ -14050,6 +14116,35 @@ const actDashboardSector = (token) => async (dispatch) => {
     });
   }
 };
+const actDashboardList = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: DASHBOARD_LIST_REQUEST });
+    const { data } = await axios({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/stock-reports-retrieve",
+      params: { section: "lists" }
+    });
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: DASHBOARD_LIST_SUCCESS, payload: message });
+  } catch (error) {
+    dispatch({
+      type: DASHBOARD_LIST_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const actDashboardBlue = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_BLUE_REQUEST });
@@ -14075,6 +14170,69 @@ const actDashboardBlue = (token) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DASHBOARD_BLUE_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const actDashboardBlueStore = ({ token, symbol }) => async (dispatch) => {
+  try {
+    dispatch({ type: DASHBOARD_BLUE_STORE_REQUEST });
+    const { data } = await axios({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "POST",
+      url: "/api/dashboard",
+      params: {
+        section: "bluechip",
+        statement: "store",
+        symbol
+      }
+    });
+    let message = data.message;
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
+    dispatch({ type: DASHBOARD_BLUE_STORE_SUCCESS, payload: message });
+  } catch (error) {
+    dispatch({
+      type: DASHBOARD_BLUE_STORE_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const actDashboardBlueDestroy = ({ token, symbol }) => async (dispatch) => {
+  try {
+    dispatch({ type: DASHBOARD_BLUE_DESTROY_REQUEST });
+    const { data } = await axios({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "POST",
+      url: "/api/dashboard",
+      params: {
+        section: "bluechip",
+        statement: "destroy",
+        symbol
+      }
+    });
+    let message = data.message;
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
+    dispatch({
+      type: DASHBOARD_BLUE_DESTROY_SUCCESS,
+      payload: message
+    });
+  } catch (error) {
+    dispatch({
+      type: DASHBOARD_BLUE_DESTROY_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -14229,16 +14387,37 @@ const Dashboard = () => {
   const dashboardSectorHandler = () => {
     dispatch(actDashboardSector(access_token));
   };
+  const dashboardListHandler = () => {
+    dispatch(actDashboardList(access_token));
+  };
   const bluechipModalHandler = () => {
     setModalBlue(true);
   };
   const edgeModalHandler = () => {
     setModalEdge(true);
   };
-  const updateBlueHandler = ({ value }) => {
-    if (value) {
-      console.log("state: ", modalBlueInput);
-      console.log("props value: ", value);
+  const updateBlueHandler = ({ statement, value }) => {
+    if (value && statement === "store") {
+      dispatch(
+        actDashboardBlueStore({ token: access_token, symbol: value })
+      );
+      const timeout = setTimeout(() => {
+        dispatch(actDashboardBlue(access_token));
+      }, 3e3);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+    if (value && statement === "destroy") {
+      dispatch(
+        actDashboardBlueDestroy({ token: access_token, symbol: value })
+      );
+      const timeout = setTimeout(() => {
+        dispatch(actDashboardBlue(access_token));
+      }, 3e3);
+      return () => {
+        clearTimeout(timeout);
+      };
     }
   };
   const storeEdgeHandler = ({ symbol, value }) => {
@@ -14252,7 +14431,7 @@ const Dashboard = () => {
       );
       const timeout = setTimeout(() => {
         dispatch(actDashboardEdge(access_token));
-      }, 2e3);
+      }, 3e3);
       return () => {
         clearTimeout(timeout);
       };
@@ -14371,6 +14550,7 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
+              onClick: dashboardListHandler,
               className: "btn btn-green",
               type: "button",
               children: [

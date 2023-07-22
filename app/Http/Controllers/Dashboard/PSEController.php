@@ -44,7 +44,8 @@ class PSEController extends Controller {
             if ($request->input('section') === 'stocks') {
                 return $this->stocktrades();
             }
-            /** forward trades function */
+
+            /** forward lists function */
             if ($request->input('section') === 'lists') {
                 return $this->stocklists();
             }

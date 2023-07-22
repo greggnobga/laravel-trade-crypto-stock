@@ -23,7 +23,7 @@
 }
 
 .form-alert {
-    @apply text-red-500 sm:col-span-6 py-1 text-right !important;
+    @apply text-slate-50 sm:col-span-6 py-1 text-right !important;
 }
 
 .form-notice {

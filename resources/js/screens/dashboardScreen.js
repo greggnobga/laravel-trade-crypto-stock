@@ -27,7 +27,10 @@ import {
     actDashboardReport,
     actDashboardDividend,
     actDashboardSector,
+    actDashboardList,
     actDashboardBlue,
+    actDashboardBlueStore,
+    actDashboardBlueDestroy,
     actDashboardEdge,
     actDashboardEdgeUpdate,
 } from "../actions/dashboardActions";
@@ -163,6 +166,11 @@ const Dashboard = () => {
         dispatch(actDashboardSector(access_token));
     };
 
+    const dashboardListHandler = () => {
+        /** Dispatch action. */
+        dispatch(actDashboardList(access_token));
+    };
+
     /** Bluechip modal handler. */
     const bluechipModalHandler = () => {
         setModalBlue(true);
@@ -174,11 +182,39 @@ const Dashboard = () => {
     };
 
     /** Update bluechip handler. */
-    const updateBlueHandler = ({ value }) => {
-        /** Check props is not empty. */
-        if (value) {
-            console.log("state: ", modalBlueInput);
-            console.log("props value: ", value);
+    const updateBlueHandler = ({ statement, value }) => {
+        /** Check statement is store. */
+        if (value && statement === "store") {
+            /** Dispatch store action. */
+            dispatch(
+                actDashboardBlueStore({ token: access_token, symbol: value })
+            );
+
+            /** Dispatch fetch action to update state. */
+            const timeout = setTimeout(() => {
+                dispatch(actDashboardBlue(access_token));
+            }, 3000);
+
+            return () => {
+                clearTimeout(timeout);
+            };
+        }
+
+        /** Check statement is destroy. */
+        if (value && statement === "destroy") {
+            /** Dispatch destroy action. */
+            dispatch(
+                actDashboardBlueDestroy({ token: access_token, symbol: value })
+            );
+
+            /** Dispatch fetch action to update state. */
+            const timeout = setTimeout(() => {
+                dispatch(actDashboardBlue(access_token));
+            }, 3000);
+
+            return () => {
+                clearTimeout(timeout);
+            };
         }
     };
 
@@ -198,7 +234,7 @@ const Dashboard = () => {
             /** Dispatch action to update the state. */
             const timeout = setTimeout(() => {
                 dispatch(actDashboardEdge(access_token));
-            }, 2000);
+            }, 3000);
 
             return () => {
                 clearTimeout(timeout);
@@ -324,6 +360,7 @@ const Dashboard = () => {
                                             Fetch stock list from pse edge.
                                         </span>
                                         <button
+                                            onClick={dashboardListHandler}
                                             className="btn btn-green"
                                             type="button"
                                         >

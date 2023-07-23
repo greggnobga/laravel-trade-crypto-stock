@@ -397,6 +397,17 @@
 }
 /** Form Directives. */
 .form-center{
+    margin-top: 0.5rem !important;
+    display: flex !important;
+    height: -moz-fit-content !important;
+    height: fit-content !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: rgb(199 210 254 / var(--tw-bg-opacity)) !important;
+    --tw-bg-opacity: 0.2 !important;
+    padding: 0.5rem !important;
+}
+.form-center-margin{
     margin-top: 2.5rem !important;
     display: flex !important;
     height: -moz-fit-content !important;
@@ -1334,6 +1345,9 @@ video {
 .min-h-screen{
     min-height: 100vh;
 }
+.w-2\/12{
+    width: 16.666667%;
+}
 .w-4\/12{
     width: 33.333333%;
 }
@@ -1579,6 +1593,9 @@ video {
 .text-\[\.50rem\]{
     font-size: .50rem;
 }
+.text-\[\.5rem\]{
+    font-size: .5rem;
+}
 .text-\[\.75rem\]{
     font-size: .75rem;
 }
@@ -1659,6 +1676,12 @@ video {
 .filter{
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
+.hover\:z-50:hover{
+    z-index: 50;
+}
+.hover\:z-10:hover{
+    z-index: 10;
+}
 @keyframes pulse{
     50%{
         opacity: .5;
@@ -1679,6 +1702,10 @@ video {
     --tw-bg-opacity: 1;
     background-color: rgb(214 211 209 / var(--tw-bg-opacity));
 }
+.hover\:bg-stone-100:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(245 245 244 / var(--tw-bg-opacity));
+}
 .hover\:bg-opacity-40:hover{
     --tw-bg-opacity: 0.4;
 }
@@ -1692,6 +1719,10 @@ video {
 .hover\:text-purple-500:hover{
     --tw-text-opacity: 1;
     color: rgb(168 85 247 / var(--tw-text-opacity));
+}
+.hover\:text-red-500:hover{
+    --tw-text-opacity: 1;
+    color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 .hover\:text-slate-200:hover{
     --tw-text-opacity: 1;
@@ -1755,6 +1786,9 @@ video {
     .sm\:text-3xl{
         font-size: 1.875rem;
         line-height: 2.25rem;
+    }
+    .sm\:text-\[\.65rem\]{
+        font-size: .65rem;
     }
     .sm\:text-xl{
         font-size: 1.25rem;

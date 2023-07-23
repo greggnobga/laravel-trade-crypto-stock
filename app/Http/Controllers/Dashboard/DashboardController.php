@@ -39,6 +39,16 @@ class DashboardController extends Controller {
             if ($request->input('section') === 'edge' && $request->input('statement') === 'select') {
                 return $this->edge($request->all());
             }
+
+            /** forward gainers function. */
+            if ($request->input('section') === 'gainers') {
+                return $this->gainers($request->all());
+            }
+
+            /** forward lossers function. */
+            if ($request->input('section') === 'lossers') {
+                return $this->lossers($request->all());
+            }
         }
     }
 
@@ -183,6 +193,62 @@ class DashboardController extends Controller {
                 /** return if logged user is not admin */
                 return response(['message' => 'No logged user found.'], 200);
             }
+        }
+    }
+
+    /**
+     * Declare stock gainers function.
+     */
+    public function gainers() {
+        /** query logged user role. */
+        $check = DB::table('stock_trades')
+            ->select('symbol')
+            ->where('symbol', 'PSE')
+            ->first();
+
+        if (!is_null($check)) {
+            /** create stock list. */
+            $gainers = DB::table('stock_trades')
+                ->select('symbol', 'price', 'change', 'pricerange')
+                ->where('edge', '!=', -1)
+                ->where('change', '>', 0)
+                ->orderBy('change', 'desc')
+                ->limit(25)
+                ->get();
+
+            /** return if logged user is not admin */
+            return response(['message' => 'The stocks that have gained the most since the last update are processed and displayed.', 'stocks' => $gainers], 200);
+        } else {
+            /** return if logged user is not admin */
+            return response(['message' => 'There was no entry in the database.'], 200);
+        }
+    }
+
+    /**
+     * Declare stock lossers function.
+     */
+    public function lossers() {
+        /** query logged user role. */
+        $check = DB::table('stock_trades')
+            ->select('symbol')
+            ->where('symbol', 'PSE')
+            ->first();
+
+        if (!is_null($check)) {
+            /** create stock list. */
+            $gainers = DB::table('stock_trades')
+                ->select('symbol', 'price', 'change', 'pricerange')
+                ->where('edge', '!=', -1)
+                ->where('change', '<', 0)
+                ->orderBy('change', 'asc')
+                ->limit(25)
+                ->get();
+
+            /** return if logged user is not admin */
+            return response(['message' => 'The stocks that have lost the most since the last update are processed and displayed.', 'stocks' => $gainers], 200);
+        } else {
+            /** return if logged user is not admin */
+            return response(['message' => 'There was no entry in the database.'], 200);
         }
     }
 }

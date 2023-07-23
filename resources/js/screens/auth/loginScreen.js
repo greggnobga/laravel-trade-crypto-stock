@@ -105,7 +105,7 @@ const Login = () => {
             {loading ? (
                 <Loader />
             ) : (
-                <div className="form-center my-2">
+                <div className="form-center-margin my-2">
                     <form
                         method="post"
                         onSubmit={submitHandler}

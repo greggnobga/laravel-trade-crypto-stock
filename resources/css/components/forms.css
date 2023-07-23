@@ -1,4 +1,8 @@
 .form-center {
+    @apply p-2 flex items-center justify-center h-fit mt-2 bg-indigo-200 bg-opacity-20 !important;
+}
+
+.form-center-margin {
     @apply p-2 flex items-center justify-center h-fit mt-10 bg-indigo-200 bg-opacity-20 !important;
 }
 

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/debug', [App\Http\Controllers\Dashboard\PSEController::class, 'stocklists']);
+Route::get('/debug', [App\Http\Controllers\Dashboard\DashboardController::class, 'lossers']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/stock-reports-store', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);

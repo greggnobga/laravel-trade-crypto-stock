@@ -15,7 +15,7 @@ import { chunkObject } from "../../../helpers";
 /** Component. */
 import Icon from "../../../components/icons";
 import Loader from "../../../components/interfaces/loader";
-import Message from "../../../components/interfaces/message";
+import Notice from "../../../components/interfaces/notice";
 import Container from "../../../components/interfaces/container";
 
 /** Template. */
@@ -66,6 +66,7 @@ const Trade = () => {
     const [commonChunks, setCommonChunks] = useState();
     const [commonIndex, setCommonIndex] = useState();
     const [commonChunk, setCommonChunk] = useState();
+    const [notice, setNotice] = useState(false);
 
     /** Use effect. */
     useEffect(() => {
@@ -124,7 +125,18 @@ const Trade = () => {
             setCommonChunks(commonChunks);
             setCommonIndex(commonPages);
         }
-    }, [access_token, logged, bluechip, common]);
+
+        /** Monitor new message. */
+        if (message) {
+            /** Set state. */
+            setNotice(true);
+
+            /** Reset state. */
+            setTimeout(() => {
+                setNotice(false);
+            }, 3000);
+        }
+    }, [access_token, logged, bluechip, common, message]);
 
     /** Common handler. */
     const commonHandler = (index) => {
@@ -141,6 +153,18 @@ const Trade = () => {
     /** Store handler. */
     const storeHandler = (symbol) => {
         dispatch(actStockWatchStore(access_token, symbol));
+
+        /** Dispatch fetch action to update state. */
+        const timeout = setTimeout(() => {
+            /** Dispatch bluechip action. */
+            dispatch(actStockBluechip(access_token));
+            /** Dispatch common action. */
+            dispatch(actStockCommon(access_token));
+        }, 3000);
+
+        return () => {
+            clearTimeout(timeout);
+        };
     };
 
     /** Container header for bluechip. */
@@ -160,8 +184,25 @@ const Trade = () => {
     /** Return something. */
     return (
         <>
-            {error && <Message variant="alert-warning" children={error} />}
-            {message && <Message variant="alert-success" children={message} />}
+            {/**Show error. */}
+            {error && (
+                <Notice
+                    variant="alert-warning"
+                    children={error}
+                    duration={3000}
+                    show={notice}
+                />
+            )}
+
+            {/**Show message. */}
+            {message && (
+                <Notice
+                    variant="alert-success"
+                    children={message}
+                    duration={3000}
+                    show={notice}
+                />
+            )}
             {/** Bluechip section. */}
             <Container header={containerBluechipHeader}>
                 {isMobile ? (

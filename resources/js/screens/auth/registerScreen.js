@@ -194,7 +194,7 @@ const Register = () => {
             {loading ? (
                 <Loader />
             ) : (
-                <div className="form-center my-2">
+                <div className="form-center-margin my-2">
                     <form
                         method="post"
                         className="form-group screen-size font-size gradient-huckle-berry"

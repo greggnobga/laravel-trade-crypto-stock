@@ -1,17 +1,11 @@
 /** Vendor. */
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import {createStore, combineReducers, applyMiddleware} from "redux";
 import thunk from "redux-thunk";
-import { composeWithDevTools } from "@redux-devtools/extension";
+import {composeWithDevTools} from "@redux-devtools/extension";
 
 /** Reducer. */
-import { showMessageReducer } from "./reducers/messageReducers";
-import {
-    userLoginReducer,
-    userRegisterReducer,
-    userVerifyReducer,
-    userForgotReducer,
-    userResetReducer,
-} from "./reducers/userReducers";
+import {showMessageReducer} from "./reducers/messageReducers";
+import {userLoginReducer, userRegisterReducer, userVerifyReducer, userForgotReducer, userResetReducer} from "./reducers/userReducers";
 
 import {
     dashboardStartReducer,
@@ -25,6 +19,8 @@ import {
     dashboardBlueDestroyReducer,
     dashboardEdgeReducer,
     dashboardEdgeUpdateReducer,
+    dashboardStockGainerReducer,
+    dashboardStockLosserReducer,
 } from "./reducers/dashboardReducers";
 
 import {
@@ -54,6 +50,8 @@ const reducer = combineReducers({
     dashboardBlueDestroy: dashboardBlueDestroyReducer,
     dashboardEdge: dashboardEdgeReducer,
     dashboardEdgeUpdate: dashboardEdgeUpdateReducer,
+    dashboardStockGainer: dashboardStockGainerReducer,
+    dashboardStockLosser: dashboardStockLosserReducer,
     stockBlue: stockBlueReducer,
     stockCommon: stockCommonReducer,
     stockWatchBuild: stockWatchBuildReducer,
@@ -64,38 +62,30 @@ const reducer = combineReducers({
 });
 
 /** Initial state. */
-const accountFromStorage = localStorage.getItem("account")
-    ? JSON.parse(localStorage.getItem("account"))
-    : { logged: false };
+const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : {logged: false};
 
-const bluechipFromStorage = localStorage.getItem("bluechip")
-    ? JSON.parse(localStorage.getItem("bluechip"))
-    : {};
+const bluechipFromStorage = localStorage.getItem("bluechip") ? JSON.parse(localStorage.getItem("bluechip")) : {};
 
-const commonFromStorage = localStorage.getItem("common")
-    ? JSON.parse(localStorage.getItem("common"))
-    : {};
+const commonFromStorage = localStorage.getItem("common") ? JSON.parse(localStorage.getItem("common")) : {};
 
-const buildFromStorage = localStorage.getItem("build")
-    ? JSON.parse(localStorage.getItem("build"))
-    : {};
+const buildFromStorage = localStorage.getItem("build") ? JSON.parse(localStorage.getItem("build")) : {};
 
-const fetchFromStorage = localStorage.getItem("fetch")
-    ? JSON.parse(localStorage.getItem("fetch"))
-    : {};
+const fetchFromStorage = localStorage.getItem("fetch") ? JSON.parse(localStorage.getItem("fetch")) : {};
 
-const bluedashFromStorage = localStorage.getItem("bluedash")
-    ? JSON.parse(localStorage.getItem("bluedash"))
-    : {};
+const bluedashFromStorage = localStorage.getItem("bluedash") ? JSON.parse(localStorage.getItem("bluedash")) : {};
 
-const edgeFromStorage = localStorage.getItem("edge")
-    ? JSON.parse(localStorage.getItem("edge"))
-    : {};
+const edgeFromStorage = localStorage.getItem("edge") ? JSON.parse(localStorage.getItem("edge")) : {};
+
+const stockGainerFromStorage = localStorage.getItem("stockgainer") ? JSON.parse(localStorage.getItem("stockgainer")) : {};
+
+const stockLosserFromStorage = localStorage.getItem("stocklosser") ? JSON.parse(localStorage.getItem("stocklosser")) : {};
 
 const initialState = {
     userLogin: accountFromStorage,
     dashboardBlue: bluedashFromStorage,
     dashboardEdge: edgeFromStorage,
+    dashboardStockGainer: stockGainerFromStorage,
+    dashboardStockLosser: stockLosserFromStorage,
     stockBlue: bluechipFromStorage,
     stockCommon: commonFromStorage,
     stockWatchBuild: buildFromStorage,
@@ -106,11 +96,7 @@ const initialState = {
 const middleware = [thunk];
 
 /** Store. */
-const store = createStore(
-    reducer,
-    initialState,
-    composeWithDevTools(applyMiddleware(...middleware))
-);
+const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
 
 /** Export. */
 export default store;

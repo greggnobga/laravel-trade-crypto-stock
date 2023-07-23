@@ -37,7 +37,7 @@ export const desktopHeader = (
 /** Desktop template. */
 export const desktopTemplate = ({ item, action, icon, text }) => {
     return (
-        <div className="card grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-green-500">
+        <div className="card grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-purple-500">
             <div className="p-2">
                 <span className="uppercase">{item.symbol}</span>
             </div>
@@ -63,7 +63,7 @@ export const desktopTemplate = ({ item, action, icon, text }) => {
                 <span className="uppercase">{item.dividendyield}</span>
             </div>
             <div className="p-2" onClick={() => action(item.symbol)}>
-                <span className="uppercase">
+                <span className="uppercase hover:text-red-500">
                     <Icon id={icon} /> {text}
                 </span>
             </div>
@@ -74,7 +74,7 @@ export const desktopTemplate = ({ item, action, icon, text }) => {
 /** Mobile template. */
 export const mobileTemplate = ({ item, action, icon, text }) => {
     return (
-        <div className="mb-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-green-500">
+        <div className="mb-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-purple-500">
             <div className="p-2">
                 <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                     Symbol
@@ -130,7 +130,7 @@ export const mobileTemplate = ({ item, action, icon, text }) => {
                 <p className="p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
                     Action
                 </p>
-                <p className="uppercase pt-2">
+                <p className="uppercase pt-2 hover:text-red-500">
                     <Icon id={icon} /> {text}
                 </p>
             </div>
@@ -215,7 +215,7 @@ export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
                     <span className="p-0 uppercase">
                         <Icon id={modalIcon} /> {modalHeader}
                     </span>
-                    <span className="uppercase" onClick={close}>
+                    <span className="uppercase cursor-pointer" onClick={close}>
                         <Icon id="close" /> Close
                     </span>
                 </div>
@@ -257,7 +257,7 @@ export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
                         return (
                             <div
                                 key={index}
-                                className="grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-green-500"
+                                className="grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-purple-500"
                             >
                                 <div className="p-2">
                                     <span className="p-0">{item.symbol}</span>
@@ -295,7 +295,7 @@ export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
                                 </div>
                                 <div className="p-2 ">
                                     <button
-                                        className="uppercase border border-stone-100"
+                                        className="uppercase border border-stone-100 hover:text-green-500"
                                         onClick={() => {
                                             action(item.symbol);
                                         }}
@@ -373,7 +373,7 @@ export const mobileModalTemplate = ({ item, action, close, icon, text }) => {
                     <span className="p-0 uppercase">
                         <Icon id={modalIcon} /> {modalHeader}
                     </span>
-                    <span className="uppercase" onClick={close}>
+                    <span className="uppercase cursor-pointer" onClick={close}>
                         <Icon id="close" /> Close
                     </span>
                 </div>
@@ -383,7 +383,7 @@ export const mobileModalTemplate = ({ item, action, close, icon, text }) => {
                     return (
                         <div
                             key={index}
-                            className="m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-green-500 uppercase"
+                            className="m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 uppercase"
                         >
                             <div className="p-2">
                                 <span className="block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500">
@@ -459,7 +459,7 @@ export const mobileModalTemplate = ({ item, action, close, icon, text }) => {
                             </div>
                             <div className="p-2 col-span-2 sm:col-span-3 md:col-span-4 text-center">
                                 <button
-                                    className="uppercase border border-stone-100"
+                                    className="uppercase border border-stone-100 hover:text-purple-500"
                                     onClick={() => {
                                         action(item.symbol);
                                     }}

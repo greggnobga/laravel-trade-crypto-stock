@@ -10619,6 +10619,12 @@ const DASHBOARD_EDGE_FAILURE = "DASHBOARD_EDGE_FAILURE";
 const DASHBOARD_EDGE_UPDATE_REQUEST = "DASHBOARD_EDGE_UPDATE_REQUEST";
 const DASHBOARD_EDGE_UPDATE_SUCCESS = "DASHBOARD_EDGE_UPDATE_SUCCESS";
 const DASHBOARD_EDGE_UPDATE_FAILURE = "DASHBOARD_EDGE_UPDATE_FAILURE";
+const DASHBOARD_STOCK_GAINER_REQUEST = "DASHBOARD_STOCK_GAINER_REQUEST";
+const DASHBOARD_STOCK_GAINER_SUCCESS = "DASHBOARD_STOCK_GAINER_SUCCESS";
+const DASHBOARD_STOCK_GAINER_FAILURE = "DASHBOARD_STOCK_GAINER_FAILURE";
+const DASHBOARD_STOCK_LOSSER_REQUEST = "DASHBOARD_STOCK_LOSSER_REQUEST";
+const DASHBOARD_STOCK_LOSSER_SUCCESS = "DASHBOARD_STOCK_LOSSER_SUCCESS";
+const DASHBOARD_STOCK_LOSSER_FAILURE = "DASHBOARD_STOCK_LOSSER_FAILURE";
 const dashboardStartReducer = (state = {}, action) => {
   switch (action.type) {
     case DASHBOARD_START_REQUEST:
@@ -10751,6 +10757,30 @@ const dashboardEdgeUpdateReducer = (state = {}, action) => {
       return state;
   }
 };
+const dashboardStockGainerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_STOCK_GAINER_REQUEST:
+      return { loading: true };
+    case DASHBOARD_STOCK_GAINER_SUCCESS:
+      return { loading: false, stockgainer: action.payload };
+    case DASHBOARD_STOCK_GAINER_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardStockLosserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_STOCK_LOSSER_REQUEST:
+      return { loading: true };
+    case DASHBOARD_STOCK_LOSSER_SUCCESS:
+      return { loading: false, stocklosser: action.payload };
+    case DASHBOARD_STOCK_LOSSER_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 const STOCK_BLUE_REQUEST = "STOCK_BLUE_REQUEST";
 const STOCK_BLUE_SUCCESS = "STOCK_BLUE_SUCCESS";
 const STOCK_BLUE_FAILURE = "STOCK_BLUE_FAILURE";
@@ -10858,6 +10888,8 @@ const reducer = combineReducers({
   dashboardBlueDestroy: dashboardBlueDestroyReducer,
   dashboardEdge: dashboardEdgeReducer,
   dashboardEdgeUpdate: dashboardEdgeUpdateReducer,
+  dashboardStockGainer: dashboardStockGainerReducer,
+  dashboardStockLosser: dashboardStockLosserReducer,
   stockBlue: stockBlueReducer,
   stockCommon: stockCommonReducer,
   stockWatchBuild: stockWatchBuildReducer,
@@ -10873,21 +10905,21 @@ const buildFromStorage = localStorage.getItem("build") ? JSON.parse(localStorage
 const fetchFromStorage = localStorage.getItem("fetch") ? JSON.parse(localStorage.getItem("fetch")) : {};
 const bluedashFromStorage = localStorage.getItem("bluedash") ? JSON.parse(localStorage.getItem("bluedash")) : {};
 const edgeFromStorage = localStorage.getItem("edge") ? JSON.parse(localStorage.getItem("edge")) : {};
+const stockGainerFromStorage = localStorage.getItem("stockgainer") ? JSON.parse(localStorage.getItem("stockgainer")) : {};
+const stockLosserFromStorage = localStorage.getItem("stocklosser") ? JSON.parse(localStorage.getItem("stocklosser")) : {};
 const initialState = {
   userLogin: accountFromStorage,
   dashboardBlue: bluedashFromStorage,
   dashboardEdge: edgeFromStorage,
+  dashboardStockGainer: stockGainerFromStorage,
+  dashboardStockLosser: stockLosserFromStorage,
   stockBlue: bluechipFromStorage,
   stockCommon: commonFromStorage,
   stockWatchBuild: buildFromStorage,
   stockWatchFetch: fetchFromStorage
 };
 const middleware = [thunk$1];
-const store = createStore(
-  reducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
 /**
  * @remix-run/router v1.7.2
  *
@@ -12440,6 +12472,8 @@ const logoutUser = (token) => async (dispatch) => {
       localStorage.removeItem("build");
       localStorage.removeItem("bluedash");
       localStorage.removeItem("edge");
+      localStorage.removeItem("stockgainer");
+      localStorage.removeItem("stocklosser");
     }
   } catch (error) {
     dispatch({
@@ -12980,7 +13014,7 @@ const Login = () => {
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center my-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center-margin my-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "form",
       {
         method: "post",
@@ -13183,7 +13217,7 @@ const Register = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: message, variant: "alert-success" }),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center my-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center-margin my-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "form",
       {
         method: "post",
@@ -13363,7 +13397,7 @@ const Forgot = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
     success && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: success.message, variant: "alert-success" }),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center-margin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "form",
       {
         method: "POST",
@@ -13497,7 +13531,7 @@ const Reset = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: message, variant: "alert-success" }),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center-margin", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "form",
       {
         method: "POST",
@@ -13621,15 +13655,6 @@ const Modal = ({ children }) => {
     document.getElementById("modal")
   );
 };
-const Container = ({ header, children }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "m-2 grid auto-rows-min h-fit", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 h-8 sm:10 uppercase", children: [
-      " ",
-      header
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children })
-  ] });
-};
 const Notice = ({ variant, children, duration, show }) => {
   const [notice, setNotice] = reactExports.useState(show);
   reactExports.useEffect(() => {
@@ -13645,11 +13670,20 @@ const Notice = ({ variant, children, duration, show }) => {
   }, [show, duration, children]);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: notice && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-0 right-0 m-2 cursor-pointer hover:animate-pulse z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children }) }) });
 };
+const Container = ({ header, children }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "m-2 grid auto-rows-min h-fit", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 h-8 sm:10 uppercase", children: [
+      " ",
+      header
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children })
+  ] });
+};
 const modalEdgeTemplate = (props) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase cursor-pointer", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl", children: props.header }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "sm:pl-2", onClick: props.close, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "sm:pl-2 cursor-pointer", onClick: props.close, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
         " ",
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
@@ -13660,7 +13694,7 @@ const modalEdgeTemplate = (props) => {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Symbol" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Action" })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: props.data ? props.data.map((item, index2) => {
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: props.data && props.data.length != 0 ? props.data.map((item, index2) => {
       return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: index2 + 1 }),
@@ -13668,7 +13702,7 @@ const modalEdgeTemplate = (props) => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: props.index === index2 && props.shown ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "span",
             {
-              className: "uppercase",
+              className: "uppercase cursor-pointer",
               onClick: () => {
                 props.form(false);
               },
@@ -13681,7 +13715,7 @@ const modalEdgeTemplate = (props) => {
           ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "span",
             {
-              className: "uppercase",
+              className: "uppercase cursor-pointer",
               onClick: () => {
                 props.form(true);
                 props.set(index2);
@@ -13689,7 +13723,7 @@ const modalEdgeTemplate = (props) => {
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "add" }),
                 " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Update" })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible cursor-pointer", children: "Update" })
               ]
             }
           ) })
@@ -13716,7 +13750,7 @@ const modalEdgeTemplate = (props) => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow sm:w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              className: "uppercase",
+              className: "uppercase cursor-pointer",
               onClick: () => {
                 props.action({
                   symbol: item.symbol,
@@ -13739,38 +13773,24 @@ const modalEdgeTemplate = (props) => {
   ] });
 };
 const modalBlueTemplate = (props) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase cursor-pointer", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl", children: props.header }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "span",
-          {
-            className: "text-right sm:pl-2",
-            onClick: () => props.form(!props.shown),
-            children: props.shown ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "cancel" }),
-              " ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Cancel" })
-            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "add" }),
-              " ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Add" })
-            ] })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "span",
-          {
-            className: "text-right sm:pl-2",
-            onClick: props.close,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
-              " ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
-            ]
-          }
-        )
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-right sm:pl-2 cursor-pointer", onClick: () => props.form(!props.shown), children: props.shown ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "cancel" }),
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible cursor-pointer", children: "Cancel" })
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "add" }),
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible cursor-pointer", children: "Add" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-right sm:pl-2", onClick: props.close, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
+        ] })
       ] })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500", children: [
@@ -13800,7 +13820,7 @@ const modalBlueTemplate = (props) => {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow sm:w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
-          className: "uppercase",
+          className: "uppercase cursor-pointer",
           onClick: () => {
             props.action({
               statement: "store",
@@ -13817,14 +13837,14 @@ const modalBlueTemplate = (props) => {
           ]
         }
       ) })
-    ] }) : props.data ? props.data.map((item, index2) => {
+    ] }) : props.data && props.data.length != 0 ? props.data.map((item, index2) => {
       return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-green-500", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: index2 + 1 }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: item.symbol }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
-            className: "uppercase",
+            className: "uppercase cursor-pointer",
             onClick: () => {
               props.action({
                 statement: "destroy",
@@ -13843,6 +13863,33 @@ const modalBlueTemplate = (props) => {
         ) })
       ] });
     }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "No record found." }) }) })
+  ] });
+};
+const stockLeaderBoard = (props) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 sm:row-start-2 card-rounded-scale h-fit hover:z-10", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "grow w-full text-center uppercase", children: props.header }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200 text-green-500", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2/12", children: "Symbol" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2/12", children: "Price" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2/12", children: "Change" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2/12", children: "Range" })
+    ] }),
+    props.data && props.data.length != 0 ? props.data.map((item, index2) => {
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          onClick: () => props.show(true),
+          className: "p-2 flex flex-row justify-between border-b border-stone-200 hover:bg-stone-100 hover:text-purple-500",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2/12 text-[.5rem] sm:text-[.65rem]", children: item.symbol }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2/12 text-[.5rem] sm:text-[.65rem]", children: item.price }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2/12 text-[.5rem] sm:text-[.65rem]", children: item.change }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2/12 text-[.5rem] sm:text-[.65rem]", children: item.pricerange })
+          ]
+        },
+        index2
+      );
+    }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "No record found." }) })
   ] });
 };
 const actDashboardStart = (token) => async (dispatch) => {
@@ -14274,21 +14321,21 @@ const actDashboardEdge = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardEdgeUpdate = ({ token, symbol, edge }) => async (dispatch) => {
+const actDashboardEdgeUpdate = (props) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_EDGE_UPDATE_REQUEST });
     const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${props.token}`
       },
       method: "POST",
       url: "/api/dashboard",
       params: {
         section: "edge",
         statement: "update",
-        symbol,
-        edge
+        symbol: props.symbol,
+        edge: props.edge
       }
     });
     let message = data.message;
@@ -14305,6 +14352,72 @@ const actDashboardEdgeUpdate = ({ token, symbol, edge }) => async (dispatch) => 
     });
   }
 };
+const actDashboardStockGainer = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: DASHBOARD_STOCK_GAINER_REQUEST });
+    const { data } = await axios({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/dashboard",
+      params: { section: "gainers" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: DASHBOARD_STOCK_GAINER_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("stockgainer", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: DASHBOARD_STOCK_GAINER_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const actDashboardStockLosser = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: DASHBOARD_STOCK_LOSSER_REQUEST });
+    const { data } = await axios({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/dashboard",
+      params: { section: "lossers" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: DASHBOARD_STOCK_LOSSER_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("stocklosser", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: DASHBOARD_STOCK_LOSSER_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const Dashboard = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, logged, access_token, email_verified } = userLogin;
@@ -14312,6 +14425,10 @@ const Dashboard = () => {
   const { loading: loadBlue, bluedash } = dashboardBlue;
   const dashboardEdge = useSelector((state) => state.dashboardEdge);
   const { loading: loadEdge, edge } = dashboardEdge;
+  const dashboardStockGainer = useSelector((state) => state.dashboardStockGainer);
+  const { loading: loadStockGainer, stockgainer } = dashboardStockGainer;
+  const dashboardStockLosser = useSelector((state) => state.dashboardStockLosser);
+  const { loading: loadStockLosser, stocklosser } = dashboardStockLosser;
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
   const [modalBlue, setModalBlue] = reactExports.useState(false);
@@ -14319,6 +14436,7 @@ const Dashboard = () => {
   const [modalForm, setModalForm] = reactExports.useState(false);
   const [modalIndex, setModalIndex] = reactExports.useState(0);
   const [notice, setNotice] = reactExports.useState(false);
+  const [modalStock, setModalStock] = reactExports.useState(false);
   const {
     value: modalBlueInput,
     hasError: modalBlueInputHasError,
@@ -14326,9 +14444,7 @@ const Dashboard = () => {
     valueChangeHandler: modalBlueInputChangeHandler,
     inputBlurHandler: modalBlueInputBlurHandler,
     resetHandler: modalBlueInputInputReset
-  } = useValidate(
-    (value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/)
-  );
+  } = useValidate((value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
   const {
     value: modalEdgeInput,
     hasError: modalEdgeInputHasError,
@@ -14336,9 +14452,7 @@ const Dashboard = () => {
     valueChangeHandler: modalEdgeInputChangeHandler,
     inputBlurHandler: modalEdgeInputBlurHandler,
     resetHandler: modalEdgeInputInputReset
-  } = useValidate(
-    (value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/)
-  );
+  } = useValidate((value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/));
   const { check } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14357,8 +14471,11 @@ const Dashboard = () => {
     if (!bluedash) {
       dispatch(actDashboardBlue(access_token));
     }
-    if (!edge) {
-      dispatch(actDashboardEdge(access_token));
+    if (!stockgainer) {
+      dispatch(actDashboardStockGainer(access_token));
+    }
+    if (!stocklosser) {
+      dispatch(actDashboardStockLosser(access_token));
     }
     if (message) {
       setNotice(true);
@@ -14366,7 +14483,7 @@ const Dashboard = () => {
         setNotice(false);
       }, 3e3);
     }
-  }, [access_token, logged, bluedash, edge, message]);
+  }, [access_token, logged, bluedash, edge, message, stockgainer, stocklosser]);
   const [verify, setVerify] = reactExports.useState(email_verified);
   const resendHandler = () => {
     setVerify(true);
@@ -14398,9 +14515,7 @@ const Dashboard = () => {
   };
   const updateBlueHandler = ({ statement, value }) => {
     if (value && statement === "store") {
-      dispatch(
-        actDashboardBlueStore({ token: access_token, symbol: value })
-      );
+      dispatch(actDashboardBlueStore({ token: access_token, symbol: value }));
       const timeout = setTimeout(() => {
         dispatch(actDashboardBlue(access_token));
       }, 3e3);
@@ -14409,9 +14524,7 @@ const Dashboard = () => {
       };
     }
     if (value && statement === "destroy") {
-      dispatch(
-        actDashboardBlueDestroy({ token: access_token, symbol: value })
-      );
+      dispatch(actDashboardBlueDestroy({ token: access_token, symbol: value }));
       const timeout = setTimeout(() => {
         dispatch(actDashboardBlue(access_token));
       }, 3e3);
@@ -14442,123 +14555,52 @@ const Dashboard = () => {
     setModalEdge(false);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    error && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Notice,
-      {
-        variant: "alert-warning",
-        children: error,
-        duration: 3e3,
-        show: notice
-      }
-    ),
-    message && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Notice,
-      {
-        variant: "alert-success",
-        children: message,
-        duration: 3e3,
-        show: notice
-      }
-    ),
-    !verify && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "div",
-      {
-        className: "m-2 cursor-pointer hover:animate-pulse",
-        onClick: resendHandler,
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "alert-info", children: "Your email address has not yet been verified. Click to resend your email verification code." })
-      }
-    ),
+    error && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-warning", children: error, duration: 3e3, show: notice }),
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-success", children: message, duration: 3e3, show: notice }),
+    !verify && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "m-2 cursor-pointer hover:animate-pulse", onClick: resendHandler, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "alert-info", children: "Your email address has not yet been verified. Click to resend your email verification code." }) }),
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-screen h-screen form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Fetch External Data", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "py-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the symbol, name, price, volume, and change." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: dashboardStartHandler,
-              className: "btn btn-red",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
-                " Start"
-              ]
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardStartHandler, className: "btn btn-red", type: "button", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+            " Start"
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get value, year high and low prices." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: dashboardPriceHandler,
-              className: "btn btn-blue",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
-                " Price"
-              ]
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardPriceHandler, className: "btn btn-blue", type: "button", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "price" }),
+            " Price"
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get income after tax and earnings per share." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: dashboardReportHandler,
-              className: "btn btn-green",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
-                " Report"
-              ]
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardReportHandler, className: "btn btn-green", type: "button", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "report" }),
+            " Report"
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the yearly dividend yield." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: dashboardDividendHandler,
-              className: "btn btn-emerald",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
-                " Dividend"
-              ]
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardDividendHandler, className: "btn btn-emerald", type: "button", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "dividend" }),
+            " Dividend"
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the sector to which stock belongs." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: dashboardSectorHandler,
-              className: "btn btn-indigo",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
-                " Sector"
-              ]
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardSectorHandler, className: "btn btn-indigo", type: "button", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
+            " Sector"
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Fetch stock list from pse edge." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: dashboardListHandler,
-              className: "btn btn-green",
-              type: "button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
-                " Lists"
-              ]
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardListHandler, className: "btn btn-green", type: "button", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+            " Lists"
+          ] })
         ] })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Asset Allocation", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col flex-wrap sm:flex-row justify-center gap-2", children: [
@@ -14601,24 +14643,8 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sm:row-start-3 card-rounded-scale", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: "Data" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grid auto-rows-min sm:grid-cols-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  className: "btn btn-indigo",
-                  onClick: bluechipModalHandler,
-                  children: "View Bluechip Stocks"
-                }
-              ) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  className: "btn btn-green",
-                  onClick: edgeModalHandler,
-                  children: "Set Edge ID"
-                }
-              ) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "btn btn-orange", onClick: bluechipModalHandler, children: "Bluechip Stocks" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "btn btn-emerald", onClick: edgeModalHandler, children: "Set Edge ID" }) })
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale", children: "Doughnut Chart" })
@@ -14634,8 +14660,7 @@ const Dashboard = () => {
           change: modalBlueInputChangeHandler,
           blur: modalBlueInputBlurHandler,
           error: modalBlueInputHasError,
-          reset: modalBlueInputInputReset,
-          autoComplete: "off"
+          reset: modalBlueInputInputReset
         }) }),
         modalEdge && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: modalEdgeTemplate({
           data: edge,
@@ -14650,13 +14675,25 @@ const Dashboard = () => {
           change: modalEdgeInputChangeHandler,
           blur: modalEdgeInputBlurHandler,
           error: modalEdgeInputHasError,
-          reset: modalEdgeInputInputReset,
-          autoComplete: "off"
+          reset: modalEdgeInputInputReset
         }) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Philippine Stock Exchange", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale", children: "Top Gainers" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale", children: "Top Lossers" })
+        stockLeaderBoard({
+          header: "Top Gainers",
+          data: stockgainer,
+          show: setModalStock
+        }),
+        stockLeaderBoard({
+          header: "Top Lossers",
+          data: stocklosser,
+          show: setModalStock
+        }),
+        modalStock && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-right cursor-pointer", onClick: () => setModalStock(false), children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
+        ] }) }) })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Crypto Currency", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid sm:grid-cols-2 auto-rows-min gap-2 h-fit", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale", children: "Top Gainers" }),
@@ -29258,7 +29295,7 @@ const desktopHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className:
   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Action" }) })
 ] });
 const desktopTemplate = ({ item, action, icon, text }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-green-500", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-purple-500", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.symbol }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.price }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.value }) }),
@@ -29267,7 +29304,7 @@ const desktopTemplate = ({ item, action, icon, text }) => {
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.netincomeaftertax }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.debtequityratio }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.dividendyield }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", onClick: () => action(item.symbol), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "uppercase", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", onClick: () => action(item.symbol), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "uppercase hover:text-red-500", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
       " ",
       text
@@ -29275,7 +29312,7 @@ const desktopTemplate = ({ item, action, icon, text }) => {
   ] });
 };
 const mobileTemplate = ({ item, action, icon, text }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-green-500", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-purple-500", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Symbol" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-center", children: item.symbol })
@@ -29315,7 +29352,7 @@ const mobileTemplate = ({ item, action, icon, text }) => {
         onClick: () => action(item.symbol),
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Action" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase pt-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase pt-2 hover:text-red-500", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
             " ",
             text
@@ -29390,7 +29427,7 @@ const desktopModalTemplate = ({ item, action, close, icon, text }) => {
         " ",
         modalHeader
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "uppercase", onClick: close, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "uppercase cursor-pointer", onClick: close, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
         " Close"
       ] })
@@ -29411,7 +29448,7 @@ const desktopModalTemplate = ({ item, action, close, icon, text }) => {
         return /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-green-500",
+            className: "grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-purple-500",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.symbol }) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.price }) }),
@@ -29424,7 +29461,7 @@ const desktopModalTemplate = ({ item, action, close, icon, text }) => {
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 ", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
-                  className: "uppercase border border-stone-100",
+                  className: "uppercase border border-stone-100 hover:text-green-500",
                   onClick: () => {
                     action(item2.symbol);
                   },
@@ -29495,7 +29532,7 @@ const mobileModalTemplate = ({ item, action, close, icon, text }) => {
         " ",
         modalHeader
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "uppercase", onClick: close, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "uppercase cursor-pointer", onClick: close, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
         " Close"
       ] })
@@ -29504,7 +29541,7 @@ const mobileModalTemplate = ({ item, action, close, icon, text }) => {
       return /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
         {
-          className: "m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-green-500 uppercase",
+          className: "m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 uppercase",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Symbol" }),
@@ -29541,7 +29578,7 @@ const mobileModalTemplate = ({ item, action, close, icon, text }) => {
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 col-span-2 sm:col-span-3 md:col-span-4 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
               {
-                className: "uppercase border border-stone-100",
+                className: "uppercase border border-stone-100 hover:text-purple-500",
                 onClick: () => {
                   action(item2.symbol);
                 },
@@ -29917,6 +29954,7 @@ const Trade = () => {
   const [commonChunks, setCommonChunks] = reactExports.useState();
   const [commonIndex, setCommonIndex] = reactExports.useState();
   const [commonChunk, setCommonChunk] = reactExports.useState();
+  const [notice, setNotice] = reactExports.useState(false);
   reactExports.useEffect(() => {
     if (access_token) {
       check(access_token);
@@ -29951,7 +29989,13 @@ const Trade = () => {
       setCommonChunks(commonChunks2);
       setCommonIndex(commonPages);
     }
-  }, [access_token, logged, bluechip, common]);
+    if (message) {
+      setNotice(true);
+      setTimeout(() => {
+        setNotice(false);
+      }, 3e3);
+    }
+  }, [access_token, logged, bluechip, common, message]);
   const commonHandler = (index2) => {
     setCommonChunk(commonChunks[index2]);
   };
@@ -29960,6 +30004,13 @@ const Trade = () => {
   };
   const storeHandler = (symbol) => {
     dispatch(actStockWatchStore(access_token, symbol));
+    const timeout = setTimeout(() => {
+      dispatch(actStockBluechip(access_token));
+      dispatch(actStockCommon(access_token));
+    }, 3e3);
+    return () => {
+      clearTimeout(timeout);
+    };
   };
   const containerBluechipHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
@@ -29970,8 +30021,24 @@ const Trade = () => {
     " Common Stocks"
   ] });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-warning", children: error }),
-    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { variant: "alert-success", children: message }),
+    error && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Notice,
+      {
+        variant: "alert-warning",
+        children: error,
+        duration: 3e3,
+        show: notice
+      }
+    ),
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Notice,
+      {
+        variant: "alert-success",
+        children: message,
+        duration: 3e3,
+        show: notice
+      }
+    ),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: containerBluechipHeader, children: isMobile ? loadblue ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       bluechipChunk && bluechipChunk ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: bluechipChunk.map((item) => {
         return mobileTemplate({

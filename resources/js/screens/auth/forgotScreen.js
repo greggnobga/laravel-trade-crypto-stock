@@ -71,7 +71,7 @@ const Forgot = () => {
             {loading ? (
                 <Loader />
             ) : (
-                <div className="form-center">
+                <div className="form-center-margin">
                     <form
                         method="POST"
                         className="form-group screen-size font-size gradient-huckle-berry"

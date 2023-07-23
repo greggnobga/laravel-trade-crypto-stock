@@ -13,11 +13,11 @@ import useValidate from "../hooks/use-validate";
 import Icon from "../components/icons";
 import Modal from "../components/interfaces/modal";
 import Loader from "../components/interfaces/loader";
-import Container from "../components/interfaces/container";
 import Notice from "../components/interfaces/notice";
+import Container from "../components/interfaces/container";
 
 /** Template. */
-import { modalBlueTemplate, modalEdgeTemplate } from "./template/dashboard";
+import { modalBlueTemplate, modalEdgeTemplate, stockLeaderBoard } from "./template/dashboard";
 
 /** Action. */
 import { resendEmail } from "../actions/userActions";
@@ -33,6 +33,8 @@ import {
     actDashboardBlueDestroy,
     actDashboardEdge,
     actDashboardEdgeUpdate,
+    actDashboardStockGainer,
+    actDashboardStockLosser,
 } from "../actions/dashboardActions";
 
 const Dashboard = () => {
@@ -46,6 +48,12 @@ const Dashboard = () => {
     const dashboardEdge = useSelector((state) => state.dashboardEdge);
     const { loading: loadEdge, edge } = dashboardEdge;
 
+    const dashboardStockGainer = useSelector((state) => state.dashboardStockGainer);
+    const { loading: loadStockGainer, stockgainer } = dashboardStockGainer;
+
+    const dashboardStockLosser = useSelector((state) => state.dashboardStockLosser);
+    const { loading: loadStockLosser, stocklosser } = dashboardStockLosser;
+
     const showMessage = useSelector((state) => state.showMessage);
     const { message, error } = showMessage;
 
@@ -55,6 +63,7 @@ const Dashboard = () => {
     const [modalForm, setModalForm] = useState(false);
     const [modalIndex, setModalIndex] = useState(0);
     const [notice, setNotice] = useState(false);
+    const [modalStock, setModalStock] = useState(false);
 
     /** Map html element to validate hook. */
     const {
@@ -64,10 +73,7 @@ const Dashboard = () => {
         valueChangeHandler: modalBlueInputChangeHandler,
         inputBlurHandler: modalBlueInputBlurHandler,
         resetHandler: modalBlueInputInputReset,
-    } = useValidate(
-        (value) =>
-            value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/)
-    );
+    } = useValidate((value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
 
     const {
         value: modalEdgeInput,
@@ -76,10 +82,7 @@ const Dashboard = () => {
         valueChangeHandler: modalEdgeInputChangeHandler,
         inputBlurHandler: modalEdgeInputBlurHandler,
         resetHandler: modalEdgeInputInputReset,
-    } = useValidate(
-        (value) =>
-            value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/)
-    );
+    } = useValidate((value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/));
 
     /** Use auth. */
     const { check } = useAuth();
@@ -113,10 +116,17 @@ const Dashboard = () => {
         if (!bluedash) {
             dispatch(actDashboardBlue(access_token));
         }
+
         /** If not edge does not have value. */
-        if (!edge) {
-            dispatch(actDashboardEdge(access_token));
+        if (!stockgainer) {
+            dispatch(actDashboardStockGainer(access_token));
         }
+
+        /** If not edge does not have value. */
+        if (!stocklosser) {
+            dispatch(actDashboardStockLosser(access_token));
+        }
+
         /** Monitor new message. */
         if (message) {
             /** Set state. */
@@ -127,7 +137,7 @@ const Dashboard = () => {
                 setNotice(false);
             }, 3000);
         }
-    }, [access_token, logged, bluedash, edge, message]);
+    }, [access_token, logged, bluedash, edge, message, stockgainer, stocklosser]);
 
     /** Use state. */
     const [verify, setVerify] = useState(email_verified);
@@ -186,9 +196,7 @@ const Dashboard = () => {
         /** Check statement is store. */
         if (value && statement === "store") {
             /** Dispatch store action. */
-            dispatch(
-                actDashboardBlueStore({ token: access_token, symbol: value })
-            );
+            dispatch(actDashboardBlueStore({ token: access_token, symbol: value }));
 
             /** Dispatch fetch action to update state. */
             const timeout = setTimeout(() => {
@@ -203,9 +211,7 @@ const Dashboard = () => {
         /** Check statement is destroy. */
         if (value && statement === "destroy") {
             /** Dispatch destroy action. */
-            dispatch(
-                actDashboardBlueDestroy({ token: access_token, symbol: value })
-            );
+            dispatch(actDashboardBlueDestroy({ token: access_token, symbol: value }));
 
             /** Dispatch fetch action to update state. */
             const timeout = setTimeout(() => {
@@ -254,232 +260,147 @@ const Dashboard = () => {
             {logged && (
                 <>
                     {/**Show error. */}
-                    {error && (
-                        <Notice
-                            variant="alert-warning"
-                            children={error}
-                            duration={3000}
-                            show={notice}
-                        />
-                    )}
+                    {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
 
                     {/**Show message. */}
-                    {message && (
-                        <Notice
-                            variant="alert-success"
-                            children={message}
-                            duration={3000}
-                            show={notice}
-                        />
-                    )}
+                    {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
                     {!verify && (
-                        <div
-                            className="m-2 cursor-pointer hover:animate-pulse"
-                            onClick={resendHandler}
-                        >
-                            <p className="alert-info">
-                                Your email address has not yet been verified.
-                                Click to resend your email verification code.
+                        <div className='m-2 cursor-pointer hover:animate-pulse' onClick={resendHandler}>
+                            <p className='alert-info'>
+                                Your email address has not yet been verified. Click to resend your email verification code.
                             </p>
                         </div>
                     )}
                     {loading ? (
-                        <div className="w-screen h-screen form-center">
+                        <div className='w-screen h-screen form-center'>
                             <Loader />
                         </div>
                     ) : (
                         <>
-                            <Container header="Fetch External Data">
-                                <div className="py-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4">
-                                    <div className="has-tooltip">
-                                        <span class="tooltip uppercase text-center">
-                                            Get the symbol, name, price, volume,
-                                            and change.
-                                        </span>
-                                        <button
-                                            onClick={dashboardStartHandler}
-                                            className="btn btn-red"
-                                            type="button"
-                                        >
-                                            <Icon id="start" /> Start
+                            <Container header='Fetch External Data'>
+                                <div className='py-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4'>
+                                    <div className='has-tooltip'>
+                                        <span class='tooltip uppercase text-center'>Get the symbol, name, price, volume, and change.</span>
+                                        <button onClick={dashboardStartHandler} className='btn btn-red' type='button'>
+                                            <Icon id='start' /> Start
                                         </button>
                                     </div>
-                                    <div className="has-tooltip">
-                                        <span class="tooltip uppercase text-center">
-                                            Get value, year high and low prices.
-                                        </span>
-                                        <button
-                                            onClick={dashboardPriceHandler}
-                                            className="btn btn-blue"
-                                            type="button"
-                                        >
-                                            <Icon id="price" /> Price
+                                    <div className='has-tooltip'>
+                                        <span class='tooltip uppercase text-center'>Get value, year high and low prices.</span>
+                                        <button onClick={dashboardPriceHandler} className='btn btn-blue' type='button'>
+                                            <Icon id='price' /> Price
                                         </button>
                                     </div>
-                                    <div className="has-tooltip">
-                                        <span class="tooltip uppercase text-center">
-                                            Get income after tax and earnings
-                                            per share.
-                                        </span>
-                                        <button
-                                            onClick={dashboardReportHandler}
-                                            className="btn btn-green"
-                                            type="button"
-                                        >
-                                            <Icon id="report" /> Report
+                                    <div className='has-tooltip'>
+                                        <span class='tooltip uppercase text-center'>Get income after tax and earnings per share.</span>
+                                        <button onClick={dashboardReportHandler} className='btn btn-green' type='button'>
+                                            <Icon id='report' /> Report
                                         </button>
                                     </div>
 
-                                    <div className="has-tooltip">
-                                        <span class="tooltip uppercase text-center">
-                                            Get the yearly dividend yield.
-                                        </span>
-                                        <button
-                                            onClick={dashboardDividendHandler}
-                                            className="btn btn-emerald"
-                                            type="button"
-                                        >
-                                            <Icon id="dividend" /> Dividend
+                                    <div className='has-tooltip'>
+                                        <span class='tooltip uppercase text-center'>Get the yearly dividend yield.</span>
+                                        <button onClick={dashboardDividendHandler} className='btn btn-emerald' type='button'>
+                                            <Icon id='dividend' /> Dividend
                                         </button>
                                     </div>
-                                    <div className="has-tooltip">
-                                        <span class="tooltip uppercase text-center">
-                                            Get the sector to which stock
-                                            belongs.
-                                        </span>
-                                        <button
-                                            onClick={dashboardSectorHandler}
-                                            className="btn btn-indigo"
-                                            type="button"
-                                        >
-                                            <Icon id="sector" /> Sector
+                                    <div className='has-tooltip'>
+                                        <span class='tooltip uppercase text-center'>Get the sector to which stock belongs.</span>
+                                        <button onClick={dashboardSectorHandler} className='btn btn-indigo' type='button'>
+                                            <Icon id='sector' /> Sector
                                         </button>
                                     </div>
-                                    <div className="has-tooltip">
-                                        <span class="tooltip uppercase text-center">
-                                            Fetch stock list from pse edge.
-                                        </span>
-                                        <button
-                                            onClick={dashboardListHandler}
-                                            className="btn btn-green"
-                                            type="button"
-                                        >
-                                            <Icon id="start" /> Lists
+                                    <div className='has-tooltip'>
+                                        <span class='tooltip uppercase text-center'>Fetch stock list from pse edge.</span>
+                                        <button onClick={dashboardListHandler} className='btn btn-green' type='button'>
+                                            <Icon id='start' /> Lists
                                         </button>
                                     </div>
                                 </div>
                             </Container>
-                            <Container header="Asset Allocation">
-                                <div className="flex flex-col flex-wrap sm:flex-row justify-center gap-2">
-                                    <div className="card-rounded-scale text-red-500">
-                                        <div className="h-8 p-2 mb-6">
-                                            <p className="uppercase">
-                                                <Icon id="stock" /> Stock
+                            <Container header='Asset Allocation'>
+                                <div className='flex flex-col flex-wrap sm:flex-row justify-center gap-2'>
+                                    <div className='card-rounded-scale text-red-500'>
+                                        <div className='h-8 p-2 mb-6'>
+                                            <p className='uppercase'>
+                                                <Icon id='stock' /> Stock
                                             </p>
                                         </div>
-                                        <div className="h-20">
-                                            <p className="uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl">
-                                                1000
-                                            </p>
+                                        <div className='h-20'>
+                                            <p className='uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl'>1000</p>
                                         </div>
-                                        <div className="h-8 p-2 mb-2">
-                                            <p className="uppercase text-right">
-                                                <Link to="/dashboard/stock-portfolio">
-                                                    more
-                                                </Link>
+                                        <div className='h-8 p-2 mb-2'>
+                                            <p className='uppercase text-right'>
+                                                <Link to='/dashboard/stock-portfolio'>more</Link>
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="card-rounded-scale text-green-500">
-                                        <div className="h-8 p-2 mb-6">
-                                            <p className="uppercase">
-                                                <Icon id="crypto" /> Crypto
+                                    <div className='card-rounded-scale text-green-500'>
+                                        <div className='h-8 p-2 mb-6'>
+                                            <p className='uppercase'>
+                                                <Icon id='crypto' /> Crypto
                                             </p>
                                         </div>
-                                        <div className="h-20">
-                                            <p className="uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl">
-                                                2000
-                                            </p>
+                                        <div className='h-20'>
+                                            <p className='uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl'>2000</p>
                                         </div>
-                                        <div className="h-8 p-2 mb-2">
-                                            <p className="uppercase text-right">
-                                                <Link to="/dashboard/crypto-portfolio">
-                                                    more
-                                                </Link>
+                                        <div className='h-8 p-2 mb-2'>
+                                            <p className='uppercase text-right'>
+                                                <Link to='/dashboard/crypto-portfolio'>more</Link>
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="card-rounded-scale text-blue-500">
-                                        <div className="h-8 p-2 mb-6">
-                                            <p className="uppercase">
-                                                <Icon id="fund" /> Fund
+                                    <div className='card-rounded-scale text-blue-500'>
+                                        <div className='h-8 p-2 mb-6'>
+                                            <p className='uppercase'>
+                                                <Icon id='fund' /> Fund
                                             </p>
                                         </div>
-                                        <div className="h-20">
-                                            <p className="uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl">
-                                                3000
-                                            </p>
+                                        <div className='h-20'>
+                                            <p className='uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl'>3000</p>
                                         </div>
-                                        <div className="h-8 p-2 mb-2">
-                                            <p className="uppercase text-right">
-                                                <Link to="/dashboard/stock-fund">
-                                                    more
-                                                </Link>
+                                        <div className='h-8 p-2 mb-2'>
+                                            <p className='uppercase text-right'>
+                                                <Link to='/dashboard/stock-fund'>more</Link>
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="card-rounded-scale text-orange-500">
-                                        <div className="h-8 p-2 mb-6">
-                                            <p className="uppercase">
-                                                <Icon id="note" /> Note
+                                    <div className='card-rounded-scale text-orange-500'>
+                                        <div className='h-8 p-2 mb-6'>
+                                            <p className='uppercase'>
+                                                <Icon id='note' /> Note
                                             </p>
                                         </div>
-                                        <div className="h-20">
-                                            <p className="uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl">
-                                                4000
-                                            </p>
+                                        <div className='h-20'>
+                                            <p className='uppercase text-center mx-auto text-2xl sm:text-3xl md:text-4xl'>4000</p>
                                         </div>
-                                        <div className="h-8 p-2 mb-2">
-                                            <p className="uppercase text-right">
-                                                <Link to="/dashboard/stock-note">
-                                                    more
-                                                </Link>
+                                        <div className='h-8 p-2 mb-2'>
+                                            <p className='uppercase text-right'>
+                                                <Link to='/dashboard/stock-note'>more</Link>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </Container>
-                            <Container header="Account Information">
-                                <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
-                                    <div className="h-20 sm:row-start-2 card-rounded-scale">
-                                        Account
-                                    </div>
-                                    <div className="sm:row-start-3 card-rounded-scale">
-                                        <div className="p-2">Data</div>
-                                        <div className="p-2 grid auto-rows-min sm:grid-cols-2">
-                                            <div className="p-2">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-indigo"
-                                                    onClick={
-                                                        bluechipModalHandler
-                                                    }
-                                                >
-                                                    View Bluechip Stocks
+                            <Container header='Account Information'>
+                                <div className='grid sm:grid-cols-2 auto-rows-min gap-2 h-fit'>
+                                    <div className='h-20 sm:row-start-2 card-rounded-scale'>Account</div>
+                                    <div className='sm:row-start-3 card-rounded-scale'>
+                                        <div className='p-2'>Data</div>
+                                        <div className='p-2 grid auto-rows-min sm:grid-cols-2'>
+                                            <div className='p-2'>
+                                                <button type='button' className='btn btn-orange' onClick={bluechipModalHandler}>
+                                                    Bluechip Stocks
                                                 </button>
                                             </div>
-                                            <div className="p-2">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-green"
-                                                    onClick={edgeModalHandler}
-                                                >
+                                            <div className='p-2'>
+                                                <button type='button' className='btn btn-emerald' onClick={edgeModalHandler}>
                                                     Set Edge ID
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale">
+                                    <div className='h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale'>
                                         Doughnut Chart
                                     </div>
                                 </div>
@@ -497,7 +418,6 @@ const Dashboard = () => {
                                             blur: modalBlueInputBlurHandler,
                                             error: modalBlueInputHasError,
                                             reset: modalBlueInputInputReset,
-                                            autoComplete: "off",
                                         })}
                                     </Modal>
                                 )}
@@ -517,29 +437,37 @@ const Dashboard = () => {
                                             blur: modalEdgeInputBlurHandler,
                                             error: modalEdgeInputHasError,
                                             reset: modalEdgeInputInputReset,
-                                            autoComplete: "off",
                                         })}
                                     </Modal>
                                 )}
                             </Container>
-                            <Container header="Philippine Stock Exchange">
-                                <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
-                                    <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale">
-                                        Top Gainers
-                                    </div>
-                                    <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale">
-                                        Top Lossers
-                                    </div>
+                            <Container header='Philippine Stock Exchange'>
+                                <div className='grid sm:grid-cols-2 auto-rows-min gap-2 h-fit'>
+                                    {stockLeaderBoard({
+                                        header: "Top Gainers",
+                                        data: stockgainer,
+                                        show: setModalStock,
+                                    })}
+                                    {stockLeaderBoard({
+                                        header: "Top Lossers",
+                                        data: stocklosser,
+                                        show: setModalStock,
+                                    })}
+                                    {modalStock && (
+                                        <Modal>
+                                            <div className='form-center'>
+                                                <span className='text-right cursor-pointer' onClick={() => setModalStock(false)}>
+                                                    <Icon id='close' /> <span className='invisible sm:visible'>Close</span>
+                                                </span>
+                                            </div>
+                                        </Modal>
+                                    )}
                                 </div>
                             </Container>
-                            <Container header="Crypto Currency">
-                                <div className="grid sm:grid-cols-2 auto-rows-min gap-2 h-fit">
-                                    <div className="h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale">
-                                        Top Gainers
-                                    </div>
-                                    <div className="h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale">
-                                        Top Lossers
-                                    </div>
+                            <Container header='Crypto Currency'>
+                                <div className='grid sm:grid-cols-2 auto-rows-min gap-2 h-fit'>
+                                    <div className='h-48 sm:h-full p-2 sm:row-start-2 card-rounded-scale'>Top Gainers</div>
+                                    <div className='h-48 sm:h-full p-2 sm:row-start-2 sm:col-start-2 card-rounded-scale'>Top Lossers</div>
                                 </div>
                             </Container>
                         </>

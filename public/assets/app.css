@@ -1676,9 +1676,6 @@ video {
 .filter{
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
-.hover\:z-50:hover{
-    z-index: 50;
-}
 .hover\:z-10:hover{
     z-index: 10;
 }
@@ -1694,6 +1691,10 @@ video {
     --tw-bg-opacity: 1;
     background-color: rgb(241 245 249 / var(--tw-bg-opacity));
 }
+.hover\:bg-stone-100:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(245 245 244 / var(--tw-bg-opacity));
+}
 .hover\:bg-stone-200:hover{
     --tw-bg-opacity: 1;
     background-color: rgb(231 229 228 / var(--tw-bg-opacity));
@@ -1701,10 +1702,6 @@ video {
 .hover\:bg-stone-300:hover{
     --tw-bg-opacity: 1;
     background-color: rgb(214 211 209 / var(--tw-bg-opacity));
-}
-.hover\:bg-stone-100:hover{
-    --tw-bg-opacity: 1;
-    background-color: rgb(245 245 244 / var(--tw-bg-opacity));
 }
 .hover\:bg-opacity-40:hover{
     --tw-bg-opacity: 0.4;

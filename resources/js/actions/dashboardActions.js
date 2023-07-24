@@ -1,8 +1,8 @@
 /** Helper. */
-import {mapObject} from "../helpers";
+import { mapObject } from "../helpers";
 
 /** Constant. */
-import {MESSAGE_SHOW_SUCCESS, MESSAGE_SHOW_FAILURE} from "../constants/messageConstants";
+import { MESSAGE_SHOW_SUCCESS, MESSAGE_SHOW_FAILURE } from "../constants/messageConstants";
 
 import {
     DASHBOARD_START_REQUEST,
@@ -23,6 +23,9 @@ import {
     DASHBOARD_LIST_REQUEST,
     DASHBOARD_LIST_SUCCESS,
     DASHBOARD_LIST_FAILURE,
+    DASHBOARD_COMPANY_REQUEST,
+    DASHBOARD_COMPANY_SUCCESS,
+    DASHBOARD_COMPANY_FAILURE,
     DASHBOARD_BLUE_REQUEST,
     DASHBOARD_BLUE_SUCCESS,
     DASHBOARD_BLUE_FAILURE,
@@ -49,10 +52,10 @@ import {
 export const actDashboardStart = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_START_REQUEST});
+        dispatch({ type: DASHBOARD_START_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             url: "https://phisix-api4.appspot.com/stocks.json",
             method: "GET",
         });
@@ -70,7 +73,7 @@ export const actDashboardStart = (token) => async (dispatch) => {
                 /** Check if data is not empty. */
                 if (item) {
                     /** Send request. */
-                    const {data} = await axios({
+                    const { data } = await axios({
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${token}`,
@@ -98,7 +101,7 @@ export const actDashboardStart = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_START_SUCCESS, payload: data.message});
+        dispatch({ type: DASHBOARD_START_SUCCESS, payload: data.message });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -116,17 +119,17 @@ export const actDashboardStart = (token) => async (dispatch) => {
 export const actDashboardPrice = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_PRICE_REQUEST});
+        dispatch({ type: DASHBOARD_PRICE_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/stock-reports-retrieve",
-            params: {section: "stocks"},
+            params: { section: "stocks" },
         });
 
         /** Separate result. */
@@ -149,7 +152,7 @@ export const actDashboardPrice = (token) => async (dispatch) => {
                 /** Check if data is not empty. */
                 if (item) {
                     /** Send request. */
-                    const {data} = await axios({
+                    const { data } = await axios({
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${token}`,
@@ -176,7 +179,7 @@ export const actDashboardPrice = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_PRICE_SUCCESS, payload: data.message});
+        dispatch({ type: DASHBOARD_PRICE_SUCCESS, payload: data.message });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -194,17 +197,17 @@ export const actDashboardPrice = (token) => async (dispatch) => {
 export const actDashboardReport = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_REPORT_REQUEST});
+        dispatch({ type: DASHBOARD_REPORT_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/stock-reports-retrieve",
-            params: {section: "stocks"},
+            params: { section: "stocks" },
         });
 
         /** Separate result. */
@@ -226,7 +229,7 @@ export const actDashboardReport = (token) => async (dispatch) => {
                 /** Check if data is not empty. */
                 if (item) {
                     /** Send request. */
-                    const {data} = await axios({
+                    const { data } = await axios({
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${token}`,
@@ -253,7 +256,7 @@ export const actDashboardReport = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_REPORT_SUCCESS, payload: data.message});
+        dispatch({ type: DASHBOARD_REPORT_SUCCESS, payload: data.message });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -271,17 +274,17 @@ export const actDashboardReport = (token) => async (dispatch) => {
 export const actDashboardDividend = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_DIVIDEND_REQUEST});
+        dispatch({ type: DASHBOARD_DIVIDEND_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/stock-reports-retrieve",
-            params: {section: "stocks"},
+            params: { section: "stocks" },
         });
 
         /** Separate result. */
@@ -303,7 +306,7 @@ export const actDashboardDividend = (token) => async (dispatch) => {
                 /** Check if data is not empty. */
                 if (item) {
                     /** Send request. */
-                    const {data} = await axios({
+                    const { data } = await axios({
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${token}`,
@@ -330,7 +333,7 @@ export const actDashboardDividend = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_DIVIDEND_SUCCESS, payload: data.message});
+        dispatch({ type: DASHBOARD_DIVIDEND_SUCCESS, payload: data.message });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -348,17 +351,17 @@ export const actDashboardDividend = (token) => async (dispatch) => {
 export const actDashboardSector = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_SECTOR_REQUEST});
+        dispatch({ type: DASHBOARD_SECTOR_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/stock-reports-retrieve",
-            params: {section: "stocks"},
+            params: { section: "stocks" },
         });
 
         /** Separate result. */
@@ -381,7 +384,7 @@ export const actDashboardSector = (token) => async (dispatch) => {
                 /** Check if data is not empty. */
                 if (item) {
                     /** Send request. */
-                    const {data} = await axios({
+                    const { data } = await axios({
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${token}`,
@@ -408,7 +411,7 @@ export const actDashboardSector = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_SECTOR_SUCCESS, payload: data.message});
+        dispatch({ type: DASHBOARD_SECTOR_SUCCESS, payload: data.message });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -426,17 +429,17 @@ export const actDashboardSector = (token) => async (dispatch) => {
 export const actDashboardList = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_LIST_REQUEST});
+        dispatch({ type: DASHBOARD_LIST_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/stock-reports-retrieve",
-            params: {section: "lists"},
+            params: { section: "lists" },
         });
 
         /** Separate result. */
@@ -449,7 +452,7 @@ export const actDashboardList = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_LIST_SUCCESS, payload: message});
+        dispatch({ type: DASHBOARD_LIST_SUCCESS, payload: message });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -464,20 +467,97 @@ export const actDashboardList = (token) => async (dispatch) => {
     }
 };
 
+export const actDashboardCompany = (token) => async (dispatch) => {
+    try {
+        /** Dispatch action to set inital state. */
+        dispatch({ type: DASHBOARD_COMPANY_REQUEST });
+
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            url: "/stock-reports-retrieve",
+            params: { section: "stocks" },
+        });
+
+        /** Separate result. */
+        let stocks = data.stocks;
+        let message = data.message;
+
+        /** Dispatch action to show message in the frontend. */
+        dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: message,
+        });
+
+        /** Save stocks to database. */
+        stocks.map((item, index) => {
+            /** Get last index. */
+            let end = stocks.length - 1;
+            /** Call delay item function. */
+            setTimeout(async function () {
+                /** Check if data is not empty. */
+                if (item) {
+                    /** Send request. */
+                    const { data } = await axios({
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        method: "POST",
+                        url: "/stock-reports-store",
+                        params: {
+                            symbol: item.symbol,
+                            section: "companies",
+                        },
+                    });
+
+                    /** Dispatch action to show message in the frontend. */
+                    dispatch({
+                        type: MESSAGE_SHOW_SUCCESS,
+                        payload: data.message,
+                    });
+                }
+                /** Talk to the console about that task progress. */
+                if (index === end) {
+                    console.log("Process Completed.");
+                }
+            }, 3000 * index);
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: DASHBOARD_COMPANY_SUCCESS, payload: data.message });
+    } catch (error) {
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: DASHBOARD_COMPANY_FAILURE,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+        /** Dispatch action if error occurred. */
+        dispatch({
+            type: MESSAGE_SHOW_FAILURE,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
 export const actDashboardBlue = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_BLUE_REQUEST});
+        dispatch({ type: DASHBOARD_BLUE_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/api/dashboard",
-            params: {section: "bluechip", statement: "select"},
+            params: { section: "bluechip", statement: "select" },
         });
 
         /** Separate result. */
@@ -491,7 +571,7 @@ export const actDashboardBlue = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_BLUE_SUCCESS, payload: stocks});
+        dispatch({ type: DASHBOARD_BLUE_SUCCESS, payload: stocks });
 
         /** Save to result to local storage. */
         if (stocks) {
@@ -512,14 +592,14 @@ export const actDashboardBlue = (token) => async (dispatch) => {
 };
 
 export const actDashboardBlueStore =
-    ({token, symbol}) =>
+    ({ token, symbol }) =>
     async (dispatch) => {
         try {
             /** Dispatch action to set inital state. */
-            dispatch({type: DASHBOARD_BLUE_STORE_REQUEST});
+            dispatch({ type: DASHBOARD_BLUE_STORE_REQUEST });
 
             /** Prepare request to external api data provider. */
-            const {data} = await axios({
+            const { data } = await axios({
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -537,10 +617,10 @@ export const actDashboardBlueStore =
             let message = data.message;
 
             /** Dispatch action to show message in the frontend. */
-            dispatch({type: MESSAGE_SHOW_SUCCESS, payload: message});
+            dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
 
             /** Dispatch action to set the result into the store. */
-            dispatch({type: DASHBOARD_BLUE_STORE_SUCCESS, payload: message});
+            dispatch({ type: DASHBOARD_BLUE_STORE_SUCCESS, payload: message });
         } catch (error) {
             /** Dispatch action if error occurred. */
             dispatch({
@@ -556,14 +636,14 @@ export const actDashboardBlueStore =
     };
 
 export const actDashboardBlueDestroy =
-    ({token, symbol}) =>
+    ({ token, symbol }) =>
     async (dispatch) => {
         try {
             /** Dispatch action to set inital state. */
-            dispatch({type: DASHBOARD_BLUE_DESTROY_REQUEST});
+            dispatch({ type: DASHBOARD_BLUE_DESTROY_REQUEST });
 
             /** Prepare request to external api data provider. */
-            const {data} = await axios({
+            const { data } = await axios({
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -581,7 +661,7 @@ export const actDashboardBlueDestroy =
             let message = data.message;
 
             /** Dispatch action to show message in the frontend. */
-            dispatch({type: MESSAGE_SHOW_SUCCESS, payload: message});
+            dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
 
             /** Dispatch action to set the result into the store. */
             dispatch({
@@ -605,17 +685,17 @@ export const actDashboardBlueDestroy =
 export const actDashboardEdge = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_EDGE_REQUEST});
+        dispatch({ type: DASHBOARD_EDGE_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/api/dashboard",
-            params: {section: "edge", statement: "select"},
+            params: { section: "edge", statement: "select" },
         });
 
         /** Separate result. */
@@ -629,7 +709,7 @@ export const actDashboardEdge = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_EDGE_SUCCESS, payload: stocks});
+        dispatch({ type: DASHBOARD_EDGE_SUCCESS, payload: stocks });
 
         /** Save to result to local storage. */
         if (stocks) {
@@ -652,10 +732,10 @@ export const actDashboardEdge = (token) => async (dispatch) => {
 export const actDashboardEdgeUpdate = (props) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_EDGE_UPDATE_REQUEST});
+        dispatch({ type: DASHBOARD_EDGE_UPDATE_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${props.token}`,
@@ -674,10 +754,10 @@ export const actDashboardEdgeUpdate = (props) => async (dispatch) => {
         let message = data.message;
 
         /** Dispatch action to show message in the frontend. */
-        dispatch({type: MESSAGE_SHOW_SUCCESS, payload: message});
+        dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_EDGE_UPDATE_SUCCESS, payload: message});
+        dispatch({ type: DASHBOARD_EDGE_UPDATE_SUCCESS, payload: message });
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({
@@ -695,17 +775,17 @@ export const actDashboardEdgeUpdate = (props) => async (dispatch) => {
 export const actDashboardStockGainer = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_STOCK_GAINER_REQUEST});
+        dispatch({ type: DASHBOARD_STOCK_GAINER_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/api/dashboard",
-            params: {section: "gainers"},
+            params: { section: "gainers" },
         });
 
         /** Separate result. */
@@ -719,7 +799,7 @@ export const actDashboardStockGainer = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_STOCK_GAINER_SUCCESS, payload: stocks});
+        dispatch({ type: DASHBOARD_STOCK_GAINER_SUCCESS, payload: stocks });
 
         /** Save to result to local storage. */
         if (stocks) {
@@ -742,17 +822,17 @@ export const actDashboardStockGainer = (token) => async (dispatch) => {
 export const actDashboardStockLosser = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
-        dispatch({type: DASHBOARD_STOCK_LOSSER_REQUEST});
+        dispatch({ type: DASHBOARD_STOCK_LOSSER_REQUEST });
 
         /** Prepare request to external api data provider. */
-        const {data} = await axios({
+        const { data } = await axios({
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
             url: "/api/dashboard",
-            params: {section: "lossers"},
+            params: { section: "lossers" },
         });
 
         /** Separate result. */
@@ -766,7 +846,7 @@ export const actDashboardStockLosser = (token) => async (dispatch) => {
         });
 
         /** Dispatch action to set the result into the store. */
-        dispatch({type: DASHBOARD_STOCK_LOSSER_SUCCESS, payload: stocks});
+        dispatch({ type: DASHBOARD_STOCK_LOSSER_SUCCESS, payload: stocks });
 
         /** Save to result to local storage. */
         if (stocks) {

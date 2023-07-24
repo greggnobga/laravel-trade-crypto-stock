@@ -17,6 +17,9 @@ import {
     DASHBOARD_LIST_REQUEST,
     DASHBOARD_LIST_SUCCESS,
     DASHBOARD_LIST_FAILURE,
+    DASHBOARD_COMPANY_REQUEST,
+    DASHBOARD_COMPANY_SUCCESS,
+    DASHBOARD_COMPANY_FAILURE,
     DASHBOARD_BLUE_REQUEST,
     DASHBOARD_BLUE_SUCCESS,
     DASHBOARD_BLUE_FAILURE,
@@ -43,11 +46,11 @@ import {
 export const dashboardStartReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_START_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_START_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_START_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -56,11 +59,11 @@ export const dashboardStartReducer = (state = {}, action) => {
 export const dashboardPriceReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_PRICE_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_PRICE_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_PRICE_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -69,11 +72,11 @@ export const dashboardPriceReducer = (state = {}, action) => {
 export const dashboardReportReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_REPORT_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_REPORT_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_REPORT_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -82,11 +85,11 @@ export const dashboardReportReducer = (state = {}, action) => {
 export const dashboardDividendReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_DIVIDEND_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_DIVIDEND_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_DIVIDEND_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -95,11 +98,11 @@ export const dashboardDividendReducer = (state = {}, action) => {
 export const dashboardSectorReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_SECTOR_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_SECTOR_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_SECTOR_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -108,11 +111,24 @@ export const dashboardSectorReducer = (state = {}, action) => {
 export const dashboardListReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_LIST_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_LIST_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_LIST_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const dashboardCompanyReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DASHBOARD_COMPANY_REQUEST:
+            return { loading: true };
+        case DASHBOARD_COMPANY_SUCCESS:
+            return { loading: false, success: action.payload };
+        case DASHBOARD_COMPANY_FAILURE:
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -121,11 +137,11 @@ export const dashboardListReducer = (state = {}, action) => {
 export const dashboardBlueReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_BLUE_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_BLUE_SUCCESS:
-            return {loading: false, bluedash: action.payload};
+            return { loading: false, bluedash: action.payload };
         case DASHBOARD_BLUE_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -134,11 +150,11 @@ export const dashboardBlueReducer = (state = {}, action) => {
 export const dashboardBlueStoreReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_BLUE_STORE_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_BLUE_STORE_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_BLUE_STORE_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -147,11 +163,11 @@ export const dashboardBlueStoreReducer = (state = {}, action) => {
 export const dashboardBlueDestroyReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_BLUE_DESTROY_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_BLUE_DESTROY_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_BLUE_DESTROY_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -160,11 +176,11 @@ export const dashboardBlueDestroyReducer = (state = {}, action) => {
 export const dashboardEdgeReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_EDGE_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_EDGE_SUCCESS:
-            return {loading: false, edge: action.payload};
+            return { loading: false, edge: action.payload };
         case DASHBOARD_EDGE_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -173,11 +189,11 @@ export const dashboardEdgeReducer = (state = {}, action) => {
 export const dashboardEdgeUpdateReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_EDGE_UPDATE_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_EDGE_UPDATE_SUCCESS:
-            return {loading: false, success: action.payload};
+            return { loading: false, success: action.payload };
         case DASHBOARD_EDGE_UPDATE_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -186,11 +202,11 @@ export const dashboardEdgeUpdateReducer = (state = {}, action) => {
 export const dashboardStockGainerReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_STOCK_GAINER_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_STOCK_GAINER_SUCCESS:
-            return {loading: false, stockgainer: action.payload};
+            return { loading: false, stockgainer: action.payload };
         case DASHBOARD_STOCK_GAINER_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }
@@ -199,11 +215,11 @@ export const dashboardStockGainerReducer = (state = {}, action) => {
 export const dashboardStockLosserReducer = (state = {}, action) => {
     switch (action.type) {
         case DASHBOARD_STOCK_LOSSER_REQUEST:
-            return {loading: true};
+            return { loading: true };
         case DASHBOARD_STOCK_LOSSER_SUCCESS:
-            return {loading: false, stocklosser: action.payload};
+            return { loading: false, stocklosser: action.payload };
         case DASHBOARD_STOCK_LOSSER_FAILURE:
-            return {loading: false, error: action.payload};
+            return { loading: false, error: action.payload };
         default:
             return state;
     }

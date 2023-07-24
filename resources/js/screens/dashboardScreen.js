@@ -28,6 +28,7 @@ import {
     actDashboardDividend,
     actDashboardSector,
     actDashboardList,
+    actDashboardCompany,
     actDashboardBlue,
     actDashboardBlueStore,
     actDashboardBlueDestroy,
@@ -181,6 +182,11 @@ const Dashboard = () => {
         dispatch(actDashboardList(access_token));
     };
 
+    const dashboardCompanyHandler = () => {
+        /** Dispatch action. */
+        dispatch(actDashboardCompany(access_token));
+    };
+
     /** Bluechip modal handler. */
     const bluechipModalHandler = () => {
         setModalBlue(true);
@@ -280,6 +286,18 @@ const Dashboard = () => {
                             <Container header='Fetch External Data'>
                                 <div className='py-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4'>
                                     <div className='has-tooltip'>
+                                        <span class='tooltip uppercase text-center'>Fetch the stock symbol from PSE Edge.</span>
+                                        <button onClick={dashboardListHandler} className='btn btn-green' type='button'>
+                                            <Icon id='start' /> Stock Symbol
+                                        </button>
+                                    </div>
+                                    <div className='has-tooltip'>
+                                        <span class='tooltip uppercase text-center'>Fetch company identification from PSE Edge.</span>
+                                        <button onClick={dashboardCompanyHandler} className='btn btn-orange' type='button'>
+                                            <Icon id='start' /> Stock ID
+                                        </button>
+                                    </div>
+                                    <div className='has-tooltip'>
                                         <span class='tooltip uppercase text-center'>Get the symbol, name, price, volume, and change.</span>
                                         <button onClick={dashboardStartHandler} className='btn btn-red' type='button'>
                                             <Icon id='start' /> Start
@@ -308,12 +326,6 @@ const Dashboard = () => {
                                         <span class='tooltip uppercase text-center'>Get the sector to which stock belongs.</span>
                                         <button onClick={dashboardSectorHandler} className='btn btn-indigo' type='button'>
                                             <Icon id='sector' /> Sector
-                                        </button>
-                                    </div>
-                                    <div className='has-tooltip'>
-                                        <span class='tooltip uppercase text-center'>Fetch stock list from pse edge.</span>
-                                        <button onClick={dashboardListHandler} className='btn btn-green' type='button'>
-                                            <Icon id='start' /> Lists
                                         </button>
                                     </div>
                                 </div>

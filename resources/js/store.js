@@ -1,11 +1,11 @@
 /** Vendor. */
-import {createStore, combineReducers, applyMiddleware} from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import {composeWithDevTools} from "@redux-devtools/extension";
+import { composeWithDevTools } from "@redux-devtools/extension";
 
 /** Reducer. */
-import {showMessageReducer} from "./reducers/messageReducers";
-import {userLoginReducer, userRegisterReducer, userVerifyReducer, userForgotReducer, userResetReducer} from "./reducers/userReducers";
+import { showMessageReducer } from "./reducers/messageReducers";
+import { userLoginReducer, userRegisterReducer, userVerifyReducer, userForgotReducer, userResetReducer } from "./reducers/userReducers";
 
 import {
     dashboardStartReducer,
@@ -14,6 +14,7 @@ import {
     dashboardDividendReducer,
     dashboardSectorReducer,
     dashboardListReducer,
+    dashboardCompanyReducer,
     dashboardBlueReducer,
     dashboardBlueStoreReducer,
     dashboardBlueDestroyReducer,
@@ -45,6 +46,7 @@ const reducer = combineReducers({
     dashboardDividend: dashboardDividendReducer,
     dashboardSector: dashboardSectorReducer,
     dashboardList: dashboardListReducer,
+    dashboardCompany: dashboardCompanyReducer,
     dashboardBlue: dashboardBlueReducer,
     dashboardBlueStore: dashboardBlueStoreReducer,
     dashboardBlueDestroy: dashboardBlueDestroyReducer,
@@ -62,7 +64,7 @@ const reducer = combineReducers({
 });
 
 /** Initial state. */
-const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : {logged: false};
+const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : { logged: false };
 
 const bluechipFromStorage = localStorage.getItem("bluechip") ? JSON.parse(localStorage.getItem("bluechip")) : {};
 

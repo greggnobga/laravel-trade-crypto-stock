@@ -10604,6 +10604,9 @@ const DASHBOARD_SECTOR_FAILURE = "DASHBOARD_SECTOR_FAILURE";
 const DASHBOARD_LIST_REQUEST = "DASHBOARD_LIST_REQUEST";
 const DASHBOARD_LIST_SUCCESS = "DASHBOARD_LIST_SUCCESS";
 const DASHBOARD_LIST_FAILURE = "DASHBOARD_LIST_FAILURE";
+const DASHBOARD_COMPANY_REQUEST = "DASHBOARD_COMPANY_REQUEST";
+const DASHBOARD_COMPANY_SUCCESS = "DASHBOARD_COMPANY_SUCCESS";
+const DASHBOARD_COMPANY_FAILURE = "DASHBOARD_COMPANY_FAILURE";
 const DASHBOARD_BLUE_REQUEST = "DASHBOARD_BLUE_REQUEST";
 const DASHBOARD_BLUE_SUCCESS = "DASHBOARD_BLUE_SUCCESS";
 const DASHBOARD_BLUE_FAILURE = "DASHBOARD_BLUE_FAILURE";
@@ -10692,6 +10695,18 @@ const dashboardListReducer = (state = {}, action) => {
     case DASHBOARD_LIST_SUCCESS:
       return { loading: false, success: action.payload };
     case DASHBOARD_LIST_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const dashboardCompanyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DASHBOARD_COMPANY_REQUEST:
+      return { loading: true };
+    case DASHBOARD_COMPANY_SUCCESS:
+      return { loading: false, success: action.payload };
+    case DASHBOARD_COMPANY_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -10883,6 +10898,7 @@ const reducer = combineReducers({
   dashboardDividend: dashboardDividendReducer,
   dashboardSector: dashboardSectorReducer,
   dashboardList: dashboardListReducer,
+  dashboardCompany: dashboardCompanyReducer,
   dashboardBlue: dashboardBlueReducer,
   dashboardBlueStore: dashboardBlueStoreReducer,
   dashboardBlueDestroy: dashboardBlueDestroyReducer,
@@ -14192,6 +14208,62 @@ const actDashboardList = (token) => async (dispatch) => {
     });
   }
 };
+const actDashboardCompany = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: DASHBOARD_COMPANY_REQUEST });
+    const { data } = await axios({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/stock-reports-retrieve",
+      params: { section: "stocks" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    stocks.map((item, index2) => {
+      let end = stocks.length - 1;
+      setTimeout(async function() {
+        if (item) {
+          const { data: data2 } = await axios({
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            method: "POST",
+            url: "/stock-reports-store",
+            params: {
+              symbol: item.symbol,
+              section: "companies"
+            }
+          });
+          dispatch({
+            type: MESSAGE_SHOW_SUCCESS,
+            payload: data2.message
+          });
+        }
+        if (index2 === end) {
+          console.log("Process Completed.");
+        }
+      }, 3e3 * index2);
+    });
+    dispatch({ type: DASHBOARD_COMPANY_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: DASHBOARD_COMPANY_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const actDashboardBlue = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_BLUE_REQUEST });
@@ -14507,6 +14579,9 @@ const Dashboard = () => {
   const dashboardListHandler = () => {
     dispatch(actDashboardList(access_token));
   };
+  const dashboardCompanyHandler = () => {
+    dispatch(actDashboardCompany(access_token));
+  };
   const bluechipModalHandler = () => {
     setModalBlue(true);
   };
@@ -14561,6 +14636,20 @@ const Dashboard = () => {
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-screen h-screen form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: "Fetch External Data", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "py-2 card-rounded-scale grid auto-rows-min sm:grid-cols-2 md:grid-cols-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Fetch the stock symbol from PSE Edge." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardListHandler, className: "btn btn-green", type: "button", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+            " Stock Symbol"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Fetch company identification from PSE Edge." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardCompanyHandler, className: "btn btn-orange", type: "button", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
+            " Stock ID"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Get the symbol, name, price, volume, and change." }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardStartHandler, className: "btn btn-red", type: "button", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
@@ -14593,13 +14682,6 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardSectorHandler, className: "btn btn-indigo", type: "button", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "sector" }),
             " Sector"
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "has-tooltip", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { class: "tooltip uppercase text-center", children: "Fetch stock list from pse edge." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: dashboardListHandler, className: "btn btn-green", type: "button", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "start" }),
-            " Lists"
           ] })
         ] })
       ] }) }),

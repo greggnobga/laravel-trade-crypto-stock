@@ -37,6 +37,11 @@ class PSEController extends Controller {
             if ($request->input('section') === 'sectors') {
                 return $this->stocksectors($request->input('input'));
             }
+
+            /** forward sectors function */
+            if ($request->input('section') === 'companies') {
+                return $this->stockcompanies($request->all());
+            }
         }
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
@@ -125,7 +130,7 @@ class PSEController extends Controller {
 
                     /** if not then inster. */
                     if (is_null($check)) {
-                        $check = DB::table('stock_trades')
+                        DB::table('stock_trades')
                             ->insert([
                                 'name' => strip_tags($symbol),
                                 'symbol' => strip_tags($symbol),
@@ -239,7 +244,7 @@ class PSEController extends Controller {
 
             /** Compute year pice range. */
             if ($amount['high'] > 0 && $amount['low'] > 0) {
-                $result['pricerange'] = floatval(bcsub(abs($amount['low']), abs($amount['high']), 2));
+                $result['pricerange'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['low'], 'two' => $amount['high']]);
             } else {
                 $result['pricerange'] = floatval('0.00');
             }
@@ -261,7 +266,7 @@ class PSEController extends Controller {
             ->first();
 
         /** return something. */
-        return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
+        return response(['message' => 'The ' . $reports->name . ' information was successfully updated.'], 200);
     }
 
     /**
@@ -313,6 +318,7 @@ class PSEController extends Controller {
                 }
             }
 
+
             /** check if key exist in array. */
             if (array_key_exists("PreviousTotalAssets", $statement)) {
                 $previous['PreviousTotalAssets'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['PreviousTotalAssets']]);
@@ -334,7 +340,7 @@ class PSEController extends Controller {
             }
 
             /** determine if profitable against previous year. */
-            $result['totalassets'] = floatval(bcsub(abs($amount['assets']['current']), abs($amount['assets']['previous']), 2));
+            $result['totalassets'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['assets']['current'], 'two' => $amount['assets']['previous']]);
 
             /** mapping net after tax . */
             $statement['CurrentYearNetIncomeLossAfterTax'] = $finance['22'];
@@ -381,7 +387,7 @@ class PSEController extends Controller {
             }
 
             /** determine if profitable against previous year. */
-            $result['netincomeaftertax'] = floatval(bcsub(abs($amount['income']['current']), abs($amount['income']['previous']), 2));
+            $result['netincomeaftertax'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['income']['current'], 'two' => $amount['income']['previous']]);
 
             /** mapping total liabilities. */
             $statement['CurrentTotalLiabilities'] = $finance['6'];
@@ -555,7 +561,7 @@ class PSEController extends Controller {
                 ->first();
 
             /** return something. */
-            return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
+            return response(['message' => 'The ' . $reports->name . ' information was successfully updated.'], 200);
         }
     }
 
@@ -633,7 +639,7 @@ class PSEController extends Controller {
             return $node->text();
         });
 
-        if (count($stocksector) >= 1) {
+        if (!is_null($stocksector)) {
             /** mapping year high price. */
             $stockdata['sector'] = $stocksector['1'];
 
@@ -669,7 +675,58 @@ class PSEController extends Controller {
             ->first();
 
         /** return something. */
-        return ['message' => 'The ' . $reports->name . ' information was successfully updated.'];
+        return response(['message' => 'The ' . $reports->name . ' information was successfully updated.'], 200);
+    }
+
+    /**
+     * Declare stock edges function.
+     */
+    public function stockcompanies($data) {
+        /** repository. */
+        $result = [];
+
+        /** create request. */
+        $company = Http::get('https://edge.pse.com.ph/autoComplete/searchCompanyNameSymbol.ax?term=' . $data['symbol'])->body();
+
+
+        if (!is_null($company)) {
+            /** split string into array. */
+            $fragments = preg_split('/\"/', $company);
+
+            /** map fragments to desired key value pair. */
+            if (count($fragments) > 1) {
+                $result['edge'] = $fragments[3];
+                $result['name'] = $fragments[7];
+            } else {
+                /** return something. */
+                return response(['message' => 'The ' . $data['symbol'] . ' does not exist.'], 200);
+            }
+
+            if (count($result) > 1) {
+                /** replace comma with nothing. */
+                $result['name'] = $this->helpers(['sanitized' => 'alpha', 'string' =>  $result['name']]);
+
+                /** check if record exists. */
+                $check = DB::table('stock_trades')
+                    ->select('id')
+                    ->where('edge', '=', $data['symbol'])
+                    ->first();
+
+                if (!is_null($check)) {
+                    /** save to database. */
+                    DB::table('stock_trades')
+                        ->where('symbol', '=', $data['symbol'])
+                        ->update([
+                            'edge' => strip_tags($result['edge']),
+                            'name' => strip_tags($result['name']),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+                }
+            }
+        }
+
+        /** return something. */
+        return response(['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'], 200);
     }
 
     /**
@@ -683,14 +740,16 @@ class PSEController extends Controller {
             ->where('updated_at', '<', Carbon::now()->subHour(0))
             ->get()
             ->toArray();
+
         if (count($stocks)) {
             /** resequence array keys. */
             $stocks = array_values($stocks);
+
             /** return something. */
-            return ['message' => 'Start crawling the PSE website for stock information.', 'stocks' => $stocks];
+            return response(['message' => 'Start crawling the PSE website for stock information.', 'stocks' => $stocks], 200);
         } else {
             /** return something. */
-            return ['message' => 'All records are up to date.'];
+            return response(['message' => 'All records are up to date.'], 200);
         }
     }
 
@@ -713,6 +772,36 @@ class PSEController extends Controller {
         if ($data['sanitized'] === 'alpha') {
             $result = preg_replace("/[^a-zA-Z]/", "", $data['string']);
         }
+
+        /** custom substration. */
+        if ($data['sanitized'] === 'subtract') {
+            /** check if first value is greater than zero and the second is less than zero. */
+            if ($data['one'] > 0 && $data['two'] < 0) {
+                /** normal operation. */
+                $result = $data['one'] - $data['two'];
+            }
+
+            /** check if first value is less than zero and the first is greater than zero. */
+            if ($data['one'] < 0 && $data['two'] > 0) {
+                /** with abs fucntion. */
+                $result = $data['one'] - abs($data['two']);
+            }
+
+            /** check if two values are less then zero. */
+            if ($data['one'] < 0 && $data['two'] < 0) {
+                /** normal operation. */
+                $result = $data['one'] - $data['two'];
+            }
+
+            /** check if two values are greater then zero. */
+            if ($data['one'] > 0 && $data['two'] > 0) {
+                /** normal operation. */
+                $result = $data['one'] - $data['two'];
+            }
+            /** convert to float. */
+            $result = floatval($result);
+        }
+
         /** return something. */
         return $result;
     }

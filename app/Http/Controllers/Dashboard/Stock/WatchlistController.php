@@ -57,7 +57,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'miningandoil') {
                     /** fetch stocks. */
                     $sector['miningandoils'] = DB::table('stock_trades')
-                        ->select('symbol', 'sector', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'sector', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('sector', '=', $value->sector)
                         ->where('netincomeaftertax', '>', 0)
                         ->orderBy('netincomeaftertax', 'desc')
@@ -74,7 +74,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'holdingfirms') {
                     /** fetch stocks. */
                     $sector['holdingfirms'] = DB::table('stock_trades')
-                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('sector', '=', $value->sector)
                         ->where('netincomeaftertax', '>', 0)
                         ->orderBy('netincomeaftertax', 'desc')
@@ -91,7 +91,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'services') {
                     /** fetch stocks. */
                     $sector['services'] = DB::table('stock_trades')
-                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('sector', '=', $value->sector)
                         ->where('netincomeaftertax', '>', 0)
                         ->orderBy('netincomeaftertax', 'desc')
@@ -108,7 +108,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'industrial') {
                     /** fetch stocks. */
                     $sector['industrials'] = DB::table('stock_trades')
-                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('sector', '=', $value->sector)
                         ->where('netincomeaftertax', '>', 0)
                         ->orderBy('netincomeaftertax', 'desc')
@@ -125,7 +125,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'property') {
                     /** fetch stocks. */
                     $sector['properties'] = DB::table('stock_trades')
-                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('sector', '=', $value->sector)
                         ->where('netincomeaftertax', '>', 0)
                         ->orderBy('netincomeaftertax', 'desc')
@@ -142,7 +142,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'financials') {
                     /** fetch stocks. */
                     $sector['financials'] = DB::table('stock_trades')
-                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('sector', '=', $value->sector)
                         ->where('netincomeaftertax', '>', 0)
                         ->orderBy('netincomeaftertax', 'desc')
@@ -159,7 +159,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'smallmediumemergingboard') {
                     /** fetch stocks. */
                     $sector['smallmediumemergingboards'] = DB::table('stock_trades')
-                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('sector', '=', $value->sector)
                         ->where('netincomeaftertax', '>', 0)
                         ->orderBy('netincomeaftertax', 'desc')
@@ -176,7 +176,7 @@ class WatchlistController extends Controller {
                 if ($value->sector == 'etf') {
                     /** fetch stocks. */
                     $sector['exchangetradedfunds'] = DB::table('stock_trades')
-                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('sector', '=', $value->sector)
                         ->where('netincomeaftertax', '>', 0)
                         ->orderBy('netincomeaftertax', 'desc')
@@ -213,6 +213,7 @@ class WatchlistController extends Controller {
         /** if null do something. */
         if (is_null($check)) {
             $insert = DB::table('stock_watchlists')
+                ->where('symbol', $data['symbol'])
                 ->insert([
                     'userid' => Auth::id(),
                     'symbol' => strip_tags($data['symbol']),
@@ -247,7 +248,7 @@ class WatchlistController extends Controller {
             foreach ($watchlist as $key => $value) {
                 /** loop through watchlist. */
                 $items = DB::table('stock_trades')
-                    ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                    ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                     ->where('symbol', '=', $value->symbol)
                     ->first();
 
@@ -310,7 +311,7 @@ class WatchlistController extends Controller {
                         $return[$key][$k] = $v;
                     }
                     if (preg_match('/[0-9]+/', $v)) {
-                        if ($k === 'symbol') {
+                        if ($k === 'symbol' || $k === 'edge') {
                             $return[$key][$k] = $v;
                         } else {
                             $return[$key][$k] = number_format($v, 2, ".", ",");

@@ -13,8 +13,8 @@ return new class extends Migration {
     public function up() {
         Schema::create('stock_trades', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('symbol');
+            $table->string('name')->default('TBA');
+            $table->string('symbol')->default('TBA');
             $table->integer('edge')->default(0);
             $table->string('sector')->default('unknown');
             $table->decimal('price', 24, 2)->signed()->default(0.00);
@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->decimal('pricerange', 24, 2)->signed()->default(0.00);
             $table->decimal('totalassets', 24, 2)->signed()->default(0.00);
             $table->decimal('netincomeaftertax', 24, 2)->signed()->default(0.00);
-            $table->decimal('debtequityratio', 24, 2)->signed()->default(0.00);
+            $table->decimal('debtassetratio', 24, 2)->signed()->default(0.00);
             $table->decimal('priceearningratio', 24, 2)->signed()->default(0.00);
             $table->decimal('netprofitmargin', 24, 2)->signed()->default(0.00);
             $table->decimal('returnonequity', 24, 2)->signed()->default(0.00);

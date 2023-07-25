@@ -36,6 +36,8 @@ class TradeController extends Controller {
      * Fetch blue chip stocks.
      */
     public function bluechip() {
+        /** pointer */
+        $stocks = [];
 
         /** check record. */
         $check = DB::table('stock_trades')
@@ -55,26 +57,31 @@ class TradeController extends Controller {
                 foreach ($record as $key => $value) {
                     /** Get additional stock data. */
                     $stock = DB::table('stock_trades')
-                        ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('symbol', $value->symbol)
                         ->first();
+
                     /** Push to record array. */
                     $record[$key] = $stock;
                 }
+
+                /** Filter array to remove null value. */
+                $filter = array_filter($record);
+
+                /** Sort collection based on desired key. */
+                $sorted = collect($filter)->sortByDesc(function ($item) {
+                    return $item->netincomeaftertax;
+                });
+
+                /** Resequence array keys. */
+                $stocks = array_values($sorted->toArray());
+
+                /** Call helper function. */
+                $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
             } else {
+                /** Return something. */
                 return response(['message' => 'No record found.'], 200);
             }
-
-            /** sort collection based on desired key. */
-            $sorted = collect($record)->sortByDesc(function ($item) {
-                return $item->netincomeaftertax;
-            });
-
-            /** resequence array keys. */
-            $stocks = array_values($sorted->toArray());
-
-            /** Call helper function. */
-            $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
 
             /** Return something. */
             return response(['message' => 'Processed and displayed are all potential bluechip stocks that could be listed on the PSE.', 'stocks' => $format], 200);
@@ -99,7 +106,7 @@ class TradeController extends Controller {
         if (!is_null($check)) {
             /** create stock list. */
             $items = DB::table('stock_trades')
-                ->select('symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtequityratio', 'dividendyield')
+                ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                 ->where('edge', '>', 0)
                 ->orderBy('netincomeaftertax', 'desc')
                 ->get();
@@ -208,14 +215,18 @@ class TradeController extends Controller {
         if ($data['purpose'] === 'format') {
             /** return variable. */
             $return = [];
+
             /** loop through. */
             foreach ($data['source'] as $key => $value) {
                 foreach ($value as $k => $v) {
+                    /** preg match alpha. */
                     if (preg_match('/[a-zA-Z]+/', $v)) {
                         $return[$key][$k] = $v;
                     }
+
+                    /** preg match numeric. */
                     if (preg_match('/[0-9]+/', $v)) {
-                        if ($k === 'symbol') {
+                        if ($k === 'symbol' || $k === 'edge') {
                             $return[$key][$k] = $v;
                         } else {
                             $return[$key][$k] = number_format($v, 2, ".", ",");

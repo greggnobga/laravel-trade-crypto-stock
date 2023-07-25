@@ -453,6 +453,9 @@ export const actDashboardList = (token) => async (dispatch) => {
 
         /** Dispatch action to set the result into the store. */
         dispatch({ type: DASHBOARD_LIST_SUCCESS, payload: message });
+
+        /** Dispatch action to set the result into the store. */
+        console.log(message);
     } catch (error) {
         /** Dispatch action if error occurred. */
         dispatch({

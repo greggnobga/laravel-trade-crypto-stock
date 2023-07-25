@@ -14197,6 +14197,7 @@ const actDashboardList = (token) => async (dispatch) => {
       payload: message
     });
     dispatch({ type: DASHBOARD_LIST_SUCCESS, payload: message });
+    console.log(message);
   } catch (error) {
     dispatch({
       type: DASHBOARD_LIST_FAILURE,
@@ -15346,7 +15347,7 @@ class Color {
   }
 }
 /*!
- * Chart.js v4.3.0
+ * Chart.js v4.3.1
  * https://www.chartjs.org
  * (c) 2023 Chart.js Contributors
  * Released under the MIT License
@@ -15818,7 +15819,7 @@ function _getStartAndCountOfVisiblePoints(meta, points, animationsDisabled) {
     if (minDefined) {
       start = _limitValue(Math.min(
         // @ts-expect-error Need to type _parsed
-        _lookupByKey(_parsed, iScale.axis, min).lo,
+        _lookupByKey(_parsed, axis, min).lo,
         // @ts-expect-error Need to fix types on _lookupByKey
         animationsDisabled ? pointCount : _lookupByKey(points, axis, iScale.getPixelForValue(min)).lo
       ), 0, pointCount - 1);
@@ -17712,7 +17713,7 @@ function styleChanged(style, prevStyle) {
   return JSON.stringify(style, replacer) !== JSON.stringify(prevStyle, replacer);
 }
 /*!
- * Chart.js v4.3.0
+ * Chart.js v4.3.1
  * https://www.chartjs.org
  * (c) 2023 Chart.js Contributors
  * Released under the MIT License
@@ -19773,7 +19774,7 @@ class LineController extends DatasetController {
     line._chart = this.chart;
     line._datasetIndex = this.index;
     line._decimated = !!_dataset._decimated;
-    line.points = points;
+    line.points = points.slice(Math.max(this._drawStart - 1, 0), this._drawStart + this._drawCount);
     const options = this.resolveDatasetElementOptions(mode);
     if (!this.options.showLine) {
       options.borderWidth = 0;
@@ -20146,6 +20147,9 @@ class ScatterController extends DatasetController {
       count = points.length;
     }
     if (this.options.showLine) {
+      if (!this.datasetElementType) {
+        this.addElements();
+      }
       const { dataset: line, _dataset } = meta;
       line._chart = this.chart;
       line._datasetIndex = this.index;
@@ -20157,6 +20161,9 @@ class ScatterController extends DatasetController {
         animated: !animationsDisabled,
         options
       }, mode);
+    } else if (this.datasetElementType) {
+      delete meta.dataset;
+      this.datasetElementType = false;
     }
     this.updateElements(points, start, count, mode);
   }
@@ -23179,7 +23186,7 @@ function needContext(proxy, names2) {
   }
   return false;
 }
-var version = "4.3.0";
+var version = "4.3.1";
 const KNOWN_POSITIONS = [
   "top",
   "bottom",
@@ -26084,7 +26091,7 @@ class Legend extends Element {
         cursor.x += width + padding;
       } else if (typeof legendItem.text !== "string") {
         const fontLineHeight = labelFont.lineHeight;
-        cursor.y += calculateLegendItemHeight(legendItem, fontLineHeight);
+        cursor.y += calculateLegendItemHeight(legendItem, fontLineHeight) + padding;
       } else {
         cursor.y += lineHeight;
       }
@@ -26198,7 +26205,7 @@ function calculateItemHeight(_itemHeight, legendItem, fontLineHeight) {
   return itemHeight;
 }
 function calculateLegendItemHeight(legendItem, fontLineHeight) {
-  const labelHeight = legendItem.text ? legendItem.text.length + 0.5 : 0;
+  const labelHeight = legendItem.text ? legendItem.text.length : 0;
   return fontLineHeight * labelHeight;
 }
 function isListened(type, opts) {
@@ -28451,7 +28458,9 @@ class RadialLinearScale extends LinearScaleBase {
         ctx.fillRect(-width / 2 - padding.left, -offset - tickFont.size / 2 - padding.top, width + padding.width, tickFont.size + padding.height);
       }
       renderText(ctx, tick.label, 0, -offset, tickFont, {
-        color: optsAtIndex.color
+        color: optsAtIndex.color,
+        strokeColor: optsAtIndex.textStrokeColor,
+        strokeWidth: optsAtIndex.textStrokeWidth
       });
     });
     ctx.restore();
@@ -28794,7 +28803,7 @@ class TimeScale extends Scale {
     if (time === max || options.bounds === "ticks" || count === 1) {
       addTick(ticks, time, timestamps);
     }
-    return Object.keys(ticks).sort((a, b2) => a - b2).map((x2) => +x2);
+    return Object.keys(ticks).sort(sorter).map((x2) => +x2);
   }
   getLabelForValue(value) {
     const adapter = this._adapter;
@@ -28993,6 +29002,18 @@ class TimeSeriesScale extends TimeScale {
       }
     }
     return table;
+  }
+  _generate() {
+    const min = this.min;
+    const max = this.max;
+    let timestamps = super.getDataTimestamps();
+    if (!timestamps.includes(min) || !timestamps.length) {
+      timestamps.splice(0, 0, min);
+    }
+    if (!timestamps.includes(max) || timestamps.length === 1) {
+      timestamps.push(max);
+    }
+    return timestamps.sort((a, b2) => a - b2);
   }
   _getTimestampsForTable() {
     let timestamps = this._cache.all || [];
@@ -29372,19 +29393,22 @@ const desktopHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className:
   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Price Range" }) }),
   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Total Assets" }) }),
   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Net Income" }) }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Debt Equity Ratio" }) }),
+  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Debt Asset Ratio" }) }),
   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Dividend Yield" }) }),
   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-500", children: "Action" }) })
 ] });
 const desktopTemplate = ({ item, action, icon, text }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-purple-500", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.symbol }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`, target: "_blank", children: [
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.symbol })
+    ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.price }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.value }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.pricerange }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.totalassets }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.netincomeaftertax }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.debtequityratio }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.debtassetratio }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.dividendyield }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", onClick: () => action(item.symbol), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "uppercase hover:text-red-500", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
@@ -29397,7 +29421,10 @@ const mobileTemplate = ({ item, action, icon, text }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-purple-500", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Symbol" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-center", children: item.symbol })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`, target: "_blank", children: [
+        " ",
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item.symbol })
+      ] }) })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Price" }),
@@ -29420,28 +29447,21 @@ const mobileTemplate = ({ item, action, icon, text }) => {
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-center", children: item.netincomeaftertax })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Debt Equity Ratio" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-center", children: item.debtequityratio })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Debt Asset Ratio" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-center", children: item.debtassetratio })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Dividend Yield" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pt-2 text-center", children: item.dividendyield })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        className: "p-2 col-span-2 sm:col-span-3 md:col-span-4 text-center",
-        onClick: () => action(item.symbol),
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Action" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase pt-2 hover:text-red-500", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
-            " ",
-            text
-          ] })
-        ]
-      }
-    )
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 col-span-2 sm:col-span-3 md:col-span-4 text-center", onClick: () => action(item.symbol), children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Action" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "uppercase pt-2 hover:text-red-500", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
+        " ",
+        text
+      ] })
+    ] })
   ] });
 };
 const paginationTemplate = ({ index: index2, turn }) => {
@@ -29522,42 +29542,45 @@ const desktopModalTemplate = ({ item, action, close, icon, text }) => {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-500", children: "Price Range" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-500", children: "Total Assets" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-500", children: "Net Income" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-500", children: "Debt Equity Ratio" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-500", children: "Debt Asset Ratio" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-500", children: "Dividend Yield" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-500", children: "Action" }) })
       ] }),
       item && item[1].map((item2, index2) => {
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-purple-500",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.symbol }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.price }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.value }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.pricerange }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.totalassets }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.netincomeaftertax }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.debtequityratio }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.dividendyield }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 ", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  className: "uppercase border border-stone-100 hover:text-green-500",
-                  onClick: () => {
-                    action(item2.symbol);
-                  },
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
-                    " ",
-                    text
-                  ]
-                }
-              ) })
-            ]
-          },
-          index2
-        );
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-purple-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "a",
+            {
+              href: `https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item2.edge}`,
+              target: "_blank",
+              children: [
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0 uppercase", children: item2.symbol })
+              ]
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.price }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.value }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.pricerange }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.totalassets }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.netincomeaftertax }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.debtassetratio }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-0", children: item2.dividendyield }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 ", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              className: "uppercase border border-stone-100 hover:text-green-500",
+              onClick: () => {
+                action(item2.symbol);
+              },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
+                " ",
+                text
+              ]
+            }
+          ) })
+        ] });
       })
     ] })
   ] });
@@ -29620,61 +29643,64 @@ const mobileModalTemplate = ({ item, action, close, icon, text }) => {
       ] })
     ] }) }),
     item && item[1].map((item2, index2) => {
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 uppercase",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Symbol" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.symbol })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Price" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.price })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Value" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.value })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Price Range" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.pricerange })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Total Assets" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.totalassets })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Net Income" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.netincomeaftertax })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Debt Equity Ratio" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.debtequityratio })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Dividend Yield" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.dividendyield })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 col-span-2 sm:col-span-3 md:col-span-4 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                className: "uppercase border border-stone-100 hover:text-purple-500",
-                onClick: () => {
-                  action(item2.symbol);
-                },
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
-                  " ",
-                  text
-                ]
-              }
-            ) })
-          ]
-        },
-        index2
-      );
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 uppercase", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Symbol" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "a",
+            {
+              href: `https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item2.edge}`,
+              target: "_blank",
+              children: [
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "uppercase", children: item2.symbol })
+              ]
+            }
+          ) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Price" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.price })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Value" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.value })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Price Range" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.pricerange })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Total Assets" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.totalassets })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Net Income" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.netincomeaftertax })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Debt Asset Ratio" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.debtassetratio })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500", children: "Dividend Yield" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "block pt-2 text-center", children: item2.dividendyield })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 col-span-2 sm:col-span-3 md:col-span-4 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            className: "uppercase border border-stone-100 hover:text-purple-500",
+            onClick: () => {
+              action(item2.symbol);
+            },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: icon }),
+              " ",
+              text
+            ]
+          }
+        ) })
+      ] });
     })
   ] });
 };
@@ -29869,7 +29895,8 @@ const actStockWatchDestroy = (token, input) => async (dispatch) => {
   }
 };
 const Watchlist = () => {
-  const [modal, setModal] = reactExports.useState(false);
+  const [modalBuild, setModalBuild] = reactExports.useState(false);
+  const [modalSearch, setModalSearch] = reactExports.useState(false);
   const [notice, setNotice] = reactExports.useState(false);
   const userLogin = useSelector((state) => state.userLogin);
   const { logged, access_token } = userLogin;
@@ -29882,11 +29909,14 @@ const Watchlist = () => {
   const { isMobile } = useScreen();
   const { check } = useAuth();
   const navigate = useNavigate();
-  const showModalHandler = () => {
-    setModal(true);
+  const showModalBuildHandler = () => {
+    setModalBuild(true);
+  };
+  const showModalSearchHandler = () => {
+    setModalSearch(true);
   };
   const closeModalHandler = () => {
-    setModal(false);
+    setModalBuild(false);
   };
   const storeHandler = (symbol) => {
     dispatch(actStockWatchStore(access_token, symbol));
@@ -29937,41 +29967,24 @@ const Watchlist = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
       " Watchlist"
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "span",
-      {
-        className: "block p-2 cursor-pointer text-purple-500 -mt-2",
-        onClick: showModalHandler,
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "build" }),
-          " Build"
-        ]
-      }
-    )
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block p-2 cursor-pointer text-purple-500 -mt-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mr-4", onClick: showModalSearchHandler, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
+        " Search"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { onClick: showModalBuildHandler, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "build" }),
+        " Build"
+      ] })
+    ] })
   ] });
   const containerReminderHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { clasName: "block p-2", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "support" }),
     " Reminder"
   ] });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    error && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Notice,
-      {
-        variant: "alert-warning",
-        children: error,
-        duration: 3e3,
-        show: notice
-      }
-    ),
-    message && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Notice,
-      {
-        variant: "alert-success",
-        children: message,
-        duration: 3e3,
-        show: notice
-      }
-    ),
+    error && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-warning", children: error, duration: 3e3, show: notice }),
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-success", children: message, duration: 3e3, show: notice }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: containerReminderHeader, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-t-md bg-slate-50 cursor-pointer", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Debt Equity Ratio - Always try to find a company to invest which has debt equity ratio of less than one." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Price Range - Year low minus year high, when the range is getting near to zero or even turning positive, it indicates that the price is going down and that it is a good idea to add to your stack." }),
@@ -29979,23 +29992,39 @@ const Watchlist = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 hover:text-purple-500", children: "Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its stock divided by its current stock price." })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(Container, { header: containerWatchlistHeader, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: isMobile ? modal && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: loadBuild ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : build && Object.entries(build).map((item) => {
-        return mobileModalTemplate({
-          item,
-          text: "add",
-          icon: "add",
-          close: closeModalHandler,
-          action: storeHandler
-        });
-      }) }) : modal && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: loadBuild ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : build && Object.entries(build).map((item) => {
-        return desktopModalTemplate({
-          item,
-          text: "add",
-          icon: "add",
-          close: closeModalHandler,
-          action: storeHandler
-        });
-      }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min h-fit rounded", children: [
+        isMobile ? modalBuild && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: loadBuild ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : build && Object.entries(build).map((item) => {
+          return mobileModalTemplate({
+            item,
+            text: "add",
+            icon: "add",
+            close: closeModalHandler,
+            action: storeHandler
+          });
+        }) }) : modalBuild && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: loadBuild ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : build && Object.entries(build).map((item) => {
+          return desktopModalTemplate({
+            item,
+            text: "add",
+            icon: "add",
+            close: closeModalHandler,
+            action: storeHandler
+          });
+        }) }),
+        isMobile ? modalSearch && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, {}) : modalSearch && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row justify-center gap-4 w-full border-bottom", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "p-2 grow uppercase w-1/4", htmlFor: "search", children: "Search" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              className: "p-2 grow rounded shadow w-2/4",
+              id: "search",
+              name: "search",
+              type: "text",
+              autoComplete: "off"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { classsName: "grow w-1/4", type: "button" })
+        ] }) })
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: isMobile ? loadFetch ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: watchlist && watchlist.map((item) => {
         return mobileTemplate({
           item,

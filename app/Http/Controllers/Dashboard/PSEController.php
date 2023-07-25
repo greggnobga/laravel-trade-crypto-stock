@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Symfony\Component\DomCrawler\Crawler;
@@ -103,38 +102,69 @@ class PSEController extends Controller {
                     return $node->text();
                 });
 
-                /** add to temporary pointer. */
-                $ticker = [];
+                /** check if list is not null. */
+                if (!is_null($list)) {
+                    /** chunk arrary into three equal parts. */
+                    $group = array_chunk($list, 3);
 
-                /** loop the list. */
-                foreach ($list as $key => $value) {
-                    if ($key === 1) $ticker[$i][$key] = $value;
-                    if ($key === 4) $ticker[$i][$key] = $value;
-                    if ($key === 7) $ticker[$i][$key] = $value;
-                    if ($key === 10) $ticker[$i][$key] = $value;
-                    if ($key === 13) $ticker[$i][$key] = $value;
-                    if ($key === 16) $ticker[$i][$key] = $value;
-                    if ($key === 19) $ticker[$i][$key] = $value;
-                    if ($key === 22) $ticker[$i][$key] = $value;
-                    if ($key === 25) $ticker[$i][$key] = $value;
-                    if ($key === 28) $ticker[$i][$key] = $value;
+                    /** loop group. */
+                    foreach ($group as $key => $value) {
+                        /** pointer. */
+                        $stock = [];
+
+                        /** loop value. */
+                        foreach ($value as $k => $v) {
+                            /** set key name. */
+                            if ($k === 0) {
+                                $stock['name'] = $v;
+                            }
+
+                            /** set key symbol. */
+                            if ($k === 1) {
+                                $stock['symbol'] = $v;
+                            }
+
+                            /** set key sector. */
+                            if ($k === 2) {
+                                $stock['sector'] = strtolower($this->helpers(['sanitized' => 'alpha', 'string' => $v]));
+                            }
+                        }
+                        /** save to pointer. */
+                        $result['stocks'][$i][$key] = $stock;
+                    }
                 }
+            }
+        }
 
-                /** save to database if does not  exist. */
-                foreach ($ticker[$i] as $symbol) {
+        if (!is_null($result['stocks'])) {
+            /** loop after chunking. */
+            foreach ($result['stocks'] as $items) {
+                /** loop again. */
+                foreach ($items as $key => $value) {
                     /** query database to see if record exist. */
                     $check = DB::table('stock_trades')
                         ->select('symbol')
-                        ->where('symbol', $symbol)
+                        ->where('symbol', $value['symbol'])
                         ->first();
 
-                    /** if not then inster. */
+                    /** if not then insert else update. */
                     if (is_null($check)) {
                         DB::table('stock_trades')
+                            ->where('symbol', $value['symbol'])
                             ->insert([
-                                'name' => strip_tags($symbol),
-                                'symbol' => strip_tags($symbol),
+                                'name' => strip_tags($value['name']),
+                                'symbol' => strip_tags($value['symbol']),
+                                'sector' => strip_tags($value['sector']),
                                 'created_at' => date('Y-m-d H:i:s'),
+                                'updated_at' => date('Y-m-d H:i:s'),
+                            ]);
+                    } else {
+                        DB::table('stock_trades')
+                            ->where('symbol', $value['symbol'])
+                            ->update([
+                                'name' => strip_tags($value['name']),
+                                'symbol' => strip_tags($value['symbol']),
+                                'sector' => strip_tags($value['sector']),
                                 'updated_at' => date('Y-m-d H:i:s'),
                             ]);
                     }
@@ -145,6 +175,7 @@ class PSEController extends Controller {
         /** return something. */
         return response(['message' => 'All possible stocks were successfully added to the database.'], 200);
     }
+
     /**
      * Declare stocks function.
      */
@@ -295,46 +326,45 @@ class PSEController extends Controller {
             $amount = [];
 
             /** mapping net after tax . */
-            $statement['CurrentTotalAssets'] = $finance['2'];
-            $statement['PreviousTotalAssets'] = $finance['3'];
+            $statement['currentTotalAssets'] = $finance['2'];
+            $statement['previousTotalAssets'] = $finance['3'];
 
             /** check if key exist in array. */
-            if (array_key_exists("CurrentTotalAssets", $statement)) {
-                $current['CurrentTotalAssets'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['CurrentTotalAssets']]);
+            if (array_key_exists("currentTotalAssets", $statement)) {
+                $current['currentTotalAssets'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['currentTotalAssets']]);
 
                 /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $current['CurrentTotalAssets'])) {
+                if (preg_match("/([)(])\w+/", $current['currentTotalAssets'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $current['CurrentTotalAssets']);
+                    $negative = str_replace([')', '('], '', $current['currentTotalAssets']);
                     /** then turn negative using abs function. */
                     $amount['assets']['current'] = -abs($negative);
                 } else {
-                    $amount['assets']['current'] = $current['CurrentTotalAssets'];
+                    $amount['assets']['current'] = $current['currentTotalAssets'];
                 }
 
                 /** match string if has no value. */
-                if ($current['CurrentTotalAssets'] == '') {
+                if ($current['currentTotalAssets'] == '') {
                     $amount['assets']['current'] = 0.00;
                 }
             }
 
-
             /** check if key exist in array. */
-            if (array_key_exists("PreviousTotalAssets", $statement)) {
-                $previous['PreviousTotalAssets'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['PreviousTotalAssets']]);
+            if (array_key_exists("previousTotalAssets", $statement)) {
+                $previous['previousTotalAssets'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['previousTotalAssets']]);
 
                 /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $previous['PreviousTotalAssets'])) {
+                if (preg_match("/([)(])\w+/", $previous['previousTotalAssets'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $previous['PreviousTotalAssets']);
+                    $negative = str_replace([')', '('], '', $previous['previousTotalAssets']);
                     /** then turn negative using abs function. */
                     $amount['assets']['previous'] = -abs($negative);
                 } else {
-                    $amount['assets']['previous'] = $previous['PreviousTotalAssets'];
+                    $amount['assets']['previous'] = $previous['previousTotalAssets'];
                 }
 
                 /** match string if has no value. */
-                if ($previous['PreviousTotalAssets'] == '') {
+                if ($previous['previousTotalAssets'] == '') {
                     $amount['assets']['previous'] = 0.00;
                 }
             }
@@ -343,45 +373,45 @@ class PSEController extends Controller {
             $result['totalassets'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['assets']['current'], 'two' => $amount['assets']['previous']]);
 
             /** mapping net after tax . */
-            $statement['CurrentYearNetIncomeLossAfterTax'] = $finance['22'];
-            $statement['PreviousYearNetIncomeLossAfterTax'] = $finance['23'];
+            $statement['currentYearNetIncomeLossAfterTax'] = $finance['22'];
+            $statement['previousYearNetIncomeLossAfterTax'] = $finance['23'];
 
             /** check if key exist in array. */
-            if (array_key_exists("CurrentYearNetIncomeLossAfterTax", $statement)) {
-                $current['CurrentYearNetIncomeLossAfterTax'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['CurrentYearNetIncomeLossAfterTax']]);
+            if (array_key_exists("currentYearNetIncomeLossAfterTax", $statement)) {
+                $current['currentYearNetIncomeLossAfterTax'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['currentYearNetIncomeLossAfterTax']]);
 
                 /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $current['CurrentYearNetIncomeLossAfterTax'])) {
+                if (preg_match("/([)(])\w+/", $current['currentYearNetIncomeLossAfterTax'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $current['CurrentYearNetIncomeLossAfterTax']);
+                    $negative = str_replace([')', '('], '', $current['currentYearNetIncomeLossAfterTax']);
                     /** then turn negative using abs function. */
                     $amount['income']['current'] = -abs($negative);
                 } else {
-                    $amount['income']['current'] = $current['CurrentYearNetIncomeLossAfterTax'];
+                    $amount['income']['current'] = $current['currentYearNetIncomeLossAfterTax'];
                 }
 
                 /** match string if has no value. */
-                if ($current['CurrentYearNetIncomeLossAfterTax'] == '') {
+                if ($current['currentYearNetIncomeLossAfterTax'] == '') {
                     $amount['income']['current'] = 0.00;
                 }
             }
 
             /** check if key exist in array. */
-            if (array_key_exists("PreviousYearNetIncomeLossAfterTax", $statement)) {
-                $previous['PreviousYearNetIncomeLossAfterTax'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['PreviousYearNetIncomeLossAfterTax']]);
+            if (array_key_exists("previousYearNetIncomeLossAfterTax", $statement)) {
+                $previous['previousYearNetIncomeLossAfterTax'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['previousYearNetIncomeLossAfterTax']]);
 
                 /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $previous['PreviousYearNetIncomeLossAfterTax'])) {
+                if (preg_match("/([)(])\w+/", $previous['previousYearNetIncomeLossAfterTax'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $previous['PreviousYearNetIncomeLossAfterTax']);
+                    $negative = str_replace([')', '('], '', $previous['previousYearNetIncomeLossAfterTax']);
                     /** then turn negative using abs function. */
                     $amount['income']['previous'] = -abs($negative);
                 } else {
-                    $amount['income']['previous'] = $previous['PreviousYearNetIncomeLossAfterTax'];
+                    $amount['income']['previous'] = $previous['previousYearNetIncomeLossAfterTax'];
                 }
 
                 /** match string if has no value. */
-                if ($previous['PreviousYearNetIncomeLossAfterTax'] == '') {
+                if ($previous['previousYearNetIncomeLossAfterTax'] == '') {
                     $amount['income']['previous'] = 0.00;
                 }
             }
@@ -390,82 +420,56 @@ class PSEController extends Controller {
             $result['netincomeaftertax'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['income']['current'], 'two' => $amount['income']['previous']]);
 
             /** mapping total liabilities. */
-            $statement['CurrentTotalLiabilities'] = $finance['6'];
+            $statement['currentTotalLiabilities'] = $finance['6'];
 
             /** check if key exist in array. */
-            if (array_key_exists("CurrentTotalLiabilities", $statement)) {
+            if (array_key_exists("currentTotalLiabilities", $statement)) {
                 /** call helper function. */
-                $liabilities['CurrentTotalLiabilities'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['CurrentTotalLiabilities']]);
+                $liabilities['currentTotalLiabilities'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['currentTotalLiabilities']]);
 
                 /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $liabilities['CurrentTotalLiabilities'])) {
+                if (preg_match("/([)(])\w+/", $liabilities['currentTotalLiabilities'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $liabilities['CurrentTotalLiabilities']);
+                    $negative = str_replace([')', '('], '', $liabilities['currentTotalLiabilities']);
 
                     /** then turn negative using abs function. */
                     $amount['totalliabilities'] = -abs($negative);
                 } else {
                     /** directly add to array if positive value. */
-                    $amount['totalliabilities'] = $liabilities['CurrentTotalLiabilities'];
+                    $amount['totalliabilities'] = $liabilities['currentTotalLiabilities'];
                 }
                 /** match string if has no value. */
-                if ($liabilities['CurrentTotalLiabilities'] == '') {
+                if ($liabilities['currentTotalLiabilities'] == '') {
                     $amount['totalliabilities'] = 0.00;
                 }
             }
 
-            /** mapping stock holder equity. */
-            $statement['CurrentStockholdersEquity'] = $finance['10'];
-
-            /** check if key exist in array. */
-            if (array_key_exists("CurrentStockholdersEquity", $statement)) {
-                /** call helper function. */
-                $equity['CurrentStockholdersEquity'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['CurrentStockholdersEquity']]);
-
-                /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $equity['CurrentStockholdersEquity'])) {
-                    /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $equity['CurrentStockholdersEquity']);
-
-                    /** then turn negative using abs function. */
-                    $amount['stockholderequity'] = -abs($negative);
-                } else {
-                    /** directly add to array if positive value. */
-                    $amount['stockholderequity'] = $equity['CurrentStockholdersEquity'];
-                }
-
-                /** match string if has no value. */
-                if ($equity['CurrentStockholdersEquity'] == '') {
-                    $amount['stockholderequity'] = 0.00;
-                }
-            }
-
             /** evalaute value is greater than zero. */
-            if ($amount['totalliabilities'] > 0 && $amount['stockholderequity'] > 0) {
-                $result['debtequityratio'] = floatval(bcdiv(abs($amount['totalliabilities']), abs($amount['stockholderequity']), 2));
+            if ($amount['totalliabilities'] > 0 && $amount['assets']['current'] > 0) {
+                $result['debtassetratio'] = floatval(bcdiv(abs($amount['totalliabilities']), abs($amount['assets']['current']), 2));
             } else {
-                $result['debtequityratio'] = floatval('0.00');
+                $result['debtassetratio'] = floatval('0.00');
             }
 
             /** mapping earning per share . */
-            $statement['CurrentYearEarningsLossPerShareBasic'] = $finance['26'];
-            $statement['PreviousYearEarningsLossPerShareBasic'] = $finance['27'];
+            $statement['currentYearEarningsLossPerShareBasic'] = $finance['26'];
+            $statement['previousYearEarningsLossPerShareBasic'] = $finance['27'];
 
             /** check if key exist in array. */
-            if (array_key_exists("CurrentYearEarningsLossPerShareBasic", $statement)) {
-                $share['CurrentYearEarningsLossPerShareBasic'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['CurrentYearEarningsLossPerShareBasic']]);
+            if (array_key_exists("currentYearEarningsLossPerShareBasic", $statement)) {
+                $share['currentYearEarningsLossPerShareBasic'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['currentYearEarningsLossPerShareBasic']]);
 
                 /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $share['CurrentYearEarningsLossPerShareBasic'])) {
+                if (preg_match("/([)(])\w+/", $share['currentYearEarningsLossPerShareBasic'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $share['CurrentYearEarningsLossPerShareBasic']);
+                    $negative = str_replace([')', '('], '', $share['currentYearEarningsLossPerShareBasic']);
                     /** then turn negative using abs function. */
                     $amount['earning']['current'] = -abs($negative);
                 } else {
-                    $amount['earning']['current'] = $share['CurrentYearEarningsLossPerShareBasic'];
+                    $amount['earning']['current'] = $share['currentYearEarningsLossPerShareBasic'];
                 }
                 /** match string if has no value. */
-                if ($share['CurrentYearEarningsLossPerShareBasic'] == '') {
+                if ($share['currentYearEarningsLossPerShareBasic'] == '') {
                     $amount['earning']['current'] = 0.00;
                 }
             }
@@ -527,6 +531,32 @@ class PSEController extends Controller {
                 }
             }
 
+            /** mapping stock holder equity. */
+            $statement['CurrentStockholdersEquity'] = $finance['10'];
+
+            /** check if key exist in array. */
+            if (array_key_exists("CurrentStockholdersEquity", $statement)) {
+                /** call helper function. */
+                $equity['CurrentStockholdersEquity'] = $this->helpers(['sanitized' => 'decimal', 'string' => $statement['CurrentStockholdersEquity']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $equity['CurrentStockholdersEquity'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '('], '', $equity['CurrentStockholdersEquity']);
+
+                    /** then turn negative using abs function. */
+                    $amount['stockholderequity'] = -abs($negative);
+                } else {
+                    /** directly add to array if positive value. */
+                    $amount['stockholderequity'] = $equity['CurrentStockholdersEquity'];
+                }
+
+                /** match string if has no value. */
+                if ($equity['CurrentStockholdersEquity'] == '') {
+                    $amount['stockholderequity'] = 0.00;
+                }
+            }
+
             /** Calculate net profit margin. */
             if ($amount['incomeaftertax'] > 0 && $amount['grossrevenue'] > 0) {
                 $result['netprofitmargin'] = floatval(bcmul(bcdiv(abs($amount['incomeaftertax']), abs($amount['grossrevenue']), 2), 100, 2));
@@ -547,7 +577,7 @@ class PSEController extends Controller {
                 ->update([
                     'totalassets' => strip_tags($result['totalassets']),
                     'netincomeaftertax' => strip_tags($result['netincomeaftertax']),
-                    'debtequityratio' => strip_tags($result['debtequityratio']),
+                    'debtassetratio' => strip_tags($result['debtassetratio']),
                     'priceearningratio' => strip_tags($result['priceearningratio']),
                     'netprofitmargin' => strip_tags($result['netprofitmargin']),
                     'returnonequity' => strip_tags($result['returnonequity']),
@@ -688,7 +718,6 @@ class PSEController extends Controller {
         /** create request. */
         $company = Http::get('https://edge.pse.com.ph/autoComplete/searchCompanyNameSymbol.ax?term=' . $data['symbol'])->body();
 
-
         if (!is_null($company)) {
             /** split string into array. */
             $fragments = preg_split('/\"/', $company);
@@ -697,27 +726,37 @@ class PSEController extends Controller {
             if (count($fragments) > 1) {
                 $result['edge'] = $fragments[3];
                 $result['name'] = $fragments[7];
+                $result['symbol'] = $fragments[11];
             } else {
                 /** return something. */
                 return response(['message' => 'The ' . $data['symbol'] . ' does not exist.'], 200);
             }
 
             if (count($result) > 1) {
-                /** replace comma with nothing. */
-                $result['name'] = $this->helpers(['sanitized' => 'alpha', 'string' =>  $result['name']]);
-
                 /** check if record exists. */
                 $check = DB::table('stock_trades')
-                    ->select('id')
-                    ->where('edge', '=', $data['symbol'])
+                    ->select('edge')
+                    ->where('symbol', '=', $result['symbol'])
                     ->first();
 
-                if (!is_null($check)) {
-                    /** save to database. */
+                if (is_null($check)) {
+                    /** insert record. */
                     DB::table('stock_trades')
-                        ->where('symbol', '=', $data['symbol'])
+                        ->where('symbol', '=', $result['symbol'])
+                        ->insert([
+                            'edge' => strip_tags($result['edge']),
+                            'symbol' => strip_tags($result['symbol']),
+                            'name' => strip_tags($result['name']),
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+                } else {
+                    /** update record. */
+                    DB::table('stock_trades')
+                        ->where('symbol', '=', $result['symbol'])
                         ->update([
                             'edge' => strip_tags($result['edge']),
+                            'symbol' => strip_tags($result['symbol']),
                             'name' => strip_tags($result['name']),
                             'updated_at' => date('Y-m-d H:i:s'),
                         ]);
@@ -726,7 +765,7 @@ class PSEController extends Controller {
         }
 
         /** return something. */
-        return response(['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'], 200);
+        return response(['message' => 'The ' . $result['symbol'] . ' information was successfully updated.'], 200);
     }
 
     /**

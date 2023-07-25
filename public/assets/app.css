@@ -289,10 +289,6 @@
     --tw-border-opacity: 0.5 !important;
     padding: 0.5rem !important;
 }
-.border-bottom:hover{
-    --tw-text-opacity: 1 !important;
-    color: rgb(203 213 225 / var(--tw-text-opacity)) !important;
-}
 /** Fancy borders. */
 .border-one {
     border-radius: 100% 0% 0% 100% / 0% 100% 0% 100% !important;
@@ -1296,6 +1292,9 @@ video {
 .ml-6{
     margin-left: 1.5rem;
 }
+.mr-4{
+    margin-right: 1rem;
+}
 .mt-6{
     margin-top: 1.5rem;
 }
@@ -1345,8 +1344,14 @@ video {
 .min-h-screen{
     min-height: 100vh;
 }
+.w-1\/4{
+    width: 25%;
+}
 .w-2\/12{
     width: 16.666667%;
+}
+.w-2\/4{
+    width: 50%;
 }
 .w-4\/12{
     width: 33.333333%;
@@ -1422,6 +1427,9 @@ video {
 }
 .gap-2{
     gap: 0.5rem;
+}
+.gap-4{
+    gap: 1rem;
 }
 .rounded{
     border-radius: 0.25rem;

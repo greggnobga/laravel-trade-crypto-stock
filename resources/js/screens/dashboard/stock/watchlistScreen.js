@@ -17,25 +17,15 @@ import Notice from "../../../components/interfaces/notice";
 import Container from "../../../components/interfaces/container";
 
 /** Template. */
-import {
-    desktopHeader,
-    desktopTemplate,
-    mobileTemplate,
-    desktopModalTemplate,
-    mobileModalTemplate,
-} from "../../template/stocks";
+import { desktopHeader, desktopTemplate, mobileTemplate, desktopModalTemplate, mobileModalTemplate } from "../../template/stocks";
 
 /** Action. */
-import {
-    actStockWatchBuild,
-    actStockWatchStore,
-    actStockWatchFetch,
-    actStockWatchDestroy,
-} from "../../../actions/stockActions";
+import { actStockWatchBuild, actStockWatchStore, actStockWatchFetch, actStockWatchDestroy } from "../../../actions/stockActions";
 
 const Watchlist = () => {
     /** Use state. */
-    const [modal, setModal] = useState(false);
+    const [modalBuild, setModalBuild] = useState(false);
+    const [modalSearch, setModalSearch] = useState(false);
     const [notice, setNotice] = useState(false);
 
     /** Use selector. */
@@ -61,13 +51,17 @@ const Watchlist = () => {
     const navigate = useNavigate();
 
     /** Show modal handler. */
-    const showModalHandler = () => {
-        setModal(true);
+    const showModalBuildHandler = () => {
+        setModalBuild(true);
+    };
+
+    const showModalSearchHandler = () => {
+        setModalSearch(true);
     };
 
     /** Close modal handler. */
     const closeModalHandler = () => {
-        setModal(false);
+        setModalBuild(false);
     };
 
     /** Store handler. */
@@ -148,23 +142,25 @@ const Watchlist = () => {
 
     /** Container header. */
     const containerWatchlistHeader = (
-        <div className="flex flex-row justify-between">
-            <span clasName="block p-2">
-                <Icon id="trade" /> Watchlist
+        <div className='flex flex-row justify-between'>
+            <span clasName='block p-2'>
+                <Icon id='trade' /> Watchlist
             </span>
-            <span
-                className="block p-2 cursor-pointer text-purple-500 -mt-2"
-                onClick={showModalHandler}
-            >
-                <Icon id="build" /> Build
+            <span className='block p-2 cursor-pointer text-purple-500 -mt-2'>
+                <span className='mr-4' onClick={showModalSearchHandler}>
+                    <Icon id='search' /> Search
+                </span>
+                <span onClick={showModalBuildHandler}>
+                    <Icon id='build' /> Build
+                </span>
             </span>
         </div>
     );
 
     /** Container header. */
     const containerReminderHeader = (
-        <span clasName="block p-2">
-            <Icon id="support" /> Reminder
+        <span clasName='block p-2'>
+            <Icon id='support' /> Reminder
         </span>
     );
 
@@ -172,56 +168,37 @@ const Watchlist = () => {
     return (
         <>
             {/**Show error. */}
-            {error && (
-                <Notice
-                    variant="alert-warning"
-                    children={error}
-                    duration={3000}
-                    show={notice}
-                />
-            )}
+            {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
 
             {/**Show message. */}
-            {message && (
-                <Notice
-                    variant="alert-success"
-                    children={message}
-                    duration={3000}
-                    show={notice}
-                />
-            )}
+            {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
 
             {/** Reminder section. */}
             <Container header={containerReminderHeader}>
-                <div className="rounded-t-md bg-slate-50 cursor-pointer">
-                    <div className="p-2 border-b border-slate-100 hover:text-purple-500">
-                        Debt Equity Ratio - Always try to find a company to
-                        invest which has debt equity ratio of less than one.
+                <div className='rounded-t-md bg-slate-50 cursor-pointer'>
+                    <div className='p-2 border-b border-slate-100 hover:text-purple-500'>
+                        Debt Equity Ratio - Always try to find a company to invest which has debt equity ratio of less than one.
                     </div>
-                    <div className="p-2 border-b border-slate-100 hover:text-purple-500">
-                        Price Range - Year low minus year high, when the range
-                        is getting near to zero or even turning positive, it
-                        indicates that the price is going down and that it is a
-                        good idea to add to your stack.
+                    <div className='p-2 border-b border-slate-100 hover:text-purple-500'>
+                        Price Range - Year low minus year high, when the range is getting near to zero or even turning positive, it
+                        indicates that the price is going down and that it is a good idea to add to your stack.
                     </div>
-                    <div className="p-2 border-b border-slate-100 hover:text-purple-500">
-                        Total Assets - Total assets less total assets previously
-                        held If it's negative, either the company is having a
-                        cash flow problem or it's having a bad year.
+                    <div className='p-2 border-b border-slate-100 hover:text-purple-500'>
+                        Total Assets - Total assets less total assets previously held If it's negative, either the company is having a cash
+                        flow problem or it's having a bad year.
                     </div>
-                    <div className="p-2 hover:text-purple-500">
-                        Dividend Yield - Is the amount of money a company pays
-                        shareholders for owning a share of its stock divided by
-                        its current stock price.
+                    <div className='p-2 hover:text-purple-500'>
+                        Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its stock divided by its
+                        current stock price.
                     </div>
                 </div>
             </Container>
 
             {/** Watchlist section. */}
             <Container header={containerWatchlistHeader}>
-                <div className="grid auto-rows-min h-fit rounded">
+                <div className='grid auto-rows-min h-fit rounded'>
                     {isMobile
-                        ? modal && (
+                        ? modalBuild && (
                               <Modal>
                                   {loadBuild ? (
                                       <Loader />
@@ -239,7 +216,7 @@ const Watchlist = () => {
                                   )}
                               </Modal>
                           )
-                        : modal && (
+                        : modalBuild && (
                               <Modal>
                                   {loadBuild ? (
                                       <Loader />
@@ -257,8 +234,27 @@ const Watchlist = () => {
                                   )}
                               </Modal>
                           )}
+                    {isMobile
+                        ? modalSearch && <Modal></Modal>
+                        : modalSearch && (
+                              <Modal>
+                                  <div className='flex flex-row justify-center gap-4 w-full border-bottom'>
+                                      <label className='p-2 grow uppercase w-1/4' htmlFor='search'>
+                                          Search
+                                      </label>
+                                      <input
+                                          className='p-2 grow rounded shadow w-2/4'
+                                          id='search'
+                                          name='search'
+                                          type='text'
+                                          autoComplete='off'
+                                      />
+                                      <button classsName='grow w-1/4' type='button'></button>
+                                  </div>
+                              </Modal>
+                          )}
                 </div>
-                <div className="grid auto-rows-min h-fit rounded">
+                <div className='grid auto-rows-min h-fit rounded'>
                     {isMobile ? (
                         loadFetch ? (
                             <Loader />

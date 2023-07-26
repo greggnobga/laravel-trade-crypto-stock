@@ -18,13 +18,10 @@ export default defineConfig({
                 {
                     name: "load-js-files-as-jsx",
                     setup(build) {
-                        build.onLoad(
-                            { filter: /resources\/js\/.*\.js$/ },
-                            async (args) => ({
-                                loader: "jsx",
-                                contents: await fs.readFile(args.path, "utf8"),
-                            })
-                        );
+                        build.onLoad({ filter: /resources\/js\/.*\.js$/ }, async (args) => ({
+                            loader: "jsx",
+                            contents: await fs.readFile(args.path, "utf8"),
+                        }));
                     },
                 },
             ],
@@ -45,7 +42,7 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ["resources/css/app.css", "resources/js/main.js"],
+            input: ["resources/css/App.css", "resources/js/Main.js"],
             refresh: ["resources/views/**"],
             manifest: true,
         }),

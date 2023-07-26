@@ -1,0 +1,43 @@
+/** Import google font.*/
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400;1,600;1,800&display=swap");
+
+/** Button Directives. */
+@import "components/Buttons.css";
+
+/** Font Directives. */
+@import "components/Fonts.css";
+
+/** Border Directives. */
+@import "components/Borders.css";
+
+/** Screen Directives. */
+@import "components/Screens.css";
+
+/** Gradient Directives. */
+@import "components/Gradients.css";
+
+/** Card Directives. */
+@import "components/Cards.css";
+
+/** Form Directives. */
+@import "components/Forms.css";
+
+/* Alert Directives */
+@import "components/Alerts.css";
+
+/** Background Directives. */
+@import "components/Backgrounds.css";
+
+/** Tooltip Directives. */
+@import "components/Tooltips.css";
+
+/** Modal Directives. */
+@import "components/Modals.css";
+
+/* Hamburgers */
+@import "vendors/Hamburgers.css";
+
+/** Import Tailwind.*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

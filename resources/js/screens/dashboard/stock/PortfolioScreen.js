@@ -1,5 +1,5 @@
 /** React. */
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 
 /** Hook. */
 import useScreen from "../../../hooks/UseScreen";

@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 /** Hook. */
-import useAuth from "../hooks/UseAuth";
 import useValidate from "../hooks/UseValidate";
 
 /** Component. */
@@ -20,7 +19,7 @@ import Container from "../components/Container";
 import { modalBlueTemplate, modalEdgeTemplate, stockLeaderBoard } from "./template/Dashboard";
 
 /** Action. */
-import { resendEmail } from "../actions/UserActions";
+import { resendEmail, tokenUser } from "../actions/UserActions";
 import {
     actDashboardStart,
     actDashboardPrice,
@@ -41,7 +40,10 @@ import {
 const Dashboard = () => {
     /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { loading, logged, access_token, email_verified } = userLogin;
+    const { loading, access_token, email_verified } = userLogin;
+
+    const userToken = useSelector((state) => state.userToken);
+    const { valid } = userToken;
 
     const dashboardBlue = useSelector((state) => state.dashboardBlue);
     const { loading: loadBlue, bluedash } = dashboardBlue;
@@ -85,9 +87,6 @@ const Dashboard = () => {
         resetHandler: modalEdgeInputInputReset,
     } = useValidate((value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/));
 
-    /** Use auth. */
-    const { check } = useAuth();
-
     /** Use navigate. */
     const navigate = useNavigate();
 
@@ -97,34 +96,37 @@ const Dashboard = () => {
     /** Use effect. */
     useEffect(() => {
         /** If account state set, check if access token is valid. */
-        if (access_token) {
-            /** Perform check. */
-            check(access_token);
+        if (!valid && access_token) {
+            dispatch(tokenUser(access_token));
+        }
+
+        /** If error occurred dispatch action. */
+        if (valid && error) {
+            dispatch(tokenUser(access_token));
         }
 
         /** If become undefined then redirect. */
-        if (logged === false) {
+        if (!valid) {
             const timeout = setTimeout(() => {
                 navigate("/auth/login");
             }, 2000);
-
             return () => {
                 clearTimeout(timeout);
             };
         }
 
         /** If not edge does not have value. */
-        if (!bluedash) {
+        if (valid && !bluedash) {
             dispatch(actDashboardBlue(access_token));
         }
 
         /** If not edge does not have value. */
-        if (!stockgainer) {
+        if (valid && !stockgainer) {
             dispatch(actDashboardStockGainer(access_token));
         }
 
         /** If not edge does not have value. */
-        if (!stocklosser) {
+        if (valid && !stockgainer) {
             dispatch(actDashboardStockLosser(access_token));
         }
 
@@ -132,13 +134,12 @@ const Dashboard = () => {
         if (message) {
             /** Set state. */
             setNotice(true);
-
             /** Reset state. */
             setTimeout(() => {
                 setNotice(false);
-            }, 3000);
+            }, 5000);
         }
-    }, [access_token, logged, bluedash, edge, message, stockgainer, stocklosser]);
+    }, [access_token, valid, error, message, bluedash, stockgainer, stocklosser]);
 
     /** Use state. */
     const [verify, setVerify] = useState(email_verified);
@@ -263,7 +264,7 @@ const Dashboard = () => {
     /** Return. */
     return (
         <>
-            {logged && (
+            {valid && (
                 <>
                     {/**Show error. */}
                     {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}

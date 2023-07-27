@@ -30,6 +30,11 @@ class DashboardController extends Controller {
         }
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
+            /** sentinel response. */
+            if ($request->input('section') === 'sentinel') {
+                return response(['message' => 'Token is valid.', 'valid' => true], 200);
+            }
+
             /** forward blue function. */
             if ($request->input('section') === 'bluechip' && $request->input('statement') === 'select') {
                 return $this->bluechip($request->all());

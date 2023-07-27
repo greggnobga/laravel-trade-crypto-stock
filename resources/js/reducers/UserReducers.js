@@ -17,6 +17,9 @@ import {
     USER_RESET_REQUEST,
     USER_RESET_SUCCESS,
     USER_RESET_FAILURE,
+    USER_TOKEN_REQUEST,
+    USER_TOKEN_SUCCESS,
+    USER_TOKEN_FAILURE,
 } from "../constants/UserConstants";
 
 /** Reset reducer. */
@@ -86,7 +89,21 @@ export const userLoginReducer = (state = {}, action) => {
         case USER_LOGIN_LOGOUT:
             return { loading: false, ...action.payload };
         case USER_LOGIN_CLEAR:
-            return { logged: false };
+            return {};
+        default:
+            return state;
+    }
+};
+
+/** Token reducer. */
+export const userTokenReducer = (state = { valid: false }, action) => {
+    switch (action.type) {
+        case USER_TOKEN_REQUEST:
+            return { loading: true };
+        case USER_TOKEN_SUCCESS:
+            return { loading: false, valid: action.payload };
+        case USER_TOKEN_FAILURE:
+            return { loading: false, error: action.payload };
         default:
             return state;
     }

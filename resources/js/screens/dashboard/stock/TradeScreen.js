@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 /** Hook. */
 import useScreen from "../../../hooks/UseScreen";
-import useAuth from "../../../hooks/UseAuth";
 
 /** Helper. */
 import { chunkObject } from "../../../components/Helper";
@@ -23,11 +22,15 @@ import { desktopHeader, desktopTemplate, mobileTemplate, paginationTemplate } fr
 
 /** Action. */
 import { actStockBluechip, actStockCommon, actStockWatchStore } from "../../../actions/StockActions";
+import { tokenUser } from "../../../actions/UserActions.js";
 
 const Trade = () => {
     /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { logged, access_token } = userLogin;
+    const { access_token } = userLogin;
+
+    const userToken = useSelector((state) => state.userToken);
+    const { valid } = userToken;
 
     const stockBlue = useSelector((state) => state.stockBlue);
     const { loading: loadblue, bluechip } = stockBlue;
@@ -44,9 +47,6 @@ const Trade = () => {
     /** Use dispatch. */
     const dispatch = useDispatch();
 
-    /** Use auth. */
-    const { check } = useAuth();
-
     /** Use navigate. */
     const navigate = useNavigate();
 
@@ -61,37 +61,32 @@ const Trade = () => {
 
     /** Use effect. */
     useEffect(() => {
-        /** If account state set, check if access token is valid. */
-        if (access_token) {
-            /** Perform check. */
-            check(access_token);
+        /** Check valid state. */
+        if (!valid && access_token) {
+            dispatch(tokenUser(access_token));
         }
 
-        /** If become undefined then redirect. */
-        if (logged === false) {
-            const timeout = setTimeout(() => {
-                navigate("/auth/login");
-            }, 2000);
-
-            return () => {
-                clearTimeout(timeout);
-            };
+        /** Check if token is valid. */
+        if (valid && access_token) {
+            navigate("/dashboard/stock-trade");
+        } else {
+            navigate("/auth/login");
         }
 
         /** Send request if no bluechip stock. */
-        if (!bluechip) {
+        if (valid && !bluechip) {
             /** Dispatch action. */
             dispatch(actStockBluechip(access_token));
         }
 
         /** Send request if no common stock. */
-        if (!common) {
+        if (valid && !common) {
             /** Dispatch action. */
             dispatch(actStockCommon(access_token));
         }
 
         /** Use helper. */
-        if (bluechip) {
+        if (valid && bluechip) {
             /** Call chunk helper. */
             const { pages: bluechipPages, chunks: bluechipChunks } = chunkObject({
                 divide: 10,
@@ -104,7 +99,7 @@ const Trade = () => {
         }
 
         /** Use helper. */
-        if (common) {
+        if (valid && common) {
             /** Call chunk helper. */
             const { pages: commonPages, chunks: commonChunks } = chunkObject({
                 divide: 10,
@@ -126,7 +121,7 @@ const Trade = () => {
                 setNotice(false);
             }, 3000);
         }
-    }, [access_token, logged, bluechip, common, message]);
+    }, [access_token, valid, bluechip, common, message]);
 
     /** Common handler. */
     const commonHandler = (index) => {

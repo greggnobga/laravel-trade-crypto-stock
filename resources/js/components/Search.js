@@ -1,6 +1,3 @@
-/** React. */
-import { useState } from "react";
-
 /** Component. */
 import Icon from "./Icon";
 

@@ -10515,6 +10515,9 @@ const USER_FORGOT_FAILURE = "USER_FORGOT_FAILURE";
 const USER_RESET_REQUEST = "USER_RESET_REQUEST";
 const USER_RESET_SUCCESS = "USER_RESET_SUCCESS";
 const USER_RESET_FAILURE = "USER_RESET_FAILURE";
+const USER_TOKEN_REQUEST = "USER_TOKEN_REQUEST";
+const USER_TOKEN_SUCCESS = "USER_TOKEN_SUCCESS";
+const USER_TOKEN_FAILURE = "USER_TOKEN_FAILURE";
 const userResetReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_RESET_REQUEST:
@@ -10574,7 +10577,19 @@ const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_LOGOUT:
       return { loading: false, ...action.payload };
     case USER_LOGIN_CLEAR:
-      return { logged: false };
+      return {};
+    default:
+      return state;
+  }
+};
+const userTokenReducer = (state = { valid: false }, action) => {
+  switch (action.type) {
+    case USER_TOKEN_REQUEST:
+      return { loading: true };
+    case USER_TOKEN_SUCCESS:
+      return { loading: false, valid: action.payload };
+    case USER_TOKEN_FAILURE:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
@@ -10885,6 +10900,7 @@ const reducer = combineReducers({
   userVerify: userVerifyReducer,
   userForgot: userForgotReducer,
   userReset: userResetReducer,
+  userToken: userTokenReducer,
   dashboardStart: dashboardStartReducer,
   dashboardPrice: dashboardPriceReducer,
   dashboardReport: dashboardReportReducer,
@@ -10907,7 +10923,8 @@ const reducer = combineReducers({
   stockWatchDestroy: stockWatchDestroyReducer,
   showMessage: showMessageReducer
 });
-const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : { logged: false };
+const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : {};
+const tokenFromStorage = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : { valid: false };
 const bluechipFromStorage = localStorage.getItem("bluechip") ? JSON.parse(localStorage.getItem("bluechip")) : {};
 const commonFromStorage = localStorage.getItem("common") ? JSON.parse(localStorage.getItem("common")) : {};
 const buildFromStorage = localStorage.getItem("build") ? JSON.parse(localStorage.getItem("build")) : {};
@@ -10918,6 +10935,7 @@ const stockGainerFromStorage = localStorage.getItem("stockgainer") ? JSON.parse(
 const stockLosserFromStorage = localStorage.getItem("stocklosser") ? JSON.parse(localStorage.getItem("stocklosser")) : {};
 const initialState = {
   userLogin: accountFromStorage,
+  userToken: tokenFromStorage,
   dashboardBlue: bluedashFromStorage,
   dashboardEdge: edgeFromStorage,
   dashboardStockGainer: stockGainerFromStorage,
@@ -12475,6 +12493,7 @@ const logoutUser = (token) => async (dispatch) => {
     dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: data.message });
     if (data) {
       localStorage.removeItem("account");
+      localStorage.removeItem("token");
       localStorage.removeItem("bluechip");
       localStorage.removeItem("fetch");
       localStorage.removeItem("common");
@@ -12495,13 +12514,36 @@ const logoutUser = (token) => async (dispatch) => {
     });
   }
 };
-const clearToken = () => async (dispatch) => {
+const tokenUser = (token) => async (dispatch) => {
   try {
+    dispatch({ type: USER_TOKEN_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/dashboard",
+      params: { section: "sentinel" }
+    });
+    dispatch({ type: USER_TOKEN_SUCCESS, payload: data.valid });
+    if (data) {
+      localStorage.setItem("token", JSON.stringify(data));
+    }
+  } catch (error) {
     dispatch({ type: USER_LOGIN_CLEAR });
     localStorage.removeItem("account");
-  } catch (error) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("bluechip");
+    localStorage.removeItem("fetch");
+    localStorage.removeItem("common");
+    localStorage.removeItem("build");
+    localStorage.removeItem("bluedash");
+    localStorage.removeItem("edge");
+    localStorage.removeItem("stockgainer");
+    localStorage.removeItem("stocklosser");
     dispatch({
-      type: USER_LOGIN_FAILURE,
+      type: USER_TOKEN_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -12522,7 +12564,9 @@ const Icon = ({ id: id2, width, height }) => {
 const Header = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { logged, access_token } = userLogin;
+  const { access_token } = userLogin;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
   const { isMobile } = useScreen();
   const [isBurger, setIsBurger] = reactExports.useState(false);
   const [isControl, setIsControl] = reactExports.useState(false);
@@ -12605,7 +12649,7 @@ const Header = () => {
       " Orion"
     ] }) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:text-slate-300", children: logged && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: controlHandler, type: "button", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "control", width: "w-9", height: "h-9" }) }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:text-slate-300", children: valid && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: controlHandler, type: "button", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "p-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "control", width: "w-9", height: "h-9" }) }) }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hover:text-slate-300", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: burgerClasses, onClick: burgerHandler, type: "button", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hamburger-box", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hamburger-inner" }) }) }) })
     ] }),
     isBurger && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -12622,7 +12666,7 @@ const Header = () => {
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "crypto" }),
             " Crypto Explorer"
           ] }) }) }),
-          logged ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          valid ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { className: "px-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dashboard", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block border-bottom", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "menu" }),
               " Dashboard"
@@ -12664,7 +12708,7 @@ const Header = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "logo" }),
       " Orion Trade"
     ] }) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: logged ? /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "grid grid-cols-4 auto-rows-min", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: valid ? /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "grid grid-cols-4 auto-rows-min", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("li", { className: "md:text-xs", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "#", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "hover:text-slate-300", onClick: controlHandler, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "control" }),
         " Control Panel"
@@ -12754,14 +12798,7 @@ const Message = ({ variant, children }) => {
   const messageHandler = () => {
     setMessage(!message);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: message && /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      className: "font-size m-2 cursor-pointer hover:animate-pulse z-50",
-      onClick: messageHandler,
-      children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children })
-    }
-  ) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: message && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "font-size m-2 cursor-pointer hover:animate-pulse z-50", onClick: messageHandler, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: variant ? variant : "alert-danger", children }) }) });
 };
 const Home = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -12936,17 +12973,22 @@ const Login = () => {
   const passwordInputClasses = passwordHasError ? "alert-border-warning" : "alert-border-success";
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, logged } = userLogin;
+  const { loading, access_token } = userLogin;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message, error } = showMessage;
   const navigate = useNavigate();
   reactExports.useEffect(() => {
-    if (logged) {
-      if (logged === true) {
-        navigate("/dashboard");
-      } else {
-        navigate("/auth/login");
-      }
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
     }
-  }, [logged]);
+    if (valid && access_token) {
+      navigate("/dashboard");
+    } else {
+      navigate("/auth/login");
+    }
+  }, [access_token, valid]);
   const submitHandler = (event) => {
     event.preventDefault();
     emailBlurHandler(true);
@@ -12960,6 +13002,7 @@ const Login = () => {
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: error, variant: "alert-danger" }),
+    message && /* @__PURE__ */ jsxRuntimeExports.jsx(Message, { children: message, variant: "alert-success" }),
     loading ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center-margin my-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { method: "post", onSubmit: submitHandler, className: "form-group screen-size font-size gradient-huckle-berry", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-header border-bottom", children: /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { children: "Login" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "form-control", children: [
@@ -13063,9 +13106,11 @@ const Register = () => {
   const [passwordLength, setpasswordLength] = reactExports.useState(false);
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { logged } = userLogin;
+  const { access_token } = userLogin;
   const userRegister = useSelector((state) => state.userRegister);
   const { loading, error } = userRegister;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
   const showMessage = useSelector((state) => state.showMessage);
   const { message } = showMessage;
   const navigate = useNavigate();
@@ -13080,14 +13125,15 @@ const Register = () => {
     } else {
       setPasswordMatched(false);
     }
-    if (logged) {
-      if (logged === true) {
-        navigate("/dashboard");
-      } else {
-        navigate("/auth/register");
-      }
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
     }
-  }, [navigate, password, confirm, logged]);
+    if (valid && access_token) {
+      navigate("/dashboard");
+    } else {
+      navigate("/auth/register");
+    }
+  }, [password, confirm, valid, access_token]);
   let formIsValid = false;
   if (userNameIsValid && firstNameIsValid && lastNameIsValid && emailIsValid && passwordIsValid && confirmIsValid) {
     formIsValid = true;
@@ -13323,11 +13369,13 @@ const Reset = () => {
   const { token } = useParams();
   const dispatch = useDispatch();
   const userReset = useSelector((state) => state.userReset);
-  const { loading, error } = userReset;
+  const { loading } = userReset;
   const userLogin = useSelector((state) => state.userLogin);
-  const { logged } = userLogin;
+  const { access_token } = userLogin;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
   const showMessage = useSelector((state) => state.showMessage);
-  const { message } = showMessage;
+  const { message, error } = showMessage;
   const navigate = useNavigate();
   reactExports.useEffect(() => {
     if (password.length != 0 && password.length < 10) {
@@ -13340,15 +13388,15 @@ const Reset = () => {
     } else {
       setPasswordMatched(false);
     }
-    if (logged === true) {
-      const timeout = setTimeout(() => {
-        navigate("/dashboard");
-      }, 1e3);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
     }
-  }, [logged, password, confirm]);
+    if (valid && access_token) {
+      console.log("Continue resetting your password.");
+    } else {
+      navigate("/auth/login");
+    }
+  }, [password, confirm, valid, access_token]);
   let formIsValid = false;
   if (emailIsValid && passwordIsValid && confirmIsValid) {
     formIsValid = true;
@@ -13447,24 +13495,6 @@ const Verify = () => {
 };
 const Client = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Client page." });
-};
-const useAuth = () => {
-  const dispatch = useDispatch();
-  const check = async (token) => {
-    try {
-      const { data } = await axios$2({
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        method: "GET",
-        url: "/api/dashboard"
-      });
-    } catch (error) {
-      dispatch(clearToken());
-    }
-  };
-  return { check };
 };
 const Modal = ({ children }) => {
   return reactDomExports.createPortal(
@@ -14296,7 +14326,9 @@ const actDashboardStockLosser = (token) => async (dispatch) => {
 };
 const Dashboard = () => {
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, logged, access_token, email_verified } = userLogin;
+  const { loading, access_token, email_verified } = userLogin;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
   const dashboardBlue = useSelector((state) => state.dashboardBlue);
   const { loading: loadBlue, bluedash } = dashboardBlue;
   const dashboardEdge = useSelector((state) => state.dashboardEdge);
@@ -14329,14 +14361,16 @@ const Dashboard = () => {
     inputBlurHandler: modalEdgeInputBlurHandler,
     resetHandler: modalEdgeInputInputReset
   } = useValidate((value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/));
-  const { check } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   reactExports.useEffect(() => {
-    if (access_token) {
-      check(access_token);
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
     }
-    if (logged === false) {
+    if (valid && error) {
+      dispatch(tokenUser(access_token));
+    }
+    if (!valid) {
       const timeout = setTimeout(() => {
         navigate("/auth/login");
       }, 2e3);
@@ -14344,22 +14378,22 @@ const Dashboard = () => {
         clearTimeout(timeout);
       };
     }
-    if (!bluedash) {
+    if (valid && !bluedash) {
       dispatch(actDashboardBlue(access_token));
     }
-    if (!stockgainer) {
+    if (valid && !stockgainer) {
       dispatch(actDashboardStockGainer(access_token));
     }
-    if (!stocklosser) {
+    if (valid && !stockgainer) {
       dispatch(actDashboardStockLosser(access_token));
     }
     if (message) {
       setNotice(true);
       setTimeout(() => {
         setNotice(false);
-      }, 3e3);
+      }, 5e3);
     }
-  }, [access_token, logged, bluedash, edge, message, stockgainer, stocklosser]);
+  }, [access_token, valid, error, message, bluedash, stockgainer, stocklosser]);
   const [verify, setVerify] = reactExports.useState(email_verified);
   const resendHandler = () => {
     setVerify(true);
@@ -14433,7 +14467,7 @@ const Dashboard = () => {
     setModalBlue(false);
     setModalEdge(false);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: logged && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: valid && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-warning", children: error, duration: 3e3, show: notice }),
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-success", children: message, duration: 3e3, show: notice }),
     !verify && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "m-2 cursor-pointer hover:animate-pulse", onClick: resendHandler, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "alert-info", children: "Your email address has not yet been verified. Click to resend your email verification code." }) }),
@@ -15152,7 +15186,9 @@ const Watchlist = () => {
   const [modalSearch, setModalSearch] = reactExports.useState(false);
   const [notice, setNotice] = reactExports.useState(false);
   const userLogin = useSelector((state) => state.userLogin);
-  const { logged, access_token } = userLogin;
+  const { access_token } = userLogin;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
   const stockWatchBuild = useSelector((state) => state.stockWatchBuild);
   const { loading: loadBuild, build } = stockWatchBuild;
   const stockWatchFetch = useSelector((state) => state.stockWatchFetch);
@@ -15160,7 +15196,6 @@ const Watchlist = () => {
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
   const { isMobile } = useScreen();
-  const { check } = useAuth();
   const navigate = useNavigate();
   const showModalBuildHandler = () => {
     setModalBuild(true);
@@ -15171,15 +15206,15 @@ const Watchlist = () => {
   const closeModalHandler = () => {
     setModalBuild(false);
     setModalSearch(false);
-  };
-  const storeHandler = (symbol) => {
-    dispatch(actStockWatchStore(access_token, symbol));
     const timeout = setTimeout(() => {
       dispatch(actStockWatchFetch(access_token));
     }, 3e3);
     return () => {
       clearTimeout(timeout);
     };
+  };
+  const storeHandler = (symbol) => {
+    dispatch(actStockWatchStore(access_token, symbol));
   };
   const deleteHandler = (symbol) => {
     dispatch(actStockWatchDestroy(access_token, symbol));
@@ -15192,21 +15227,18 @@ const Watchlist = () => {
   };
   const dispatch = useDispatch();
   reactExports.useEffect(() => {
-    if (access_token) {
-      check(access_token);
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
     }
-    if (logged === false) {
-      const timeout = setTimeout(() => {
-        navigate("/auth/login");
-      }, 2e3);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (valid && access_token) {
+      navigate("/dashboard/stock-watchlist");
+    } else {
+      navigate("/auth/login");
     }
-    if (!build) {
+    if (valid && !build) {
       dispatch(actStockWatchBuild(access_token));
     }
-    if (!watchlist) {
+    if (valid && !watchlist) {
       dispatch(actStockWatchFetch(access_token));
     }
     if (message) {
@@ -15215,7 +15247,7 @@ const Watchlist = () => {
         setNotice(false);
       }, 3e3);
     }
-  }, [access_token, logged, build, message]);
+  }, [access_token, valid, build, watchlist, message]);
   const containerWatchlistHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row justify-between", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { clasName: "block p-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
@@ -15287,7 +15319,9 @@ const Watchlist = () => {
 };
 const Trade = () => {
   const userLogin = useSelector((state) => state.userLogin);
-  const { logged, access_token } = userLogin;
+  const { access_token } = userLogin;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
   const stockBlue = useSelector((state) => state.stockBlue);
   const { loading: loadblue, bluechip } = stockBlue;
   const stockCommon = useSelector((state) => state.stockCommon);
@@ -15296,7 +15330,6 @@ const Trade = () => {
   const { message, error } = showMessage;
   const { isMobile } = useScreen();
   const dispatch = useDispatch();
-  const { check } = useAuth();
   const navigate = useNavigate();
   const [bluechipChunks, setBluechipChunks] = reactExports.useState();
   const [bluechipIndex, setBluechipIndex] = reactExports.useState();
@@ -15306,24 +15339,21 @@ const Trade = () => {
   const [commonChunk, setCommonChunk] = reactExports.useState();
   const [notice, setNotice] = reactExports.useState(false);
   reactExports.useEffect(() => {
-    if (access_token) {
-      check(access_token);
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
     }
-    if (logged === false) {
-      const timeout = setTimeout(() => {
-        navigate("/auth/login");
-      }, 2e3);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (valid && access_token) {
+      navigate("/dashboard/stock-trade");
+    } else {
+      navigate("/auth/login");
     }
-    if (!bluechip) {
+    if (valid && !bluechip) {
       dispatch(actStockBluechip(access_token));
     }
-    if (!common) {
+    if (valid && !common) {
       dispatch(actStockCommon(access_token));
     }
-    if (bluechip) {
+    if (valid && bluechip) {
       const { pages: bluechipPages, chunks: bluechipChunks2 } = chunkObject({
         divide: 10,
         data: bluechip
@@ -15331,7 +15361,7 @@ const Trade = () => {
       setBluechipChunks(bluechipChunks2);
       setBluechipIndex(bluechipPages);
     }
-    if (common) {
+    if (valid && common) {
       const { pages: commonPages, chunks: commonChunks2 } = chunkObject({
         divide: 10,
         data: common
@@ -15345,7 +15375,7 @@ const Trade = () => {
         setNotice(false);
       }, 3e3);
     }
-  }, [access_token, logged, bluechip, common, message]);
+  }, [access_token, valid, bluechip, common, message]);
   const commonHandler = (index2) => {
     setCommonChunk(commonChunks[index2]);
   };

@@ -4,6 +4,7 @@ import { useState } from "react";
 const Message = ({ variant, children }) => {
     /** Use dispatch. */
     const [message, setMessage] = useState(true);
+
     /** Message handles. */
     const messageHandler = () => {
         setMessage(!message);
@@ -13,13 +14,8 @@ const Message = ({ variant, children }) => {
     return (
         <>
             {message && (
-                <div
-                    className="font-size m-2 cursor-pointer hover:animate-pulse z-50"
-                    onClick={messageHandler}
-                >
-                    <p className={variant ? variant : "alert-danger"}>
-                        {children}
-                    </p>
+                <div className='font-size m-2 cursor-pointer hover:animate-pulse z-50' onClick={messageHandler}>
+                    <p className={variant ? variant : "alert-danger"}>{children}</p>
                 </div>
             )}
         </>

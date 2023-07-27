@@ -25,6 +25,9 @@ import {
     USER_RESET_REQUEST,
     USER_RESET_SUCCESS,
     USER_RESET_FAILURE,
+    USER_TOKEN_REQUEST,
+    USER_TOKEN_SUCCESS,
+    USER_TOKEN_FAILURE,
 } from "../constants/UserConstants";
 
 export const resendEmail = (token) => async (dispatch) => {
@@ -253,6 +256,7 @@ export const logoutUser = (token) => async (dispatch) => {
         /** Remove data from local storage. */
         if (data) {
             localStorage.removeItem("account");
+            localStorage.removeItem("token");
             localStorage.removeItem("bluechip");
             localStorage.removeItem("fetch");
             localStorage.removeItem("common");
@@ -276,16 +280,48 @@ export const logoutUser = (token) => async (dispatch) => {
     }
 };
 
-export const clearToken = () => async (dispatch) => {
+export const tokenUser = (token) => async (dispatch) => {
     try {
         /** Dispatch action to set inital state. */
+        dispatch({ type: USER_TOKEN_REQUEST });
+
+        /** Request data from backend. */
+        const { data } = await axios({
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            url: "/api/dashboard",
+            params: { section: "sentinel" },
+        });
+
+        /** Dispatch action to set the result into the store. */
+        dispatch({ type: USER_TOKEN_SUCCESS, payload: data.valid });
+
+        /** Save to result to local storage. */
+        if (data) {
+            localStorage.setItem("token", JSON.stringify(data));
+        }
+    } catch (error) {
+        /** Dispatch action to set inital state. */
         dispatch({ type: USER_LOGIN_CLEAR });
+
         /** Remove data from local storage. */
         localStorage.removeItem("account");
-    } catch (error) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("bluechip");
+        localStorage.removeItem("fetch");
+        localStorage.removeItem("common");
+        localStorage.removeItem("build");
+        localStorage.removeItem("bluedash");
+        localStorage.removeItem("edge");
+        localStorage.removeItem("stockgainer");
+        localStorage.removeItem("stocklosser");
+
         /** Dispatch action if error occurred. */
         dispatch({
-            type: USER_LOGIN_FAILURE,
+            type: USER_TOKEN_FAILURE,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
         });
         /** Dispatch action if error occurred. */

@@ -1,5 +1,5 @@
 /** React. */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 /** Vendor. */
 import { Link } from "react-router-dom";
@@ -15,12 +15,15 @@ import { logoutUser } from "../actions/UserActions";
 import Icon from "./Icon";
 
 const Header = () => {
-    /** Define dispatch. */
+    /** Use dispatch. */
     const dispatch = useDispatch();
 
-    /** Get state. */
+    /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { logged, access_token } = userLogin;
+    const { access_token } = userLogin;
+
+    const userToken = useSelector((state) => state.userToken);
+    const { valid } = userToken;
 
     /** Use screen hook. */
     const { isMobile } = useScreen();
@@ -161,7 +164,7 @@ const Header = () => {
                     </div>
                     <div className='grid grid-cols-2'>
                         <div className='hover:text-slate-300'>
-                            {logged && (
+                            {valid && (
                                 <button onClick={controlHandler} type='button'>
                                     <span className='p-2'>
                                         <Icon id='control' width='w-9' height='h-9' />
@@ -196,7 +199,7 @@ const Header = () => {
                                         </span>
                                     </Link>
                                 </li>
-                                {logged ? (
+                                {valid ? (
                                     <>
                                         <li className='px-2'>
                                             <Link to='/dashboard'>
@@ -265,7 +268,7 @@ const Header = () => {
                         </Link>
                     </div>
                     <div className='p-2'>
-                        {logged ? (
+                        {valid ? (
                             <ul className='grid grid-cols-4 auto-rows-min'>
                                 <li className='md:text-xs'>
                                     <Link to='#'>

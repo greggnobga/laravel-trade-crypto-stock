@@ -281,7 +281,7 @@ class AuthController extends Controller {
         DB::table('personal_access_tokens')->where('tokenable_id', $id)->select('token')->delete();
 
         /** Return something. */
-        return response(['message' => 'We are hoping to see you any time soon!', 'logged' => false], 200);
+        return response(['message' => 'We are hoping to see you any time soon!'], 200);
     }
 
     public function helpers($args) {
@@ -294,19 +294,15 @@ class AuthController extends Controller {
 
             /** Set message depending on the caller. */
             $message = '';
-            $logged = false;
             switch ($args['caller']) {
                 case 'register':
                     $message = ' , your account has been established. Please confirm your email address as soon as possible.';
-                    $logged = true;
                     break;
                 case 'login':
                     $message = ' , we are glad you are back and hope you will have a good time with us.';
-                    $logged = true;
                     break;
                 case 'reset':
                     $message = ' , your password has been successfully updated.';
-                    $logged = true;
                     break;
                 default:
                     $message = '';
@@ -315,7 +311,6 @@ class AuthController extends Controller {
             /** Return something. */
             return [
                 'email_verified' => $user->email_verified_at,
-                'logged' => $logged,
                 'role' => $user->role,
                 'access_token' => $token,
                 'message' => $user->firstname . ' ' . $user->lastname . $message

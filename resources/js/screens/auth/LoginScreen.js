@@ -13,7 +13,7 @@ import Message from "../../components/Message.js";
 import useValidate from "../../hooks/UseValidate";
 
 /** Action. */
-import { loginUser } from "../../actions/UserActions.js";
+import { loginUser, tokenUser } from "../../actions/UserActions.js";
 
 const Login = () => {
     /** Map html element to validate hook. */
@@ -50,21 +50,31 @@ const Login = () => {
 
     /** Select state from redux. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { loading, error, logged } = userLogin;
+    const { loading, access_token } = userLogin;
+
+    const userToken = useSelector((state) => state.userToken);
+    const { valid } = userToken;
+
+    const showMessage = useSelector((state) => state.showMessage);
+    const { message, error } = showMessage;
 
     /** Use navigate. */
     const navigate = useNavigate();
 
     /** Use effect. */
     useEffect(() => {
-        if (logged) {
-            if (logged === true) {
-                navigate("/dashboard");
-            } else {
-                navigate("/auth/login");
-            }
+        /** Check valid state. */
+        if (!valid && access_token) {
+            dispatch(tokenUser(access_token));
         }
-    }, [logged]);
+
+        /** Check if token is valid. */
+        if (valid && access_token) {
+            navigate("/dashboard");
+        } else {
+            navigate("/auth/login");
+        }
+    }, [access_token, valid]);
 
     /** Submit handler. */
     const submitHandler = (event) => {
@@ -91,6 +101,7 @@ const Login = () => {
     return (
         <>
             {error && <Message children={error} variant='alert-danger' />}
+            {message && <Message children={message} variant='alert-success' />}
             {loading ? (
                 <Loader />
             ) : (

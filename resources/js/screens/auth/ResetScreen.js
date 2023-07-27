@@ -13,7 +13,7 @@ import Loader from "../../components/Loader.js";
 import Message from "../../components/Message.js";
 
 /** Action. */
-import { resetPassword } from "../../actions/UserActions.js";
+import { resetPassword, tokenUser } from "../../actions/UserActions.js";
 
 const Reset = () => {
     /** Map html element to validate hook. */
@@ -56,13 +56,16 @@ const Reset = () => {
 
     /** Select state from redux. */
     const userReset = useSelector((state) => state.userReset);
-    const { loading, error } = userReset;
+    const { loading } = userReset;
 
     const userLogin = useSelector((state) => state.userLogin);
-    const { logged } = userLogin;
+    const { access_token } = userLogin;
+
+    const userToken = useSelector((state) => state.userToken);
+    const { valid } = userToken;
 
     const showMessage = useSelector((state) => state.showMessage);
-    const { message } = showMessage;
+    const { message, error } = showMessage;
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -81,17 +84,18 @@ const Reset = () => {
             setPasswordMatched(false);
         }
 
-        /** If become undefined then redirect. */
-        if (logged === true) {
-            const timeout = setTimeout(() => {
-                navigate("/dashboard");
-            }, 1000);
-
-            return () => {
-                clearTimeout(timeout);
-            };
+        /** Check valid state. */
+        if (!valid && access_token) {
+            dispatch(tokenUser(access_token));
         }
-    }, [logged, password, confirm]);
+
+        /** Check if token is valid. */
+        if (valid && access_token) {
+            console.log("Continue resetting your password.");
+        } else {
+            navigate("/auth/login");
+        }
+    }, [password, confirm, valid, access_token]);
 
     /** Set overall form validity. */
     let formIsValid = false;

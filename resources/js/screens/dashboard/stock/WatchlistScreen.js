@@ -1,5 +1,5 @@
 /** React. */
-import { Fragment, useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 /** Vendor. */
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 /** Hook. */
 import useScreen from "../../../hooks/UseScreen";
-import useAuth from "../../../hooks/UseAuth";
 
 /** Component. */
 import Icon from "../../../components/Icon";
@@ -22,6 +21,7 @@ import { desktopHeader, desktopTemplate, mobileTemplate, desktopModalTemplate, m
 
 /** Action. */
 import { actStockWatchBuild, actStockWatchStore, actStockWatchFetch, actStockWatchDestroy } from "../../../actions/StockActions";
+import { tokenUser } from "../../../actions/UserActions.js";
 
 const Watchlist = () => {
     /** Use state. */
@@ -31,7 +31,10 @@ const Watchlist = () => {
 
     /** Use selector. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { logged, access_token } = userLogin;
+    const { access_token } = userLogin;
+
+    const userToken = useSelector((state) => state.userToken);
+    const { valid } = userToken;
 
     const stockWatchBuild = useSelector((state) => state.stockWatchBuild);
     const { loading: loadBuild, build } = stockWatchBuild;
@@ -44,9 +47,6 @@ const Watchlist = () => {
 
     /** Use screen helper. */
     const { isMobile } = useScreen();
-
-    /** Use auth. */
-    const { check } = useAuth();
 
     /** Use navigate. */
     const navigate = useNavigate();
@@ -62,15 +62,11 @@ const Watchlist = () => {
 
     /** Close modal handler. */
     const closeModalHandler = () => {
+        /** Hide modal. */
         setModalBuild(false);
         setModalSearch(false);
-    };
 
-    /** Store handler. */
-    const storeHandler = (symbol) => {
-        /** Dispatch store action. */
-        dispatch(actStockWatchStore(access_token, symbol));
-
+        /** Update state after timeout. */
         const timeout = setTimeout(() => {
             /** Dispatch fetch to update the state. */
             dispatch(actStockWatchFetch(access_token));
@@ -79,6 +75,12 @@ const Watchlist = () => {
         return () => {
             clearTimeout(timeout);
         };
+    };
+
+    /** Store handler. */
+    const storeHandler = (symbol) => {
+        /** Dispatch store action. */
+        dispatch(actStockWatchStore(access_token, symbol));
     };
 
     /** Delete handler. */
@@ -101,35 +103,29 @@ const Watchlist = () => {
 
     /** Use effect. */
     useEffect(() => {
-        /** If account state set, check if access token is valid. */
-        if (access_token) {
-            /** Perform check. */
-            check(access_token);
+        /** Check valid state. */
+        if (!valid && access_token) {
+            dispatch(tokenUser(access_token));
         }
 
-        /** If become undefined then redirect. */
-        if (logged === false) {
-            const timeout = setTimeout(() => {
-                navigate("/auth/login");
-            }, 2000);
-
-            return () => {
-                clearTimeout(timeout);
-            };
+        /** Check if token is valid. */
+        if (valid && access_token) {
+            navigate("/dashboard/stock-watchlist");
+        } else {
+            navigate("/auth/login");
         }
 
-        /** Send request if no bluechip. */
-        if (!build) {
+        /** Send request if no build stock. */
+        if (valid && !build) {
             /** Dispatch action. */
             dispatch(actStockWatchBuild(access_token));
         }
 
-        /** Send request if no watchlist. */
-        if (!watchlist) {
+        /** Send request if no watchlist stock. */
+        if (valid && !watchlist) {
             /** Dispatch action. */
             dispatch(actStockWatchFetch(access_token));
         }
-
         /** Monitor new message. */
         if (message) {
             /** Set state. */
@@ -140,7 +136,7 @@ const Watchlist = () => {
                 setNotice(false);
             }, 3000);
         }
-    }, [access_token, logged, build, message]);
+    }, [access_token, valid, build, watchlist, message]);
 
     /** Container header. */
     const containerWatchlistHeader = (

@@ -13,7 +13,7 @@ import Message from "../../components/Message.js";
 import useValidate from "../../hooks/UseValidate";
 
 /** Action. */
-import { registerUser } from "../../actions/UserActions.js";
+import { registerUser, tokenUser } from "../../actions/UserActions.js";
 
 const Register = () => {
     /** Map html element to validate hook. */
@@ -80,10 +80,13 @@ const Register = () => {
 
     /** Select state from redux. */
     const userLogin = useSelector((state) => state.userLogin);
-    const { logged } = userLogin;
+    const { access_token } = userLogin;
 
     const userRegister = useSelector((state) => state.userRegister);
     const { loading, error } = userRegister;
+
+    const userToken = useSelector((state) => state.userToken);
+    const { valid } = userToken;
 
     const showMessage = useSelector((state) => state.showMessage);
     const { message } = showMessage;
@@ -106,15 +109,18 @@ const Register = () => {
             setPasswordMatched(false);
         }
 
-        /** Check account has value. */
-        if (logged) {
-            if (logged === true) {
-                navigate("/dashboard");
-            } else {
-                navigate("/auth/register");
-            }
+        /** Check valid state. */
+        if (!valid && access_token) {
+            dispatch(tokenUser(access_token));
         }
-    }, [navigate, password, confirm, logged]);
+
+        /** Check if token is valid. */
+        if (valid && access_token) {
+            navigate("/dashboard");
+        } else {
+            navigate("/auth/register");
+        }
+    }, [password, confirm, valid, access_token]);
 
     /** Set overall form validity. */
     let formIsValid = false;

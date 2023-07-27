@@ -5,7 +5,14 @@ import { composeWithDevTools } from "@redux-devtools/extension";
 
 /** Reducer. */
 import { showMessageReducer } from "./reducers/MessageReducers";
-import { userLoginReducer, userRegisterReducer, userVerifyReducer, userForgotReducer, userResetReducer } from "./reducers/UserReducers";
+import {
+    userLoginReducer,
+    userRegisterReducer,
+    userVerifyReducer,
+    userForgotReducer,
+    userResetReducer,
+    userTokenReducer,
+} from "./reducers/UserReducers";
 
 import {
     dashboardStartReducer,
@@ -40,6 +47,7 @@ const reducer = combineReducers({
     userVerify: userVerifyReducer,
     userForgot: userForgotReducer,
     userReset: userResetReducer,
+    userToken: userTokenReducer,
     dashboardStart: dashboardStartReducer,
     dashboardPrice: dashboardPriceReducer,
     dashboardReport: dashboardReportReducer,
@@ -64,7 +72,9 @@ const reducer = combineReducers({
 });
 
 /** Initial state. */
-const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : { logged: false };
+const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : {};
+
+const tokenFromStorage = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : { valid: false };
 
 const bluechipFromStorage = localStorage.getItem("bluechip") ? JSON.parse(localStorage.getItem("bluechip")) : {};
 
@@ -84,6 +94,7 @@ const stockLosserFromStorage = localStorage.getItem("stocklosser") ? JSON.parse(
 
 const initialState = {
     userLogin: accountFromStorage,
+    userToken: tokenFromStorage,
     dashboardBlue: bluedashFromStorage,
     dashboardEdge: edgeFromStorage,
     dashboardStockGainer: stockGainerFromStorage,

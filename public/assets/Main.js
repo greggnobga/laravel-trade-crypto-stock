@@ -14657,20 +14657,102 @@ const Portfolio = () => {
     ] })
   ] });
 };
-const Search = ({ close }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row justify-center align-center gap-2 w-full border-bottom", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow w-full sm:w-1/4 text-center border border-green-500", children: /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "p-2 block uppercase", htmlFor: "search", children: "Search" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow w-full sm:w-2/4 text-center border border-orange-500", children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { className: "p-2 rounded shadow w-full", id: "search", name: "search", type: "text", autoComplete: "off" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grow w-full sm:w-1/4 text-center border border-blue-500", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { className: "p-2", type: "button", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
-        " Search"
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { className: "p-2", type: "button", onClick: () => close(), children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
-        " Close"
+const Search = ({ close, items }) => {
+  const [search, setSearch] = reactExports.useState();
+  const [keyword, setKeyword] = reactExports.useState();
+  const searchHandler = () => {
+    if (keyword.trim() && items) {
+      let find = items.filter((item) => item.symbol.toLowerCase().includes(keyword.toLowerCase()));
+      if (find) {
+        return setSearch(find);
+      }
+    }
+  };
+  const searchChange = (value) => {
+    if (value) {
+      setKeyword(value);
+    } else {
+      setKeyword("");
+    }
+  };
+  reactExports.useEffect(() => {
+    if (!keyword) {
+      setSearch("");
+    }
+  }, [keyword, search]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col md:flex-row justify-center align-center gap-2 w-full rounded-t-md bg-slate-50", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow w-full md:w-1/4 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "p-2 block uppercase", htmlFor: "search", children: "Search" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 grow w-full md:w-2/4 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          className: "p-2 rounded shadow w-full uppercase",
+          id: "search",
+          name: "search",
+          type: "search",
+          autoComplete: "off",
+          placeholder: "Type stock symbol",
+          value: keyword,
+          onChange: (e2) => searchChange(e2.target.value)
+        }
+      ) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 grow w-full md:w-1/4 text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { className: "p-2", type: "button", onClick: () => searchHandler(), children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
+          " Search"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { className: "p-2", type: "button", onClick: () => close(), children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
+          " Close"
+        ] })
       ] })
-    ] })
+    ] }),
+    search ? search.map((item, index2) => {
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: `p-2 flex flex-col sm:flex-row flex-wrap justify-center align-center gap-2 my-2 w-full bg-slate-50 shadow ${index2 & true ? "rounded-t-md" : "rounded-b-md"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Edge" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.edge })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Symbol" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.symbol })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Price" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.price })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Value" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.value })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Price Range" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.pricerange })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Total Assets" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.totalassets })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Net Income" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.netincomeaftertax })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Debt Asset Ratio" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.debtassetratio })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grow w-full sm:w-1/2 md:w-1/4 border border-slate-100", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 uppercase text-green-500", children: "Dividend Yield" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 text-center pb-4", children: item.dividendyield })
+            ] })
+          ]
+        }
+      );
+    }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "No record found." }) })
   ] });
 };
 const desktopHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card grid auto-rows-min grid-cols-9 h-fit rounded-t-md bg-stone-100 uppercase", children: [
@@ -15253,7 +15335,7 @@ const Watchlist = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
       " Watchlist"
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "block p-2 cursor-pointer text-purple-500 -mt-2", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "block p-2 cursor-pointer -mt-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "mr-4", onClick: showModalSearchHandler, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
         " Search"
@@ -15272,7 +15354,7 @@ const Watchlist = () => {
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-warning", children: error, duration: 3e3, show: notice }),
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-success", children: message, duration: 3e3, show: notice }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: containerReminderHeader, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-t-md bg-slate-50 cursor-pointer", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Debt Equity Ratio - Always try to find a company to invest which has debt equity ratio of less than one." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Debt Asset Ratio - Always try to find a company to invest which has debt equity ratio of less than one." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Price Range - Year low minus year high, when the range is getting near to zero or even turning positive, it indicates that the price is going down and that it is a good idea to add to your stack." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 border-b border-slate-100 hover:text-purple-500", children: "Total Assets - Total assets less total assets previously held If it's negative, either the company is having a cash flow problem or it's having a bad year." }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 hover:text-purple-500", children: "Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its stock divided by its current stock price." })
@@ -15295,7 +15377,7 @@ const Watchlist = () => {
           action: storeHandler
         });
       }) }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: modalSearch && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { close: closeModalHandler }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: modalSearch && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { close: closeModalHandler, items: watchlist }) }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: isMobile ? loadFetch ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: watchlist && watchlist.map((item) => {
         return mobileTemplate({
           item,
@@ -15338,6 +15420,8 @@ const Trade = () => {
   const [commonIndex, setCommonIndex] = reactExports.useState();
   const [commonChunk, setCommonChunk] = reactExports.useState();
   const [notice, setNotice] = reactExports.useState(false);
+  const [modalSearchBluechip, setModalSearchBluechip] = reactExports.useState(false);
+  const [modalSearchCommon, setModalSearchCommon] = reactExports.useState(false);
   reactExports.useEffect(() => {
     if (!valid && access_token) {
       dispatch(tokenUser(access_token));
@@ -15392,119 +15476,147 @@ const Trade = () => {
       clearTimeout(timeout);
     };
   };
-  const containerBluechipHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
-    " Blue Chip Stocks"
+  const showModalSearchBluechipHandler = () => {
+    setModalSearchBluechip(true);
+  };
+  const showModalSearchCommonHandler = () => {
+    setModalSearchCommon(true);
+  };
+  const closeModalHandler = () => {
+    setModalSearchBluechip(false);
+    setModalSearchCommon(false);
+  };
+  const containerBluechipHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row flex-wrap justify-between align-center", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
+      " Bluechip Stocks"
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "p-2", onClick: showModalSearchBluechipHandler, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
+      " Search"
+    ] }) })
   ] });
-  const containerCommonHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
-    " Common Stocks"
+  const containerCommonHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row flex-wrap justify-between align-center", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
+      " Common Stocks"
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "p-2", onClick: showModalSearchCommonHandler, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "search" }),
+      " Search"
+    ] }) })
   ] });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     error && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-warning", children: error, duration: 3e3, show: notice }),
     message && /* @__PURE__ */ jsxRuntimeExports.jsx(Notice, { variant: "alert-success", children: message, duration: 3e3, show: notice }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: containerBluechipHeader, children: isMobile ? loadblue ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      bluechipChunk && bluechipChunk ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: bluechipChunk.map((item) => {
-        return mobileTemplate({
-          item,
-          action: storeHandler,
-          text: "add",
-          icon: "add"
-        });
-      }) }) : bluechipChunks && /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: bluechipChunks[0].map((item) => {
-        return mobileTemplate({
-          item,
-          action: storeHandler,
-          text: "add",
-          icon: "add"
-        });
-      }) }),
-      bluechipIndex && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { clasName: "flex flex-row gap-1 m-1", children: bluechipIndex.map((item, index2) => {
-        return paginationTemplate({
-          index: index2,
-          turn: bluechipHandler
-        });
-      }) }) })
-    ] }) : loadblue ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      bluechipChunk && bluechipChunk ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        desktopHeader,
-        bluechipChunk.map((item) => {
-          return desktopTemplate({
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(Container, { header: containerBluechipHeader, children: [
+      isMobile ? loadblue ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        bluechipChunk && bluechipChunk ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: bluechipChunk.map((item) => {
+          return mobileTemplate({
             item,
             action: storeHandler,
             text: "add",
             icon: "add"
           });
-        })
-      ] }) : bluechipChunks && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        desktopHeader,
-        bluechipChunks[0].map((item) => {
-          return desktopTemplate({
+        }) }) : bluechipChunks && /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: bluechipChunks[0].map((item) => {
+          return mobileTemplate({
             item,
             action: storeHandler,
             text: "add",
             icon: "add"
           });
-        })
+        }) }),
+        bluechipIndex && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { clasName: "flex flex-row gap-1 m-1", children: bluechipIndex.map((item, index2) => {
+          return paginationTemplate({
+            index: index2,
+            turn: bluechipHandler
+          });
+        }) }) })
+      ] }) : loadblue ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        bluechipChunk && bluechipChunk ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          desktopHeader,
+          bluechipChunk.map((item) => {
+            return desktopTemplate({
+              item,
+              action: storeHandler,
+              text: "add",
+              icon: "add"
+            });
+          })
+        ] }) : bluechipChunks && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          desktopHeader,
+          bluechipChunks[0].map((item) => {
+            return desktopTemplate({
+              item,
+              action: storeHandler,
+              text: "add",
+              icon: "add"
+            });
+          })
+        ] }),
+        bluechipIndex && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { clasName: "flex flex-row gap-2 m-2", children: bluechipIndex.map((item, index2) => {
+          return paginationTemplate({
+            index: index2,
+            turn: bluechipHandler
+          });
+        }) }) })
       ] }),
-      bluechipIndex && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { clasName: "flex flex-row gap-2 m-2", children: bluechipIndex.map((item, index2) => {
-        return paginationTemplate({
-          index: index2,
-          turn: bluechipHandler
-        });
-      }) }) })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Container, { header: containerCommonHeader, children: isMobile ? loadcommon ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      commonChunk && commonChunk ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: commonChunk.map((item) => {
-        return mobileTemplate({
-          item,
-          action: storeHandler,
-          text: "add",
-          icon: "add"
-        });
-      }) }) : commonChunks && /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: commonChunks[0].map((item) => {
-        return mobileTemplate({
-          item,
-          action: storeHandler,
-          text: "add",
-          icon: "add"
-        });
-      }) }),
-      commonIndex && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { clasName: "flex flex-row gap-1 m-1", children: commonIndex.map((item, index2) => {
-        return paginationTemplate({
-          index: index2,
-          turn: commonHandler
-        });
-      }) }) })
-    ] }) : loadcommon ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      commonChunk && commonChunk ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        desktopHeader,
-        commonChunk.map((item) => {
-          return desktopTemplate({
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: modalSearchBluechip && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { close: closeModalHandler, items: bluechip }) }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(Container, { header: containerCommonHeader, children: [
+      isMobile ? loadcommon ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        commonChunk && commonChunk ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: commonChunk.map((item) => {
+          return mobileTemplate({
             item,
             action: storeHandler,
             text: "add",
             icon: "add"
           });
-        })
-      ] }) : commonChunks && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        desktopHeader,
-        commonChunks[0].map((item) => {
-          return desktopTemplate({
+        }) }) : commonChunks && /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: commonChunks[0].map((item) => {
+          return mobileTemplate({
             item,
             action: storeHandler,
             text: "add",
             icon: "add"
           });
-        })
+        }) }),
+        commonIndex && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit text-right border border-slate-50 bg-slate-100 shadow rounded m-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { clasName: "flex flex-row gap-1 m-1", children: commonIndex.map((item, index2) => {
+          return paginationTemplate({
+            index: index2,
+            turn: commonHandler
+          });
+        }) }) })
+      ] }) : loadcommon ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        commonChunk && commonChunk ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          desktopHeader,
+          commonChunk.map((item) => {
+            return desktopTemplate({
+              item,
+              action: storeHandler,
+              text: "add",
+              icon: "add"
+            });
+          })
+        ] }) : commonChunks && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+          desktopHeader,
+          commonChunks[0].map((item) => {
+            return desktopTemplate({
+              item,
+              action: storeHandler,
+              text: "add",
+              icon: "add"
+            });
+          })
+        ] }),
+        commonIndex && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { clasName: "flex flex-row gap-2 m-2", children: commonIndex.map((item, index2) => {
+          return paginationTemplate({
+            index: index2,
+            turn: commonHandler
+          });
+        }) }) })
       ] }),
-      commonIndex && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card grid auto-rows-min col-span-8 h-fit border-b border-stone-100 bg-stone-50 text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { clasName: "flex flex-row gap-2 m-2", children: commonIndex.map((item, index2) => {
-        return paginationTemplate({
-          index: index2,
-          turn: commonHandler
-        });
-      }) }) })
-    ] }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: modalSearchCommon && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { close: closeModalHandler, items: common }) }) })
+    ] })
   ] });
 };
 const StockTrade = () => {

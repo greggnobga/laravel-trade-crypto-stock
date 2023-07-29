@@ -35,10 +35,10 @@ const Trade = () => {
   const { valid } = userToken
 
   const stockBlue = useSelector((state) => state.stockBlue)
-  const { loading: loadblue, bluechip } = stockBlue
+  const { loading: loadBlue, bluechip } = stockBlue
 
   const stockCommon = useSelector((state) => state.stockCommon)
-  const { loading: loadcommon, common } = stockCommon
+  const { loading: loadCommon, common } = stockCommon
 
   const showMessage = useSelector((state) => state.showMessage)
   const { message, error } = showMessage
@@ -211,7 +211,7 @@ const Trade = () => {
       {/** Bluechip section. */}
       <Container header={containerBluechipHeader}>
         {isMobile ? (
-          loadblue ? (
+          loadBlue ? (
             <Loader />
           ) : (
             <>
@@ -255,7 +255,7 @@ const Trade = () => {
               )}
             </>
           )
-        ) : loadblue ? (
+        ) : loadBlue ? (
           <Loader />
         ) : (
           <>
@@ -313,7 +313,7 @@ const Trade = () => {
       {/** Common section. */}
       <Container header={containerCommonHeader}>
         {isMobile ? (
-          loadcommon ? (
+          loadCommon ? (
             <Loader />
           ) : (
             <>
@@ -357,7 +357,7 @@ const Trade = () => {
               )}
             </>
           )
-        ) : loadcommon ? (
+        ) : loadCommon ? (
           <Loader />
         ) : (
           <>

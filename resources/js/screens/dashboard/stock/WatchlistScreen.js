@@ -176,13 +176,9 @@ const Watchlist = () => {
   /** Return something. */
   return (
     <>
-      {/**Show error. */}
       {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
-
-      {/**Show message. */}
       {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
 
-      {/** Reminder section. */}
       <Container header={containerReminderHeader}>
         <div className='rounded-t-md bg-slate-50 cursor-pointer'>
           <div className='p-2 border-b border-slate-100 hover:text-purple-500'>
@@ -203,7 +199,6 @@ const Watchlist = () => {
         </div>
       </Container>
 
-      {/** Watchlist section. */}
       <Container header={containerWatchlistHeader}>
         <div className='grid auto-rows-min h-fit rounded'>
           {isMobile

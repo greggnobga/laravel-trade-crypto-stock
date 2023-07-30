@@ -14,20 +14,21 @@ class DashboardController extends Controller {
     public function init(Request $request) {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
-            /** forward bluechip function. */
+            /** forward bluechip function with store. */
             if ($request->input('section') === 'bluechip' && $request->input('statement') === 'store') {
                 return $this->bluechip($request->all());
             }
-
+            /** forward bluechip function with destroy. */
             if ($request->input('section') === 'bluechip' && $request->input('statement') === 'destroy') {
                 return $this->bluechip($request->all());
             }
 
-            /** forward edge  function. */
+            /** forward edge function with update. */
             if ($request->input('section') === 'edge' && $request->input('statement') === 'update') {
                 return $this->edge($request->all());
             }
         }
+
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
             /** sentinel response. */
@@ -139,6 +140,7 @@ class DashboardController extends Controller {
      * Declare edge function.
      */
     public function edge($data) {
+
         /** query logged user role. */
         $admin = DB::table('users')
             ->select('role')

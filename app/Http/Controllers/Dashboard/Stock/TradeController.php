@@ -19,12 +19,14 @@ class TradeController extends Controller {
                 return $this->store(['table' => $request->input('table'), 'input' => $request->input('input')]);
             }
         }
+
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
             /** forward blue command. */
-            if ($request->input('section') === 'blue') {
+            if ($request->input('section') === 'bluechip') {
                 return $this->bluechip();
             }
+
             /** forward blue command. */
             if ($request->input('section') === 'common') {
                 return $this->common();

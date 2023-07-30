@@ -305,6 +305,7 @@ class stockEdgeSeeder extends Seeder {
         DB::table('stock_trades')->updateOrInsert(['name' => 'UPSON', 'symbol' => 'UPSON', 'edge' => 700, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
         DB::table('stock_trades')->updateOrInsert(['name' => 'ECVC', 'symbol' => 'ECVC', 'edge' => 46, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
         DB::table('stock_trades')->updateOrInsert(['name' => 'REDC', 'symbol' => 'REDC', 'edge' => 702, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
+        DB::table('stock_trades')->updateOrInsert(['name' => 'PNC', 'symbol' => 'PNC', 'edge' => 7, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
         DB::table('stock_trades')->updateOrInsert(['name' => 'TLJJ', 'symbol' => 'TLJJ', 'edge' => -1, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
         DB::table('stock_trades')->updateOrInsert(['name' => 'PRF2A', 'symbol' => 'PRF2A', 'edge' => -1, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
         DB::table('stock_trades')->updateOrInsert(['name' => 'LCB', 'symbol' => 'LCB', 'edge' => -1, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);

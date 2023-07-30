@@ -21,20 +21,20 @@ import { modalBlueTemplate, modalEdgeTemplate, stockLeaderBoard } from './templa
 /** Action. */
 import { resendEmail, tokenUser } from '../actions/UserActions'
 import {
-  actDashboardStart,
-  actDashboardPrice,
-  actDashboardReport,
-  actDashboardDividend,
-  actDashboardSector,
-  actDashboardList,
-  actDashboardCompany,
-  actDashboardBlue,
-  actDashboardBlueStore,
-  actDashboardBlueDestroy,
-  actDashboardEdge,
-  actDashboardEdgeUpdate,
-  actDashboardStockGainer,
-  actDashboardStockLosser,
+  startDashboard,
+  priceDashboard,
+  reportDashboard,
+  dividendDashboard,
+  sectorDashboard,
+  listDashboard,
+  companyDashboard,
+  bluechipDashboard,
+  bluechipStoreDashboard,
+  bluechipDestroyDashboard,
+  edgeDashboard,
+  edgeUpdateDashboard,
+  stockGainerDashboard,
+  stockLosserDashboard,
 } from '../actions/DashboardActions'
 
 const Dashboard = () => {
@@ -45,8 +45,8 @@ const Dashboard = () => {
   const userToken = useSelector((state) => state.userToken)
   const { valid } = userToken
 
-  const dashboardBlue = useSelector((state) => state.dashboardBlue)
-  const { loading: loadBlue, bluedash } = dashboardBlue
+  const dashboardBluechip = useSelector((state) => state.dashboardBluechip)
+  const { loading: loadBluechip, bluechip } = dashboardBluechip
 
   const dashboardEdge = useSelector((state) => state.dashboardEdge)
   const { loading: loadEdge, edge } = dashboardEdge
@@ -116,18 +116,23 @@ const Dashboard = () => {
     }
 
     /** If not edge does not have value. */
-    if (valid && !bluedash) {
-      dispatch(actDashboardBlue(access_token))
+    if (valid && !edge) {
+      dispatch(edgeDashboard(access_token))
     }
 
-    /** If not edge does not have value. */
-    if (valid && !stockgainer) {
-      dispatch(actDashboardStockGainer(access_token))
+    /** If not bluechip does not have value. */
+    if (valid && !bluechip) {
+      dispatch(bluechipDashboard(access_token))
     }
 
-    /** If not edge does not have value. */
+    /** If not stock gainer does not have value. */
     if (valid && !stockgainer) {
-      dispatch(actDashboardStockLosser(access_token))
+      dispatch(stockGainerDashboard(access_token))
+    }
+
+    /** If not stock losser does not have value. */
+    if (valid && !stockgainer) {
+      dispatch(stockLosserDashboard(access_token))
     }
 
     /** Monitor new message. */
@@ -139,7 +144,7 @@ const Dashboard = () => {
         setNotice(false)
       }, 5000)
     }
-  }, [access_token, valid, error, message, bluedash, stockgainer, stocklosser])
+  }, [access_token, valid, error, message, bluechip, stockgainer, stocklosser])
 
   /** Use state. */
   const [verify, setVerify] = useState(email_verified)
@@ -155,37 +160,37 @@ const Dashboard = () => {
   /** Fecth data from external endpoint. */
   const dashboardStartHandler = () => {
     /** Dispatch action. */
-    dispatch(actDashboardStart(access_token))
+    dispatch(startDashboard(access_token))
   }
 
   const dashboardPriceHandler = () => {
     /** Dispatch action. */
-    dispatch(actDashboardPrice(access_token))
+    dispatch(priceDashboard(access_token))
   }
 
   const dashboardReportHandler = () => {
     /** Dispatch action. */
-    dispatch(actDashboardReport(access_token))
+    dispatch(reportDashboard(access_token))
   }
 
   const dashboardDividendHandler = () => {
     /** Dispatch action. */
-    dispatch(actDashboardDividend(access_token))
+    dispatch(dividendDashboard(access_token))
   }
 
   const dashboardSectorHandler = () => {
     /** Dispatch action. */
-    dispatch(actDashboardSector(access_token))
+    dispatch(sectorDashboard(access_token))
   }
 
   const dashboardListHandler = () => {
     /** Dispatch action. */
-    dispatch(actDashboardList(access_token))
+    dispatch(listDashboard(access_token))
   }
 
   const dashboardCompanyHandler = () => {
     /** Dispatch action. */
-    dispatch(actDashboardCompany(access_token))
+    dispatch(companyDashboard(access_token))
   }
 
   /** Bluechip modal handler. */
@@ -203,11 +208,11 @@ const Dashboard = () => {
     /** Check statement is store. */
     if (value && statement === 'store') {
       /** Dispatch store action. */
-      dispatch(actDashboardBlueStore({ token: access_token, symbol: value }))
+      dispatch(bluechipStoreDashboard({ token: access_token, symbol: value }))
 
       /** Dispatch fetch action to update state. */
       const timeout = setTimeout(() => {
-        dispatch(actDashboardBlue(access_token))
+        dispatch(bluechipDashboard(access_token))
       }, 3000)
 
       return () => {
@@ -218,11 +223,11 @@ const Dashboard = () => {
     /** Check statement is destroy. */
     if (value && statement === 'destroy') {
       /** Dispatch destroy action. */
-      dispatch(actDashboardBlueDestroy({ token: access_token, symbol: value }))
+      dispatch(bluechipDestroyDashboard({ token: access_token, symbol: value }))
 
       /** Dispatch fetch action to update state. */
       const timeout = setTimeout(() => {
-        dispatch(actDashboardBlue(access_token))
+        dispatch(bluechipDashboard(access_token))
       }, 3000)
 
       return () => {
@@ -237,7 +242,7 @@ const Dashboard = () => {
     if (symbol && value) {
       /** Dispatch action to send update request. */
       dispatch(
-        actDashboardEdgeUpdate({
+        edgeUpdateDashboard({
           token: access_token,
           symbol: symbol,
           edge: value,
@@ -246,7 +251,7 @@ const Dashboard = () => {
 
       /** Dispatch action to update the state. */
       const timeout = setTimeout(() => {
-        dispatch(actDashboardEdge(access_token))
+        dispatch(edgeDashboard(access_token))
       }, 3000)
 
       return () => {
@@ -417,7 +422,7 @@ const Dashboard = () => {
                 {modalBlue && (
                   <Modal>
                     {modalBlueTemplate({
-                      data: bluedash,
+                      data: bluechip,
                       header: 'Bluechip',
                       close: closeModalHandler,
                       action: updateBlueHandler,

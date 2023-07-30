@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\Stock;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -23,10 +24,30 @@ class ChartController extends Controller {
 
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
-            /** forward trades function */
-            // if ($request->input('section') === 'stocks') {
-            //     return $this->stocktrades();
-            // }
+            /** forward chart build function */
+            if ($request->input('section') === 'build') {
+                return $this->chartbuild($request->all());
+            }
+        }
+    }
+
+    /**
+     * Build list function.
+     */
+    public function chartbuild($data) {
+        /** match params. */
+        if ($data['table'] === 'watchlist' && $data['statement'] === 'select') {
+            /** select record. */
+            $watchlist = DB::table('stock_watchlists')
+                ->select('symbol')
+                ->where('userid', Auth::id())
+                ->get()
+                ->toArray();
+
+            /** return result if not null. */
+            if (!is_null($watchlist)) {
+                return response(['message' => 'Please wait while we process your request.', 'stocks' => $watchlist], 200);
+            }
         }
     }
 

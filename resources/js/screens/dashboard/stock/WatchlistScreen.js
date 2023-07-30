@@ -26,12 +26,7 @@ import {
 } from '../../template/Stocks'
 
 /** Action. */
-import {
-  actStockWatchBuild,
-  actStockWatchStore,
-  actStockWatchFetch,
-  actStockWatchDestroy,
-} from '../../../actions/StockActions'
+import { buildWatchlist, storeWatchlist, fetchWatchlist, destroyWatchlist } from '../../../actions/WatchlistActions'
 import { tokenUser } from '../../../actions/UserActions.js'
 
 const Watchlist = () => {
@@ -47,11 +42,11 @@ const Watchlist = () => {
   const userToken = useSelector((state) => state.userToken)
   const { valid } = userToken
 
-  const stockWatchBuild = useSelector((state) => state.stockWatchBuild)
-  const { loading: loadBuild, build } = stockWatchBuild
+  const watchlistBuild = useSelector((state) => state.watchlistBuild)
+  const { loading: loadBuild, watchbuild } = watchlistBuild
 
-  const stockWatchFetch = useSelector((state) => state.stockWatchFetch)
-  const { loading: loadFetch, watchlist } = stockWatchFetch
+  const watchlistFetch = useSelector((state) => state.watchlistFetch)
+  const { loading: loadFetch, watchlist } = watchlistFetch
 
   const showMessage = useSelector((state) => state.showMessage)
   const { message, error } = showMessage
@@ -61,6 +56,9 @@ const Watchlist = () => {
 
   /** Use navigate. */
   const navigate = useNavigate()
+
+  /** Use dispatch. */
+  const dispatch = useDispatch()
 
   /** Show modal handler. */
   const showModalBuildHandler = () => {
@@ -80,7 +78,7 @@ const Watchlist = () => {
     /** Update state after timeout. */
     const timeout = setTimeout(() => {
       /** Dispatch fetch to update the state. */
-      dispatch(actStockWatchFetch(access_token))
+      dispatch(fetchWatchlist(access_token))
     }, 3000)
 
     return () => {
@@ -91,26 +89,23 @@ const Watchlist = () => {
   /** Store handler. */
   const storeHandler = (symbol) => {
     /** Dispatch store action. */
-    dispatch(actStockWatchStore(access_token, symbol))
+    dispatch(storeWatchlist(access_token, symbol))
   }
 
   /** Delete handler. */
   const deleteHandler = (symbol) => {
     /** Dispatch delete action. */
-    dispatch(actStockWatchDestroy(access_token, symbol))
+    dispatch(destroyWatchlist(access_token, symbol))
 
     const timeout = setTimeout(() => {
       /** Dispatch fetch to update the state. */
-      dispatch(actStockWatchFetch(access_token))
+      dispatch(fetchWatchlist(access_token))
     }, 3000)
 
     return () => {
       clearTimeout(timeout)
     }
   }
-
-  /** Use dispatch. */
-  const dispatch = useDispatch()
 
   /** Use effect. */
   useEffect(() => {
@@ -127,15 +122,15 @@ const Watchlist = () => {
     }
 
     /** Send request if no build stock. */
-    if (valid && !build) {
+    if (valid && !watchbuild) {
       /** Dispatch action. */
-      dispatch(actStockWatchBuild(access_token))
+      dispatch(buildWatchlist(access_token))
     }
 
     /** Send request if no watchlist stock. */
     if (valid && !watchlist) {
       /** Dispatch action. */
-      dispatch(actStockWatchFetch(access_token))
+      dispatch(fetchWatchlist(access_token))
     }
     /** Monitor new message. */
     if (message) {
@@ -147,7 +142,7 @@ const Watchlist = () => {
         setNotice(false)
       }, 3000)
     }
-  }, [access_token, valid, build, watchlist, message])
+  }, [access_token, valid, watchbuild, watchlist, message])
 
   /** Container header. */
   const containerWatchlistHeader = (
@@ -207,8 +202,8 @@ const Watchlist = () => {
                   {loadBuild ? (
                     <Loader />
                   ) : (
-                    build &&
-                    Object.entries(build).map((item) => {
+                    watchbuild &&
+                    Object.entries(watchbuild).map((item) => {
                       return mobileModalTemplate({
                         item: item,
                         text: 'add',
@@ -225,8 +220,8 @@ const Watchlist = () => {
                   {loadBuild ? (
                     <Loader />
                   ) : (
-                    build &&
-                    Object.entries(build).map((item) => {
+                    watchbuild &&
+                    Object.entries(watchbuild).map((item) => {
                       return desktopModalTemplate({
                         item: item,
                         text: 'add',

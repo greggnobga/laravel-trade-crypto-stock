@@ -23,7 +23,7 @@ import Container from '../../../components/Container'
 import { desktopHeader, desktopTemplate, mobileTemplate, paginationTemplate } from '../../template/Stocks'
 
 /** Action. */
-import { actStockBluechip, actStockCommon, actStockWatchStore } from '../../../actions/StockActions'
+import { bluechipTrade, commonTrade, storeTrade } from '../../../actions/TradeActions'
 import { tokenUser } from '../../../actions/UserActions.js'
 
 const Trade = () => {
@@ -34,11 +34,11 @@ const Trade = () => {
   const userToken = useSelector((state) => state.userToken)
   const { valid } = userToken
 
-  const stockBlue = useSelector((state) => state.stockBlue)
-  const { loading: loadBlue, bluechip } = stockBlue
+  const tradeBluechip = useSelector((state) => state.tradeBluechip)
+  const { loading: loadBlue, bluechip } = tradeBluechip
 
-  const stockCommon = useSelector((state) => state.stockCommon)
-  const { loading: loadCommon, common } = stockCommon
+  const tradeCommon = useSelector((state) => state.tradeCommon)
+  const { loading: loadCommon, common } = tradeCommon
 
   const showMessage = useSelector((state) => state.showMessage)
   const { message, error } = showMessage
@@ -80,13 +80,13 @@ const Trade = () => {
     /** Send request if no bluechip stock. */
     if (valid && !bluechip) {
       /** Dispatch action. */
-      dispatch(actStockBluechip(access_token))
+      dispatch(bluechipTrade(access_token))
     }
 
     /** Send request if no common stock. */
     if (valid && !common) {
       /** Dispatch action. */
-      dispatch(actStockCommon(access_token))
+      dispatch(commonTrade(access_token))
     }
 
     /** Use helper. */
@@ -141,14 +141,14 @@ const Trade = () => {
 
   /** Store handler. */
   const storeHandler = (symbol) => {
-    dispatch(actStockWatchStore(access_token, symbol))
+    dispatch(storeTrade(access_token, symbol))
 
     /** Dispatch fetch action to update state. */
     const timeout = setTimeout(() => {
       /** Dispatch bluechip action. */
-      dispatch(actStockBluechip(access_token))
+      dispatch(bluechipTrade(access_token))
       /** Dispatch common action. */
-      dispatch(actStockCommon(access_token))
+      dispatch(commonTrade(access_token))
     }, 3000)
 
     return () => {

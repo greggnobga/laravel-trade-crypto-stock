@@ -309,10 +309,10 @@ react_production_min.version = "18.2.0";
   react.exports = react_production_min;
 }
 var reactExports = react.exports;
-const React = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
-const React$1 = /* @__PURE__ */ _mergeNamespaces({
+const index$1 = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
+const React = /* @__PURE__ */ _mergeNamespaces({
   __proto__: null,
-  default: React
+  default: index$1
 }, [reactExports]);
 /**
  * @license React
@@ -9686,22 +9686,24 @@ function defaultNoopBatch(callback) {
 let batch = defaultNoopBatch;
 const setBatch = (newBatch) => batch = newBatch;
 const getBatch = () => batch;
-const ContextKey = Symbol.for(`react-redux-context-${reactExports.version}`);
-const gT = globalThis;
+const ContextKey = Symbol.for(`react-redux-context`);
+const gT = typeof globalThis !== "undefined" ? globalThis : (
+  /* fall back to a per-module scope (pre-8.1 behaviour) if `globalThis` is not available */
+  {}
+);
 function getContext() {
-  let realContext = gT[ContextKey];
+  var _gT$ContextKey;
+  if (!reactExports.createContext)
+    return {};
+  const contextMap = (_gT$ContextKey = gT[ContextKey]) != null ? _gT$ContextKey : gT[ContextKey] = /* @__PURE__ */ new Map();
+  let realContext = contextMap.get(reactExports.createContext);
   if (!realContext) {
     realContext = reactExports.createContext(null);
-    gT[ContextKey] = realContext;
+    contextMap.set(reactExports.createContext, realContext);
   }
   return realContext;
 }
-const ReactReduxContext = /* @__PURE__ */ new Proxy({}, /* @__PURE__ */ new Proxy({}, {
-  get(_, handler) {
-    const target = getContext();
-    return (_target, ...args) => Reflect[handler](target, ...args);
-  }
-}));
+const ReactReduxContext = /* @__PURE__ */ getContext();
 function createReduxContextHook(context = ReactReduxContext) {
   return function useReduxContext2() {
     const contextValue = reactExports.useContext(context);
@@ -10109,7 +10111,7 @@ function Provider({
     };
   }, [contextValue, previousState]);
   const Context = context || ReactReduxContext;
-  return /* @__PURE__ */ React.createElement(Context.Provider, {
+  return /* @__PURE__ */ reactExports.createElement(Context.Provider, {
     value: contextValue
   }, children);
 }
@@ -10615,15 +10617,15 @@ const DASHBOARD_LIST_FAILURE = "DASHBOARD_LIST_FAILURE";
 const DASHBOARD_COMPANY_REQUEST = "DASHBOARD_COMPANY_REQUEST";
 const DASHBOARD_COMPANY_SUCCESS = "DASHBOARD_COMPANY_SUCCESS";
 const DASHBOARD_COMPANY_FAILURE = "DASHBOARD_COMPANY_FAILURE";
-const DASHBOARD_BLUE_REQUEST = "DASHBOARD_BLUE_REQUEST";
-const DASHBOARD_BLUE_SUCCESS = "DASHBOARD_BLUE_SUCCESS";
-const DASHBOARD_BLUE_FAILURE = "DASHBOARD_BLUE_FAILURE";
-const DASHBOARD_BLUE_STORE_REQUEST = "DASHBOARD_BLUE_STORE_REQUEST";
-const DASHBOARD_BLUE_STORE_SUCCESS = "DASHBOARD_BLUE_STORE_SUCCESS";
-const DASHBOARD_BLUE_STORE_FAILURE = "DASHBOARD_BLUE_STORE_FAILURE";
-const DASHBOARD_BLUE_DESTROY_REQUEST = "DASHBOARD_BLUE_DESTROY_REQUEST";
-const DASHBOARD_BLUE_DESTROY_SUCCESS = "DASHBOARD_BLUE_DESTROY_SUCCESS";
-const DASHBOARD_BLUE_DESTROY_FAILURE = "DASHBOARD_BLUE_DESTROY_FAILURE";
+const DASHBOARD_BLUECHIP_REQUEST = "DASHBOARD_BLUECHIP_REQUEST";
+const DASHBOARD_BLUECHIP_SUCCESS = "DASHBOARD_BLUECHIP_SUCCESS";
+const DASHBOARD_BLUECHIP_FAILURE = "DASHBOARD_BLUECHIP_FAILURE";
+const DASHBOARD_BLUECHIP_STORE_REQUEST = "DASHBOARD_BLUECHIP_STORE_REQUEST";
+const DASHBOARD_BLUECHIP_STORE_SUCCESS = "DASHBOARD_BLUECHIP_STORE_SUCCESS";
+const DASHBOARD_BLUECHIP_STORE_FAILURE = "DASHBOARD_BLUECHIP_STORE_FAILURE";
+const DASHBOARD_BLUECHIP_DESTROY_REQUEST = "DASHBOARD_BLUECHIP_DESTROY_REQUEST";
+const DASHBOARD_BLUECHIP_DESTROY_SUCCESS = "DASHBOARD_BLUECHIP_DESTROY_SUCCESS";
+const DASHBOARD_BLUECHIP_DESTROY_FAILURE = "DASHBOARD_BLUECHIP_DESTROY_FAILURE";
 const DASHBOARD_EDGE_REQUEST = "DASHBOARD_EDGE_REQUEST";
 const DASHBOARD_EDGE_SUCCESS = "DASHBOARD_EDGE_SUCCESS";
 const DASHBOARD_EDGE_FAILURE = "DASHBOARD_EDGE_FAILURE";
@@ -10720,37 +10722,37 @@ const dashboardCompanyReducer = (state = {}, action) => {
       return state;
   }
 };
-const dashboardBlueReducer = (state = {}, action) => {
+const dashboardBluechipReducer = (state = {}, action) => {
   switch (action.type) {
-    case DASHBOARD_BLUE_REQUEST:
+    case DASHBOARD_BLUECHIP_REQUEST:
       return { loading: true };
-    case DASHBOARD_BLUE_SUCCESS:
-      return { loading: false, bluedash: action.payload };
-    case DASHBOARD_BLUE_FAILURE:
+    case DASHBOARD_BLUECHIP_SUCCESS:
+      return { loading: false, bluechip: action.payload };
+    case DASHBOARD_BLUECHIP_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
   }
 };
-const dashboardBlueStoreReducer = (state = {}, action) => {
+const dashboardBluechipStoreReducer = (state = {}, action) => {
   switch (action.type) {
-    case DASHBOARD_BLUE_STORE_REQUEST:
+    case DASHBOARD_BLUECHIP_STORE_REQUEST:
       return { loading: true };
-    case DASHBOARD_BLUE_STORE_SUCCESS:
+    case DASHBOARD_BLUECHIP_STORE_SUCCESS:
       return { loading: false, success: action.payload };
-    case DASHBOARD_BLUE_STORE_FAILURE:
+    case DASHBOARD_BLUECHIP_STORE_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
   }
 };
-const dashboardBlueDestroyReducer = (state = {}, action) => {
+const dashboardBluechipDestroyReducer = (state = {}, action) => {
   switch (action.type) {
-    case DASHBOARD_BLUE_DESTROY_REQUEST:
+    case DASHBOARD_BLUECHIP_DESTROY_REQUEST:
       return { loading: true };
-    case DASHBOARD_BLUE_DESTROY_SUCCESS:
+    case DASHBOARD_BLUECHIP_DESTROY_SUCCESS:
       return { loading: false, success: action.payload };
-    case DASHBOARD_BLUE_DESTROY_FAILURE:
+    case DASHBOARD_BLUECHIP_DESTROY_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -10804,91 +10806,121 @@ const dashboardStockLosserReducer = (state = {}, action) => {
       return state;
   }
 };
-const STOCK_BLUE_REQUEST = "STOCK_BLUE_REQUEST";
-const STOCK_BLUE_SUCCESS = "STOCK_BLUE_SUCCESS";
-const STOCK_BLUE_FAILURE = "STOCK_BLUE_FAILURE";
-const STOCK_COMMON_REQUEST = "STOCK_COMMON_REQUEST";
-const STOCK_COMMON_SUCCESS = "STOCK_COMMON_SUCCESS";
-const STOCK_COMMON_FAILURE = "STOCK_COMMON_FAILURE";
-const STOCK_WATCH_BUILD_REQUEST = "STOCK_WATCH_BUILD_REQUEST";
-const STOCK_WATCH_BUILD_SUCCESS = "STOCK_WATCH_BUILD_SUCCESS";
-const STOCK_WATCH_BUILD_FAILURE = "STOCK_WATCH_BUILD_FAILURE";
-const STOCK_WATCH_STORE_REQUEST = "STOCK_WATCH_STORE_REQUEST";
-const STOCK_WATCH_STORE_SUCCESS = "STOCK_WATCH_STORE_SUCCESS";
-const STOCK_WATCH_STORE_FAILURE = "STOCK_WATCH_STORE_FAILURE";
-const STOCK_WATCH_FETCH_REQUEST = "STOCK_WATCH_FETCH_REQUEST";
-const STOCK_WATCH_FETCH_SUCCESS = "STOCK_WATCH_FETCH_SUCCESS";
-const STOCK_WATCH_FETCH_FAILURE = "STOCK_WATCH_FETCH_FAILURE";
-const STOCK_WATCH_DESTROY_REQUEST = "STOCK_WATCH_DESTROY_REQUEST";
-const STOCK_WATCH_DESTROY_SUCCESS = "STOCK_WATCH_DESTROY_SUCCESS";
-const STOCK_WATCH_DESTROY_FAILURE = "STOCK_WATCH_DESTROY_FAILURE";
-const stockBlueReducer = (state = {}, action) => {
+const WATCHLIST_BUILD_REQUEST = "WATCHLIST_BUILD_REQUEST";
+const WATCHLIST_BUILD_SUCCESS = "WATCHLIST_BUILD_SUCCESS";
+const WATCHLIST_BUILD_FAILURE = "WATCHLIST_BUILD_FAILURE";
+const WATCHLIST_FETCH_REQUEST = "WATCHLIST_FETCH_REQUEST";
+const WATCHLIST_FETCH_SUCCESS = "WATCHLIST_FETCH_SUCCESS";
+const WATCHLIST_FETCH_FAILURE = "WATCHLIST_FETCH_FAILURE";
+const WATCHLIST_STORE_REQUEST = "WATCHLIST_STORE_REQUEST";
+const WATCHLIST_STORE_SUCCESS = "WATCHLIST_STORE_SUCCESS";
+const WATCHLIST_STORE_FAILURE = "WATCHLIST_STORE_FAILURE";
+const WATCHLIST_DESTROY_REQUEST = "WATCHLIST_DESTROY_REQUEST";
+const WATCHLIST_DESTROY_SUCCESS = "WATCHLIST_DESTROY_SUCCESS";
+const WATCHLIST_DESTROY_FAILURE = "WATCHLIST_DESTROY_FAILURE";
+const watchlistBuildReducer = (state = {}, action) => {
   switch (action.type) {
-    case STOCK_BLUE_REQUEST:
+    case WATCHLIST_BUILD_REQUEST:
       return { loading: true };
-    case STOCK_BLUE_SUCCESS:
-      return { loading: false, bluechip: action.payload };
-    case STOCK_BLUE_FAILURE:
+    case WATCHLIST_BUILD_SUCCESS:
+      return { loading: false, watchbuild: action.payload };
+    case WATCHLIST_BUILD_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
   }
 };
-const stockCommonReducer = (state = {}, action) => {
+const watchlistStoreReducer = (state = {}, action) => {
   switch (action.type) {
-    case STOCK_COMMON_REQUEST:
+    case WATCHLIST_STORE_REQUEST:
       return { loading: true };
-    case STOCK_COMMON_SUCCESS:
-      return { loading: false, common: action.payload };
-    case STOCK_COMMON_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-const stockWatchBuildReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_WATCH_BUILD_REQUEST:
-      return { loading: true };
-    case STOCK_WATCH_BUILD_SUCCESS:
-      return { loading: false, build: action.payload };
-    case STOCK_WATCH_BUILD_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-const stockWatchStoreReducer = (state = {}, action) => {
-  switch (action.type) {
-    case STOCK_WATCH_STORE_REQUEST:
-      return { loading: true };
-    case STOCK_WATCH_STORE_SUCCESS:
+    case WATCHLIST_STORE_SUCCESS:
       return { loading: false, success: action.payload };
-    case STOCK_WATCH_STORE_FAILURE:
+    case WATCHLIST_STORE_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
   }
 };
-const stockWatchFetchReducer = (state = {}, action) => {
+const watchlistFetchReducer = (state = {}, action) => {
   switch (action.type) {
-    case STOCK_WATCH_FETCH_REQUEST:
+    case WATCHLIST_FETCH_REQUEST:
       return { loading: true };
-    case STOCK_WATCH_FETCH_SUCCESS:
+    case WATCHLIST_FETCH_SUCCESS:
       return { loading: false, watchlist: action.payload };
-    case STOCK_WATCH_FETCH_FAILURE:
+    case WATCHLIST_FETCH_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
   }
 };
-const stockWatchDestroyReducer = (state = {}, action) => {
+const watchlistDestroyReducer = (state = {}, action) => {
   switch (action.type) {
-    case STOCK_WATCH_FETCH_REQUEST:
+    case WATCHLIST_FETCH_REQUEST:
       return { loading: true };
-    case STOCK_WATCH_FETCH_SUCCESS:
+    case WATCHLIST_FETCH_SUCCESS:
       return { loading: false, success: action.payload };
-    case STOCK_WATCH_FETCH_FAILURE:
+    case WATCHLIST_FETCH_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const TRADE_BLUECHIP_REQUEST = "TRADE_BLUECHIP_REQUEST";
+const TRADE_BLUECHIP_SUCCESS = "TRADE_BLUECHIP_SUCCESS";
+const TRADE_BLUECHIP_FAILURE = "TRADE_BLUECHIP_FAILURE";
+const TRADE_COMMON_REQUEST = "TRADE_COMMON_REQUEST";
+const TRADE_COMMON_SUCCESS = "TRADE_COMMON_SUCCESS";
+const TRADE_COMMON_FAILURE = "TRADE_COMMON_FAILURE";
+const TRADE_STORE_REQUEST = "TRADE_STORE_REQUEST";
+const TRADE_STORE_SUCCESS = "TRADE_STORE_SUCCESS";
+const TRADE_STORE_FAILURE = "TRADE_STORE_FAILURE";
+const tradeBluechipReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TRADE_BLUECHIP_REQUEST:
+      return { loading: true };
+    case TRADE_BLUECHIP_SUCCESS:
+      return { loading: false, bluechip: action.payload };
+    case TRADE_BLUECHIP_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const tradeCommonReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TRADE_COMMON_REQUEST:
+      return { loading: true };
+    case TRADE_COMMON_SUCCESS:
+      return { loading: false, common: action.payload };
+    case TRADE_COMMON_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const tradeStoreReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TRADE_STORE_REQUEST:
+      return { loading: true };
+    case TRADE_STORE_SUCCESS:
+      return { loading: false, success: action.payload };
+    case TRADE_STORE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+const CHART_WATCHLIST_REQUEST = "CHART_WATCHLIST_REQUEST";
+const CHART_WATCHLIST_SUCCESS = "CHART_WATCHLIST_SUCCESS";
+const CHART_WATCHLIST_FAILURE = "CHART_WATCHLIST_FAILURE";
+const chartWatchlistReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CHART_WATCHLIST_REQUEST:
+      return { loading: true };
+    case CHART_WATCHLIST_SUCCESS:
+      return { loading: false, watchbuild: action.payload };
+    case CHART_WATCHLIST_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -10908,42 +10940,46 @@ const reducer = combineReducers({
   dashboardSector: dashboardSectorReducer,
   dashboardList: dashboardListReducer,
   dashboardCompany: dashboardCompanyReducer,
-  dashboardBlue: dashboardBlueReducer,
-  dashboardBlueStore: dashboardBlueStoreReducer,
-  dashboardBlueDestroy: dashboardBlueDestroyReducer,
+  dashboardBluechip: dashboardBluechipReducer,
+  dashboardBluechipStore: dashboardBluechipStoreReducer,
+  dashboardBluechipDestroy: dashboardBluechipDestroyReducer,
   dashboardEdge: dashboardEdgeReducer,
   dashboardEdgeUpdate: dashboardEdgeUpdateReducer,
   dashboardStockGainer: dashboardStockGainerReducer,
   dashboardStockLosser: dashboardStockLosserReducer,
-  stockBlue: stockBlueReducer,
-  stockCommon: stockCommonReducer,
-  stockWatchBuild: stockWatchBuildReducer,
-  stockWatchStore: stockWatchStoreReducer,
-  stockWatchFetch: stockWatchFetchReducer,
-  stockWatchDestroy: stockWatchDestroyReducer,
+  watchlistBuild: watchlistBuildReducer,
+  watchlistStore: watchlistStoreReducer,
+  watchlistFetch: watchlistFetchReducer,
+  watchlistDestroy: watchlistDestroyReducer,
+  tradeBluechip: tradeBluechipReducer,
+  tradeCommon: tradeCommonReducer,
+  tradeStore: tradeStoreReducer,
+  chartWatchlist: chartWatchlistReducer,
   showMessage: showMessageReducer
 });
 const accountFromStorage = localStorage.getItem("account") ? JSON.parse(localStorage.getItem("account")) : {};
 const tokenFromStorage = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : { valid: false };
-const bluechipFromStorage = localStorage.getItem("bluechip") ? JSON.parse(localStorage.getItem("bluechip")) : {};
-const commonFromStorage = localStorage.getItem("common") ? JSON.parse(localStorage.getItem("common")) : {};
-const buildFromStorage = localStorage.getItem("build") ? JSON.parse(localStorage.getItem("build")) : {};
-const fetchFromStorage = localStorage.getItem("fetch") ? JSON.parse(localStorage.getItem("fetch")) : {};
-const bluedashFromStorage = localStorage.getItem("bluedash") ? JSON.parse(localStorage.getItem("bluedash")) : {};
-const edgeFromStorage = localStorage.getItem("edge") ? JSON.parse(localStorage.getItem("edge")) : {};
-const stockGainerFromStorage = localStorage.getItem("stockgainer") ? JSON.parse(localStorage.getItem("stockgainer")) : {};
-const stockLosserFromStorage = localStorage.getItem("stocklosser") ? JSON.parse(localStorage.getItem("stocklosser")) : {};
+const dashboardBluechipFromStorage = localStorage.getItem("dashboardBluechip") ? JSON.parse(localStorage.getItem("dashboardBluechip")) : {};
+const dashboardEdgeFromStorage = localStorage.getItem("dashboardEdge") ? JSON.parse(localStorage.getItem("dashboardEdge")) : {};
+const dashboardStockGainerFromStorage = localStorage.getItem("dashboardStockGainer") ? JSON.parse(localStorage.getItem("dashboardStockGainer")) : {};
+const dashboardStockLosserFromStorage = localStorage.getItem("dashboardStockLosser") ? JSON.parse(localStorage.getItem("dashboardStockLosser")) : {};
+const watchlistBuildFromStorage = localStorage.getItem("watchlistBuild") ? JSON.parse(localStorage.getItem("watchlistBuild")) : {};
+const watchlistFetchFromStorage = localStorage.getItem("watchlistFetch") ? JSON.parse(localStorage.getItem("watchlistFetch")) : {};
+const tradeBluechipFromStorage = localStorage.getItem("tradeBluechip") ? JSON.parse(localStorage.getItem("tradeBluechip")) : {};
+const tradeCommonFromStorage = localStorage.getItem("tradeCommon") ? JSON.parse(localStorage.getItem("tradeCommon")) : {};
+const chartWatchlistFromStorage = localStorage.getItem("chartWatchlist") ? JSON.parse(localStorage.getItem("chartWatchlist")) : {};
 const initialState = {
   userLogin: accountFromStorage,
   userToken: tokenFromStorage,
-  dashboardBlue: bluedashFromStorage,
-  dashboardEdge: edgeFromStorage,
-  dashboardStockGainer: stockGainerFromStorage,
-  dashboardStockLosser: stockLosserFromStorage,
-  stockBlue: bluechipFromStorage,
-  stockCommon: commonFromStorage,
-  stockWatchBuild: buildFromStorage,
-  stockWatchFetch: fetchFromStorage
+  dashboardBluechip: dashboardBluechipFromStorage,
+  dashboardEdge: dashboardEdgeFromStorage,
+  dashboardStockGainer: dashboardStockGainerFromStorage,
+  dashboardStockLosser: dashboardStockLosserFromStorage,
+  watchlistBuild: watchlistBuildFromStorage,
+  watchlistFetch: watchlistFetchFromStorage,
+  tradeBluechip: tradeBluechipFromStorage,
+  tradeCommon: tradeCommonFromStorage,
+  chartWatchlist: chartWatchlistFromStorage
 };
 const middleware = [thunk$1];
 const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
@@ -12143,7 +12179,7 @@ function shouldProcessLinkClick(event, target) {
 }
 const _excluded = ["onClick", "relative", "reloadDocument", "replace", "state", "target", "to", "preventScrollReset"];
 const START_TRANSITION = "startTransition";
-const startTransitionImpl = React$1[START_TRANSITION];
+const startTransitionImpl = React[START_TRANSITION];
 function BrowserRouter(_ref) {
   let {
     basename,
@@ -12494,14 +12530,15 @@ const logoutUser = (token) => async (dispatch) => {
     if (data) {
       localStorage.removeItem("account");
       localStorage.removeItem("token");
-      localStorage.removeItem("bluechip");
-      localStorage.removeItem("fetch");
-      localStorage.removeItem("common");
-      localStorage.removeItem("build");
-      localStorage.removeItem("bluedash");
-      localStorage.removeItem("edge");
-      localStorage.removeItem("stockgainer");
-      localStorage.removeItem("stocklosser");
+      localStorage.removeItem("dashboardBluechip");
+      localStorage.removeItem("dashboardEdge");
+      localStorage.removeItem("dashboardStockGainer");
+      localStorage.removeItem("dashboardStockLosser");
+      localStorage.removeItem("watchlistBuild");
+      localStorage.removeItem("watchlistFetch");
+      localStorage.removeItem("tradeBluechip");
+      localStorage.removeItem("tradeCommon");
+      localStorage.removeItem("chartWatchlist");
     }
   } catch (error) {
     dispatch({
@@ -12534,14 +12571,15 @@ const tokenUser = (token) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_CLEAR });
     localStorage.removeItem("account");
     localStorage.removeItem("token");
-    localStorage.removeItem("bluechip");
-    localStorage.removeItem("fetch");
-    localStorage.removeItem("common");
-    localStorage.removeItem("build");
-    localStorage.removeItem("bluedash");
-    localStorage.removeItem("edge");
-    localStorage.removeItem("stockgainer");
-    localStorage.removeItem("stocklosser");
+    localStorage.removeItem("dashboardBluechip");
+    localStorage.removeItem("dashboardEdge");
+    localStorage.removeItem("dashboardStockGainer");
+    localStorage.removeItem("dashboardStockLosser");
+    localStorage.removeItem("watchlistBuild");
+    localStorage.removeItem("watchlistFetch");
+    localStorage.removeItem("tradeBluechip");
+    localStorage.removeItem("tradeCommon");
+    localStorage.removeItem("chartWatchlist");
     dispatch({
       type: USER_TOKEN_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
@@ -12584,6 +12622,11 @@ const Header = () => {
       dispatch(logoutUser(access_token));
     }
   };
+  reactExports.useEffect(() => {
+    if (valid && !access_token) {
+      dispatch(tokenUser(access_token));
+    }
+  }, [access_token]);
   const burgerClasses = isBurger ? "hamburger hamburger-elastic is-active" : "hamburger hamburger-elastic";
   const controlTemplate = /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "nav",
@@ -13739,7 +13782,7 @@ const stockLeaderBoard = (props) => {
     }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "No record found." }) })
   ] });
 };
-const actDashboardStart = (token) => async (dispatch) => {
+const startDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_START_REQUEST });
     const { data } = await axios({
@@ -13786,7 +13829,7 @@ const actDashboardStart = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardPrice = (token) => async (dispatch) => {
+const priceDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_PRICE_REQUEST });
     const { data } = await axios({
@@ -13842,7 +13885,7 @@ const actDashboardPrice = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardReport = (token) => async (dispatch) => {
+const reportDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_REPORT_REQUEST });
     const { data } = await axios({
@@ -13898,7 +13941,7 @@ const actDashboardReport = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardDividend = (token) => async (dispatch) => {
+const dividendDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_DIVIDEND_REQUEST });
     const { data } = await axios({
@@ -13954,7 +13997,7 @@ const actDashboardDividend = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardSector = (token) => async (dispatch) => {
+const sectorDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_SECTOR_REQUEST });
     const { data } = await axios({
@@ -14010,7 +14053,7 @@ const actDashboardSector = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardList = (token) => async (dispatch) => {
+const listDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_LIST_REQUEST });
     const { data } = await axios({
@@ -14042,7 +14085,7 @@ const actDashboardList = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardCompany = (token) => async (dispatch) => {
+const companyDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_COMPANY_REQUEST });
     const { data } = await axios({
@@ -14098,9 +14141,9 @@ const actDashboardCompany = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardBlue = (token) => async (dispatch) => {
+const bluechipDashboard = (token) => async (dispatch) => {
   try {
-    dispatch({ type: DASHBOARD_BLUE_REQUEST });
+    dispatch({ type: DASHBOARD_BLUECHIP_REQUEST });
     const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
@@ -14116,13 +14159,13 @@ const actDashboardBlue = (token) => async (dispatch) => {
       type: MESSAGE_SHOW_SUCCESS,
       payload: message
     });
-    dispatch({ type: DASHBOARD_BLUE_SUCCESS, payload: stocks });
+    dispatch({ type: DASHBOARD_BLUECHIP_SUCCESS, payload: stocks });
     if (stocks) {
-      localStorage.setItem("bluedash", JSON.stringify(stocks));
+      localStorage.setItem("dashboardBluechip", JSON.stringify(stocks));
     }
   } catch (error) {
     dispatch({
-      type: DASHBOARD_BLUE_FAILURE,
+      type: DASHBOARD_BLUECHIP_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -14131,9 +14174,9 @@ const actDashboardBlue = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardBlueStore = ({ token, symbol }) => async (dispatch) => {
+const bluechipStoreDashboard = ({ token, symbol }) => async (dispatch) => {
   try {
-    dispatch({ type: DASHBOARD_BLUE_STORE_REQUEST });
+    dispatch({ type: DASHBOARD_BLUECHIP_STORE_REQUEST });
     const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
@@ -14149,10 +14192,10 @@ const actDashboardBlueStore = ({ token, symbol }) => async (dispatch) => {
     });
     let message = data.message;
     dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
-    dispatch({ type: DASHBOARD_BLUE_STORE_SUCCESS, payload: message });
+    dispatch({ type: DASHBOARD_BLUECHIP_STORE_SUCCESS, payload: message });
   } catch (error) {
     dispatch({
-      type: DASHBOARD_BLUE_STORE_FAILURE,
+      type: DASHBOARD_BLUECHIP_STORE_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -14161,9 +14204,9 @@ const actDashboardBlueStore = ({ token, symbol }) => async (dispatch) => {
     });
   }
 };
-const actDashboardBlueDestroy = ({ token, symbol }) => async (dispatch) => {
+const bluechipDestroyDashboard = ({ token, symbol }) => async (dispatch) => {
   try {
-    dispatch({ type: DASHBOARD_BLUE_DESTROY_REQUEST });
+    dispatch({ type: DASHBOARD_BLUECHIP_DESTROY_REQUEST });
     const { data } = await axios({
       headers: {
         "Content-Type": "application/json",
@@ -14180,12 +14223,12 @@ const actDashboardBlueDestroy = ({ token, symbol }) => async (dispatch) => {
     let message = data.message;
     dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
     dispatch({
-      type: DASHBOARD_BLUE_DESTROY_SUCCESS,
+      type: DASHBOARD_BLUECHIP_DESTROY_SUCCESS,
       payload: message
     });
   } catch (error) {
     dispatch({
-      type: DASHBOARD_BLUE_DESTROY_FAILURE,
+      type: DASHBOARD_BLUECHIP_DESTROY_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -14194,7 +14237,7 @@ const actDashboardBlueDestroy = ({ token, symbol }) => async (dispatch) => {
     });
   }
 };
-const actDashboardEdge = (token) => async (dispatch) => {
+const edgeDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_EDGE_REQUEST });
     const { data } = await axios({
@@ -14214,7 +14257,7 @@ const actDashboardEdge = (token) => async (dispatch) => {
     });
     dispatch({ type: DASHBOARD_EDGE_SUCCESS, payload: stocks });
     if (stocks) {
-      localStorage.setItem("edge", JSON.stringify(stocks));
+      localStorage.setItem("dashboardEdge", JSON.stringify(stocks));
     }
   } catch (error) {
     dispatch({
@@ -14227,7 +14270,7 @@ const actDashboardEdge = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardEdgeUpdate = (props) => async (dispatch) => {
+const edgeUpdateDashboard = (props) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_EDGE_UPDATE_REQUEST });
     const { data } = await axios({
@@ -14258,7 +14301,7 @@ const actDashboardEdgeUpdate = (props) => async (dispatch) => {
     });
   }
 };
-const actDashboardStockGainer = (token) => async (dispatch) => {
+const stockGainerDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_STOCK_GAINER_REQUEST });
     const { data } = await axios({
@@ -14278,7 +14321,7 @@ const actDashboardStockGainer = (token) => async (dispatch) => {
     });
     dispatch({ type: DASHBOARD_STOCK_GAINER_SUCCESS, payload: stocks });
     if (stocks) {
-      localStorage.setItem("stockgainer", JSON.stringify(stocks));
+      localStorage.setItem("dashboardStockGainer", JSON.stringify(stocks));
     }
   } catch (error) {
     dispatch({
@@ -14291,7 +14334,7 @@ const actDashboardStockGainer = (token) => async (dispatch) => {
     });
   }
 };
-const actDashboardStockLosser = (token) => async (dispatch) => {
+const stockLosserDashboard = (token) => async (dispatch) => {
   try {
     dispatch({ type: DASHBOARD_STOCK_LOSSER_REQUEST });
     const { data } = await axios({
@@ -14311,7 +14354,7 @@ const actDashboardStockLosser = (token) => async (dispatch) => {
     });
     dispatch({ type: DASHBOARD_STOCK_LOSSER_SUCCESS, payload: stocks });
     if (stocks) {
-      localStorage.setItem("stocklosser", JSON.stringify(stocks));
+      localStorage.setItem("dashboardStockLosser", JSON.stringify(stocks));
     }
   } catch (error) {
     dispatch({
@@ -14329,8 +14372,8 @@ const Dashboard = () => {
   const { loading, access_token, email_verified } = userLogin;
   const userToken = useSelector((state) => state.userToken);
   const { valid } = userToken;
-  const dashboardBlue = useSelector((state) => state.dashboardBlue);
-  const { loading: loadBlue, bluedash } = dashboardBlue;
+  const dashboardBluechip = useSelector((state) => state.dashboardBluechip);
+  const { loading: loadBluechip, bluechip } = dashboardBluechip;
   const dashboardEdge = useSelector((state) => state.dashboardEdge);
   const { loading: loadEdge, edge } = dashboardEdge;
   const dashboardStockGainer = useSelector((state) => state.dashboardStockGainer);
@@ -14378,14 +14421,17 @@ const Dashboard = () => {
         clearTimeout(timeout);
       };
     }
-    if (valid && !bluedash) {
-      dispatch(actDashboardBlue(access_token));
+    if (valid && !edge) {
+      dispatch(edgeDashboard(access_token));
+    }
+    if (valid && !bluechip) {
+      dispatch(bluechipDashboard(access_token));
     }
     if (valid && !stockgainer) {
-      dispatch(actDashboardStockGainer(access_token));
+      dispatch(stockGainerDashboard(access_token));
     }
     if (valid && !stockgainer) {
-      dispatch(actDashboardStockLosser(access_token));
+      dispatch(stockLosserDashboard(access_token));
     }
     if (message) {
       setNotice(true);
@@ -14393,32 +14439,32 @@ const Dashboard = () => {
         setNotice(false);
       }, 5e3);
     }
-  }, [access_token, valid, error, message, bluedash, stockgainer, stocklosser]);
+  }, [access_token, valid, error, message, bluechip, stockgainer, stocklosser]);
   const [verify, setVerify] = reactExports.useState(email_verified);
   const resendHandler = () => {
     setVerify(true);
     dispatch(resendEmail(access_token));
   };
   const dashboardStartHandler = () => {
-    dispatch(actDashboardStart(access_token));
+    dispatch(startDashboard(access_token));
   };
   const dashboardPriceHandler = () => {
-    dispatch(actDashboardPrice(access_token));
+    dispatch(priceDashboard(access_token));
   };
   const dashboardReportHandler = () => {
-    dispatch(actDashboardReport(access_token));
+    dispatch(reportDashboard(access_token));
   };
   const dashboardDividendHandler = () => {
-    dispatch(actDashboardDividend(access_token));
+    dispatch(dividendDashboard(access_token));
   };
   const dashboardSectorHandler = () => {
-    dispatch(actDashboardSector(access_token));
+    dispatch(sectorDashboard(access_token));
   };
   const dashboardListHandler = () => {
-    dispatch(actDashboardList(access_token));
+    dispatch(listDashboard(access_token));
   };
   const dashboardCompanyHandler = () => {
-    dispatch(actDashboardCompany(access_token));
+    dispatch(companyDashboard(access_token));
   };
   const bluechipModalHandler = () => {
     setModalBlue(true);
@@ -14428,18 +14474,18 @@ const Dashboard = () => {
   };
   const updateBlueHandler = ({ statement, value }) => {
     if (value && statement === "store") {
-      dispatch(actDashboardBlueStore({ token: access_token, symbol: value }));
+      dispatch(bluechipStoreDashboard({ token: access_token, symbol: value }));
       const timeout = setTimeout(() => {
-        dispatch(actDashboardBlue(access_token));
+        dispatch(bluechipDashboard(access_token));
       }, 3e3);
       return () => {
         clearTimeout(timeout);
       };
     }
     if (value && statement === "destroy") {
-      dispatch(actDashboardBlueDestroy({ token: access_token, symbol: value }));
+      dispatch(bluechipDestroyDashboard({ token: access_token, symbol: value }));
       const timeout = setTimeout(() => {
-        dispatch(actDashboardBlue(access_token));
+        dispatch(bluechipDashboard(access_token));
       }, 3e3);
       return () => {
         clearTimeout(timeout);
@@ -14449,14 +14495,14 @@ const Dashboard = () => {
   const storeEdgeHandler = ({ symbol, value }) => {
     if (symbol && value) {
       dispatch(
-        actDashboardEdgeUpdate({
+        edgeUpdateDashboard({
           token: access_token,
           symbol,
           edge: value
         })
       );
       const timeout = setTimeout(() => {
-        dispatch(actDashboardEdge(access_token));
+        dispatch(edgeDashboard(access_token));
       }, 3e3);
       return () => {
         clearTimeout(timeout);
@@ -14570,7 +14616,7 @@ const Dashboard = () => {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale", children: "Doughnut Chart" })
         ] }),
         modalBlue && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: modalBlueTemplate({
-          data: bluedash,
+          data: bluechip,
           header: "Bluechip",
           close: closeModalHandler,
           action: updateBlueHandler,
@@ -15080,75 +15126,9 @@ const mobileModalTemplate = ({ item, action, close, icon, text }) => {
     })
   ] });
 };
-const actStockBluechip = (token) => async (dispatch) => {
+const buildWatchlist = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_BLUE_REQUEST });
-    const { data } = await axios$2({
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      method: "GET",
-      url: "/api/stock-trade-retrieve",
-      params: { section: "blue" }
-    });
-    let stocks = data.stocks;
-    let message = data.message;
-    dispatch({
-      type: MESSAGE_SHOW_SUCCESS,
-      payload: message
-    });
-    dispatch({ type: STOCK_BLUE_SUCCESS, payload: stocks });
-    if (stocks) {
-      localStorage.setItem("bluechip", JSON.stringify(stocks));
-    }
-  } catch (error) {
-    dispatch({
-      type: STOCK_BLUE_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-    dispatch({
-      type: MESSAGE_SHOW_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-  }
-};
-const actStockCommon = (token) => async (dispatch) => {
-  try {
-    dispatch({ type: STOCK_COMMON_REQUEST });
-    const { data } = await axios$2({
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      method: "GET",
-      url: "/api/stock-trade-retrieve",
-      params: { section: "common" }
-    });
-    let stocks = data.stocks;
-    let message = data.message;
-    dispatch({
-      type: MESSAGE_SHOW_SUCCESS,
-      payload: message
-    });
-    dispatch({ type: STOCK_COMMON_SUCCESS, payload: stocks });
-    if (stocks) {
-      localStorage.setItem("common", JSON.stringify(stocks));
-    }
-  } catch (error) {
-    dispatch({
-      type: STOCK_COMMON_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-    dispatch({
-      type: MESSAGE_SHOW_FAILURE,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
-    });
-  }
-};
-const actStockWatchBuild = (token) => async (dispatch) => {
-  try {
-    dispatch({ type: STOCK_WATCH_BUILD_REQUEST });
+    dispatch({ type: WATCHLIST_BUILD_REQUEST });
     const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json",
@@ -15164,13 +15144,13 @@ const actStockWatchBuild = (token) => async (dispatch) => {
       type: MESSAGE_SHOW_SUCCESS,
       payload: message
     });
-    dispatch({ type: STOCK_WATCH_BUILD_SUCCESS, payload: stocks });
+    dispatch({ type: WATCHLIST_BUILD_SUCCESS, payload: stocks });
     if (stocks) {
-      localStorage.setItem("build", JSON.stringify(stocks));
+      localStorage.setItem("watchlistBuild", JSON.stringify(stocks));
     }
   } catch (error) {
     dispatch({
-      type: STOCK_WATCH_BUILD_FAILURE,
+      type: WATCHLIST_BUILD_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -15179,9 +15159,9 @@ const actStockWatchBuild = (token) => async (dispatch) => {
     });
   }
 };
-const actStockWatchStore = (token, input) => async (dispatch) => {
+const storeWatchlist = (token, input) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_WATCH_STORE_REQUEST });
+    dispatch({ type: WATCHLIST_STORE_REQUEST });
     const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json",
@@ -15196,10 +15176,10 @@ const actStockWatchStore = (token, input) => async (dispatch) => {
       type: MESSAGE_SHOW_SUCCESS,
       payload: message
     });
-    dispatch({ type: STOCK_WATCH_STORE_SUCCESS, payload: message });
+    dispatch({ type: WATCHLIST_STORE_SUCCESS, payload: message });
   } catch (error) {
     dispatch({
-      type: STOCK_WATCH_STORE_FAILURE,
+      type: WATCHLIST_STORE_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -15208,9 +15188,9 @@ const actStockWatchStore = (token, input) => async (dispatch) => {
     });
   }
 };
-const actStockWatchFetch = (token) => async (dispatch) => {
+const fetchWatchlist = (token) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_WATCH_FETCH_REQUEST });
+    dispatch({ type: WATCHLIST_FETCH_REQUEST });
     const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json",
@@ -15226,13 +15206,13 @@ const actStockWatchFetch = (token) => async (dispatch) => {
       type: MESSAGE_SHOW_SUCCESS,
       payload: message
     });
-    dispatch({ type: STOCK_WATCH_FETCH_SUCCESS, payload: stocks });
+    dispatch({ type: WATCHLIST_FETCH_SUCCESS, payload: stocks });
     if (stocks) {
-      localStorage.setItem("fetch", JSON.stringify(stocks));
+      localStorage.setItem("watchlistFetch", JSON.stringify(stocks));
     }
   } catch (error) {
     dispatch({
-      type: STOCK_WATCH_FETCH_FAILURE,
+      type: WATCHLIST_FETCH_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -15241,9 +15221,9 @@ const actStockWatchFetch = (token) => async (dispatch) => {
     });
   }
 };
-const actStockWatchDestroy = (token, input) => async (dispatch) => {
+const destroyWatchlist = (token, input) => async (dispatch) => {
   try {
-    dispatch({ type: STOCK_WATCH_DESTROY_REQUEST });
+    dispatch({ type: WATCHLIST_DESTROY_REQUEST });
     const { data } = await axios$2({
       headers: {
         "Content-Type": "application/json",
@@ -15258,10 +15238,10 @@ const actStockWatchDestroy = (token, input) => async (dispatch) => {
       type: MESSAGE_SHOW_SUCCESS,
       payload: message
     });
-    dispatch({ type: STOCK_WATCH_DESTROY_SUCCESS, payload: message });
+    dispatch({ type: WATCHLIST_DESTROY_SUCCESS, payload: message });
   } catch (error) {
     dispatch({
-      type: STOCK_WATCH_DESTROY_FAILURE,
+      type: WATCHLIST_DESTROY_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     });
     dispatch({
@@ -15278,14 +15258,15 @@ const Watchlist = () => {
   const { access_token } = userLogin;
   const userToken = useSelector((state) => state.userToken);
   const { valid } = userToken;
-  const stockWatchBuild = useSelector((state) => state.stockWatchBuild);
-  const { loading: loadBuild, build } = stockWatchBuild;
-  const stockWatchFetch = useSelector((state) => state.stockWatchFetch);
-  const { loading: loadFetch, watchlist } = stockWatchFetch;
+  const watchlistBuild = useSelector((state) => state.watchlistBuild);
+  const { loading: loadBuild, watchbuild } = watchlistBuild;
+  const watchlistFetch = useSelector((state) => state.watchlistFetch);
+  const { loading: loadFetch, watchlist } = watchlistFetch;
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
   const { isMobile } = useScreen();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const showModalBuildHandler = () => {
     setModalBuild(true);
   };
@@ -15296,25 +15277,24 @@ const Watchlist = () => {
     setModalBuild(false);
     setModalSearch(false);
     const timeout = setTimeout(() => {
-      dispatch(actStockWatchFetch(access_token));
+      dispatch(fetchWatchlist(access_token));
     }, 3e3);
     return () => {
       clearTimeout(timeout);
     };
   };
   const storeHandler = (symbol) => {
-    dispatch(actStockWatchStore(access_token, symbol));
+    dispatch(storeWatchlist(access_token, symbol));
   };
   const deleteHandler = (symbol) => {
-    dispatch(actStockWatchDestroy(access_token, symbol));
+    dispatch(destroyWatchlist(access_token, symbol));
     const timeout = setTimeout(() => {
-      dispatch(actStockWatchFetch(access_token));
+      dispatch(fetchWatchlist(access_token));
     }, 3e3);
     return () => {
       clearTimeout(timeout);
     };
   };
-  const dispatch = useDispatch();
   reactExports.useEffect(() => {
     if (!valid && access_token) {
       dispatch(tokenUser(access_token));
@@ -15324,11 +15304,11 @@ const Watchlist = () => {
     } else {
       navigate("/auth/login");
     }
-    if (valid && !build) {
-      dispatch(actStockWatchBuild(access_token));
+    if (valid && !watchbuild) {
+      dispatch(buildWatchlist(access_token));
     }
     if (valid && !watchlist) {
-      dispatch(actStockWatchFetch(access_token));
+      dispatch(fetchWatchlist(access_token));
     }
     if (message) {
       setNotice(true);
@@ -15336,7 +15316,7 @@ const Watchlist = () => {
         setNotice(false);
       }, 3e3);
     }
-  }, [access_token, valid, build, watchlist, message]);
+  }, [access_token, valid, watchbuild, watchlist, message]);
   const containerWatchlistHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row justify-between", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { clasName: "block p-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "trade" }),
@@ -15367,7 +15347,7 @@ const Watchlist = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 hover:text-purple-500", children: "Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its stock divided by its current stock price." })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(Container, { header: containerWatchlistHeader, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: isMobile ? modalBuild && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: loadBuild ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : build && Object.entries(build).map((item) => {
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: isMobile ? modalBuild && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: loadBuild ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : watchbuild && Object.entries(watchbuild).map((item) => {
         return mobileModalTemplate({
           item,
           text: "add",
@@ -15375,7 +15355,7 @@ const Watchlist = () => {
           close: closeModalHandler,
           action: storeHandler
         });
-      }) }) : modalBuild && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: loadBuild ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : build && Object.entries(build).map((item) => {
+      }) }) : modalBuild && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: loadBuild ? /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {}) : watchbuild && Object.entries(watchbuild).map((item) => {
         return desktopModalTemplate({
           item,
           text: "add",
@@ -15406,15 +15386,110 @@ const Watchlist = () => {
     ] })
   ] });
 };
+const bluechipTrade = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: TRADE_BLUECHIP_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/stock-trade-retrieve",
+      params: { section: "bluechip" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: TRADE_BLUECHIP_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("tradeBluechip", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: TRADE_BLUECHIP_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const commonTrade = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: TRADE_COMMON_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/stock-trade-retrieve",
+      params: { section: "common" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: TRADE_COMMON_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("tradeCommon", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: TRADE_COMMON_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
+const storeTrade = (token, input) => async (dispatch) => {
+  try {
+    dispatch({ type: TRADE_STORE_REQUEST });
+    const { data } = await axios$2({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "POST",
+      url: "/api/stock-watchlist-store",
+      params: { section: "store", symbol: input }
+    });
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: TRADE_STORE_SUCCESS, payload: message });
+  } catch (error) {
+    dispatch({
+      type: TRADE_STORE_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const Trade = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { access_token } = userLogin;
   const userToken = useSelector((state) => state.userToken);
   const { valid } = userToken;
-  const stockBlue = useSelector((state) => state.stockBlue);
-  const { loading: loadBlue, bluechip } = stockBlue;
-  const stockCommon = useSelector((state) => state.stockCommon);
-  const { loading: loadCommon, common } = stockCommon;
+  const tradeBluechip = useSelector((state) => state.tradeBluechip);
+  const { loading: loadBlue, bluechip } = tradeBluechip;
+  const tradeCommon = useSelector((state) => state.tradeCommon);
+  const { loading: loadCommon, common } = tradeCommon;
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
   const { isMobile } = useScreen();
@@ -15439,10 +15514,10 @@ const Trade = () => {
       navigate("/auth/login");
     }
     if (valid && !bluechip) {
-      dispatch(actStockBluechip(access_token));
+      dispatch(bluechipTrade(access_token));
     }
     if (valid && !common) {
-      dispatch(actStockCommon(access_token));
+      dispatch(commonTrade(access_token));
     }
     if (valid && bluechip) {
       const { pages: bluechipPages, chunks: bluechipChunks2 } = chunkObject({
@@ -15474,10 +15549,10 @@ const Trade = () => {
     setBluechipChunk(bluechipChunks[index2]);
   };
   const storeHandler = (symbol) => {
-    dispatch(actStockWatchStore(access_token, symbol));
+    dispatch(storeTrade(access_token, symbol));
     const timeout = setTimeout(() => {
-      dispatch(actStockBluechip(access_token));
-      dispatch(actStockCommon(access_token));
+      dispatch(bluechipTrade(access_token));
+      dispatch(commonTrade(access_token));
     }, 3e3);
     return () => {
       clearTimeout(timeout);
@@ -15626,43 +15701,158 @@ const Trade = () => {
     ] })
   ] });
 };
-const desktopHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min grid-cols-9 h-fit rounded-t-md bg-stone-100 uppercase border-b border-stone-200", children: [
-  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 col-span-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row flex-wrap justify-between h-full", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Symbol" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Price" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Volume" }) })
-  ] }) }),
-  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 col-span-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row flex-wrap justify-between h-full", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Short" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Medium" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Long" }) })
+const desktopHeader = ({ items }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min grid-cols-9 h-fit rounded-t-md bg-stone-100 uppercase border-b border-stone-200", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 col-span-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row flex-wrap justify-between h-full", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Symbol" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Price" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Volume" }) })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 col-span-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row flex-wrap justify-between h-full", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Short" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Medium" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-green-500", children: "Long" }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row flex-wrap justify-between h-full", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Price" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Volume" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Price" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Volume" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Price" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Volume" }) })
+        ] })
+      ] }) })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row flex-wrap justify-between h-full", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Price" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Volume" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Price" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Volume" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Price" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grow m-auto w-1/6", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-purple-500 text-[.50rem]", children: "Volume" }) })
-    ] })
-  ] }) })
-] });
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min grid-cols-9 h-fit bg-stone-100", children: items != 0 && items ? items.map((item, key) => {
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 1" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 2" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 3" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 4" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 5" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 6" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 7" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 8" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 w-1/6 text-center", children: "Test 9" })
+      ] });
+    }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center col-span-9", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "No record found." }) }) })
+  ] });
+};
+const desktopModalContent = ({ header, close, action, disabled, items }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min h-fit rounded-t-md bg-stone-100 my-2", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-base uppercase", children: [
+        header,
+        " Fetch Moving Average"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "sm:pl-2 cursor-pointer", onClick: close, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
+        " ",
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Index" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Symbol" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Action" })
+    ] }),
+    items != 0 && items ? items.map((item, index2) => {
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: index2 }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: item.symbol }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            className: "uppercase cursor-pointer",
+            onClick: () => {
+              action({ symbol: item.symbol });
+            },
+            disabled,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "submit" }),
+              " ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Submit" })
+            ]
+          }
+        ) })
+      ] });
+    }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "form-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "No record found." }) })
+  ] });
+};
+const watchlistChart = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: CHART_WATCHLIST_REQUEST });
+    const { data } = await axios({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      method: "GET",
+      url: "/api/stock-chart-retrieve",
+      params: { section: "build", table: "watchlist", statement: "select" }
+    });
+    let stocks = data.stocks;
+    let message = data.message;
+    dispatch({
+      type: MESSAGE_SHOW_SUCCESS,
+      payload: message
+    });
+    dispatch({ type: CHART_WATCHLIST_SUCCESS, payload: stocks });
+    if (stocks) {
+      localStorage.setItem("chartWatchlist", JSON.stringify(stocks));
+    }
+  } catch (error) {
+    dispatch({
+      type: CHART_WATCHLIST_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+    dispatch({
+      type: MESSAGE_SHOW_FAILURE,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    });
+  }
+};
 const StockChart = () => {
   const [modalSearch, setModalSearch] = reactExports.useState(false);
   const [modalBuild, setModalBuild] = reactExports.useState(false);
-  useSelector((state) => state.stockCommon);
+  const [disabled, setDisabled] = reactExports.useState(false);
+  const userLogin = useSelector((state) => state.userLogin);
+  const { access_token } = userLogin;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
+  const chartWatchlist = useSelector((state) => state.chartWatchlist);
+  const { watchbuild } = chartWatchlist;
+  useSelector((state) => state.showMessage);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const showModalSearchHandler = () => {
-    console.log("Show modal search.");
     setModalSearch(true);
   };
   const showModalBuildHandler = () => {
-    console.log("Show modal build.");
     setModalBuild(true);
   };
   const closeModalHandler = () => {
     setModalSearch(false);
     setModalBuild(false);
+  };
+  reactExports.useEffect(() => {
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
+    }
+    if (valid && access_token) {
+      navigate("/dashboard/stock-chart");
+    } else {
+      navigate("/auth/login");
+    }
+    if (valid && !watchbuild) {
+      dispatch(watchlistChart(access_token));
+    }
+  }, [access_token, valid, disabled, watchbuild]);
+  const storeHandler = ({ symbol }) => {
+    console.log(symbol);
+    setDisabled(true);
   };
   const containerChartHeader = /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-row justify-between", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { clasName: "block p-2", children: [
@@ -15681,34 +15871,24 @@ const StockChart = () => {
     ] })
   ] });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Container, { header: containerChartHeader, children: [
-    desktopHeader,
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min grid-cols-9 h-fit bg-stone-100", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 1" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 2" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 3" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 4" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 5" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 6" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 7" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 8" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 text-center", children: "Test 9" })
-    ] }),
+    desktopHeader({ items: [] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: modalSearch && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { close: closeModalHandler }) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded", children: modalBuild && /* @__PURE__ */ jsxRuntimeExports.jsx(Modal, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row justify-between border-b border-stone-200", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl", children: "Fetch Moving Average" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "sm:pl-2 cursor-pointer", onClick: closeModalHandler, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { id: "close" }),
-          " ",
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "invisible sm:visible", children: "Close" })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Index" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Symbol" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4/12", children: "Action" })
-      ] })
-    ] }) }) })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid auto-rows-min h-fit rounded gap-2", children: modalBuild && /* @__PURE__ */ jsxRuntimeExports.jsxs(Modal, { children: [
+      desktopModalContent({
+        header: "Watchlist",
+        close: closeModalHandler,
+        action: storeHandler,
+        disabled,
+        items: watchbuild
+      }),
+      desktopModalContent({
+        header: "Bluechip",
+        close: closeModalHandler,
+        action: storeHandler,
+        disabled,
+        items: []
+      })
+    ] }) })
   ] }) });
 };
 const CryptoPortfolio = () => {

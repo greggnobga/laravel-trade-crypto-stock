@@ -1,8 +1,9 @@
 /** React. */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 /** Vendor. */
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 /** Component. */
 import Icon from '../../../components/Icon'
@@ -13,25 +14,43 @@ import Search from '../../../components/Search'
 import Container from '../../../components/Container'
 
 /** Template. */
-import { desktopHeader } from '../../template/Chart'
+import { desktopHeader, desktopModalContent } from '../../template/Chart'
+
+/** Action. */
+import { watchlistChart } from '../../../actions/ChartActions'
+import { tokenUser } from '../../../actions/UserActions.js'
 
 const StockChart = () => {
   /** Use state. */
   const [modalSearch, setModalSearch] = useState(false)
   const [modalBuild, setModalBuild] = useState(false)
+  const [disabled, setDisabled] = useState(false)
 
   /** Use selector. */
-  const stockCommon = useSelector((state) => state.stockCommon)
-  const { loading: loadcommon, common } = stockCommon
+  const userLogin = useSelector((state) => state.userLogin)
+  const { access_token } = userLogin
+
+  const userToken = useSelector((state) => state.userToken)
+  const { valid } = userToken
+
+  const chartWatchlist = useSelector((state) => state.chartWatchlist)
+  const { watchbuild } = chartWatchlist
+
+  const showMessage = useSelector((state) => state.showMessage)
+  const { message, error } = showMessage
+
+  /** Use navigate. */
+  const navigate = useNavigate()
+
+  /** Use dispatch. */
+  const dispatch = useDispatch()
 
   /** Show modal handler. */
   const showModalSearchHandler = () => {
-    console.log('Show modal search.')
     setModalSearch(true)
   }
 
   const showModalBuildHandler = () => {
-    console.log('Show modal build.')
     setModalBuild(true)
   }
 
@@ -42,8 +61,30 @@ const StockChart = () => {
     setModalBuild(false)
   }
 
-  const searchHandler = () => {
-    setSearch(!search)
+  useEffect(() => {
+    /** Check valid state. */
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token))
+    }
+
+    /** Check if token is valid. */
+    if (valid && access_token) {
+      navigate('/dashboard/stock-chart')
+    } else {
+      navigate('/auth/login')
+    }
+
+    /** Send request if no build stock. */
+    if (valid && !watchbuild) {
+      /** Dispatch action. */
+      dispatch(watchlistChart(access_token))
+    }
+  }, [access_token, valid, disabled, watchbuild])
+
+  /** Store handler. */
+  const storeHandler = ({ symbol }) => {
+    console.log(symbol)
+    setDisabled(true)
   }
 
   /** Container header. */
@@ -66,18 +107,8 @@ const StockChart = () => {
   return (
     <>
       <Container header={containerChartHeader}>
-        {desktopHeader}
-        <div className='grid auto-rows-min grid-cols-9 h-fit bg-stone-100'>
-          <div className='py-2 text-center'>Test 1</div>
-          <div className='py-2 text-center'>Test 2</div>
-          <div className='py-2 text-center'>Test 3</div>
-          <div className='py-2 text-center'>Test 4</div>
-          <div className='py-2 text-center'>Test 5</div>
-          <div className='py-2 text-center'>Test 6</div>
-          <div className='py-2 text-center'>Test 7</div>
-          <div className='py-2 text-center'>Test 8</div>
-          <div className='py-2 text-center'>Test 9</div>
-        </div>
+        {desktopHeader({ items: [] })}
+
         <div className='grid auto-rows-min h-fit rounded'>
           {modalSearch && (
             <Modal>
@@ -85,22 +116,23 @@ const StockChart = () => {
             </Modal>
           )}
         </div>
-        <div className='grid auto-rows-min h-fit rounded'>
+        <div className='grid auto-rows-min h-fit rounded gap-2'>
           {modalBuild && (
             <Modal>
-              <div className='grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase'>
-                <div className='p-2 flex flex-row justify-between border-b border-stone-200'>
-                  <h1 className='text-xl'>Fetch Moving Average</h1>
-                  <p className='sm:pl-2 cursor-pointer' onClick={closeModalHandler}>
-                    <Icon id='close' /> <span className='invisible sm:visible'>Close</span>
-                  </p>
-                </div>
-                <div className='p-2 flex flex-row items-center justify-center border-b border-stone-200 w-full hover:text-purple-500'>
-                  <div className='w-4/12'>Index</div>
-                  <div className='w-4/12'>Symbol</div>
-                  <div className='w-4/12'>Action</div>
-                </div>
-              </div>
+              {desktopModalContent({
+                header: 'Watchlist',
+                close: closeModalHandler,
+                action: storeHandler,
+                disabled: disabled,
+                items: watchbuild,
+              })}
+              {desktopModalContent({
+                header: 'Bluechip',
+                close: closeModalHandler,
+                action: storeHandler,
+                disabled: disabled,
+                items: [],
+              })}
             </Modal>
           )}
         </div>

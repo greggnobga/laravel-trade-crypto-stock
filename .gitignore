@@ -4,7 +4,10 @@
 /storage/*.key
 /vendor
 .env
-.env.backup
+.env.example
+.htaccess
+.package-lock.json
+.composer.lock
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json

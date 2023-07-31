@@ -1,11 +1,11 @@
 {
-  "arrowParens": "avoid",
+  "arrowParens": "always",
   "bracketSameLine": true,
   "jsxBracketSameLine": true,
   "bracketSpacing": true,
   "jsxSingleQuote": true,
   "htmlWhitespaceSensitivity": "ignore",
-  "printWidth": 120,
+  "printWidth": 165,
   "singleQuote": true,
   "singleAttributePerLine": false,
   "semi": true,

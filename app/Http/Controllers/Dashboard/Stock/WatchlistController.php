@@ -304,6 +304,7 @@ class WatchlistController extends Controller {
         if ($data['purpose'] === 'format') {
             /** return variable. */
             $return = [];
+
             /** loop through. */
             foreach ($data['source'] as $key => $value) {
                 foreach ($value as $k => $v) {
@@ -319,6 +320,7 @@ class WatchlistController extends Controller {
                     }
                 }
             }
+
             /** return. */
             return $return;
         }

@@ -25,8 +25,36 @@ class ChartController extends Controller {
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
             /** forward chart build function */
+            if ($request->input('section') === 'fetch') {
+                return $this->chartfetch($request->all());
+            }
+            /** forward chart build function */
             if ($request->input('section') === 'build') {
                 return $this->chartbuild($request->all());
+            }
+        }
+    }
+
+    /**
+     * Build list function.
+     */
+    public function chartfetch($data) {
+        /** match params. */
+        if ($data['statement'] === 'select') {
+            /** select record. */
+            $record = DB::table('stock_charts')
+                ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_charts.symbol')
+                ->select('stock_trades.symbol', 'stock_trades.price', 'stock_trades.volume', 'shortprice', 'shortvolume', 'mediumprice', 'mediumvolume', 'longprice', 'longvolume')
+                ->where('userid', Auth::id())
+                ->get()
+                ->toArray();
+
+            /** Call helper. */
+            $transform = $this->helpers(['operation' => 'format', 'source' => $record]);
+
+            /** return result if not null. */
+            if (!is_null($record)) {
+                return response(['message' => 'Please wait while we process your request.', 'stocks' => $transform], 200);
             }
         }
     }
@@ -61,32 +89,50 @@ class ChartController extends Controller {
         /** initialize an empty array to store the dates. */
         $stocks = [];
 
+        /** wait for two seconds between each iteration. */
+        $interval = 2000;
         /** loop 200 times to get the 200 prior days. */
         for ($i = 0; $i < 200; $i++) {
             /** set the current date. */
             $current = $currentDate->subDay()->format('Y-m-d');
 
-            /** fetch data. */
-            $data = Http::get('http://phisix-api4.appspot.com/stocks/' . $data['symbol'] . '.' . $current . '.json')->body();
+            /** try catch block. */
+            try {
+                /** fetch data. */
+                $fetch = Http::get('http://phisix-api4.appspot.com/stocks/' . $data['symbol'] . '.' . $current . '.json');
 
-            /** decode string. */
-            $decoded = json_decode($data, true);
+                /** check if fetch is a success. */
+                if ($fetch->getStatusCode() === 200) {
+                    /** assign body to pointer. */
+                    $received =  $fetch->body();
 
-            /** if decoded and is not empty. */
-            if (!is_null($decoded)) {
-                if ($i <= 49) {
-                    $stocks['short'][$i] = ['price' => $decoded['stock'][0]['price']['amount'], 'volume' => $decoded['stock'][0]['volume']];
+                    /** decode string. */
+                    $decoded = json_decode($received, true);
+
+                    /** if decoded and is not empty. */
+                    if (!is_null($decoded)) {
+                        if ($i <= 49) {
+                            $stocks['short'][$i] = ['price' => $decoded['stock'][0]['price']['amount'], 'volume' => $decoded['stock'][0]['volume']];
+                        }
+                        if ($i <= 100) {
+                            $stocks['medium'][$i] = ['price' => $decoded['stock'][0]['price']['amount'], 'volume' => $decoded['stock'][0]['volume']];
+                        }
+                        if ($i <= 199) {
+                            $stocks['long'][$i] = ['price' => $decoded['stock'][0]['price']['amount'], 'volume' => $decoded['stock'][0]['volume']];
+                        }
+                    }
                 }
-                if ($i <= 100) {
-                    $stocks['medium'][$i] = ['price' => $decoded['stock'][0]['price']['amount'], 'volume' => $decoded['stock'][0]['volume']];
-                }
-                if ($i <= 199) {
-                    $stocks['long'][$i] = ['price' => $decoded['stock'][0]['price']['amount'], 'volume' => $decoded['stock'][0]['volume']];
-                }
+            } catch (\Exception $ex) {
+                continue;
             }
 
             /** move to the previous day */
             $currentDate->subDay();
+
+            /** add a delay between each iteration */
+            if ($i < 200 - 1) {
+                usleep($interval * 1000);
+            }
         }
 
         /** calculate moving average using helper function. */
@@ -95,16 +141,18 @@ class ChartController extends Controller {
         $moving['long'] = $this->helpers(['operation' => 'average', 'stocks' => $stocks['long']]);
 
         /** save to database. */
-        $check = DB::table('stock_trades')
+        $check = DB::table('stock_charts')
             ->select('symbol')
             ->where('symbol', $data['symbol'])
             ->first();
 
         /** if not then insert else update. */
         if (is_null($check)) {
-            DB::table('stock_trades')
+            DB::table('stock_charts')
                 ->where('symbol', $data['symbol'])
                 ->insert([
+                    'userid' => Auth::id(),
+                    'symbol' => strip_tags($data['symbol']),
                     'shortprice' => strip_tags($moving['short']['price']),
                     'shortvolume' => strip_tags($moving['short']['volume']),
                     'mediumprice' => strip_tags($moving['medium']['price']),
@@ -115,7 +163,7 @@ class ChartController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
         } else {
-            DB::table('stock_trades')
+            DB::table('stock_charts')
                 ->where('symbol', $data['symbol'])
                 ->update([
                     'shortprice' => strip_tags($moving['short']['price']),
@@ -157,8 +205,30 @@ class ChartController extends Controller {
             }, 0);
 
             /** save to pointer. */
-            $result['price'] = number_format($average['price'] / count($sequence), 2, '.', ',');
-            $result['volume'] = number_format($average['volume'] / count($sequence), 2, '.', ',');
+            $result['price'] = number_format($average['price'] / count($sequence), 2, '.', '');
+            $result['volume'] = number_format($average['volume'] / count($sequence), 2, '.', '');
+        }
+
+        /** transform into standard format. */
+        if ($data['operation'] === 'format') {
+            /** loop through. */
+            foreach ($data['source'] as $key => $value) {
+                foreach ($value as $k => $v) {
+                    /** preg match alpha. */
+                    if (preg_match('/[a-zA-Z]+/', $v)) {
+                        $result[$key][$k] = $v;
+                    }
+
+                    /** preg match numeric. */
+                    if (preg_match('/[0-9]+/', $v)) {
+                        if ($k === 'symbol' || $k === 'edge') {
+                            $result[$key][$k] = $v;
+                        } else {
+                            $result[$key][$k] = number_format($v, 2, ".", ",");
+                        }
+                    }
+                }
+            }
         }
 
         /** return. */

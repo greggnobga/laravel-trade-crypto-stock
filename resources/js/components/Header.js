@@ -1,68 +1,61 @@
 /** React. */
-import { useState, useEffect } from 'react'
+import { useState } from 'react';
 
 /** Vendor. */
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 /** Hook. */
-import useScreen from '../hooks/UseScreen'
+import useScreen from '../hooks/UseScreen';
 
 /** Actions. */
-import { logoutUser, tokenUser } from '../actions/UserActions'
+import { logoutUser, tokenUser } from '../actions/UserActions';
 
 /** Component. */
-import Icon from './Icon'
+import Icon from './Icon';
 
 const Header = () => {
   /** Use dispatch. */
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   /** Use selector. */
-  const userLogin = useSelector((state) => state.userLogin)
-  const { access_token } = userLogin
+  const userLogin = useSelector(state => state.userLogin);
+  const { access_token } = userLogin;
 
-  const userToken = useSelector((state) => state.userToken)
-  const { valid } = userToken
+  const userToken = useSelector(state => state.userToken);
+  const { valid } = userToken;
 
   /** Use screen hook. */
-  const { isMobile } = useScreen()
+  const { isMobile } = useScreen();
 
   /** Use state. */
-  const [isBurger, setIsBurger] = useState(false)
-  const [isControl, setIsControl] = useState(false)
-  const [message, setMessage] = useState(null)
+  const [isBurger, setIsBurger] = useState(false);
+  const [isControl, setIsControl] = useState(false);
+  const [message, setMessage] = useState(null);
 
   /** Burger handler. */
   const burgerHandler = () => {
-    setIsBurger(!isBurger)
-    setIsControl(false)
-  }
+    setIsBurger(!isBurger);
+    setIsControl(false);
+  };
 
   /** Control handler. */
   const controlHandler = () => {
-    setIsControl(!isControl)
-    setIsBurger(false)
-  }
+    setIsControl(!isControl);
+    setIsBurger(false);
+  };
 
   /** Logout handler. */
   const logoutHandler = () => {
     /** Check if auth is not empty. */
     if (access_token) {
       /** Dispatch actions. */
-      dispatch(logoutUser(access_token))
+      dispatch(logoutUser(access_token));
     }
-  }
-  /** Use effect. */
-  useEffect(() => {
-    /** If account state set, check if access token is valid. */
-    if (valid && !access_token) {
-      dispatch(tokenUser(access_token))
-    }
-  }, [access_token])
+  };
 
   /** Hamburger classes. */
-  const burgerClasses = isBurger ? 'hamburger hamburger-elastic is-active' : 'hamburger hamburger-elastic'
+  const burgerClasses = isBurger ? 'hamburger hamburger-elastic is-active' : 'hamburger hamburger-elastic';
 
   /** Control template. */
   const controlTemplate = (
@@ -155,7 +148,7 @@ const Header = () => {
         </li>
       </ul>
     </nav>
-  )
+  );
 
   /** Return something. */
   return (
@@ -330,7 +323,7 @@ const Header = () => {
         </header>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

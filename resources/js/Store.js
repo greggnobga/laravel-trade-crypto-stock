@@ -1,18 +1,11 @@
 /** Vendor. */
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from '@redux-devtools/extension'
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from '@redux-devtools/extension';
 
 /** Reducer. */
-import { showMessageReducer } from './reducers/MessageReducers'
-import {
-  userLoginReducer,
-  userRegisterReducer,
-  userVerifyReducer,
-  userForgotReducer,
-  userResetReducer,
-  userTokenReducer,
-} from './reducers/UserReducers'
+import { showMessageReducer } from './reducers/MessageReducers';
+import { userLoginReducer, userRegisterReducer, userVerifyReducer, userForgotReducer, userResetReducer, userTokenReducer } from './reducers/UserReducers';
 
 import {
   dashboardStartReducer,
@@ -29,18 +22,13 @@ import {
   dashboardEdgeUpdateReducer,
   dashboardStockGainerReducer,
   dashboardStockLosserReducer,
-} from './reducers/DashboardReducers'
+} from './reducers/DashboardReducers';
 
-import {
-  watchlistBuildReducer,
-  watchlistStoreReducer,
-  watchlistFetchReducer,
-  watchlistDestroyReducer,
-} from './reducers/WatchlistReducers'
+import { watchlistBuildReducer, watchlistStoreReducer, watchlistFetchReducer, watchlistDestroyReducer } from './reducers/WatchlistReducers';
 
-import { tradeBluechipReducer, tradeCommonReducer, tradeStoreReducer } from './reducers/TradeReducers'
+import { tradeBluechipReducer, tradeCommonReducer, tradeStoreReducer } from './reducers/TradeReducers';
 
-import { chartWatchlistReducer } from './reducers/ChartReducers'
+import { chartWatchlistReducer, chartAverageReducer, chartFetchReducer } from './reducers/ChartReducers';
 
 /** Combine reducer. */
 const reducer = combineReducers({
@@ -72,49 +60,35 @@ const reducer = combineReducers({
   tradeCommon: tradeCommonReducer,
   tradeStore: tradeStoreReducer,
   chartWatchlist: chartWatchlistReducer,
+  chartAverage: chartAverageReducer,
+  chartFetch: chartFetchReducer,
   showMessage: showMessageReducer,
-})
+});
 
 /** Initial state. */
-const accountFromStorage = localStorage.getItem('account') ? JSON.parse(localStorage.getItem('account')) : {}
+const accountFromStorage = localStorage.getItem('account') ? JSON.parse(localStorage.getItem('account')) : {};
 
-const tokenFromStorage = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : { valid: false }
+const tokenFromStorage = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : { valid: false };
 
-const dashboardBluechipFromStorage = localStorage.getItem('dashboardBluechip')
-  ? JSON.parse(localStorage.getItem('dashboardBluechip'))
-  : {}
+const dashboardBluechipFromStorage = localStorage.getItem('dashboardBluechip') ? JSON.parse(localStorage.getItem('dashboardBluechip')) : {};
 
-const dashboardEdgeFromStorage = localStorage.getItem('dashboardEdge')
-  ? JSON.parse(localStorage.getItem('dashboardEdge'))
-  : {}
+const dashboardEdgeFromStorage = localStorage.getItem('dashboardEdge') ? JSON.parse(localStorage.getItem('dashboardEdge')) : {};
 
-const dashboardStockGainerFromStorage = localStorage.getItem('dashboardStockGainer')
-  ? JSON.parse(localStorage.getItem('dashboardStockGainer'))
-  : {}
+const dashboardStockGainerFromStorage = localStorage.getItem('dashboardStockGainer') ? JSON.parse(localStorage.getItem('dashboardStockGainer')) : {};
 
-const dashboardStockLosserFromStorage = localStorage.getItem('dashboardStockLosser')
-  ? JSON.parse(localStorage.getItem('dashboardStockLosser'))
-  : {}
+const dashboardStockLosserFromStorage = localStorage.getItem('dashboardStockLosser') ? JSON.parse(localStorage.getItem('dashboardStockLosser')) : {};
 
-const watchlistBuildFromStorage = localStorage.getItem('watchlistBuild')
-  ? JSON.parse(localStorage.getItem('watchlistBuild'))
-  : {}
+const watchlistBuildFromStorage = localStorage.getItem('watchlistBuild') ? JSON.parse(localStorage.getItem('watchlistBuild')) : {};
 
-const watchlistFetchFromStorage = localStorage.getItem('watchlistFetch')
-  ? JSON.parse(localStorage.getItem('watchlistFetch'))
-  : {}
+const watchlistFetchFromStorage = localStorage.getItem('watchlistFetch') ? JSON.parse(localStorage.getItem('watchlistFetch')) : {};
 
-const tradeBluechipFromStorage = localStorage.getItem('tradeBluechip')
-  ? JSON.parse(localStorage.getItem('tradeBluechip'))
-  : {}
+const tradeBluechipFromStorage = localStorage.getItem('tradeBluechip') ? JSON.parse(localStorage.getItem('tradeBluechip')) : {};
 
-const tradeCommonFromStorage = localStorage.getItem('tradeCommon')
-  ? JSON.parse(localStorage.getItem('tradeCommon'))
-  : {}
+const tradeCommonFromStorage = localStorage.getItem('tradeCommon') ? JSON.parse(localStorage.getItem('tradeCommon')) : {};
 
-const chartWatchlistFromStorage = localStorage.getItem('chartWatchlist')
-  ? JSON.parse(localStorage.getItem('chartWatchlist'))
-  : {}
+const chartWatchlistFromStorage = localStorage.getItem('chartWatchlist') ? JSON.parse(localStorage.getItem('chartWatchlist')) : {};
+
+const chartFetchFromStorage = localStorage.getItem('chartFetch') ? JSON.parse(localStorage.getItem('chartFetch')) : {};
 
 const initialState = {
   userLogin: accountFromStorage,
@@ -128,13 +102,14 @@ const initialState = {
   tradeBluechip: tradeBluechipFromStorage,
   tradeCommon: tradeCommonFromStorage,
   chartWatchlist: chartWatchlistFromStorage,
-}
+  chartFetch: chartFetchFromStorage,
+};
 
 /** Middleware. */
-const middleware = [thunk]
+const middleware = [thunk];
 
 /** Store. */
-const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)))
+const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
 
 /** Export. */
-export default store
+export default store;

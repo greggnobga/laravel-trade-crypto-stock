@@ -15,12 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('userid');
             $table->string('symbol');
-            $table->decimal('shortprice', 24, 2)->signed()->default(0.00);
-            $table->decimal('shortvolume', 24, 2)->signed()->default(0.00);
-            $table->decimal('mediumprice', 24, 2)->signed()->default(0.00);
-            $table->decimal('mediumvolume', 24, 2)->signed()->default(0.00);
-            $table->decimal('longprice', 24, 2)->signed()->default(0.00);
-            $table->decimal('longvolume', 24, 2)->signed()->default(0.00);
+            $table->decimal('averageone', 24, 2)->signed()->default(0.00);
+            $table->decimal('averagetwo', 24, 2)->signed()->default(0.00);
+            $table->decimal('averagethree', 24, 2)->signed()->default(0.00);
             $table->timestamps();
         });
     }

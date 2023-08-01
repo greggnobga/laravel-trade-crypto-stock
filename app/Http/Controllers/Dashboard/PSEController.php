@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Symfony\Component\DomCrawler\Crawler;
@@ -40,6 +41,11 @@ class PSEController extends Controller {
             /** forward sectors function */
             if ($request->input('section') === 'companies') {
                 return $this->stockcompanies($request->all());
+            }
+
+            /** forward sectors function */
+            if ($request->input('section') === 'average') {
+                return $this->stockchart($request->all());
             }
         }
         /** check if request contains method equal to post. */
@@ -709,7 +715,7 @@ class PSEController extends Controller {
     }
 
     /**
-     * Declare stock edges function.
+     * Declare stock companies function.
      */
     public function stockcompanies($data) {
         /** repository. */
@@ -719,14 +725,14 @@ class PSEController extends Controller {
         $company = Http::get('https://edge.pse.com.ph/autoComplete/searchCompanyNameSymbol.ax?term=' . $data['symbol'])->body();
 
         if (!is_null($company)) {
-            /** split string into array. */
-            $fragments = preg_split('/\"/', $company);
+            /** decode to json. */
+            $decoded = json_decode($company, true);
 
-            /** map fragments to desired key value pair. */
-            if (count($fragments) > 1) {
-                $result['edge'] = $fragments[3];
-                $result['name'] = $fragments[7];
-                $result['symbol'] = $fragments[11];
+            /** map decoded to desired key value pair. */
+            if (count($decoded) >= 0) {
+                $result['edge'] = $decoded[0]['cmpyId'];
+                $result['name'] = $decoded[0]['cmpyNm'];
+                $result['symbol'] = $decoded[0]['symbol'];
             } else {
                 /** return something. */
                 return response(['message' => 'The ' . $data['symbol'] . ' does not exist.'], 200);
@@ -764,8 +770,135 @@ class PSEController extends Controller {
             }
         }
 
+        /** get the response content */
+        $security = Http::get('https://edge.pse.com.ph/companyPage/stockData.do?cmpy_id=' . $data['edge']);
+
+        /** make it crawlable. */
+        $crawled = new Crawler($security);
+
+        /** filter response. */
+        $text = $crawled->filter('script')->each(function ($node) {
+            return $node->text();
+        });
+
+        if (!is_null($text)) {
+            /** explode in order to convert string to array. */
+            $send = explode("sendData.", $text[13]);
+
+            /** preg replace to filter non numeric. */
+            $replace = preg_replace("/[^0-9]/", "", $send[2]);
+
+            /** check if record exists. */
+            $record = DB::table('stock_trades')
+                ->select('edge')
+                ->where('symbol', '=', $result['symbol'])
+                ->first();
+
+            if (!is_null($record)) {
+                /** update record. */
+                DB::table('stock_trades')
+                    ->where('symbol', '=', $result['symbol'])
+                    ->update([
+                        'security' => strip_tags((int)$replace),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+            }
+        }
+
         /** return something. */
         return response(['message' => 'The ' . $result['symbol'] . ' information was successfully updated.'], 200);
+    }
+
+    /**
+     * Declare stock edges function.
+     */
+    public function stockchart($data) {
+        /** repository. */
+        $result = [];
+
+        /** set payloads. */
+        $currentDate = Carbon::now();
+
+        /** send request with payloads. */
+        $chart = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post('https://edge.pse.com.ph/common/DisclosureCht.ax', [
+            'cmpy_id' => $data['edge'],
+            'endDate' => $currentDate->format('m-d-Y'),
+            'security_id' => $data['security'],
+            'startDate' => $currentDate->subYears(3)->format('m-d-Y')
+        ]);
+
+        if (!is_null($chart)) {
+            /** make it crawlable. */
+            $crawled = new Crawler($chart);
+
+            /** filter response. */
+            $text = $crawled->filter('p')->each(function ($node) {
+                return $node->text();
+            });
+
+            /** decode string. */
+            $decoded = json_decode($text[0], true);
+
+            /** save to pointer. */
+            $result['chart'] = $decoded['chartData'];
+        }
+
+        /** check if result is not empty. */
+        if (!is_null($result) && count($result['chart']) > 0) {
+            /** count result chart and divide by three. */
+            $parts = count($result['chart']) / 3;
+
+            /** chunk arrary into three equal parts. */
+            $chunks = array_chunk($result['chart'], $parts);
+
+            /** parse year. */
+            $one = Carbon::parse($chunks[0][0]["CHART_DATE"])->format('Y');
+            $two = Carbon::parse($chunks[1][0]["CHART_DATE"])->format('Y');
+            $three = Carbon::parse($chunks[2][0]["CHART_DATE"])->format('Y');
+
+            /** assign to pointer. */
+            $result['averageprice'][$one] = $this->helpers(['sanitized' => 'average', 'stocks' => $chunks[0]]);
+            $result['averageprice'][$two] = $this->helpers(['sanitized' => 'average', 'stocks' => $chunks[1]]);
+            $result['averageprice'][$three] = $this->helpers(['sanitized' => 'average', 'stocks' => $chunks[2]]);
+
+            /** save to database. */
+            $check = DB::table('stock_charts')
+                ->select('symbol')
+                ->where('userid', Auth::id())
+                ->where('symbol', $data['symbol'])
+                ->first();
+
+            /** if not then insert else update. */
+            if (is_null($check)) {
+                DB::table('stock_charts')
+                    ->where('userid', Auth::id())
+                    ->where('symbol', $data['symbol'])
+                    ->insert([
+                        'userid' => Auth::id(),
+                        'symbol' => strip_tags($data['symbol']),
+                        'averageone' => strip_tags($result['averageprice'][$one]),
+                        'averagetwo' => strip_tags($result['averageprice'][$two]),
+                        'averagethree' => strip_tags($result['averageprice'][$three]),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+            } else {
+                DB::table('stock_charts')
+                    ->where('userid', Auth::id())
+                    ->where('symbol', $data['symbol'])
+                    ->update([
+                        'averageone' => strip_tags($result['averageprice'][$one]),
+                        'averagetwo' => strip_tags($result['averageprice'][$two]),
+                        'averagethree' => strip_tags($result['averageprice'][$three]),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+            }
+        }
+
+        /** return something. */
+        return response(['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'], 200);
     }
 
     /**
@@ -774,7 +907,7 @@ class PSEController extends Controller {
     public function stocktrades() {
         /** repository. */
         $stocks = DB::table('stock_trades')
-            ->select('edge', 'symbol')
+            ->select('edge', 'security', 'symbol')
             ->where('edge', '>', '0')
             ->where('updated_at', '<', Carbon::now()->subHour(0))
             ->get()
@@ -841,6 +974,22 @@ class PSEController extends Controller {
             $result = floatval($result);
         }
 
+        /** calculate moving average. */
+        if ($data['sanitized'] === 'average') {
+            /** resequence key value pairs. */
+            $sequence = array_values($data['stocks']);
+
+            /** Convert the array to a collection */
+            $collection = collect($sequence);
+
+            /** use the reduce method to calculate the sum of 'value' key */
+            $average['close'] = $collection->reduce(function ($carry, $item) {
+                return $carry + $item['CLOSE'];
+            }, 0);
+
+            /** save to pointer. */
+            $result = number_format($average['close'] / count($sequence), 2, '.', '');
+        }
         /** return something. */
         return $result;
     }

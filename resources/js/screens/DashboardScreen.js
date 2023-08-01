@@ -1,25 +1,25 @@
 /** React. */
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 /** Vendor. */
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 /** Hook. */
-import useValidate from '../hooks/UseValidate'
+import useValidate from '../hooks/UseValidate';
 
 /** Component. */
-import Icon from '../components/Icon'
-import Modal from '../components/Modal'
-import Loader from '../components/Loader'
-import Notice from '../components/Notice'
-import Container from '../components/Container'
+import Icon from '../components/Icon';
+import Modal from '../components/Modal';
+import Loader from '../components/Loader';
+import Notice from '../components/Notice';
+import Container from '../components/Container';
 
 /** Template. */
-import { modalBlueTemplate, modalEdgeTemplate, stockLeaderBoard } from './template/Dashboard'
+import { modalBlueTemplate, modalEdgeTemplate, stockLeaderBoard } from './template/Dashboard';
 
 /** Action. */
-import { resendEmail, tokenUser } from '../actions/UserActions'
+import { resendEmail, tokenUser } from '../actions/UserActions';
 import {
   startDashboard,
   priceDashboard,
@@ -35,38 +35,38 @@ import {
   edgeUpdateDashboard,
   stockGainerDashboard,
   stockLosserDashboard,
-} from '../actions/DashboardActions'
+} from '../actions/DashboardActions';
 
 const Dashboard = () => {
   /** Use selector. */
-  const userLogin = useSelector((state) => state.userLogin)
-  const { loading, access_token, email_verified } = userLogin
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, access_token, email_verified } = userLogin;
 
-  const userToken = useSelector((state) => state.userToken)
-  const { valid } = userToken
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
 
-  const dashboardBluechip = useSelector((state) => state.dashboardBluechip)
-  const { loading: loadBluechip, bluechip } = dashboardBluechip
+  const dashboardBluechip = useSelector((state) => state.dashboardBluechip);
+  const { loading: loadBluechip, bluechip } = dashboardBluechip;
 
-  const dashboardEdge = useSelector((state) => state.dashboardEdge)
-  const { loading: loadEdge, edge } = dashboardEdge
+  const dashboardEdge = useSelector((state) => state.dashboardEdge);
+  const { loading: loadEdge, edge } = dashboardEdge;
 
-  const dashboardStockGainer = useSelector((state) => state.dashboardStockGainer)
-  const { loading: loadStockGainer, stockgainer } = dashboardStockGainer
+  const dashboardStockGainer = useSelector((state) => state.dashboardStockGainer);
+  const { loading: loadStockGainer, stockgainer } = dashboardStockGainer;
 
-  const dashboardStockLosser = useSelector((state) => state.dashboardStockLosser)
-  const { loading: loadStockLosser, stocklosser } = dashboardStockLosser
+  const dashboardStockLosser = useSelector((state) => state.dashboardStockLosser);
+  const { loading: loadStockLosser, stocklosser } = dashboardStockLosser;
 
-  const showMessage = useSelector((state) => state.showMessage)
-  const { message, error } = showMessage
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message, error } = showMessage;
 
   /** Use state. */
-  const [modalBlue, setModalBlue] = useState(false)
-  const [modalEdge, setModalEdge] = useState(false)
-  const [modalForm, setModalForm] = useState(false)
-  const [modalIndex, setModalIndex] = useState(0)
-  const [notice, setNotice] = useState(false)
-  const [modalStock, setModalStock] = useState(false)
+  const [modalBlue, setModalBlue] = useState(false);
+  const [modalEdge, setModalEdge] = useState(false);
+  const [modalForm, setModalForm] = useState(false);
+  const [modalIndex, setModalIndex] = useState(0);
+  const [notice, setNotice] = useState(false);
+  const [modalStock, setModalStock] = useState(false);
 
   /** Map html element to validate hook. */
   const {
@@ -76,7 +76,7 @@ const Dashboard = () => {
     valueChangeHandler: modalBlueInputChangeHandler,
     inputBlurHandler: modalBlueInputBlurHandler,
     resetHandler: modalBlueInputInputReset,
-  } = useValidate((value) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/))
+  } = useValidate((value) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
 
   const {
     value: modalEdgeInput,
@@ -85,156 +85,156 @@ const Dashboard = () => {
     valueChangeHandler: modalEdgeInputChangeHandler,
     inputBlurHandler: modalEdgeInputBlurHandler,
     resetHandler: modalEdgeInputInputReset,
-  } = useValidate((value) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/))
+  } = useValidate((value) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^\-&*()_+]*$/));
 
   /** Use navigate. */
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   /** Use dispatch. */
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   /** Use effect. */
   useEffect(() => {
     /** If account state set, check if access token is valid. */
     if (!valid && access_token) {
-      dispatch(tokenUser(access_token))
+      dispatch(tokenUser(access_token));
     }
 
     /** If error occurred dispatch action. */
     if (valid && error) {
-      dispatch(tokenUser(access_token))
+      dispatch(tokenUser(access_token));
     }
 
     /** If become undefined then redirect. */
     if (!valid) {
       const timeout = setTimeout(() => {
-        navigate('/auth/login')
-      }, 2000)
+        navigate('/auth/login');
+      }, 2000);
       return () => {
-        clearTimeout(timeout)
-      }
+        clearTimeout(timeout);
+      };
     }
 
     /** If not edge does not have value. */
     if (valid && !edge) {
-      dispatch(edgeDashboard(access_token))
+      dispatch(edgeDashboard(access_token));
     }
 
     /** If not bluechip does not have value. */
     if (valid && !bluechip) {
-      dispatch(bluechipDashboard(access_token))
+      dispatch(bluechipDashboard(access_token));
     }
 
     /** If not stock gainer does not have value. */
     if (valid && !stockgainer) {
-      dispatch(stockGainerDashboard(access_token))
+      dispatch(stockGainerDashboard(access_token));
     }
 
     /** If not stock losser does not have value. */
     if (valid && !stockgainer) {
-      dispatch(stockLosserDashboard(access_token))
+      dispatch(stockLosserDashboard(access_token));
     }
 
     /** Monitor new message. */
     if (message) {
       /** Set state. */
-      setNotice(true)
+      setNotice(true);
       /** Reset state. */
       setTimeout(() => {
-        setNotice(false)
-      }, 5000)
+        setNotice(false);
+      }, 5000);
     }
-  }, [access_token, valid, error, message, bluechip, stockgainer, stocklosser])
+  }, [access_token, valid, error, message, bluechip, stockgainer, stocklosser]);
 
   /** Use state. */
-  const [verify, setVerify] = useState(email_verified)
+  const [verify, setVerify] = useState(email_verified);
 
   /** Resend email verification. */
   const resendHandler = () => {
     /** Set state value. */
-    setVerify(true)
+    setVerify(true);
     /** Dispatch action. */
-    dispatch(resendEmail(access_token))
-  }
+    dispatch(resendEmail(access_token));
+  };
 
   /** Fecth data from external endpoint. */
   const dashboardStartHandler = () => {
     /** Dispatch action. */
-    dispatch(startDashboard(access_token))
-  }
+    dispatch(startDashboard(access_token));
+  };
 
   const dashboardPriceHandler = () => {
     /** Dispatch action. */
-    dispatch(priceDashboard(access_token))
-  }
+    dispatch(priceDashboard(access_token));
+  };
 
   const dashboardReportHandler = () => {
     /** Dispatch action. */
-    dispatch(reportDashboard(access_token))
-  }
+    dispatch(reportDashboard(access_token));
+  };
 
   const dashboardDividendHandler = () => {
     /** Dispatch action. */
-    dispatch(dividendDashboard(access_token))
-  }
+    dispatch(dividendDashboard(access_token));
+  };
 
   const dashboardSectorHandler = () => {
     /** Dispatch action. */
-    dispatch(sectorDashboard(access_token))
-  }
+    dispatch(sectorDashboard(access_token));
+  };
 
   const dashboardListHandler = () => {
     /** Dispatch action. */
-    dispatch(listDashboard(access_token))
-  }
+    dispatch(listDashboard(access_token));
+  };
 
   const dashboardCompanyHandler = () => {
     /** Dispatch action. */
-    dispatch(companyDashboard(access_token))
-  }
+    dispatch(companyDashboard(access_token));
+  };
 
   /** Bluechip modal handler. */
   const bluechipModalHandler = () => {
-    setModalBlue(true)
-  }
+    setModalBlue(true);
+  };
 
   /** Edge modal handler. */
   const edgeModalHandler = () => {
-    setModalEdge(true)
-  }
+    setModalEdge(true);
+  };
 
   /** Update bluechip handler. */
   const updateBlueHandler = ({ statement, value }) => {
     /** Check statement is store. */
     if (value && statement === 'store') {
       /** Dispatch store action. */
-      dispatch(bluechipStoreDashboard({ token: access_token, symbol: value }))
+      dispatch(bluechipStoreDashboard({ token: access_token, symbol: value }));
 
       /** Dispatch fetch action to update state. */
       const timeout = setTimeout(() => {
-        dispatch(bluechipDashboard(access_token))
-      }, 3000)
+        dispatch(bluechipDashboard(access_token));
+      }, 3000);
 
       return () => {
-        clearTimeout(timeout)
-      }
+        clearTimeout(timeout);
+      };
     }
 
     /** Check statement is destroy. */
     if (value && statement === 'destroy') {
       /** Dispatch destroy action. */
-      dispatch(bluechipDestroyDashboard({ token: access_token, symbol: value }))
+      dispatch(bluechipDestroyDashboard({ token: access_token, symbol: value }));
 
       /** Dispatch fetch action to update state. */
       const timeout = setTimeout(() => {
-        dispatch(bluechipDashboard(access_token))
-      }, 3000)
+        dispatch(bluechipDashboard(access_token));
+      }, 3000);
 
       return () => {
-        clearTimeout(timeout)
-      }
+        clearTimeout(timeout);
+      };
     }
-  }
+  };
 
   /** Store edge id handler. */
   const storeEdgeHandler = ({ symbol, value }) => {
@@ -247,24 +247,24 @@ const Dashboard = () => {
           symbol: symbol,
           edge: value,
         }),
-      )
+      );
 
       /** Dispatch action to update the state. */
       const timeout = setTimeout(() => {
-        dispatch(edgeDashboard(access_token))
-      }, 3000)
+        dispatch(edgeDashboard(access_token));
+      }, 3000);
 
       return () => {
-        clearTimeout(timeout)
-      }
+        clearTimeout(timeout);
+      };
     }
-  }
+  };
 
   /** Close modal handler. */
   const closeModalHandler = () => {
-    setModalBlue(false)
-    setModalEdge(false)
-  }
+    setModalBlue(false);
+    setModalEdge(false);
+  };
 
   /** Return. */
   return (
@@ -275,9 +275,7 @@ const Dashboard = () => {
           {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
           {!verify && (
             <div className='m-2 cursor-pointer hover:animate-pulse' onClick={resendHandler}>
-              <p className='alert-info'>
-                Your email address has not yet been verified. Click to resend your email verification code.
-              </p>
+              <p className='alert-info'>Your email address has not yet been verified. Click to resend your email verification code.</p>
             </div>
           )}
           {loading ? (
@@ -291,13 +289,13 @@ const Dashboard = () => {
                   <div className='has-tooltip'>
                     <span class='tooltip uppercase text-center'>Fetch the stock symbol from PSE Edge.</span>
                     <button onClick={dashboardListHandler} className='btn btn-green' type='button'>
-                      <Icon id='start' /> Stock Symbol
+                      <Icon id='start' /> Stock List
                     </button>
                   </div>
                   <div className='has-tooltip'>
-                    <span class='tooltip uppercase text-center'>Fetch company identification from PSE Edge.</span>
+                    <span class='tooltip uppercase text-center'>Fetch company and security identification from PSE Edge.</span>
                     <button onClick={dashboardCompanyHandler} className='btn btn-orange' type='button'>
-                      <Icon id='start' /> Stock ID
+                      <Icon id='start' /> Company ID
                     </button>
                   </div>
                   <div className='has-tooltip'>
@@ -415,9 +413,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  <div className='h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale'>
-                    Doughnut Chart
-                  </div>
+                  <div className='h-48 sm:h-full sm:row-start-2 sm:col-start-2 sm:row-span-2 card-rounded-scale'>Doughnut Chart</div>
                 </div>
                 {modalBlue && (
                   <Modal>
@@ -490,7 +486,7 @@ const Dashboard = () => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

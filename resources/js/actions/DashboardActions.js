@@ -1,8 +1,8 @@
 /** Helper. */
-import { mapObject } from '../components/Helper'
+import { mapObject } from '../components/Helper';
 
 /** Constant. */
-import { MESSAGE_SHOW_SUCCESS, MESSAGE_SHOW_FAILURE } from '../constants/MessageConstants'
+import { MESSAGE_SHOW_SUCCESS, MESSAGE_SHOW_FAILURE } from '../constants/MessageConstants';
 
 import {
   DASHBOARD_START_REQUEST,
@@ -47,26 +47,26 @@ import {
   DASHBOARD_STOCK_LOSSER_REQUEST,
   DASHBOARD_STOCK_LOSSER_SUCCESS,
   DASHBOARD_STOCK_LOSSER_FAILURE,
-} from '../constants/DashboardConstants'
+} from '../constants/DashboardConstants';
 
 export const startDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_START_REQUEST })
+    dispatch({ type: DASHBOARD_START_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
       url: 'https://phisix-api4.appspot.com/stocks.json',
       method: 'GET',
-    })
+    });
 
     /** Use remap stocks helper. */
-    let result = mapObject(data)
+    let result = mapObject(data);
 
     /** Save stocks to database. */
     result.map((item, index) => {
       /** Get last index. */
-      let end = result.length - 1
+      let end = result.length - 1;
 
       /** Call delay item function. */
       setTimeout(async function () {
@@ -85,41 +85,41 @@ export const startDashboard = (token) => async (dispatch) => {
               table: 'trade',
               statement: 'store',
             },
-          })
+          });
 
           /** Dispatch action to show message in the frontend. */
           dispatch({
             type: MESSAGE_SHOW_SUCCESS,
             payload: data.message,
-          })
+          });
         }
         /** Talk to the console about that task progress. */
         if (index === end) {
-          console.log('Process Completed.')
+          console.log('Process Completed.');
         }
-      }, 3000 * index)
-    })
+      }, 3000 * index);
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_START_SUCCESS, payload: data.message })
+    dispatch({ type: DASHBOARD_START_SUCCESS, payload: data.message });
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_START_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const priceDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_PRICE_REQUEST })
+    dispatch({ type: DASHBOARD_PRICE_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -130,22 +130,22 @@ export const priceDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/stock-reports-retrieve',
       params: { section: 'stocks' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Save stocks to database. */
     stocks.map((item, index) => {
       /** Get last index. */
-      let end = stocks.length - 1
+      let end = stocks.length - 1;
 
       /** Call delay item function. */
       setTimeout(async function () {
@@ -163,41 +163,41 @@ export const priceDashboard = (token) => async (dispatch) => {
               input: item,
               section: 'prices',
             },
-          })
+          });
 
           /** Dispatch action to show message in the frontend. */
           dispatch({
             type: MESSAGE_SHOW_SUCCESS,
             payload: data.message,
-          })
+          });
         }
         /** Talk to the console about that task progress. */
         if (index === end) {
-          console.log('Process Completed.')
+          console.log('Process Completed.');
         }
-      }, 3000 * index)
-    })
+      }, 3000 * index);
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_PRICE_SUCCESS, payload: data.message })
+    dispatch({ type: DASHBOARD_PRICE_SUCCESS, payload: data.message });
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_PRICE_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const reportDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_REPORT_REQUEST })
+    dispatch({ type: DASHBOARD_REPORT_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -208,22 +208,22 @@ export const reportDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/stock-reports-retrieve',
       params: { section: 'stocks' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Save stocks to database. */
     stocks.map((item, index) => {
       /** Get last index. */
-      let end = stocks.length - 1
+      let end = stocks.length - 1;
       /** Call delay item function. */
       setTimeout(async function () {
         /** Check if data is not empty. */
@@ -240,41 +240,41 @@ export const reportDashboard = (token) => async (dispatch) => {
               input: item,
               section: 'reports',
             },
-          })
+          });
 
           /** Dispatch action to show message in the frontend. */
           dispatch({
             type: MESSAGE_SHOW_SUCCESS,
             payload: data.message,
-          })
+          });
         }
         /** Talk to the console about that task progress. */
         if (index === end) {
-          console.log('Process Completed.')
+          console.log('Process Completed.');
         }
-      }, 3000 * index)
-    })
+      }, 3000 * index);
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_REPORT_SUCCESS, payload: data.message })
+    dispatch({ type: DASHBOARD_REPORT_SUCCESS, payload: data.message });
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_REPORT_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const dividendDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_DIVIDEND_REQUEST })
+    dispatch({ type: DASHBOARD_DIVIDEND_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -285,22 +285,22 @@ export const dividendDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/stock-reports-retrieve',
       params: { section: 'stocks' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Save stocks to database. */
     stocks.map((item, index) => {
       /** Get last index. */
-      let end = stocks.length - 1
+      let end = stocks.length - 1;
       /** Call delay item function. */
       setTimeout(async function () {
         /** Check if data is not empty. */
@@ -317,41 +317,41 @@ export const dividendDashboard = (token) => async (dispatch) => {
               input: item,
               section: 'dividends',
             },
-          })
+          });
 
           /** Dispatch action to show message in the frontend. */
           dispatch({
             type: MESSAGE_SHOW_SUCCESS,
             payload: data.message,
-          })
+          });
         }
         /** Talk to the console about that task progress. */
         if (index === end) {
-          console.log('Process Completed.')
+          console.log('Process Completed.');
         }
-      }, 3000 * index)
-    })
+      }, 3000 * index);
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_DIVIDEND_SUCCESS, payload: data.message })
+    dispatch({ type: DASHBOARD_DIVIDEND_SUCCESS, payload: data.message });
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_DIVIDEND_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const sectorDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_SECTOR_REQUEST })
+    dispatch({ type: DASHBOARD_SECTOR_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -362,22 +362,22 @@ export const sectorDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/stock-reports-retrieve',
       params: { section: 'stocks' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Save stocks to database. */
     stocks.map((item, index) => {
       /** Get last index. */
-      let end = stocks.length - 1
+      let end = stocks.length - 1;
 
       /** Call delay item function. */
       setTimeout(async function () {
@@ -395,41 +395,41 @@ export const sectorDashboard = (token) => async (dispatch) => {
               input: item,
               section: 'sectors',
             },
-          })
+          });
 
           /** Dispatch action to show message in the frontend. */
           dispatch({
             type: MESSAGE_SHOW_SUCCESS,
             payload: data.message,
-          })
+          });
         }
         /** Talk to the console about that task progress. */
         if (index === end) {
-          console.log('Process Completed.')
+          console.log('Process Completed.');
         }
-      }, 3000 * index)
-    })
+      }, 3000 * index);
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_SECTOR_SUCCESS, payload: data.message })
+    dispatch({ type: DASHBOARD_SECTOR_SUCCESS, payload: data.message });
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_SECTOR_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const listDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_LIST_REQUEST })
+    dispatch({ type: DASHBOARD_LIST_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -440,42 +440,42 @@ export const listDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/stock-reports-retrieve',
       params: { section: 'lists' },
-    })
+    });
 
     /** Separate result. */
-    let message = data.message
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_LIST_SUCCESS, payload: message })
+    dispatch({ type: DASHBOARD_LIST_SUCCESS, payload: message });
 
     /** Dispatch action to set the result into the store. */
     if (message) {
-      console.log('Process Completed.')
+      console.log('Process Completed.');
     }
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_LIST_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const companyDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_COMPANY_REQUEST })
+    dispatch({ type: DASHBOARD_COMPANY_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -486,22 +486,22 @@ export const companyDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/stock-reports-retrieve',
       params: { section: 'stocks' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Save stocks to database. */
     stocks.map((item, index) => {
       /** Get last index. */
-      let end = stocks.length - 1
+      let end = stocks.length - 1;
       /** Call delay item function. */
       setTimeout(async function () {
         /** Check if data is not empty. */
@@ -516,43 +516,44 @@ export const companyDashboard = (token) => async (dispatch) => {
             url: '/stock-reports-store',
             params: {
               symbol: item.symbol,
+              edge: item.edge,
               section: 'companies',
             },
-          })
+          });
 
           /** Dispatch action to show message in the frontend. */
           dispatch({
             type: MESSAGE_SHOW_SUCCESS,
             payload: data.message,
-          })
+          });
         }
         /** Talk to the console about that task progress. */
         if (index === end) {
-          console.log('Process Completed.')
+          console.log('Process Completed.');
         }
-      }, 3000 * index)
-    })
+      }, 5000 * index);
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_COMPANY_SUCCESS, payload: data.message })
+    dispatch({ type: DASHBOARD_COMPANY_SUCCESS, payload: data.message });
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_COMPANY_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const bluechipDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_BLUECHIP_REQUEST })
+    dispatch({ type: DASHBOARD_BLUECHIP_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -563,45 +564,45 @@ export const bluechipDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/api/dashboard',
       params: { section: 'bluechip', statement: 'select' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_BLUECHIP_SUCCESS, payload: stocks })
+    dispatch({ type: DASHBOARD_BLUECHIP_SUCCESS, payload: stocks });
 
     /** Save to result to local storage. */
     if (stocks) {
-      localStorage.setItem('dashboardBluechip', JSON.stringify(stocks))
+      localStorage.setItem('dashboardBluechip', JSON.stringify(stocks));
     }
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_BLUECHIP_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const bluechipStoreDashboard =
   ({ token, symbol }) =>
   async (dispatch) => {
     try {
       /** Dispatch action to set inital state. */
-      dispatch({ type: DASHBOARD_BLUECHIP_STORE_REQUEST })
+      dispatch({ type: DASHBOARD_BLUECHIP_STORE_REQUEST });
 
       /** Prepare request to external api data provider. */
       const { data } = await axios({
@@ -616,36 +617,36 @@ export const bluechipStoreDashboard =
           statement: 'store',
           symbol: symbol,
         },
-      })
+      });
 
       /** Separate result. */
-      let message = data.message
+      let message = data.message;
 
       /** Dispatch action to show message in the frontend. */
-      dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message })
+      dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
 
       /** Dispatch action to set the result into the store. */
-      dispatch({ type: DASHBOARD_BLUECHIP_STORE_SUCCESS, payload: message })
+      dispatch({ type: DASHBOARD_BLUECHIP_STORE_SUCCESS, payload: message });
     } catch (error) {
       /** Dispatch action if error occurred. */
       dispatch({
         type: DASHBOARD_BLUECHIP_STORE_FAILURE,
         payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-      })
+      });
       /** Dispatch action if error occurred. */
       dispatch({
         type: MESSAGE_SHOW_FAILURE,
         payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-      })
+      });
     }
-  }
+  };
 
 export const bluechipDestroyDashboard =
   ({ token, symbol }) =>
   async (dispatch) => {
     try {
       /** Dispatch action to set inital state. */
-      dispatch({ type: DASHBOARD_BLUECHIP_DESTROY_REQUEST })
+      dispatch({ type: DASHBOARD_BLUECHIP_DESTROY_REQUEST });
 
       /** Prepare request to external api data provider. */
       const { data } = await axios({
@@ -660,37 +661,37 @@ export const bluechipDestroyDashboard =
           statement: 'destroy',
           symbol: symbol,
         },
-      })
+      });
 
       /** Separate result. */
-      let message = data.message
+      let message = data.message;
 
       /** Dispatch action to show message in the frontend. */
-      dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message })
+      dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
 
       /** Dispatch action to set the result into the store. */
       dispatch({
         type: DASHBOARD_BLUECHIP_DESTROY_SUCCESS,
         payload: message,
-      })
+      });
     } catch (error) {
       /** Dispatch action if error occurred. */
       dispatch({
         type: DASHBOARD_BLUECHIP_DESTROY_FAILURE,
         payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-      })
+      });
       /** Dispatch action if error occurred. */
       dispatch({
         type: MESSAGE_SHOW_FAILURE,
         payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-      })
+      });
     }
-  }
+  };
 
 export const edgeDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_EDGE_REQUEST })
+    dispatch({ type: DASHBOARD_EDGE_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -701,43 +702,43 @@ export const edgeDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/api/dashboard',
       params: { section: 'edge', statement: 'select' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_EDGE_SUCCESS, payload: stocks })
+    dispatch({ type: DASHBOARD_EDGE_SUCCESS, payload: stocks });
 
     /** Save to result to local storage. */
     if (stocks) {
-      localStorage.setItem('dashboardEdge', JSON.stringify(stocks))
+      localStorage.setItem('dashboardEdge', JSON.stringify(stocks));
     }
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_EDGE_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const edgeUpdateDashboard = (props) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_EDGE_UPDATE_REQUEST })
+    dispatch({ type: DASHBOARD_EDGE_UPDATE_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -753,34 +754,34 @@ export const edgeUpdateDashboard = (props) => async (dispatch) => {
         symbol: props.symbol,
         edge: props.edge,
       },
-    })
+    });
 
     /** Separate result. */
-    let message = data.message
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
-    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message })
+    dispatch({ type: MESSAGE_SHOW_SUCCESS, payload: message });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_EDGE_UPDATE_SUCCESS, payload: message })
+    dispatch({ type: DASHBOARD_EDGE_UPDATE_SUCCESS, payload: message });
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_EDGE_UPDATE_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const stockGainerDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_STOCK_GAINER_REQUEST })
+    dispatch({ type: DASHBOARD_STOCK_GAINER_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -791,43 +792,43 @@ export const stockGainerDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/api/dashboard',
       params: { section: 'gainers' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_STOCK_GAINER_SUCCESS, payload: stocks })
+    dispatch({ type: DASHBOARD_STOCK_GAINER_SUCCESS, payload: stocks });
 
     /** Save to result to local storage. */
     if (stocks) {
-      localStorage.setItem('dashboardStockGainer', JSON.stringify(stocks))
+      localStorage.setItem('dashboardStockGainer', JSON.stringify(stocks));
     }
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_STOCK_GAINER_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};
 
 export const stockLosserDashboard = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
-    dispatch({ type: DASHBOARD_STOCK_LOSSER_REQUEST })
+    dispatch({ type: DASHBOARD_STOCK_LOSSER_REQUEST });
 
     /** Prepare request to external api data provider. */
     const { data } = await axios({
@@ -838,35 +839,35 @@ export const stockLosserDashboard = (token) => async (dispatch) => {
       method: 'GET',
       url: '/api/dashboard',
       params: { section: 'lossers' },
-    })
+    });
 
     /** Separate result. */
-    let stocks = data.stocks
-    let message = data.message
+    let stocks = data.stocks;
+    let message = data.message;
 
     /** Dispatch action to show message in the frontend. */
     dispatch({
       type: MESSAGE_SHOW_SUCCESS,
       payload: message,
-    })
+    });
 
     /** Dispatch action to set the result into the store. */
-    dispatch({ type: DASHBOARD_STOCK_LOSSER_SUCCESS, payload: stocks })
+    dispatch({ type: DASHBOARD_STOCK_LOSSER_SUCCESS, payload: stocks });
 
     /** Save to result to local storage. */
     if (stocks) {
-      localStorage.setItem('dashboardStockLosser', JSON.stringify(stocks))
+      localStorage.setItem('dashboardStockLosser', JSON.stringify(stocks));
     }
   } catch (error) {
     /** Dispatch action if error occurred. */
     dispatch({
       type: DASHBOARD_STOCK_LOSSER_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
     /** Dispatch action if error occurred. */
     dispatch({
       type: MESSAGE_SHOW_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-    })
+    });
   }
-}
+};

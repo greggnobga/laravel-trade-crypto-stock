@@ -13,7 +13,7 @@ import Search from '../../../components/Search';
 import Container from '../../../components/Container';
 
 /** Template. */
-import { desktopContent, desktopModalContent } from '../../template/Chart';
+import { desktopContent } from '../../template/Chart';
 
 /** Action. */
 import { watchlistChart, averageChart, fetchChart } from '../../../actions/ChartActions';
@@ -22,8 +22,6 @@ import { tokenUser } from '../../../actions/UserActions.js';
 const StockChart = () => {
   /** Use state. */
   const [modalSearch, setModalSearch] = useState(false);
-  const [modalBuild, setModalBuild] = useState(false);
-  const [modalSymbol, setModalSymbol] = useState();
 
   /** Use selector. */
   const userLogin = useSelector((state) => state.userLogin);
@@ -55,15 +53,16 @@ const StockChart = () => {
     setModalSearch(true);
   };
 
-  const showModalBuildHandler = () => {
-    setModalBuild(true);
-  };
-
   /** Close modal handler. */
   const closeModalHandler = () => {
     /** Hide modal. */
     setModalSearch(false);
     setModalBuild(false);
+  };
+
+  const chartAverageHandler = () => {
+    /** Dispatch action. */
+    dispatch(averageChart(access_token));
   };
 
   useEffect(() => {
@@ -92,14 +91,6 @@ const StockChart = () => {
     }
   }, [access_token, valid, watchbuild, stocks]);
 
-  /** Store handler. */
-  const storeHandler = ({ symbol }) => {
-    /** Test. */
-    setModalSymbol(symbol);
-    /** Dispatch action. */
-    dispatch(averageChart(access_token, symbol));
-  };
-
   /** Container header. */
   const containerChartHeader = (
     <div className='flex flex-row justify-between'>
@@ -110,55 +101,25 @@ const StockChart = () => {
         <span className='mr-4' onClick={showModalSearchHandler}>
           <Icon id='search' /> Search
         </span>
-        <span className='mr-4' onClick={showModalBuildHandler}>
-          <Icon id='build' /> Build
+        <span className='mr-4' onClick={chartAverageHandler}>
+          <Icon id='chart' /> Fetch Avarage
         </span>
       </p>
     </div>
   );
 
   return (
-    <>
-      <Container header={containerChartHeader}>
-        {desktopContent({ items: stocks })}
+    <Container header={containerChartHeader}>
+      {desktopContent({ items: stocks })}
 
-        <div className='grid auto-rows-min h-fit rounded'>
-          {modalSearch && (
-            <Modal>
-              <Search close={closeModalHandler} />
-            </Modal>
-          )}
-        </div>
-        <div className='grid auto-rows-min h-fit rounded gap-2'>
-          {modalBuild && (
-            <Modal>
-              {loading ? (
-                <Loader />
-              ) : (
-                desktopModalContent({
-                  header: 'watchlist',
-                  close: closeModalHandler,
-                  action: storeHandler,
-                  items: watchbuild,
-                  fetch: stocks,
-                  symbol: modalSymbol,
-                  message: success,
-                  error: error,
-                })
-              )}
-              {desktopModalContent({
-                header: 'bluechip',
-                close: closeModalHandler,
-                action: storeHandler,
-                items: [],
-                message: success,
-                error: error,
-              })}
-            </Modal>
-          )}
-        </div>
-      </Container>
-    </>
+      <div className='grid auto-rows-min h-fit rounded'>
+        {modalSearch && (
+          <Modal>
+            <Search close={closeModalHandler} />
+          </Modal>
+        )}
+      </div>
+    </Container>
   );
 };
 

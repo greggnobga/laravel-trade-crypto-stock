@@ -854,14 +854,14 @@ class PSEController extends Controller {
             $chunks = array_chunk($result['chart'], $parts);
 
             /** parse year. */
-            $one = Carbon::parse($chunks[0][0]["CHART_DATE"])->format('Y');
+            $one = Carbon::parse($chunks[2][0]["CHART_DATE"])->format('Y');
             $two = Carbon::parse($chunks[1][0]["CHART_DATE"])->format('Y');
-            $three = Carbon::parse($chunks[2][0]["CHART_DATE"])->format('Y');
+            $three = Carbon::parse($chunks[0][0]["CHART_DATE"])->format('Y');
 
             /** assign to pointer. */
-            $result['averageprice'][$one] = $this->helpers(['sanitized' => 'average', 'stocks' => $chunks[0]]);
+            $result['averageprice'][$one] = $this->helpers(['sanitized' => 'average', 'stocks' => $chunks[2]]);
             $result['averageprice'][$two] = $this->helpers(['sanitized' => 'average', 'stocks' => $chunks[1]]);
-            $result['averageprice'][$three] = $this->helpers(['sanitized' => 'average', 'stocks' => $chunks[2]]);
+            $result['averageprice'][$three] = $this->helpers(['sanitized' => 'average', 'stocks' => $chunks[0]]);
 
             /** save to database. */
             $check = DB::table('stock_charts')
@@ -909,7 +909,7 @@ class PSEController extends Controller {
         $stocks = DB::table('stock_trades')
             ->select('edge', 'security', 'symbol')
             ->where('edge', '>', '0')
-            ->where('updated_at', '<', Carbon::now()->subHour(0))
+            ->where('updated_at', '>=', Carbon::now()->subHour(12))
             ->get()
             ->toArray();
 

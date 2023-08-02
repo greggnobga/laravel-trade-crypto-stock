@@ -27,7 +27,7 @@ query {
         totalValueLockedUSD_gte: 30000
         txCount_gte:100
       	createdAtTimestamp_gte: 1653398709
-      }) 
+      })
       {
         token0 {
           	id

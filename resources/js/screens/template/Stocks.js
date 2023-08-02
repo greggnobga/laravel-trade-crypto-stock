@@ -1,5 +1,5 @@
 /** Component. */
-import Icon from '../../components/Icon'
+import Icon from '../../components/Icon';
 
 /** Desktop header. */
 export const desktopHeader = (
@@ -32,7 +32,7 @@ export const desktopHeader = (
       <p className='text-green-500'>Action</p>
     </div>
   </div>
-)
+);
 
 /** Desktop template. */
 export const desktopTemplate = ({ item, action, icon, text }) => {
@@ -71,8 +71,8 @@ export const desktopTemplate = ({ item, action, icon, text }) => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /** Mobile template. */
 export const mobileTemplate = ({ item, action, icon, text }) => {
@@ -81,10 +81,7 @@ export const mobileTemplate = ({ item, action, icon, text }) => {
       <div className='p-2'>
         <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Symbol</p>
         <p className='pt-2 text-center'>
-          <a
-            href={`https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`}
-            target='_blank'>
-            {' '}
+          <a href={`https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`} target='_blank'>
             <span className='uppercase'>{item.symbol}</span>
           </a>
         </p>
@@ -124,8 +121,8 @@ export const mobileTemplate = ({ item, action, icon, text }) => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /** Desktop pagination button. */
 export const paginationTemplate = ({ index, turn }) => {
@@ -134,66 +131,66 @@ export const paginationTemplate = ({ index, turn }) => {
       className='p-2 hover:bg-slate-100 text-[.75rem] hover:text-green-500'
       type='button'
       onClick={() => {
-        turn(index)
+        turn(index);
       }}>
       {index + 1}
     </button>
-  )
-}
+  );
+};
 
 /** Desktop modal template. */
 export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
   /** Modal header. */
   const modalContainerHeader = (item) => {
     /** Declare pointer. */
-    let modalHeader = ''
-    let modalIcon = ''
+    let modalHeader = '';
+    let modalIcon = '';
 
     /** Switch case. */
     switch (item) {
       case 'holdingfirms':
-        modalHeader = 'Holding Firms'
-        modalIcon = 'holding'
-        break
+        modalHeader = 'Holding Firms';
+        modalIcon = 'holding';
+        break;
       case 'services':
-        modalHeader = 'Services'
-        modalIcon = 'service'
-        break
+        modalHeader = 'Services';
+        modalIcon = 'service';
+        break;
       case 'industrials':
-        modalHeader = 'Industrials'
-        modalIcon = 'industrial'
-        break
+        modalHeader = 'Industrials';
+        modalIcon = 'industrial';
+        break;
       case 'properties':
-        modalHeader = 'Properties'
-        modalIcon = 'property'
-        break
+        modalHeader = 'Properties';
+        modalIcon = 'property';
+        break;
       case 'miningandoils':
-        modalHeader = 'Mining And Oils'
-        modalIcon = 'mining'
-        break
+        modalHeader = 'Mining And Oils';
+        modalIcon = 'mining';
+        break;
       case 'financials':
-        modalHeader = 'Financials'
-        modalIcon = 'financial'
-        break
+        modalHeader = 'Financials';
+        modalIcon = 'financial';
+        break;
       case 'smallmediumemergingboards':
-        modalHeader = 'Small Medium Emrging Boards'
-        modalIcon = 'board'
-        break
+        modalHeader = 'Small Medium Emrging Boards';
+        modalIcon = 'board';
+        break;
       case 'exchangetradedfunds':
-        modalHeader = 'Exchange Traded Funds'
-        modalIcon = 'exchange'
-        break
+        modalHeader = 'Exchange Traded Funds';
+        modalIcon = 'exchange';
+        break;
       default:
-        modalHeader = 'Holding Firms'
-        modalIcon = 'holding'
-        break
+        modalHeader = 'Holding Firms';
+        modalIcon = 'holding';
+        break;
     }
 
-    return { modalHeader, modalIcon }
-  }
+    return { modalHeader, modalIcon };
+  };
 
   /** Call modal header. */
-  const { modalHeader, modalIcon } = modalContainerHeader(item[0])
+  const { modalHeader, modalIcon } = modalContainerHeader(item[0]);
 
   /** Return. */
   return (
@@ -243,9 +240,7 @@ export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
             return (
               <div className='grid auto-rows-min grid-cols-9 h-fit border-b border-stone-100 bg-stone-50 hover:text-purple-500'>
                 <div className='p-2'>
-                  <a
-                    href={`https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`}
-                    target='_blank'>
+                  <a href={`https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`} target='_blank'>
                     {' '}
                     <span className='uppercase'>{item.symbol}</span>
                   </a>
@@ -275,72 +270,72 @@ export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
                   <button
                     className='uppercase border border-stone-100 hover:text-green-500'
                     onClick={() => {
-                      action(item.symbol)
+                      action(item.symbol);
                     }}>
                     <Icon id={icon} /> {text}
                   </button>
                 </div>
               </div>
-            )
+            );
           })}
       </div>
     </>
-  )
-}
+  );
+};
 
 /** Mobile template. */
 export const mobileModalTemplate = ({ item, action, close, icon, text }) => {
   /** Modal header. */
   const modalContainerHeader = (item) => {
     /** Declare pointer. */
-    let modalHeader = ''
-    let modalIcon = ''
+    let modalHeader = '';
+    let modalIcon = '';
 
     /** Switch case. */
     switch (item) {
       case 'holdingfirms':
-        modalHeader = 'Holding Firms'
-        modalIcon = 'holding'
-        break
+        modalHeader = 'Holding Firms';
+        modalIcon = 'holding';
+        break;
       case 'services':
-        modalHeader = 'Services'
-        modalIcon = 'service'
-        break
+        modalHeader = 'Services';
+        modalIcon = 'service';
+        break;
       case 'industrials':
-        modalHeader = 'Industrials'
-        modalIcon = 'industrial'
-        break
+        modalHeader = 'Industrials';
+        modalIcon = 'industrial';
+        break;
       case 'properties':
-        modalHeader = 'Properties'
-        modalIcon = 'property'
-        break
+        modalHeader = 'Properties';
+        modalIcon = 'property';
+        break;
       case 'miningandoils':
-        modalHeader = 'Mining And Oils'
-        modalIcon = 'mining'
-        break
+        modalHeader = 'Mining And Oils';
+        modalIcon = 'mining';
+        break;
       case 'financials':
-        modalHeader = 'Financials'
-        modalIcon = 'financial'
-        break
+        modalHeader = 'Financials';
+        modalIcon = 'financial';
+        break;
       case 'smallmediumemergingboards':
-        modalHeader = 'Small Medium Emrging Boards'
-        modalIcon = 'board'
-        break
+        modalHeader = 'Small Medium Emrging Boards';
+        modalIcon = 'board';
+        break;
       case 'exchangetradedfunds':
-        modalHeader = 'Exchange Traded Funds'
-        modalIcon = 'exchange'
-        break
+        modalHeader = 'Exchange Traded Funds';
+        modalIcon = 'exchange';
+        break;
       default:
-        modalHeader = 'Holding Firms'
-        modalIcon = 'holding'
-        break
+        modalHeader = 'Holding Firms';
+        modalIcon = 'holding';
+        break;
     }
 
-    return { modalHeader, modalIcon }
-  }
+    return { modalHeader, modalIcon };
+  };
 
   /** Call modal header. */
-  const { modalHeader, modalIcon } = modalContainerHeader(item[0])
+  const { modalHeader, modalIcon } = modalContainerHeader(item[0]);
 
   /** Return. */
   return (
@@ -360,65 +355,47 @@ export const mobileModalTemplate = ({ item, action, close, icon, text }) => {
           return (
             <div className='m-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 uppercase'>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  Symbol
-                </span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Symbol</span>
 
                 <span className='block pt-2 text-center'>
-                  <a
-                    href={`https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`}
-                    target='_blank'>
+                  <a href={`https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`} target='_blank'>
                     {' '}
                     <span className='uppercase'>{item.symbol}</span>
                   </a>
                 </span>
               </div>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  Price
-                </span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Price</span>
 
                 <span className='block pt-2 text-center'>{item.price}</span>
               </div>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  Value
-                </span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Value</span>
 
                 <span className='block pt-2 text-center'>{item.value}</span>
               </div>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  Price Range
-                </span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Price Range</span>
 
                 <span className='block pt-2 text-center'>{item.pricerange}</span>
               </div>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  Total Assets
-                </span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Total Assets</span>
 
                 <span className='block pt-2 text-center'>{item.totalassets}</span>
               </div>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  Net Income
-                </span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Net Income</span>
 
                 <span className='block pt-2 text-center'>{item.netincomeaftertax}</span>
               </div>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  Debt Asset Ratio
-                </span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Debt Asset Ratio</span>
 
                 <span className='block pt-2 text-center'>{item.debtassetratio}</span>
               </div>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  Dividend Yield
-                </span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Dividend Yield</span>
 
                 <span className='block pt-2 text-center'>{item.dividendyield}</span>
               </div>
@@ -426,14 +403,14 @@ export const mobileModalTemplate = ({ item, action, close, icon, text }) => {
                 <button
                   className='uppercase border border-stone-100 hover:text-purple-500'
                   onClick={() => {
-                    action(item.symbol)
+                    action(item.symbol);
                   }}>
                   <Icon id={icon} /> {text}
                 </button>
               </div>
             </div>
-          )
+          );
         })}
     </>
-  )
-}
+  );
+};

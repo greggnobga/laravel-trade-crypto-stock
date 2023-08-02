@@ -28,7 +28,7 @@ import { watchlistBuildReducer, watchlistStoreReducer, watchlistFetchReducer, wa
 
 import { tradeBluechipReducer, tradeCommonReducer, tradeStoreReducer } from './reducers/TradeReducers';
 
-import { chartWatchlistReducer, chartAverageReducer, chartFetchReducer } from './reducers/ChartReducers';
+import { chartAverageReducer, chartFetchReducer } from './reducers/ChartReducers';
 
 /** Combine reducer. */
 const reducer = combineReducers({
@@ -59,7 +59,6 @@ const reducer = combineReducers({
   tradeBluechip: tradeBluechipReducer,
   tradeCommon: tradeCommonReducer,
   tradeStore: tradeStoreReducer,
-  chartWatchlist: chartWatchlistReducer,
   chartAverage: chartAverageReducer,
   chartFetch: chartFetchReducer,
   showMessage: showMessageReducer,
@@ -86,8 +85,6 @@ const tradeBluechipFromStorage = localStorage.getItem('tradeBluechip') ? JSON.pa
 
 const tradeCommonFromStorage = localStorage.getItem('tradeCommon') ? JSON.parse(localStorage.getItem('tradeCommon')) : {};
 
-const chartWatchlistFromStorage = localStorage.getItem('chartWatchlist') ? JSON.parse(localStorage.getItem('chartWatchlist')) : {};
-
 const chartFetchFromStorage = localStorage.getItem('chartFetch') ? JSON.parse(localStorage.getItem('chartFetch')) : {};
 
 const initialState = {
@@ -101,7 +98,6 @@ const initialState = {
   watchlistFetch: watchlistFetchFromStorage,
   tradeBluechip: tradeBluechipFromStorage,
   tradeCommon: tradeCommonFromStorage,
-  chartWatchlist: chartWatchlistFromStorage,
   chartFetch: chartFetchFromStorage,
 };
 

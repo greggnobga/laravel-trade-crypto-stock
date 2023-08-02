@@ -1,41 +1,41 @@
 /** React. */
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 /** Component. */
-import Icon from './Icon'
+import Icon from './Icon';
 
-const Search = ({ close, items }) => {
+const Search = ({ close, items, component, current }) => {
   /** Use state. */
-  const [search, setSearch] = useState()
-  const [keyword, setKeyword] = useState()
+  const [search, setSearch] = useState();
+  const [keyword, setKeyword] = useState();
 
   /** Search handler. */
   const searchHandler = () => {
     if (keyword.trim() && items) {
       /** Find item in the array. */
-      let find = items.filter((item) => item.symbol.toLowerCase().includes(keyword.toLowerCase()))
+      let find = items.filter((item) => item.symbol.toLowerCase().includes(keyword.toLowerCase()));
 
       /** If found put it in local state. */
       if (find) {
-        return setSearch(find)
+        return setSearch(find);
       }
     }
-  }
+  };
 
   const searchChange = (value) => {
     if (value) {
-      setKeyword(value)
+      setKeyword(value);
     } else {
-      setKeyword('')
+      setKeyword('');
     }
-  }
+  };
 
   /** Use effect. */
   useEffect(() => {
     if (!keyword) {
-      setSearch('')
+      setSearch('');
     }
-  }, [keyword, search])
+  }, [keyword, search]);
 
   /** Return something. */
   return (
@@ -67,14 +67,62 @@ const Search = ({ close, items }) => {
           </button>
         </div>
       </div>
-
-      {search ? (
+      {component === 'chart' ? (
+        search ? (
+          search.map((item, index) => {
+            /** Return. */
+            return (
+              <div
+                className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center align-center gap-2 my-2 w-full bg-slate-50 shadow ${
+                  index & (1 === 1) ? 'rounded-t-md' : 'rounded-b-md'
+                }`}>
+                <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                  <div className='p-2 uppercase text-green-500'>Edge</div>
+                  <div className='p-2 text-center pb-4'>{item.edge}</div>
+                </div>
+                <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                  <div className='p-2 uppercase text-green-500'>Symbol</div>
+                  <div className='p-2 text-center pb-4'>{item.symbol}</div>
+                </div>
+                <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                  <div className='p-2 uppercase text-green-500'>Price</div>
+                  <div className='p-2 text-center pb-4'>{item.price}</div>
+                </div>
+                <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                  <div className='p-2 uppercase text-green-500'>Value</div>
+                  <div className='p-2 text-center pb-4'>{item.value}</div>
+                </div>
+                <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                  <div className='p-2 uppercase text-green-500'>Price Range</div>
+                  <div className='p-2 text-center pb-4'>{item.pricerange}</div>
+                </div>
+                <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                  <div className='p-2 uppercase text-green-500'>{current - 1} Average Price</div>
+                  <div className='p-2 text-center pb-4'>{item.averageone}</div>
+                </div>
+                <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                  <div className='p-2 uppercase text-green-500'>{current - 2} Average Price</div>
+                  <div className='p-2 text-center pb-4'>{item.averagetwo}</div>
+                </div>
+                <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                  <div className='p-2 uppercase text-green-500'>{current - 3} Average Price</div>
+                  <div className='p-2 text-center pb-4'>{item.averagethree}</div>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div className='form-center w-full'>
+            <p>No record found.</p>
+          </div>
+        )
+      ) : search ? (
         search.map((item, index) => {
           /** Return. */
           return (
             <div
               className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center align-center gap-2 my-2 w-full bg-slate-50 shadow ${
-                index & (1 == 1) ? 'rounded-t-md' : 'rounded-b-md'
+                index & (1 === 1) ? 'rounded-t-md' : 'rounded-b-md'
               }`}>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
                 <div className='p-2 uppercase text-green-500'>Edge</div>
@@ -113,7 +161,7 @@ const Search = ({ close, items }) => {
                 <div className='p-2 text-center pb-4'>{item.dividendyield}</div>
               </div>
             </div>
-          )
+          );
         })
       ) : (
         <div className='form-center w-full'>
@@ -121,7 +169,7 @@ const Search = ({ close, items }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;

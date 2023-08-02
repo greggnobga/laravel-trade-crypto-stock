@@ -5,23 +5,29 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+/** Hook. */
+import useScreen from '../../../hooks/UseScreen';
+
 /** Component. */
 import Icon from '../../../components/Icon';
 import Modal from '../../../components/Modal';
 import Loader from '../../../components/Loader';
 import Search from '../../../components/Search';
+import Notice from '../../../components/Notice';
 import Container from '../../../components/Container';
 
 /** Template. */
-import { desktopContent } from '../../template/Chart';
+import { desktopContent, mobileContent } from '../../template/Chart';
 
 /** Action. */
-import { watchlistChart, averageChart, fetchChart } from '../../../actions/ChartActions';
+import { averageChart, fetchChart } from '../../../actions/ChartActions';
 import { tokenUser } from '../../../actions/UserActions.js';
 
 const StockChart = () => {
   /** Use state. */
   const [modalSearch, setModalSearch] = useState(false);
+  const [notice, setNotice] = useState(false);
+  const [year, setYear] = useState(new Date().getFullYear());
 
   /** Use selector. */
   const userLogin = useSelector((state) => state.userLogin);
@@ -29,9 +35,6 @@ const StockChart = () => {
 
   const userToken = useSelector((state) => state.userToken);
   const { valid } = userToken;
-
-  const chartWatchlist = useSelector((state) => state.chartWatchlist);
-  const { watchbuild } = chartWatchlist;
 
   const chartFetch = useSelector((state) => state.chartFetch);
   const { stocks } = chartFetch;
@@ -42,11 +45,14 @@ const StockChart = () => {
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
 
-  /** Use navigate. */
-  const navigate = useNavigate();
+  /** Use screen. */
+  const { isMobile } = useScreen();
 
   /** Use dispatch. */
   const dispatch = useDispatch();
+
+  /** Use navigate. */
+  const navigate = useNavigate();
 
   /** Show modal handler. */
   const showModalSearchHandler = () => {
@@ -57,12 +63,14 @@ const StockChart = () => {
   const closeModalHandler = () => {
     /** Hide modal. */
     setModalSearch(false);
-    setModalBuild(false);
   };
 
   const chartAverageHandler = () => {
     /** Dispatch action. */
     dispatch(averageChart(access_token));
+
+    /** Dispatch action to update state. */
+    dispatch(fetchChart(access_token));
   };
 
   useEffect(() => {
@@ -78,18 +86,22 @@ const StockChart = () => {
       navigate('/auth/login');
     }
 
-    /** Send request if no build stock. */
-    if (valid && !watchbuild) {
-      /** Dispatch action. */
-      dispatch(watchlistChart(access_token));
-    }
-
     /** Send request if no stocks. */
     if (valid && !stocks) {
       /** Dispatch action. */
       dispatch(fetchChart(access_token));
     }
-  }, [access_token, valid, watchbuild, stocks]);
+
+    /** Monitor new message. */
+    if (message) {
+      /** Set state. */
+      setNotice(true);
+      /** Reset state. */
+      setTimeout(() => {
+        setNotice(false);
+      }, 5000);
+    }
+  }, [access_token, valid, stocks, message]);
 
   /** Container header. */
   const containerChartHeader = (
@@ -102,24 +114,28 @@ const StockChart = () => {
           <Icon id='search' /> Search
         </span>
         <span className='mr-4' onClick={chartAverageHandler}>
-          <Icon id='chart' /> Fetch Avarage
+          <Icon id='chart' /> Fetch
         </span>
       </p>
     </div>
   );
 
   return (
-    <Container header={containerChartHeader}>
-      {desktopContent({ items: stocks })}
+    <>
+      {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
+      {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
+      <Container header={containerChartHeader}>
+        {isMobile ? mobileContent({ items: stocks, current: year }) : desktopContent({ items: stocks, current: year })}
 
-      <div className='grid auto-rows-min h-fit rounded'>
-        {modalSearch && (
-          <Modal>
-            <Search close={closeModalHandler} />
-          </Modal>
-        )}
-      </div>
-    </Container>
+        <div className='grid auto-rows-min h-fit rounded'>
+          {modalSearch && (
+            <Modal>
+              <Search close={closeModalHandler} items={stocks} component='chart' current={year} />
+            </Modal>
+          )}
+        </div>
+      </Container>
+    </>
   );
 };
 

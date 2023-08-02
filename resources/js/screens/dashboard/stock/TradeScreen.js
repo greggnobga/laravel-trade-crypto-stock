@@ -1,92 +1,92 @@
 /** React. */
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 /** Vendor. */
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 /** Hook. */
-import useScreen from '../../../hooks/UseScreen'
+import useScreen from '../../../hooks/UseScreen';
 
 /** Helper. */
-import { chunkObject } from '../../../components/Helper'
+import { chunkObject } from '../../../components/Helper';
 
 /** Component. */
-import Icon from '../../../components/Icon'
-import Modal from '../../../components/Modal'
-import Loader from '../../../components/Loader'
-import Notice from '../../../components/Notice'
-import Search from '../../../components/Search'
-import Container from '../../../components/Container'
+import Icon from '../../../components/Icon';
+import Modal from '../../../components/Modal';
+import Loader from '../../../components/Loader';
+import Notice from '../../../components/Notice';
+import Search from '../../../components/Search';
+import Container from '../../../components/Container';
 
 /** Template. */
-import { desktopHeader, desktopTemplate, mobileTemplate, paginationTemplate } from '../../template/Stocks'
+import { desktopHeader, desktopTemplate, mobileTemplate, paginationTemplate } from '../../template/Stocks';
 
 /** Action. */
-import { bluechipTrade, commonTrade, storeTrade } from '../../../actions/TradeActions'
-import { tokenUser } from '../../../actions/UserActions.js'
+import { bluechipTrade, commonTrade, storeTrade } from '../../../actions/TradeActions';
+import { tokenUser } from '../../../actions/UserActions.js';
 
 const Trade = () => {
   /** Use selector. */
-  const userLogin = useSelector((state) => state.userLogin)
-  const { access_token } = userLogin
+  const userLogin = useSelector((state) => state.userLogin);
+  const { access_token } = userLogin;
 
-  const userToken = useSelector((state) => state.userToken)
-  const { valid } = userToken
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
 
-  const tradeBluechip = useSelector((state) => state.tradeBluechip)
-  const { loading: loadBlue, bluechip } = tradeBluechip
+  const tradeBluechip = useSelector((state) => state.tradeBluechip);
+  const { loading: loadBlue, bluechip } = tradeBluechip;
 
-  const tradeCommon = useSelector((state) => state.tradeCommon)
-  const { loading: loadCommon, common } = tradeCommon
+  const tradeCommon = useSelector((state) => state.tradeCommon);
+  const { loading: loadCommon, common } = tradeCommon;
 
-  const showMessage = useSelector((state) => state.showMessage)
-  const { message, error } = showMessage
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message, error } = showMessage;
 
   /** Use screen. */
-  const { isMobile } = useScreen()
+  const { isMobile } = useScreen();
 
   /** Use dispatch. */
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   /** Use navigate. */
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   /** Use state. */
-  const [bluechipChunks, setBluechipChunks] = useState()
-  const [bluechipIndex, setBluechipIndex] = useState()
-  const [bluechipChunk, setBluechipChunk] = useState()
-  const [commonChunks, setCommonChunks] = useState()
-  const [commonIndex, setCommonIndex] = useState()
-  const [commonChunk, setCommonChunk] = useState()
-  const [notice, setNotice] = useState(false)
-  const [modalSearchBluechip, setModalSearchBluechip] = useState(false)
-  const [modalSearchCommon, setModalSearchCommon] = useState(false)
+  const [bluechipChunks, setBluechipChunks] = useState();
+  const [bluechipIndex, setBluechipIndex] = useState();
+  const [bluechipChunk, setBluechipChunk] = useState();
+  const [commonChunks, setCommonChunks] = useState();
+  const [commonIndex, setCommonIndex] = useState();
+  const [commonChunk, setCommonChunk] = useState();
+  const [notice, setNotice] = useState(false);
+  const [modalSearchBluechip, setModalSearchBluechip] = useState(false);
+  const [modalSearchCommon, setModalSearchCommon] = useState(false);
 
   /** Use effect. */
   useEffect(() => {
     /** Check valid state. */
     if (!valid && access_token) {
-      dispatch(tokenUser(access_token))
+      dispatch(tokenUser(access_token));
     }
 
     /** Check if token is valid. */
     if (valid && access_token) {
-      navigate('/dashboard/stock-trade')
+      navigate('/dashboard/stock-trade');
     } else {
-      navigate('/auth/login')
+      navigate('/auth/login');
     }
 
     /** Send request if no bluechip stock. */
     if (valid && !bluechip) {
       /** Dispatch action. */
-      dispatch(bluechipTrade(access_token))
+      dispatch(bluechipTrade(access_token));
     }
 
     /** Send request if no common stock. */
     if (valid && !common) {
       /** Dispatch action. */
-      dispatch(commonTrade(access_token))
+      dispatch(commonTrade(access_token));
     }
 
     /** Use helper. */
@@ -95,11 +95,11 @@ const Trade = () => {
       const { pages: bluechipPages, chunks: bluechipChunks } = chunkObject({
         divide: 10,
         data: bluechip,
-      })
+      });
 
       /** Set state. */
-      setBluechipChunks(bluechipChunks)
-      setBluechipIndex(bluechipPages)
+      setBluechipChunks(bluechipChunks);
+      setBluechipIndex(bluechipPages);
     }
 
     /** Use helper. */
@@ -108,69 +108,57 @@ const Trade = () => {
       const { pages: commonPages, chunks: commonChunks } = chunkObject({
         divide: 10,
         data: common,
-      })
+      });
 
       /** Set state. */
-      setCommonChunks(commonChunks)
-      setCommonIndex(commonPages)
+      setCommonChunks(commonChunks);
+      setCommonIndex(commonPages);
     }
 
     /** Monitor new message. */
     if (message) {
       /** Set state. */
-      setNotice(true)
+      setNotice(true);
 
       /** Reset state. */
       setTimeout(() => {
-        setNotice(false)
-      }, 3000)
+        setNotice(false);
+      }, 3000);
     }
-  }, [access_token, valid, bluechip, common, message])
+  }, [access_token, valid, bluechip, common, message]);
 
   /** Common handler. */
   const commonHandler = (index) => {
     /** Set state. */
-    setCommonChunk(commonChunks[index])
-  }
+    setCommonChunk(commonChunks[index]);
+  };
 
   /** Bluechip handler. */
   const bluechipHandler = (index) => {
     /** Set state. */
-    setBluechipChunk(bluechipChunks[index])
-  }
+    setBluechipChunk(bluechipChunks[index]);
+  };
 
   /** Store handler. */
   const storeHandler = (symbol) => {
-    dispatch(storeTrade(access_token, symbol))
-
-    /** Dispatch fetch action to update state. */
-    const timeout = setTimeout(() => {
-      /** Dispatch bluechip action. */
-      dispatch(bluechipTrade(access_token))
-      /** Dispatch common action. */
-      dispatch(commonTrade(access_token))
-    }, 3000)
-
-    return () => {
-      clearTimeout(timeout)
-    }
-  }
+    dispatch(storeTrade(access_token, symbol));
+  };
 
   /** Show search modal handler. */
   const showModalSearchBluechipHandler = () => {
-    setModalSearchBluechip(true)
-  }
+    setModalSearchBluechip(true);
+  };
 
   const showModalSearchCommonHandler = () => {
-    setModalSearchCommon(true)
-  }
+    setModalSearchCommon(true);
+  };
 
   /** Close modal handler. */
   const closeModalHandler = () => {
     /** Hide modal. */
-    setModalSearchBluechip(false)
-    setModalSearchCommon(false)
-  }
+    setModalSearchBluechip(false);
+    setModalSearchCommon(false);
+  };
 
   /** Container header for bluechip. */
   const containerBluechipHeader = (
@@ -184,7 +172,7 @@ const Trade = () => {
         </span>
       </div>
     </div>
-  )
+  );
 
   /** Container header for common. */
   const containerCommonHeader = (
@@ -198,7 +186,7 @@ const Trade = () => {
         </span>
       </div>
     </div>
-  )
+  );
 
   /** Return something. */
   return (
@@ -223,7 +211,7 @@ const Trade = () => {
                       action: storeHandler,
                       text: 'add',
                       icon: 'add',
-                    })
+                    });
                   })}
                 </>
               ) : (
@@ -235,7 +223,7 @@ const Trade = () => {
                         action: storeHandler,
                         text: 'add',
                         icon: 'add',
-                      })
+                      });
                     })}
                   </>
                 )
@@ -248,7 +236,7 @@ const Trade = () => {
                       return paginationTemplate({
                         index: index,
                         turn: bluechipHandler,
-                      })
+                      });
                     })}
                   </div>
                 </div>
@@ -268,7 +256,7 @@ const Trade = () => {
                     action: storeHandler,
                     text: 'add',
                     icon: 'add',
-                  })
+                  });
                 })}
               </>
             ) : (
@@ -281,7 +269,7 @@ const Trade = () => {
                       action: storeHandler,
                       text: 'add',
                       icon: 'add',
-                    })
+                    });
                   })}
                 </>
               )
@@ -294,7 +282,7 @@ const Trade = () => {
                     return paginationTemplate({
                       index: index,
                       turn: bluechipHandler,
-                    })
+                    });
                   })}
                 </div>
               </div>
@@ -325,7 +313,7 @@ const Trade = () => {
                       action: storeHandler,
                       text: 'add',
                       icon: 'add',
-                    })
+                    });
                   })}
                 </>
               ) : (
@@ -337,7 +325,7 @@ const Trade = () => {
                         action: storeHandler,
                         text: 'add',
                         icon: 'add',
-                      })
+                      });
                     })}
                   </>
                 )
@@ -350,7 +338,7 @@ const Trade = () => {
                       return paginationTemplate({
                         index: index,
                         turn: commonHandler,
-                      })
+                      });
                     })}
                   </div>
                 </div>
@@ -370,7 +358,7 @@ const Trade = () => {
                     action: storeHandler,
                     text: 'add',
                     icon: 'add',
-                  })
+                  });
                 })}
               </>
             ) : (
@@ -383,7 +371,7 @@ const Trade = () => {
                       action: storeHandler,
                       text: 'add',
                       icon: 'add',
-                    })
+                    });
                   })}
                 </>
               )
@@ -396,7 +384,7 @@ const Trade = () => {
                     return paginationTemplate({
                       index: index,
                       turn: commonHandler,
-                    })
+                    });
                   })}
                 </div>
               </div>
@@ -413,7 +401,7 @@ const Trade = () => {
         </div>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Trade
+export default Trade;

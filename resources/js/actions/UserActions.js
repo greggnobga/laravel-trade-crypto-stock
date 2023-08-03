@@ -270,6 +270,7 @@ export const logoutUser = token => async dispatch => {
       localStorage.removeItem('tradeBluechip');
       localStorage.removeItem('tradeCommon');
       localStorage.removeItem('chartWatchlist');
+      localStorage.removeItem('chartFetch');
     }
   } catch (error) {
     /** Dispatch action if error occurred. */
@@ -324,6 +325,7 @@ export const tokenUser = token => async dispatch => {
     localStorage.removeItem('tradeBluechip');
     localStorage.removeItem('tradeCommon');
     localStorage.removeItem('chartWatchlist');
+    localStorage.removeItem('chartFetch');
 
     /** Dispatch action if error occurred. */
     dispatch({

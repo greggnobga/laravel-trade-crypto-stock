@@ -909,7 +909,7 @@ class PSEController extends Controller {
         $stocks = DB::table('stock_trades')
             ->select('edge', 'security', 'symbol')
             ->where('edge', '>', '0')
-            ->where('updated_at', '>=', Carbon::now()->subHour(0))
+            ->where('updated_at', '<', Carbon::now()->subHour(0))
             ->get()
             ->toArray();
 

@@ -131,7 +131,7 @@ const Dashboard = () => {
     }
 
     /** If not stock losser does not have value. */
-    if (valid && !stockgainer) {
+    if (valid && !stocklosser) {
       dispatch(stockLosserDashboard(access_token));
     }
 
@@ -252,7 +252,7 @@ const Dashboard = () => {
       /** Dispatch action to update the state. */
       const timeout = setTimeout(() => {
         dispatch(edgeDashboard(access_token));
-      }, 3000);
+      }, 5000);
 
       return () => {
         clearTimeout(timeout);

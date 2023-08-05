@@ -20,7 +20,7 @@ import Search from '../../../components/Search';
 import Container from '../../../components/Container';
 
 /** Template. */
-import { desktopHeader, desktopTemplate, mobileTemplate, paginationTemplate } from '../../template/Stocks';
+import { desktopHeader, desktopTemplate, mobileTemplate, paginationTemplate } from '../../template/stocks/Index';
 
 /** Action. */
 import { bluechipTrade, commonTrade, storeTrade } from '../../../actions/TradeActions';
@@ -293,7 +293,7 @@ const Trade = () => {
         <div className='grid auto-rows-min h-fit rounded'>
           {modalSearchBluechip && (
             <Modal>
-              <Search close={closeModalHandler} items={bluechip} />
+              <Search close={closeModalHandler} items={bluechip} component='stocks' />
             </Modal>
           )}
         </div>
@@ -395,7 +395,7 @@ const Trade = () => {
         <div className='grid auto-rows-min h-fit rounded'>
           {modalSearchCommon && (
             <Modal>
-              <Search close={closeModalHandler} items={common} />
+              <Search close={closeModalHandler} items={common} component='stocks' />
             </Modal>
           )}
         </div>

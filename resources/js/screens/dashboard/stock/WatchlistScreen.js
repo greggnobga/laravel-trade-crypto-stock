@@ -1,148 +1,142 @@
 /** React. */
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 /** Vendor. */
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 /** Hook. */
-import useScreen from '../../../hooks/UseScreen'
+import useScreen from '../../../hooks/UseScreen';
 
 /** Component. */
-import Icon from '../../../components/Icon'
-import Modal from '../../../components/Modal'
-import Loader from '../../../components/Loader'
-import Notice from '../../../components/Notice'
-import Search from '../../../components/Search'
-import Container from '../../../components/Container'
+import Icon from '../../../components/Icon';
+import Modal from '../../../components/Modal';
+import Loader from '../../../components/Loader';
+import Notice from '../../../components/Notice';
+import Search from '../../../components/Search';
+import Container from '../../../components/Container';
 
 /** Template. */
-import {
-  desktopHeader,
-  desktopTemplate,
-  mobileTemplate,
-  desktopModalTemplate,
-  mobileModalTemplate,
-} from '../../template/Stocks'
+import { desktopHeader, desktopTemplate, mobileTemplate, desktopModalTemplate, mobileModalTemplate } from '../../template/stocks/Index';
 
 /** Action. */
-import { buildWatchlist, storeWatchlist, fetchWatchlist, destroyWatchlist } from '../../../actions/WatchlistActions'
-import { tokenUser } from '../../../actions/UserActions.js'
+import { buildWatchlist, storeWatchlist, fetchWatchlist, destroyWatchlist } from '../../../actions/WatchlistActions';
+import { tokenUser } from '../../../actions/UserActions.js';
 
 const Watchlist = () => {
   /** Use state. */
-  const [modalBuild, setModalBuild] = useState(false)
-  const [modalSearch, setModalSearch] = useState(false)
-  const [notice, setNotice] = useState(false)
+  const [modalBuild, setModalBuild] = useState(false);
+  const [modalSearch, setModalSearch] = useState(false);
+  const [notice, setNotice] = useState(false);
 
   /** Use selector. */
-  const userLogin = useSelector((state) => state.userLogin)
-  const { access_token } = userLogin
+  const userLogin = useSelector((state) => state.userLogin);
+  const { access_token } = userLogin;
 
-  const userToken = useSelector((state) => state.userToken)
-  const { valid } = userToken
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
 
-  const watchlistBuild = useSelector((state) => state.watchlistBuild)
-  const { loading: loadBuild, watchbuild } = watchlistBuild
+  const watchlistBuild = useSelector((state) => state.watchlistBuild);
+  const { loading: loadBuild, watchbuild } = watchlistBuild;
 
-  const watchlistFetch = useSelector((state) => state.watchlistFetch)
-  const { loading: loadFetch, watchlist } = watchlistFetch
+  const watchlistFetch = useSelector((state) => state.watchlistFetch);
+  const { loading: loadFetch, watchlist } = watchlistFetch;
 
-  const showMessage = useSelector((state) => state.showMessage)
-  const { message, error } = showMessage
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message, error } = showMessage;
 
   /** Use screen helper. */
-  const { isMobile } = useScreen()
+  const { isMobile } = useScreen();
 
   /** Use navigate. */
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   /** Use dispatch. */
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   /** Show modal handler. */
   const showModalBuildHandler = () => {
-    setModalBuild(true)
-  }
+    setModalBuild(true);
+  };
 
   const showModalSearchHandler = () => {
-    setModalSearch(true)
-  }
+    setModalSearch(true);
+  };
 
   /** Close modal handler. */
   const closeModalHandler = () => {
     /** Hide modal. */
-    setModalBuild(false)
-    setModalSearch(false)
+    setModalBuild(false);
+    setModalSearch(false);
 
     /** Update state after timeout. */
     const timeout = setTimeout(() => {
       /** Dispatch fetch to update the state. */
-      dispatch(fetchWatchlist(access_token))
-    }, 3000)
+      dispatch(fetchWatchlist(access_token));
+    }, 3000);
 
     return () => {
-      clearTimeout(timeout)
-    }
-  }
+      clearTimeout(timeout);
+    };
+  };
 
   /** Store handler. */
   const storeHandler = (symbol) => {
     /** Dispatch store action. */
-    dispatch(storeWatchlist(access_token, symbol))
-  }
+    dispatch(storeWatchlist(access_token, symbol));
+  };
 
   /** Delete handler. */
   const deleteHandler = (symbol) => {
     /** Dispatch delete action. */
-    dispatch(destroyWatchlist(access_token, symbol))
+    dispatch(destroyWatchlist(access_token, symbol));
 
     const timeout = setTimeout(() => {
       /** Dispatch fetch to update the state. */
-      dispatch(fetchWatchlist(access_token))
-    }, 3000)
+      dispatch(fetchWatchlist(access_token));
+    }, 3000);
 
     return () => {
-      clearTimeout(timeout)
-    }
-  }
+      clearTimeout(timeout);
+    };
+  };
 
   /** Use effect. */
   useEffect(() => {
     /** Check valid state. */
     if (!valid && access_token) {
-      dispatch(tokenUser(access_token))
+      dispatch(tokenUser(access_token));
     }
 
     /** Check if token is valid. */
     if (valid && access_token) {
-      navigate('/dashboard/stock-watchlist')
+      navigate('/dashboard/stock-watchlist');
     } else {
-      navigate('/auth/login')
+      navigate('/auth/login');
     }
 
     /** Send request if no build stock. */
     if (valid && !watchbuild) {
       /** Dispatch action. */
-      dispatch(buildWatchlist(access_token))
+      dispatch(buildWatchlist(access_token));
     }
 
     /** Send request if no watchlist stock. */
     if (valid && !watchlist) {
       /** Dispatch action. */
-      dispatch(fetchWatchlist(access_token))
+      dispatch(fetchWatchlist(access_token));
     }
     /** Monitor new message. */
     if (message) {
       /** Set state. */
-      setNotice(true)
+      setNotice(true);
 
       /** Reset state. */
       setTimeout(() => {
-        setNotice(false)
-      }, 3000)
+        setNotice(false);
+      }, 3000);
     }
-  }, [access_token, valid, watchbuild, watchlist, message])
+  }, [access_token, valid, watchbuild, watchlist, message]);
 
   /** Container header. */
   const containerWatchlistHeader = (
@@ -159,14 +153,14 @@ const Watchlist = () => {
         </span>
       </p>
     </div>
-  )
+  );
 
   /** Container header. */
   const containerReminderHeader = (
     <span clasName='block p-2'>
       <Icon id='support' /> Reminder
     </span>
-  )
+  );
 
   /** Return something. */
   return (
@@ -180,16 +174,15 @@ const Watchlist = () => {
             Debt Asset Ratio - Always try to find a company to invest which has debt equity ratio of less than one.
           </div>
           <div className='p-2 border-b border-slate-100 hover:text-purple-500'>
-            Price Range - Year low minus year high, when the range is getting near to zero or even turning positive, it
-            indicates that the price is going down and that it is a good idea to add to your stack.
+            Price Range - Year low minus year high, when the range is getting near to zero or even turning positive, it indicates that the price is going down and
+            that it is a good idea to add to your stack.
           </div>
           <div className='p-2 border-b border-slate-100 hover:text-purple-500'>
-            Total Assets - Total assets less total assets previously held If it's negative, either the company is having
-            a cash flow problem or it's having a bad year.
+            Total Assets - Total assets less total assets previously held If it's negative, either the company is having a cash flow problem or it's having a bad
+            year.
           </div>
           <div className='p-2 hover:text-purple-500'>
-            Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its stock divided
-            by its current stock price.
+            Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its stock divided by its current stock price.
           </div>
         </div>
       </Container>
@@ -210,7 +203,7 @@ const Watchlist = () => {
                         icon: 'add',
                         close: closeModalHandler,
                         action: storeHandler,
-                      })
+                      });
                     })
                   )}
                 </Modal>
@@ -228,7 +221,7 @@ const Watchlist = () => {
                         icon: 'add',
                         close: closeModalHandler,
                         action: storeHandler,
-                      })
+                      });
                     })
                   )}
                 </Modal>
@@ -237,7 +230,7 @@ const Watchlist = () => {
         <div className='grid auto-rows-min h-fit rounded'>
           {modalSearch && (
             <Modal>
-              <Search close={closeModalHandler} items={watchlist} />
+              <Search close={closeModalHandler} items={watchlist} component='stocks' />
             </Modal>
           )}
         </div>
@@ -254,7 +247,7 @@ const Watchlist = () => {
                       text: 'del',
                       icon: 'destroy',
                       action: deleteHandler,
-                    })
+                    });
                   })}
               </>
             )
@@ -270,14 +263,14 @@ const Watchlist = () => {
                     text: 'del',
                     icon: 'destroy',
                     action: deleteHandler,
-                  })
+                  });
                 })}
             </>
           )}
         </div>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Watchlist
+export default Watchlist;

@@ -17,7 +17,7 @@ import Notice from '../../../components/Notice';
 import Container from '../../../components/Container';
 
 /** Template. */
-import { desktopContent, mobileContent } from '../../template/Chart';
+import { desktopContent, mobileContent } from '../../template/stocks/Chart';
 
 /** Action. */
 import { averageChart, fetchChart } from '../../../actions/ChartActions';

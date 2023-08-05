@@ -13,7 +13,7 @@ class PortfolioController extends Controller {
      * Display a listing of the resource.
      */
     public function init(Request $request) {
-        // /** check if request contains method equal to post. */
+        /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward insert command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'insert') {
@@ -23,6 +23,7 @@ class PortfolioController extends Controller {
                     return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
                 }
             }
+
             /** forward update command. */
             if ($request->input('table') === 'portfolio' && $request->input('statement') === 'update') {
                 if (strtolower($request->input('input.order')) === 'buy') {
@@ -46,6 +47,7 @@ class PortfolioController extends Controller {
             }
         }
     }
+
     /** Fetch portfolio. */
     public function fetch() {
         /** repository. */
@@ -55,9 +57,9 @@ class PortfolioController extends Controller {
         $check = DB::table('stock_portfolios')
             ->select('symbol')
             ->where('userid', '=', Auth::id())
-            ->get();
+            ->first();
 
-        if ($check->isNotEmpty()) {
+        if (!is_null($check)) {
             /** fetch stocks. */
             $chart['stocks']['object'] = DB::table('stock_portfolios')->select('symbol', 'capital')->get();
             foreach ($chart['stocks']['object'] as $key => $value) {

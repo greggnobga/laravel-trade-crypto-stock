@@ -1,6 +1,6 @@
 /** Component. */
-import Icon from '../../components/Icon';
-import Message from '../../components/Message';
+import Icon from '../../../components/Icon';
+import Message from '../../../components/Message';
 
 /** Desktop content. */
 export const desktopContent = ({ items, current }) => {

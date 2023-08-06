@@ -3,10 +3,10 @@ import Icon from '../../../components/Icon';
 import Message from '../../../components/Message';
 
 /** Desktop content. */
-export const desktopContent = ({ items, current }) => {
+export const desktopContent = ({ items }) => {
   return (
     <>
-      <div className='grid auto-rows-min grid-cols-8 h-fit rounded-t-md bg-stone-100 uppercase border-b border-stone-200 text-green-500'>
+      <div className='grid auto-rows-min grid-cols-9 h-fit rounded-t-md bg-stone-100 uppercase border-b border-stone-200 text-green-500'>
         <div className='p-2'>
           <p>Symbol</p>
         </div>
@@ -23,26 +23,23 @@ export const desktopContent = ({ items, current }) => {
           <p>Change</p>
         </div>
         <div className='p-2'>
-          <p>
-            {current - 1} <span className='text-[.50rem]'>Average Price</span>
-          </p>
+          <p>Support Level</p>
         </div>
         <div className='p-2'>
-          <p>
-            {current - 2} <span className='text-[.50rem]'>Average Price</span>
-          </p>
+          <p>Resistance Level</p>
         </div>
         <div className='p-2'>
-          <p>
-            {current - 3} <span className='text-[.50rem]'>Average Price</span>
-          </p>
+          <p>Moving Average</p>
+        </div>
+        <div className='p-2'>
+          <p>Moving Signal</p>
         </div>
       </div>
       <div className='grid auto-rows-min h-fit bg-stone-100'>
         {items != 0 && items ? (
           items.map((item, key) => {
             return (
-              <div className='grid auto-rows-min grid-cols-8 h-fit border-b border-stone-200 hover:text-purple-500'>
+              <div className='grid auto-rows-min grid-cols-9 h-fit border-b border-stone-200 hover:text-purple-500'>
                 <div className='p-2'>
                   <a href={`https://edge.pse.com.ph/companyPage/financial_reports_view.do?cmpy_id=${item.edge}`} target='_blank'>
                     <span className='uppercase'>{item.symbol}</span>
@@ -61,13 +58,16 @@ export const desktopContent = ({ items, current }) => {
                   <p>{item.change}</p>
                 </div>
                 <div className='p-2'>
-                  <p>{item.averageone}</p>
+                  <p>{item.supportlevel}</p>
                 </div>
                 <div className='p-2'>
-                  <p>{item.averagetwo}</p>
+                  <p>{item.resistancelevel}</p>
                 </div>
                 <div className='p-2'>
-                  <p>{item.averagethree}</p>
+                  <p>{item.movingaverage}</p>
+                </div>
+                <div className='p-2'>
+                  <p>{item.movingsignal}</p>
                 </div>
               </div>
             );
@@ -83,7 +83,7 @@ export const desktopContent = ({ items, current }) => {
 };
 
 /** Mobile content. */
-export const mobileContent = ({ items, current }) => {
+export const mobileContent = ({ items }) => {
   /** Return something. */
   return (
     <div className='grid auto-rows-min h-fit'>
@@ -117,21 +117,27 @@ export const mobileContent = ({ items, current }) => {
               </div>
               <div className='p-2'>
                 <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  {current - 1} <span className='text-[.50rem]'>Average Price</span>
+                  <span className='text-[.50rem]'>Support Level</span>
                 </p>
-                <p className='pt-2 text-center'>{item.averageone}</p>
+                <p className='pt-2 text-center'>{item.supportlevel}</p>
               </div>
               <div className='p-2'>
                 <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  {current - 2} <span className='text-[.50rem]'>Average Price</span>
+                  <span className='text-[.50rem]'>Resistance Level</span>
                 </p>
-                <p className='pt-2 text-center'>{item.averagetwo}</p>
+                <p className='pt-2 text-center'>{item.resistancelevel}</p>
               </div>
               <div className='p-2'>
                 <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
-                  {current - 3} <span className='text-[.50rem]'>Average Price</span>
+                  <span className='text-[.50rem]'>Moving Average</span>
                 </p>
-                <p className='pt-2 text-center'>{item.averagethree}</p>
+                <p className='pt-2 text-center'>{item.movingaverage}</p>
+              </div>
+              <div className='p-2'>
+                <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
+                  <span className='text-[.50rem]'>Moving Signal</span>
+                </p>
+                <p className='pt-2 text-center'>{item.movingsignal}</p>
               </div>
             </div>
           );

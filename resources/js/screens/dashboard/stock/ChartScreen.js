@@ -27,7 +27,6 @@ const StockChart = () => {
   /** Use state. */
   const [modalSearch, setModalSearch] = useState(false);
   const [notice, setNotice] = useState(false);
-  const [year, setYear] = useState(new Date().getFullYear());
 
   /** Use selector. */
   const userLogin = useSelector((state) => state.userLogin);
@@ -68,9 +67,6 @@ const StockChart = () => {
   const chartAverageHandler = () => {
     /** Dispatch action. */
     dispatch(averageChart(access_token));
-
-    /** Dispatch action to update state. */
-    dispatch(fetchChart(access_token));
   };
 
   useEffect(() => {
@@ -125,12 +121,12 @@ const StockChart = () => {
       {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
       {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
       <Container header={containerChartHeader}>
-        {isMobile ? mobileContent({ items: stocks, current: year }) : desktopContent({ items: stocks, current: year })}
+        {isMobile ? mobileContent({ items: stocks }) : desktopContent({ items: stocks })}
 
         <div className='grid auto-rows-min h-fit rounded'>
           {modalSearch && (
             <Modal>
-              <Search close={closeModalHandler} items={stocks} component='chart' current={year} />
+              <Search close={closeModalHandler} items={stocks} component='chart' />
             </Modal>
           )}
         </div>

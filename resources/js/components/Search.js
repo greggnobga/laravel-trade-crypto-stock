@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 /** Component. */
 import Icon from './Icon';
 
-const Search = ({ close, items, component, current }) => {
+const Search = ({ close, items, component }) => {
   /** Use state. */
   const [search, setSearch] = useState();
   const [keyword, setKeyword] = useState('');
@@ -97,16 +97,20 @@ const Search = ({ close, items, component, current }) => {
                 <div className='p-2 text-center pb-4'>{item.pricerange}</div>
               </div>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
-                <div className='p-2 uppercase text-green-500'>{current - 1} Average Price</div>
-                <div className='p-2 text-center pb-4'>{item.averageone}</div>
+                <div className='p-2 uppercase text-green-500'>Support Level</div>
+                <div className='p-2 text-center pb-4'>{item.supportlevel}</div>
               </div>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
-                <div className='p-2 uppercase text-green-500'>{current - 2} Average Price</div>
-                <div className='p-2 text-center pb-4'>{item.averagetwo}</div>
+                <div className='p-2 uppercase text-green-500'>Resistance Level</div>
+                <div className='p-2 text-center pb-4'>{item.resistancelevel}</div>
               </div>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
-                <div className='p-2 uppercase text-green-500'>{current - 3} Average Price</div>
-                <div className='p-2 text-center pb-4'>{item.averagethree}</div>
+                <div className='p-2 uppercase text-green-500'>Moving Average</div>
+                <div className='p-2 text-center pb-4'>{item.movingaverage}</div>
+              </div>
+              <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                <div className='p-2 uppercase text-green-500'>Moving Signal</div>
+                <div className='p-2 text-center pb-4'>{item.movingsignal}</div>
               </div>
             </div>
           );

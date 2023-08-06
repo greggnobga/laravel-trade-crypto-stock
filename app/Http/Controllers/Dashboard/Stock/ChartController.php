@@ -43,7 +43,7 @@ class ChartController extends Controller {
             /** select record. */
             $record = DB::table('stock_charts')
                 ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_charts.symbol')
-                ->select('stock_trades.edge', 'stock_trades.symbol', 'stock_trades.price', 'stock_trades.value', 'stock_trades.pricerange', 'stock_trades.change', 'averageone', 'averagetwo', 'averagethree')
+                ->select('stock_trades.edge', 'stock_trades.symbol', 'stock_trades.price', 'stock_trades.value', 'stock_trades.pricerange', 'stock_trades.change', 'supportlevel', 'resistancelevel', 'movingaverage', 'movingsignal')
                 ->where('userid', Auth::id())
                 ->orderBy('stock_trades.value', 'desc')
                 ->get()
@@ -70,7 +70,7 @@ class ChartController extends Controller {
                 ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_watchlists.symbol')
                 ->select('stock_trades.edge', 'stock_trades.security', 'stock_trades.symbol')
                 ->where('userid', Auth::id())
-                ->where('stock_watchlists.updated_at', '>=', Carbon::now()->subHour(12))
+                ->where('stock_watchlists.updated_at', '<', Carbon::now()->subHour(0))
                 ->get()
                 ->toArray();
 
@@ -87,28 +87,6 @@ class ChartController extends Controller {
     private function helpers($data) {
         /** pointer. */
         $result = [];
-
-        /** calculate moving average. */
-        if ($data['operation'] === 'average') {
-            /** resequence key value pairs. */
-            $sequence = array_values($data['stocks']);
-
-            /** Convert the array to a collection */
-            $collection = collect($sequence);
-
-            /** use the reduce method to calculate the sum of 'value' key */
-            $average['price'] = $collection->reduce(function ($carry, $item) {
-                return $carry + $item['price'];
-            }, 0);
-
-            $average['volume'] = $collection->reduce(function ($carry, $item) {
-                return $carry + $item['volume'];
-            }, 0);
-
-            /** save to pointer. */
-            $result['price'] = number_format($average['price'] / count($sequence), 2, '.', '');
-            $result['volume'] = number_format($average['volume'] / count($sequence), 2, '.', '');
-        }
 
         /** transform into standard format. */
         if ($data['operation'] === 'format') {

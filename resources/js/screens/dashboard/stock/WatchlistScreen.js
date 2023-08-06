@@ -178,8 +178,7 @@ const Watchlist = () => {
             that it is a good idea to add to your stack.
           </div>
           <div className='p-2 border-b border-slate-100 hover:text-purple-500'>
-            Total Assets - Total assets less total assets previously held If it's negative, either the company is having a cash flow problem or it's having a bad
-            year.
+            Working Capital - Working capital is the amount of available capital that a company can readily use for day-to-day operations. year.
           </div>
           <div className='p-2 hover:text-purple-500'>
             Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its stock divided by its current stock price.

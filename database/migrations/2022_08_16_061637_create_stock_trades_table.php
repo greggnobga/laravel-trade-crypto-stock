@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->decimal('volume', 24, 2)->signed()->default(0.00);
             $table->decimal('value', 24, 2)->signed()->default(0.00);
             $table->decimal('pricerange', 24, 2)->signed()->default(0.00);
-            $table->decimal('totalassets', 24, 2)->signed()->default(0.00);
+            $table->decimal('workingcapital', 24, 2)->signed()->default(0.00);
             $table->decimal('netincomeaftertax', 24, 2)->signed()->default(0.00);
             $table->decimal('debtassetratio', 24, 2)->signed()->default(0.00);
             $table->decimal('priceearningratio', 24, 2)->signed()->default(0.00);

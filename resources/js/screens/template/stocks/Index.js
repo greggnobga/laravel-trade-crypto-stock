@@ -17,7 +17,7 @@ export const desktopHeader = (
       <p className='text-green-500'>Price Range</p>
     </div>
     <div className='p-2'>
-      <p className='text-green-500'>Total Assets</p>
+      <p className='text-green-500'>Working Capital</p>
     </div>
     <div className='p-2'>
       <p className='text-green-500'>Net Income</p>
@@ -54,7 +54,7 @@ export const desktopTemplate = ({ item, action, icon, text }) => {
         <span className='uppercase'>{item.pricerange}</span>
       </div>
       <div className='p-2'>
-        <span className='uppercase'>{item.totalassets}</span>
+        <span className='uppercase'>{item.workingcapital}</span>
       </div>
       <div className='p-2'>
         <span className='uppercase'>{item.netincomeaftertax}</span>
@@ -99,8 +99,8 @@ export const mobileTemplate = ({ item, action, icon, text }) => {
         <p className='pt-2 text-center'>{item.pricerange}</p>
       </div>
       <div className='p-2'>
-        <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Total Assets</p>
-        <p className='pt-2 text-center'>{item.totalassets}</p>
+        <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Working Capital</p>
+        <p className='pt-2 text-center'>{item.workingcapital}</p>
       </div>
       <div className='p-2'>
         <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Net Income</p>
@@ -220,7 +220,7 @@ export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
             <span className='text-green-500'>Price Range</span>
           </div>
           <div className='p-2'>
-            <span className='text-green-500'>Total Assets</span>
+            <span className='text-green-500'>Working Capital</span>
           </div>
           <div className='p-2'>
             <span className='text-green-500'>Net Income</span>
@@ -255,7 +255,7 @@ export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
                   <span className='p-0'>{item.pricerange}</span>
                 </div>
                 <div className='p-2'>
-                  <span className='p-0'>{item.totalassets}</span>
+                  <span className='p-0'>{item.workingcapital}</span>
                 </div>
                 <div className='p-2'>
                   <span className='p-0'>{item.netincomeaftertax}</span>
@@ -380,9 +380,9 @@ export const mobileModalTemplate = ({ item, action, close, icon, text }) => {
                 <span className='block pt-2 text-center'>{item.pricerange}</span>
               </div>
               <div className='p-2'>
-                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Total Assets</span>
+                <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Working Capital</span>
 
-                <span className='block pt-2 text-center'>{item.totalassets}</span>
+                <span className='block pt-2 text-center'>{item.workingcapital}</span>
               </div>
               <div className='p-2'>
                 <span className='block p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Net Income</span>

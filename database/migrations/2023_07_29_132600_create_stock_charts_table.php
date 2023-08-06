@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->integer('userid');
             $table->string('symbol');
-            $table->decimal('averageone', 24, 2)->signed()->default(0.00);
-            $table->decimal('averagetwo', 24, 2)->signed()->default(0.00);
-            $table->decimal('averagethree', 24, 2)->signed()->default(0.00);
+            $table->decimal('supportlevel', 24, 2)->signed()->default(0.00);
+            $table->decimal('resistancelevel', 24, 2)->signed()->default(0.00);
+            $table->decimal('movingaverage', 24, 2)->signed()->default(0.00);
+            $table->string('movingsignal');
             $table->timestamps();
         });
     }

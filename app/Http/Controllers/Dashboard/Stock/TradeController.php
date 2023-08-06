@@ -60,7 +60,7 @@ class TradeController extends Controller {
                 foreach ($record as $key => $value) {
                     /** Get additional stock data. */
                     $stock = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
+                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                         ->where('symbol', $value->symbol)
                         ->first();
 
@@ -109,7 +109,7 @@ class TradeController extends Controller {
         if (!is_null($check)) {
             /** create stock list. */
             $items = DB::table('stock_trades')
-                ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'totalassets', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
+                ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
                 ->where('edge', '>', 0)
                 ->orderBy('netincomeaftertax', 'desc')
                 ->get();

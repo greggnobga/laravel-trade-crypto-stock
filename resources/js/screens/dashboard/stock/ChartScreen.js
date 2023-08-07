@@ -89,12 +89,6 @@ const StockChart = () => {
     }
 
     /** Monitor new message. */
-    if (!loading && success) {
-      /** Dispatch action. */
-      dispatch(fetchChart(access_token));
-    }
-
-    /** Monitor new message. */
     if (message) {
       /** Set state. */
       setNotice(true);
@@ -103,7 +97,7 @@ const StockChart = () => {
         setNotice(false);
       }, 5000);
     }
-  }, [access_token, valid, stocks, success, loading, message]);
+  }, [access_token, valid, stocks, message]);
 
   /** Container header. */
   const containerChartHeader = (

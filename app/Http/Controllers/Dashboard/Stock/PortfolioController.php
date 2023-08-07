@@ -128,7 +128,7 @@ class PortfolioController extends Controller {
 
             /** order data. */
             $stocks = DB::table('stock_portfolios')
-                ->select('id', 'created_at as date', 'order', 'symbol', 'name', 'fee', 'share', 'capital')
+                ->select('id', 'created_at as date', 'order', 'symbol', 'fee', 'share', 'capital')
                 ->where('userid', '=', Auth::id())
                 ->get();
 
@@ -149,7 +149,7 @@ class PortfolioController extends Controller {
                 foreach ($symbol as $key => $value) {
                     /** build buy data. */
                     $buy = DB::table('stock_portfolios')
-                        ->select('name', 'symbol', 'fee', 'share', 'capital')
+                        ->select('symbol', 'fee', 'share', 'capital')
                         ->where('order', '=', 'buy')
                         ->where('userid', '=', Auth::id())
                         ->get();
@@ -161,7 +161,7 @@ class PortfolioController extends Controller {
 
                     /** build sell data. */
                     $sell = DB::table('stock_portfolios')
-                        ->select('name', 'symbol', 'fee', 'share', 'capital')
+                        ->select('symbol', 'fee', 'share', 'capital')
                         ->where('order', '=', 'sell')
                         ->where('userid', '=', Auth::id())
                         ->get();
@@ -212,7 +212,6 @@ class PortfolioController extends Controller {
                     'userid' => Auth::id(),
                     'order' => strip_tags(strtolower($data['input']['order'])),
                     'symbol' => strip_tags($data['input']['symbol']),
-                    'name' => strip_tags($data['input']['name']),
                     'fee' => strip_tags($data['input']['fee']),
                     'share' => strip_tags($data['input']['share']),
                     'capital' => strip_tags($data['input']['capital']),
@@ -221,12 +220,12 @@ class PortfolioController extends Controller {
                 ]);
             if ($insert) {
                 $stock = DB::table('stock_portfolios')
-                    ->select('id', 'created_at as date', 'order', 'symbol', 'name', 'fee', 'share', 'capital')
+                    ->select('id', 'created_at as date', 'order', 'symbol', 'fee', 'share', 'capital')
                     ->where('id', '=', $insert)
                     ->where('userid', '=', Auth::id())
                     ->get();
                 $result = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stock]);
-                return response(['message' => $stock[0]->name . ' has been added to the database.', 'stock' => $result], 200);
+                return response(['message' => $stock[0]->symbol . ' has been added to the database.', 'stock' => $result], 200);
             }
         }
     }
@@ -243,7 +242,6 @@ class PortfolioController extends Controller {
                 ->update([
                     'order' => strip_tags(strtolower($data['input']['order'])),
                     'symbol' => strip_tags($data['input']['symbol']),
-                    'name' => strip_tags($data['input']['name']),
                     'fee' => strip_tags($data['input']['fee']),
                     'share' => strip_tags($data['input']['share']),
                     'capital' => strip_tags($data['input']['capital']),
@@ -252,14 +250,14 @@ class PortfolioController extends Controller {
             /** if update not empty.*/
             if ($update) {
                 $stocks = DB::table('stock_portfolios')
-                    ->select('id', 'order', 'symbol', 'name', 'fee', 'share', 'capital')
+                    ->select('id', 'order', 'symbol', 'fee', 'share', 'capital')
                     ->where('id', '=', $data['input']['id'])
                     ->where('userid', '=', Auth::id())
                     ->get();
                 $result = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stocks]);
-                return response(['message' => $data['input']['name'] . ' successfully updated.', 'stock' => $result], 200);
+                return response(['message' => $data['input']['symbol'] . ' successfully updated.', 'stock' => $result], 200);
             } else {
-                return response(['message' => $data['input']['name'] . ' no changes made.'], 200);
+                return response(['message' => $data['input']['symbol'] . ' no changes made.'], 200);
             }
         }
     }
@@ -274,7 +272,7 @@ class PortfolioController extends Controller {
                 ->where('userid', '=', Auth::id())
                 ->delete();
             if ($delete) {
-                return response(['message' => $data['input']['name'] . ' has been deleted.']);
+                return response(['message' => $data['input']['symbol'] . ' has been deleted.']);
             } else {
                 return response(['message' => 'No changes made.']);
             }

@@ -70,9 +70,6 @@ export const averageChart = (token) => async (dispatch) => {
         if (index === end) {
           /** Console log. */
           console.log('Process Completed.');
-
-          /** Dispatch action. */
-          dispatch({ type: CHART_AVERAGE_REQUEST });
         }
       }, 5000 * index);
     });

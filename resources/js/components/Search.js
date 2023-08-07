@@ -110,7 +110,7 @@ const Search = ({ close, items, component }) => {
               </div>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
                 <div className='p-2 uppercase text-green-500'>Moving Signal</div>
-                <div className='p-2 text-center pb-4'>{item.movingsignal}</div>
+                <div className='p-2 text-center pb-4 uppercase'>{item.movingsignal}</div>
               </div>
             </div>
           );

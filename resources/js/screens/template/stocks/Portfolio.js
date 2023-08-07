@@ -11,7 +11,7 @@ export const desktopContent = ({ icon, header, text, action, items }) => {
           <span className='uppercase pl-2'>{header}</span>
         </div>
         {text && (
-          <div className='p-2' onClick={() => action()}>
+          <div className='p-2 cursor-pointer' onClick={() => action()}>
             <Icon id={text} />
             <span className='uppercase'>{text}</span>
           </div>

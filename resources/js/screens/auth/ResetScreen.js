@@ -1,226 +1,226 @@
 /** React. */
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 /** Vendor. */
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 /** Hook. */
-import useValidate from "../../hooks/UseValidate";
+import useValidate from '../../hooks/UseValidate';
 
 /** Component. */
-import Loader from "../../components/Loader.js";
-import Message from "../../components/Message.js";
+import Loader from '../../components/Loader.js';
+import Message from '../../components/Message.js';
 
 /** Action. */
-import { resetPassword, tokenUser } from "../../actions/UserActions.js";
+import { resetPassword, tokenUser } from '../../actions/UserActions.js';
 
 const Reset = () => {
-    /** Map html element to validate hook. */
-    const {
-        value: email,
-        hasError: emailHasError,
-        isValid: emailIsValid,
-        valueChangeHandler: emailChangeHandler,
-        inputBlurHandler: emailBlurHandler,
-        resetHandler: emailInputReset,
-    } = useValidate((value) => value.trim() !== "" && value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/));
+  /** Map html element to validate hook. */
+  const {
+    value: email,
+    hasError: emailHasError,
+    isValid: emailIsValid,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    resetHandler: emailInputReset,
+  } = useValidate((value) => value.trim() !== '' && value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/));
 
-    const {
-        value: password,
-        hasError: passwordHasError,
-        isValid: passwordIsValid,
-        valueChangeHandler: passwordChangeHandler,
-        inputBlurHandler: passwordBlurHandler,
-        resetHandler: passwordInputReset,
-    } = useValidate((value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
+  const {
+    value: password,
+    hasError: passwordHasError,
+    isValid: passwordIsValid,
+    valueChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+    resetHandler: passwordInputReset,
+  } = useValidate((value) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
 
-    const {
-        value: confirm,
-        hasError: confirmHasError,
-        isValid: confirmIsValid,
-        valueChangeHandler: confirmChangeHandler,
-        inputBlurHandler: confirmBlurHandler,
-        resetHandler: confirmInputReset,
-    } = useValidate((value) => value.trim() !== "" && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
+  const {
+    value: confirm,
+    hasError: confirmHasError,
+    isValid: confirmIsValid,
+    valueChangeHandler: confirmChangeHandler,
+    inputBlurHandler: confirmBlurHandler,
+    resetHandler: confirmInputReset,
+  } = useValidate((value) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
 
-    /** Check if password match and length. */
-    const [passwordMatched, setPasswordMatched] = useState(false);
-    const [passwordLength, setpasswordLength] = useState(false);
+  /** Check if password match and length. */
+  const [passwordMatched, setPasswordMatched] = useState(false);
+  const [passwordLength, setpasswordLength] = useState(false);
 
-    /** Use params. */
-    const { token } = useParams();
+  /** Use params. */
+  const { token } = useParams();
 
-    /** Define dispatch. */
-    const dispatch = useDispatch();
+  /** Define dispatch. */
+  const dispatch = useDispatch();
 
-    /** Select state from redux. */
-    const userReset = useSelector((state) => state.userReset);
-    const { loading } = userReset;
+  /** Select state from redux. */
+  const userReset = useSelector((state) => state.userReset);
+  const { loading } = userReset;
 
-    const userLogin = useSelector((state) => state.userLogin);
-    const { access_token } = userLogin;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { access_token } = userLogin;
 
-    const userToken = useSelector((state) => state.userToken);
-    const { valid } = userToken;
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
 
-    const showMessage = useSelector((state) => state.showMessage);
-    const { message, error } = showMessage;
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message, error } = showMessage;
 
-    /** Use navigate. */
-    const navigate = useNavigate();
+  /** Use navigate. */
+  const navigate = useNavigate();
 
-    /** Use effect. */
-    useEffect(() => {
-        if (password.length != 0 && password.length < 10) {
-            setpasswordLength(true);
-        } else {
-            setpasswordLength(false);
-        }
-
-        if (password !== confirm) {
-            setPasswordMatched(true);
-        } else {
-            setPasswordMatched(false);
-        }
-
-        /** Check valid state. */
-        if (!valid && access_token) {
-            dispatch(tokenUser(access_token));
-        }
-
-        /** Check if token is valid. */
-        if (valid && access_token) {
-            console.log("Continue resetting your password.");
-        } else {
-            navigate("/auth/login");
-        }
-    }, [password, confirm, valid, access_token]);
-
-    /** Set overall form validity. */
-    let formIsValid = false;
-    if (emailIsValid && passwordIsValid && confirmIsValid) {
-        formIsValid = true;
+  /** Use effect. */
+  useEffect(() => {
+    if (password.length != 0 && password.length < 10) {
+      setpasswordLength(true);
+    } else {
+      setpasswordLength(false);
     }
 
-    /** Change class logic if valid or otherwise. */
-    const emailInputClasses = emailHasError ? "invalid" : "valid";
-    const passwordInputClasses = passwordHasError ? "invalid" : "valid";
-    const confirmInputClasses = confirmHasError ? "invalid" : "valid";
-    const passwordMatchedClasses = passwordMatched ? "invalid" : "valid";
+    if (password !== confirm) {
+      setPasswordMatched(true);
+    } else {
+      setPasswordMatched(false);
+    }
 
-    /** Submit handdler. */
-    const submitHandler = (event) => {
-        /** Prevent browser default behaviour */
-        event.preventDefault();
+    /** Check valid state. */
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
+    }
 
-        /** Change blur state. */
-        emailBlurHandler(true);
-        passwordBlurHandler(true);
-        confirmBlurHandler(true);
+    /** Check if token is valid. */
+    if (valid && access_token) {
+      console.log('Continue resetting your password.');
+    } else {
+      navigate('/auth/login');
+    }
+  }, [password, confirm, valid, access_token]);
 
-        /** Check if there is invalid input. */
-        if (!emailIsValid && !passwordIsValid && !confirmIsValid) {
-            return;
-        }
+  /** Set overall form validity. */
+  let formIsValid = false;
+  if (emailIsValid && passwordIsValid && confirmIsValid) {
+    formIsValid = true;
+  }
 
-        /** Dispatch action. */
-        dispatch(resetPassword(token, email, password));
+  /** Change class logic if valid or otherwise. */
+  const emailInputClasses = emailHasError ? 'alert-border-warning' : '';
+  const passwordInputClasses = passwordHasError ? 'alert-border-warning' : '';
+  const confirmInputClasses = confirmHasError ? 'alert-border-warning' : '';
+  const passwordMatchedClasses = passwordMatched ? 'alert-border-warning' : '';
 
-        /** Reset input. */
-        emailInputReset();
-        passwordInputReset();
-        confirmInputReset();
-    };
+  /** Submit handdler. */
+  const submitHandler = (event) => {
+    /** Prevent browser default behaviour */
+    event.preventDefault();
 
-    return (
-        <>
-            {error && <Message children={error} variant='alert-danger' />}
-            {message && <Message children={message} variant='alert-success' />}
-            {loading ? (
-                <Loader />
-            ) : (
-                <div className='form-center-margin'>
-                    <form method='POST' className='form-group screen-size font-size gradient-huckle-berry' onSubmit={submitHandler}>
-                        <div className='form-header border-bottom'>
-                            <h4>Reset Password</h4>
-                        </div>
-                        <div className='form-control'>
-                            <label className='form-label' htmlFor='email'>
-                                Email
-                            </label>
-                            <input
-                                className={`form-input ${emailInputClasses}`}
-                                id='email'
-                                name='email'
-                                type='email'
-                                value={email}
-                                onChange={emailChangeHandler}
-                                onBlur={emailBlurHandler}
-                                autoComplete={email}
-                            />
-                            {emailHasError && <p className='form-alert'>Please enter a valid email address.</p>}
-                        </div>
-                        <div className='form-control'>
-                            <label className='form-label' htmlFor='password'>
-                                Password
-                            </label>
-                            <input
-                                className={`form-input ${passwordInputClasses}`}
-                                id='password'
-                                name='password'
-                                type='password'
-                                value={password}
-                                onChange={passwordChangeHandler}
-                                onBlur={passwordBlurHandler}
-                                autoComplete={password}
-                            />
-                            {passwordHasError ? (
-                                <p className='form-alert'>Please enter a valid password.</p>
-                            ) : (
-                                passwordLength && <p className='form-alert'>Password must be 10 characters or more.</p>
-                            )}
-                        </div>
+    /** Change blur state. */
+    emailBlurHandler(true);
+    passwordBlurHandler(true);
+    confirmBlurHandler(true);
 
-                        <div className='form-control'>
-                            <label className='form-label' htmlFor='confirm'>
-                                Confirm Password
-                            </label>
-                            <input
-                                className={`form-input ${passwordMatchedClasses}`}
-                                id='confirm'
-                                name='confirm'
-                                type='password'
-                                value={confirm}
-                                onChange={confirmChangeHandler}
-                                onBlur={confirmBlurHandler}
-                                autoComplete={confirm}
-                            />
-                            {confirmHasError ? (
-                                <p className='form-alert'>Please enter a valid confirm password.</p>
-                            ) : (
-                                passwordMatched && <p className='form-alert'>Password and confirm password do not match.</p>
-                            )}
-                        </div>
-                        <div className='form-button'>
-                            <div className='p-2'>
-                                <button type='submit' onClick={submitHandler} className='btn btn-green' disabled={!formIsValid}>
-                                    Reset
-                                </button>
-                            </div>
-                            <div className='p-2'>
-                                <Link to='/'>
-                                    <button className='btn btn-stone' type='button'>
-                                        Cancel
-                                    </button>
-                                </Link>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            )}
-        </>
-    );
+    /** Check if there is invalid input. */
+    if (!emailIsValid && !passwordIsValid && !confirmIsValid) {
+      return;
+    }
+
+    /** Dispatch action. */
+    dispatch(resetPassword(token, email, password));
+
+    /** Reset input. */
+    emailInputReset();
+    passwordInputReset();
+    confirmInputReset();
+  };
+
+  return (
+    <>
+      {error && <Message children={error} variant='alert-danger' />}
+      {message && <Message children={message} variant='alert-success' />}
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className='form-center-margin'>
+          <form method='POST' className='form-group screen-size gradient-huckle-berry' onSubmit={submitHandler}>
+            <div className='form-header border-bottom'>
+              <h4>Reset Password</h4>
+            </div>
+            <div className='form-control'>
+              <label className='form-label' htmlFor='email'>
+                Email
+              </label>
+              <input
+                className={`form-input ${emailInputClasses}`}
+                id='email'
+                name='email'
+                type='email'
+                value={email}
+                onChange={emailChangeHandler}
+                onBlur={emailBlurHandler}
+                autoComplete={email}
+              />
+              {emailHasError && <p className='form-alert'>Please enter a valid email address.</p>}
+            </div>
+            <div className='form-control'>
+              <label className='form-label' htmlFor='password'>
+                Password
+              </label>
+              <input
+                className={`form-input ${passwordInputClasses}`}
+                id='password'
+                name='password'
+                type='password'
+                value={password}
+                onChange={passwordChangeHandler}
+                onBlur={passwordBlurHandler}
+                autoComplete={password}
+              />
+              {passwordHasError ? (
+                <p className='form-alert'>Please enter a valid password.</p>
+              ) : (
+                passwordLength && <p className='form-alert'>Password must be 10 characters or more.</p>
+              )}
+            </div>
+
+            <div className='form-control'>
+              <label className='form-label' htmlFor='confirm'>
+                Confirm Password
+              </label>
+              <input
+                className={`form-input ${passwordMatchedClasses}`}
+                id='confirm'
+                name='confirm'
+                type='password'
+                value={confirm}
+                onChange={confirmChangeHandler}
+                onBlur={confirmBlurHandler}
+                autoComplete={confirm}
+              />
+              {confirmHasError ? (
+                <p className='form-alert'>Please enter a valid confirm password.</p>
+              ) : (
+                passwordMatched && <p className='form-alert'>Password and confirm password do not match.</p>
+              )}
+            </div>
+            <div className='form-button'>
+              <div className='p-2'>
+                <button type='submit' onClick={submitHandler} className='btn btn-green' disabled={!formIsValid}>
+                  Reset
+                </button>
+              </div>
+              <div className='p-2'>
+                <Link to='/'>
+                  <button className='btn btn-stone' type='button'>
+                    Cancel
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Reset;

@@ -67,7 +67,7 @@ export const desktopContent = ({ items }) => {
                   <p>{item.movingaverage}</p>
                 </div>
                 <div className='p-2'>
-                  <p>{item.movingsignal}</p>
+                  <p className='uppercase'>{item.movingsignal}</p>
                 </div>
               </div>
             );
@@ -137,7 +137,7 @@ export const mobileContent = ({ items }) => {
                 <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>
                   <span className='text-[.50rem]'>Moving Signal</span>
                 </p>
-                <p className='pt-2 text-center'>{item.movingsignal}</p>
+                <p className='pt-2 text-center uppercase'>{item.movingsignal}</p>
               </div>
             </div>
           );

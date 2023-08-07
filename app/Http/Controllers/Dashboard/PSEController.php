@@ -215,7 +215,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $price['value'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $price['value']);
+                    $negative = str_replace([')', '(', '-'], '', $price['value']);
                     /** then turn negative using abs function. */
                     $amount['value'] = -abs($negative);
                 } else {
@@ -242,7 +242,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $price['high'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $price['high']);
+                    $negative = str_replace([')', '(', '-'], '', $price['high']);
                     /** then turn negative using abs function. */
                     $price['high'] = -abs($negative);
                 } else {
@@ -266,7 +266,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $price['low'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $price['low']);
+                    $negative = str_replace([')', '(', '-'], '', $price['low']);
                     /** then turn negative using abs function. */
                     $amount['low'] = -abs($negative);
                 } else {
@@ -342,7 +342,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $current['currentAssets'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $current['currentAssets']);
+                    $negative = str_replace([')', '(', '-'], '', $current['currentAssets']);
                     /** then turn negative using abs function. */
                     $amount['assets']['current'] = -abs($negative);
                 } else {
@@ -362,7 +362,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $previous['currentLiabilities'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $previous['currentLiabilities']);
+                    $negative = str_replace([')', '(', '-'], '', $previous['currentLiabilities']);
                     /** then turn negative using abs function. */
                     $amount['liabilities']['current'] = -abs($negative);
                 } else {
@@ -374,7 +374,6 @@ class PSEController extends Controller {
                     $amount['liabilities']['current'] = 0.00;
                 }
             }
-
 
             /** determine if profitable against previous year. */
             $result['workingcapital'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['assets']['current'], 'two' => $amount['liabilities']['current']]);
@@ -390,7 +389,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $current['currentNetIncomeLossYearToDate'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $current['currentNetIncomeLossYearToDate']);
+                    $negative = str_replace([')', '(', '-'], '', $current['currentNetIncomeLossYearToDate']);
                     /** then turn negative using abs function. */
                     $amount['income']['current'] = -abs($negative);
                 } else {
@@ -410,7 +409,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $previous['previousNetIncomeLossYearToDate'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $previous['previousNetIncomeLossYearToDate']);
+                    $negative = str_replace([')', '(', '-'], '', $previous['previousNetIncomeLossYearToDate']);
                     /** then turn negative using abs function. */
                     $amount['income']['previous'] = -abs($negative);
                 } else {
@@ -423,8 +422,13 @@ class PSEController extends Controller {
                 }
             }
 
-            /** determine if profitable against previous year. */
-            $result['netincomeaftertax'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['income']['current'], 'two' => $amount['income']['previous']]);
+            /** evalaute value is greater than zero. */
+            if ($amount['income']['current'] > 0 && $amount['income']['previous'] > 0) {
+                /** determine if profitable against previous year. */
+                $result['netincomeaftertax'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['income']['current'], 'two' => $amount['income']['previous']]);
+            } else {
+                $result['netincomeaftertax'] = floatval('0.00');
+            }
 
             /** mapping total liabilities. */
             $statement['totalAssets'] = $finance['33'];
@@ -438,7 +442,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $assets['total'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $assets['total']);
+                    $negative = str_replace([')', '(', '-'], '', $assets['total']);
 
                     /** then turn negative using abs function. */
                     $amount['assets']['total'] = -abs($negative);
@@ -460,7 +464,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $liabilities['total'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $liabilities['total']);
+                    $negative = str_replace([')', '(', '-'], '', $liabilities['total']);
 
                     /** then turn negative using abs function. */
                     $amount['liabilities']['total'] = -abs($negative);
@@ -491,7 +495,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $share['basic'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $share['basic']);
+                    $negative = str_replace([')', '(', '-'], '', $share['basic']);
                     /** then turn negative using abs function. */
                     $amount['earning']['current'] = -abs($negative);
                 } else {
@@ -521,7 +525,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $revenue['gross'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $revenue['gross']);
+                    $negative = str_replace([')', '(', '-'], '', $revenue['gross']);
 
                     /** then turn negative using abs function. */
                     $amount['grossrevenue'] = -abs($negative);
@@ -553,7 +557,7 @@ class PSEController extends Controller {
                 /** preg match if contains parentheses. */
                 if (preg_match("/([)(])\w+/", $equity['CurrentStockholdersEquity'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '('], '', $equity['CurrentStockholdersEquity']);
+                    $negative = str_replace([')', '(', '-'], '', $equity['CurrentStockholdersEquity']);
 
                     /** then turn negative using abs function. */
                     $amount['stockholderequity'] = -abs($negative);
@@ -616,24 +620,36 @@ class PSEController extends Controller {
 
         /** get stock name. */
         $stock = DB::table('stock_trades')
-            ->select('name')
+            ->select('name', 'price')
             ->where('edge', '=', $data['edge'])
             ->first();
 
         if (count($dividend) >= 2) {
             $yield = '';
-            if (strtolower($dividend[1]) == 'cash') {
+            /** if dividend is cash. */
+            if (strtolower($dividend[1]) === 'cash') {
                 /** replace all non numeric characters. */
                 $rate = number_format($this->helpers(['sanitized' => 'decimal', 'string' => $dividend[2]]), 2, '.', ',');
 
-                /** fetch price. */
-                $trade = DB::table('stock_trades')
-                    ->where('edge', '=', $data['edge'])
-                    ->select('price')
-                    ->first();
+                /** calculate dividend yield. */
+                if ($rate > 0 && $stock->price > 0) {
+                    $yield = bcdiv(abs($rate), abs($stock->price), 4);
+                } else {
+                    $yield = number_format(0.00, 2, '.', ',');
+                }
+            } else if (strtolower($dividend[1]) === 'stock') {
+                /** replace all non numeric characters. */
+                $rate = number_format($this->helpers(['sanitized' => 'decimal', 'string' => $dividend[2]]), 2, '.', ',');
+
+                /** convert stock to cash. */
+                $cash = $stock->price * floatval($rate);
 
                 /** calculate dividend yield. */
-                $yield = bcdiv(abs($rate), abs($trade->price), 4);
+                if ($rate > 0 && $cash > 0) {
+                    $yield = bcdiv(abs($rate), abs($cash), 4);
+                } else {
+                    $yield = number_format(0.00, 2, '.', ',');
+                }
             } else {
                 /** set dividend yield to zero. */
                 $yield = number_format(0.00, 2, '.', ',');
@@ -977,31 +993,35 @@ class PSEController extends Controller {
 
         /** custom substration. */
         if ($data['sanitized'] === 'subtract') {
+            /** declare local pointer. */
+            $difference = '';
+
             /** check if first value is greater than zero and the second is less than zero. */
             if ($data['one'] > 0 && $data['two'] < 0) {
                 /** normal operation. */
-                $result = $data['one'] - $data['two'];
+                $difference = $data['one'] - $data['two'];
             }
 
             /** check if first value is less than zero and the first is greater than zero. */
             if ($data['one'] < 0 && $data['two'] > 0) {
                 /** with abs fucntion. */
-                $result = $data['one'] - abs($data['two']);
+                $difference = $data['one'] - abs($data['two']);
             }
 
             /** check if two values are less then zero. */
             if ($data['one'] < 0 && $data['two'] < 0) {
                 /** normal operation. */
-                $result = $data['one'] - $data['two'];
+                $difference = $data['one'] - $data['two'];
             }
 
             /** check if two values are greater then zero. */
             if ($data['one'] > 0 && $data['two'] > 0) {
                 /** normal operation. */
-                $result = $data['one'] - $data['two'];
+                $difference = $data['one'] - $data['two'];
             }
+
             /** convert to float. */
-            $result = floatval($result);
+            $result = floatval($difference);
 
             /** return something. */
             return $result;
@@ -1009,8 +1029,8 @@ class PSEController extends Controller {
 
         if ($data['sanitized'] === 'level') {
             /** declare pointers. */
-            $support_levels = [];
-            $resistance_levels = [];
+            $highest_support = null;
+            $lowest_resistance = null;
 
             /** loop to find support and resistance level. */
             for ($i = 1; $i < count($data['prices']) - 1; $i++) {
@@ -1019,14 +1039,20 @@ class PSEController extends Controller {
                 $next = $data['prices'][$i + 1];
 
                 if ($current < $prev && $current < $next) {
-                    $support_levels[] = $current;
-                } elseif ($current > $prev && $current > $next) {
-                    $resistance_levels[] = $current;
+                    /** found a local minimum support */
+                    if ($highest_support === null || $current > $highest_support) {
+                        $highest_support = $current;
+                    }
+                } else if ($current > $prev && $current > $next) {
+                    /** found a local maximum resistance */
+                    if ($lowest_resistance === null || $current < $lowest_resistance) {
+                        $lowest_resistance = $current;
+                    }
                 }
             }
 
             /** return something. */
-            return ['support' => reset($support_levels), 'resistance' => end($resistance_levels)];
+            return ['support' => $highest_support, 'resistance' => $lowest_resistance];
         }
     }
 }

@@ -1,39 +1,39 @@
 .form-center {
-    @apply p-2 flex items-center justify-center h-fit mt-2 bg-indigo-200 bg-opacity-20 !important;
+  @apply p-2 flex items-center justify-center h-fit mt-2 bg-indigo-200 bg-opacity-20 !important;
 }
 
 .form-center-margin {
-    @apply p-2 flex items-center justify-center h-fit mt-10 bg-indigo-200 bg-opacity-20 !important;
+  @apply p-2 flex items-center justify-center h-fit mt-10 bg-indigo-200 bg-opacity-20 !important;
 }
 
 .form-group {
-    @apply px-6 grid auto-rows-min rounded-lg shadow border border-slate-50 text-slate-50 !important;
+  @apply px-6 grid auto-rows-min rounded-lg shadow border border-slate-50 text-slate-50 !important;
 }
 
 .form-header {
-    @apply p-6 uppercase text-center my-auto !important;
+  @apply p-6 uppercase text-center my-auto !important;
 }
 
 .form-control {
-    @apply grid py-2 auto-rows-min sm:grid-cols-6 !important;
+  @apply grid py-2 auto-rows-min sm:grid-cols-6 !important;
 }
 
 .form-input {
-    @apply sm:col-span-4 mt-1 px-1 py-1 rounded-lg bg-white border shadow-sm border-slate-300 text-sm sm:text-base text-stone-500 !important;
+  @apply sm:col-span-4 mt-1 px-1 py-1 rounded-lg bg-white shadow border focus:border-green-500 focus:outline-none text-sm sm:text-base text-stone-500 !important;
 }
 
 .form-label {
-    @apply sm:col-span-2 mt-1 px-1 py-1 !important;
+  @apply sm:col-span-2 mt-1 px-1 py-1 !important;
 }
 
 .form-alert {
-    @apply text-slate-50 sm:col-span-6 py-1 text-right !important;
+  @apply sm:col-span-6 py-1 text-right !important;
 }
 
 .form-notice {
-    @apply grid auto-rows-min !important;
+  @apply grid auto-rows-min !important;
 }
 
 .form-button {
-    @apply p-4 grid auto-rows-min sm:grid-cols-2 !important;
+  @apply p-4 grid auto-rows-min sm:grid-cols-2 !important;
 }

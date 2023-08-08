@@ -1,6 +1,3 @@
-/** Vendor. */
-import axios from 'axios';
-
 /** Helper. */
 import { removeIndex } from '../components/Helper';
 
@@ -31,7 +28,7 @@ import {
   USER_TOKEN_FAILURE,
 } from '../constants/UserConstants';
 
-export const resendEmail = token => async dispatch => {
+export const resendEmail = (token) => async (dispatch) => {
   try {
     /** Request data from backend. */
     const { data } = await axios({
@@ -55,7 +52,7 @@ export const resendEmail = token => async dispatch => {
   }
 };
 
-export const resetPassword = (token, email, password) => async dispatch => {
+export const resetPassword = (token, email, password) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
     dispatch({ type: USER_RESET_REQUEST });
@@ -95,7 +92,7 @@ export const resetPassword = (token, email, password) => async dispatch => {
   }
 };
 
-export const forgotPassword = email => async dispatch => {
+export const forgotPassword = (email) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
     dispatch({ type: USER_FORGOT_REQUEST });
@@ -126,7 +123,7 @@ export const forgotPassword = email => async dispatch => {
   }
 };
 
-export const verifyEmail = token => async dispatch => {
+export const verifyEmail = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
     dispatch({ type: USER_VERIFY_REQUEST });
@@ -157,7 +154,7 @@ export const verifyEmail = token => async dispatch => {
   }
 };
 
-export const registerUser = (username, firstname, lastname, email, password) => async dispatch => {
+export const registerUser = (username, firstname, lastname, email, password) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
     dispatch({ type: USER_REGISTER_REQUEST });
@@ -197,7 +194,7 @@ export const registerUser = (username, firstname, lastname, email, password) => 
   }
 };
 
-export const loginUser = (email, password) => async dispatch => {
+export const loginUser = (email, password) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
     dispatch({ type: USER_LOGIN_REQUEST });
@@ -237,7 +234,7 @@ export const loginUser = (email, password) => async dispatch => {
   }
 };
 
-export const logoutUser = token => async dispatch => {
+export const logoutUser = (token) => async (dispatch) => {
   try {
     /** Request data from backend. */
     const { data } = await axios({
@@ -267,8 +264,8 @@ export const logoutUser = token => async dispatch => {
       localStorage.removeItem('dashboardStockLosser');
       localStorage.removeItem('watchlistBuild');
       localStorage.removeItem('watchlistFetch');
-      localStorage.removeItem('tradeBluechip');
-      localStorage.removeItem('tradeCommon');
+      localStorage.removeItem('stockTradeBluechip');
+      localStorage.removeItem('stockTradeCommon');
       localStorage.removeItem('chartWatchlist');
       localStorage.removeItem('chartFetch');
     }
@@ -286,7 +283,7 @@ export const logoutUser = token => async dispatch => {
   }
 };
 
-export const tokenUser = token => async dispatch => {
+export const tokenUser = (token) => async (dispatch) => {
   try {
     /** Dispatch action to set inital state. */
     dispatch({ type: USER_TOKEN_REQUEST });
@@ -322,8 +319,8 @@ export const tokenUser = token => async dispatch => {
     localStorage.removeItem('dashboardStockLosser');
     localStorage.removeItem('watchlistBuild');
     localStorage.removeItem('watchlistFetch');
-    localStorage.removeItem('tradeBluechip');
-    localStorage.removeItem('tradeCommon');
+    localStorage.removeItem('stockTradeBluechip');
+    localStorage.removeItem('stockTradeCommon');
     localStorage.removeItem('chartWatchlist');
     localStorage.removeItem('chartFetch');
 

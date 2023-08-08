@@ -71,7 +71,7 @@ export const averageChart = (token) => async (dispatch) => {
           /** Console log. */
           console.log('Process Completed.');
         }
-      }, 5000 * index);
+      }, 10000 * index);
     });
 
     /** Dispatch action to set the result into the store. */

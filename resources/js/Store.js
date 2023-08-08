@@ -24,9 +24,11 @@ import {
   dashboardStockLosserReducer,
 } from './reducers/DashboardReducers';
 
+import { portfolioStockFetchReducer, portfolioStockStoreReducer } from './reducers/PortfolioReducers';
+
 import { watchlistBuildReducer, watchlistStoreReducer, watchlistFetchReducer, watchlistDestroyReducer } from './reducers/WatchlistReducers';
 
-import { tradeBluechipReducer, tradeCommonReducer, tradeStoreReducer } from './reducers/TradeReducers';
+import { stockTradeBluechipReducer, stockTradeCommonReducer, stockTradeStoreReducer } from './reducers/TradeReducers';
 
 import { chartAverageReducer, chartFetchReducer } from './reducers/ChartReducers';
 
@@ -52,13 +54,15 @@ const reducer = combineReducers({
   dashboardEdgeUpdate: dashboardEdgeUpdateReducer,
   dashboardStockGainer: dashboardStockGainerReducer,
   dashboardStockLosser: dashboardStockLosserReducer,
+  portfolioStockFetch: portfolioStockFetchReducer,
+  portfolioStockStore: portfolioStockStoreReducer,
   watchlistBuild: watchlistBuildReducer,
   watchlistStore: watchlistStoreReducer,
   watchlistFetch: watchlistFetchReducer,
   watchlistDestroy: watchlistDestroyReducer,
-  tradeBluechip: tradeBluechipReducer,
-  tradeCommon: tradeCommonReducer,
-  tradeStore: tradeStoreReducer,
+  stockTradeBluechip: stockTradeBluechipReducer,
+  stockTradeCommon: stockTradeCommonReducer,
+  stockTradeStore: stockTradeStoreReducer,
   chartAverage: chartAverageReducer,
   chartFetch: chartFetchReducer,
   showMessage: showMessageReducer,
@@ -77,13 +81,15 @@ const dashboardStockGainerFromStorage = localStorage.getItem('dashboardStockGain
 
 const dashboardStockLosserFromStorage = localStorage.getItem('dashboardStockLosser') ? JSON.parse(localStorage.getItem('dashboardStockLosser')) : {};
 
+const portfolioStockFetchFromStorage = localStorage.getItem('stockPortfolioFetch') ? JSON.parse(localStorage.getItem('stockPortfolioFetch')) : {};
+
 const watchlistBuildFromStorage = localStorage.getItem('watchlistBuild') ? JSON.parse(localStorage.getItem('watchlistBuild')) : {};
 
 const watchlistFetchFromStorage = localStorage.getItem('watchlistFetch') ? JSON.parse(localStorage.getItem('watchlistFetch')) : {};
 
-const tradeBluechipFromStorage = localStorage.getItem('tradeBluechip') ? JSON.parse(localStorage.getItem('tradeBluechip')) : {};
+const stockTradeBluechipFromStorage = localStorage.getItem('stockTradeBluechip') ? JSON.parse(localStorage.getItem('stockTradeBluechip')) : {};
 
-const tradeCommonFromStorage = localStorage.getItem('tradeCommon') ? JSON.parse(localStorage.getItem('tradeCommon')) : {};
+const stockTradeCommonFromStorage = localStorage.getItem('stockTradeCommon') ? JSON.parse(localStorage.getItem('stockTradeCommon')) : {};
 
 const chartFetchFromStorage = localStorage.getItem('chartFetch') ? JSON.parse(localStorage.getItem('chartFetch')) : {};
 
@@ -94,10 +100,11 @@ const initialState = {
   dashboardEdge: dashboardEdgeFromStorage,
   dashboardStockGainer: dashboardStockGainerFromStorage,
   dashboardStockLosser: dashboardStockLosserFromStorage,
+  portfolioStockFetch: portfolioStockFetchFromStorage,
   watchlistBuild: watchlistBuildFromStorage,
   watchlistFetch: watchlistFetchFromStorage,
-  tradeBluechip: tradeBluechipFromStorage,
-  tradeCommon: tradeCommonFromStorage,
+  stockTradeBluechip: stockTradeBluechipFromStorage,
+  stockTradeCommon: stockTradeCommonFromStorage,
   chartFetch: chartFetchFromStorage,
 };
 

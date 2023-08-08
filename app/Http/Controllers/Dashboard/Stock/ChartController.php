@@ -40,6 +40,31 @@ class ChartController extends Controller {
     public function chartfetch($data) {
         /** match params. */
         if ($data['statement'] === 'select') {
+            /** fetch stock chart entry. */
+            $clean = DB::table('stock_charts')
+                ->select('symbol')
+                ->where('userid', Auth::id())
+                ->get()
+                ->toArray();
+
+            /** loop through stock chart entry. */
+            foreach ($clean as $items) {
+                /** check if still exist in the wathclist table. */
+                $exist = DB::table('stock_watchlists')
+                    ->select('symbol')
+                    ->where('symbol', $items->symbol)
+                    ->where('userid', Auth::id())
+                    ->first();
+
+                /** delete if it does not exist anymore. */
+                if (is_null($exist)) {
+                    DB::table('stock_charts')
+                        ->where('symbol', $items->symbol)
+                        ->where('userid', Auth::id())
+                        ->delete();
+                }
+            }
+
             /** select record. */
             $record = DB::table('stock_charts')
                 ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_charts.symbol')

@@ -1,5 +1,9 @@
 /** React. */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+/** Vendor. */
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 /** Hook. */
 import useScreen from '../../../hooks/UseScreen';
@@ -16,10 +20,28 @@ import Container from '../../../components/Container';
 /** Template. */
 import { desktopContent } from '../../template/stocks/Portfolio';
 
+/** Action. */
+import { fetchStockPortfolio, storeStockPortfolio } from '../../../actions/PortfolioActions';
+import { tokenUser } from '../../../actions/UserActions.js';
+
 const Portfolio = () => {
   /** Use state. */
   const [search, setSearch] = useState(false);
   const [add, setAdd] = useState(false);
+  const [notice, setNotice] = useState(false);
+
+  /** Use selector. */
+  const userLogin = useSelector((state) => state.userLogin);
+  const { access_token } = userLogin;
+
+  const userToken = useSelector((state) => state.userToken);
+  const { valid } = userToken;
+
+  const portfolioStockFetch = useSelector((state) => state.portfolioStockFetch);
+  const { portfolio, loading } = portfolioStockFetch;
+
+  const showMessage = useSelector((state) => state.showMessage);
+  const { message, error } = showMessage;
 
   /** Map html element to validate hook. */
   const {
@@ -80,6 +102,46 @@ const Portfolio = () => {
   const shareInputClasses = shareHasError ? 'alert-border-warning' : '';
   const capitalInputClasses = capitalHasError ? 'alert-border-warning' : '';
 
+  /** Use screen. */
+  const { isMobile } = useScreen();
+
+  /** Use dispatch. */
+  const dispatch = useDispatch();
+
+  /** Use navigate. */
+  const navigate = useNavigate();
+
+  /** Use effect. */
+  useEffect(() => {
+    /** Check valid state. */
+    if (!valid && access_token) {
+      dispatch(tokenUser(access_token));
+    }
+
+    /** Check if token is valid. */
+    if (valid && access_token) {
+      navigate('/dashboard/stock-portfolio');
+    } else {
+      navigate('/auth/login');
+    }
+
+    /** Send request if no stocks. */
+    if (valid && !portfolio) {
+      /** Dispatch action. */
+      dispatch(fetchStockPortfolio(access_token));
+    }
+
+    /** Monitor new message. */
+    if (message) {
+      /** Set state. */
+      setNotice(true);
+      /** Reset state. */
+      setTimeout(() => {
+        setNotice(false);
+      }, 5000);
+    }
+  }, [access_token, valid, message]);
+
   /** Submit handler. */
   const submitHandler = (event) => {
     /** Prevent browser default behaviour */
@@ -98,8 +160,7 @@ const Portfolio = () => {
     }
 
     /** Dispatch action. */
-    console.log(order, symbol, fee, share, capital);
-    //dispatch(registerUser(order, symbol, fee, share, capital));
+    dispatch(storeStockPortfolio(access_token, order, symbol, share, capital, fee));
 
     /** Reset input. */
     orderInputReset();
@@ -110,6 +171,9 @@ const Portfolio = () => {
 
     /** Hide modal. */
     setAdd(false);
+
+    /** Dispatch action. */
+    dispatch(fetchStockPortfolio(access_token));
   };
 
   /** Show search handler. */
@@ -145,6 +209,8 @@ const Portfolio = () => {
   /** Return something. */
   return (
     <Container header={containerHeader}>
+      {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
+      {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
       {desktopContent({ header: 'account', icon: 'portfolio' })}
       {desktopContent({ header: 'hold', icon: 'portfolio' })}
       {desktopContent({ header: 'order', icon: 'trade', text: 'add', action: showAddHandler })}
@@ -198,25 +264,6 @@ const Portfolio = () => {
                 {symbolHasError && <p className='form-alert text-red-500'>Please enter a valid symbol.</p>}
               </div>
               <div className='p-2 form-control'>
-                <label className='form-label uppercase' htmlFor='fee'>
-                  Fee
-                </label>
-                <input
-                  className={`p-2 form-input ${feeInputClasses}`}
-                  type='number'
-                  step='0.01'
-                  min='0.00'
-                  id='fee'
-                  name='fee'
-                  value={fee}
-                  placeholder='0.00'
-                  onChange={feeChangeHandler}
-                  onBlur={feeBlurHandler}
-                  autoComplete='off'
-                />
-                {feeHasError && <p className='form-alert text-red-500'>Please enter a valid fee.</p>}
-              </div>
-              <div className='p-2 form-control'>
                 <label className='form-label uppercase' htmlFor='share'>
                   Share
                 </label>
@@ -253,6 +300,25 @@ const Portfolio = () => {
                   autoComplete='off'
                 />
                 {capitalHasError && <p className='form-alert text-red-500'>Please enter a valid email.</p>}
+              </div>
+              <div className='p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='fee'>
+                  Fee
+                </label>
+                <input
+                  className={`p-2 form-input ${feeInputClasses}`}
+                  type='number'
+                  step='0.01'
+                  min='0.00'
+                  id='fee'
+                  name='fee'
+                  value={fee}
+                  placeholder='0.00'
+                  onChange={feeChangeHandler}
+                  onBlur={feeBlurHandler}
+                  autoComplete='off'
+                />
+                {feeHasError && <p className='form-alert text-red-500'>Please enter a valid fee.</p>}
               </div>
               <div className='form-button'>
                 <div className='p-2'>

@@ -36,10 +36,10 @@ const StockChart = () => {
   const { valid } = userToken;
 
   const chartFetch = useSelector((state) => state.chartFetch);
-  const { stocks } = chartFetch;
+  const { stocks, loading } = chartFetch;
 
   const chartAverage = useSelector((state) => state.chartAverage);
-  const { success, loading } = chartAverage;
+  const { success } = chartAverage;
 
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
@@ -67,8 +67,11 @@ const StockChart = () => {
   const chartAverageHandler = () => {
     /** Dispatch action. */
     dispatch(averageChart(access_token));
+    /** Dispatch action. */
+    dispatch(fetchChart(access_token));
   };
 
+  /** Use effect. */
   useEffect(() => {
     /** Check valid state. */
     if (!valid && access_token) {
@@ -104,6 +107,7 @@ const StockChart = () => {
     <div className='flex flex-row justify-between'>
       <p clasName='block p-2'>
         <Icon id='trade' /> Chart
+        <span className='pl-1'>({stocks ? stocks.length : 0})</span>
       </p>
       <p className='block p-2 cursor-pointer -mt-2'>
         <span className='mr-4' onClick={showModalSearchHandler}>
@@ -120,17 +124,18 @@ const StockChart = () => {
     <>
       {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
       {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
-      <Container header={containerChartHeader}>
-        {isMobile ? mobileContent({ items: stocks }) : desktopContent({ items: stocks })}
-
-        <div className='grid auto-rows-min h-fit rounded'>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Container header={containerChartHeader}>
+          {isMobile ? mobileContent({ items: stocks }) : desktopContent({ items: stocks })}
           {modalSearch && (
             <Modal>
               <Search close={closeModalHandler} items={stocks} component='chart' />
             </Modal>
           )}
-        </div>
-      </Container>
+        </Container>
+      )}
     </>
   );
 };

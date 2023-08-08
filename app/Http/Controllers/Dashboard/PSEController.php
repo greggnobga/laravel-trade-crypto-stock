@@ -1029,8 +1029,8 @@ class PSEController extends Controller {
 
         if ($data['sanitized'] === 'level') {
             /** declare pointers. */
-            $highest_support = null;
-            $lowest_resistance = null;
+            $lowest_support = null;
+            $highest_resistance = null;
 
             /** loop to find support and resistance level. */
             for ($i = 1; $i < count($data['prices']) - 1; $i++) {
@@ -1040,19 +1040,19 @@ class PSEController extends Controller {
 
                 if ($current < $prev && $current < $next) {
                     /** found a local minimum support */
-                    if ($highest_support === null || $current > $highest_support) {
-                        $highest_support = $current;
+                    if ($highest_resistance === null || $current > $highest_resistance) {
+                        $highest_resistance = $current;
                     }
                 } else if ($current > $prev && $current > $next) {
-                    /** found a local maximum resistance */
-                    if ($lowest_resistance === null || $current < $lowest_resistance) {
-                        $lowest_resistance = $current;
+                    /** found a local maximum support */
+                    if ($lowest_support === null || $current < $lowest_support) {
+                        $lowest_support = $current;
                     }
                 }
             }
 
             /** return something. */
-            return ['support' => $highest_support, 'resistance' => $lowest_resistance];
+            return ['support' => $lowest_support, 'resistance' => $highest_resistance];
         }
     }
 }

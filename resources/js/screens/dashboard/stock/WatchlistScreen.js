@@ -143,6 +143,7 @@ const Watchlist = () => {
     <div className='flex flex-row justify-between'>
       <p clasName='block p-2'>
         <Icon id='trade' /> Watchlist
+        <span className='pl-1'>({watchlist ? watchlist.length : 0})</span>
       </p>
       <p className='block p-2 cursor-pointer -mt-2'>
         <span className='mr-4' onClick={showModalSearchHandler}>

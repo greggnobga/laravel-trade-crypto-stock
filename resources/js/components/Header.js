@@ -19,10 +19,10 @@ const Header = () => {
   const dispatch = useDispatch();
 
   /** Use selector. */
-  const userLogin = useSelector(state => state.userLogin);
+  const userLogin = useSelector((state) => state.userLogin);
   const { access_token } = userLogin;
 
-  const userToken = useSelector(state => state.userToken);
+  const userToken = useSelector((state) => state.userToken);
   const { valid } = userToken;
 
   /** Use screen hook. */
@@ -59,9 +59,7 @@ const Header = () => {
 
   /** Control template. */
   const controlTemplate = (
-    <nav
-      className='flex flex-col flex-grow font-size shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0 z-50'
-      onClick={controlHandler}>
+    <nav className='flex flex-col flex-grow font-size shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0 z-50' onClick={controlHandler}>
       <ul className='py-2'>
         <li className='px-2'>
           <h2>Stock</h2>
@@ -74,16 +72,16 @@ const Header = () => {
           </Link>
         </li>
         <li className='px-2'>
-          <Link to='/dashboard/stock-watchlist'>
+          <Link to='/dashboard/stock-trade'>
             <span className='block border-bottom'>
-              <Icon id='watchlist' /> Watchlist
+              <Icon id='trade' /> Trade
             </span>
           </Link>
         </li>
         <li className='px-2'>
-          <Link to='/dashboard/stock-trade'>
+          <Link to='/dashboard/stock-watchlist'>
             <span className='block border-bottom'>
-              <Icon id='trade' /> Trade
+              <Icon id='watchlist' /> Watchlist
             </span>
           </Link>
         </li>
@@ -107,9 +105,9 @@ const Header = () => {
           </Link>
         </li>
         <li className='px-2'>
-          <Link to='/dashboard/crypto-screen'>
+          <Link to='/dashboard/crypto-trade'>
             <span className='block border-bottom'>
-              <Icon id='screen' /> Screen
+              <Icon id='trade' /> Trade
             </span>
           </Link>
         </li>
@@ -181,9 +179,7 @@ const Header = () => {
             </div>
           </div>
           {isBurger && (
-            <nav
-              className='flex flex-col flex-grow shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0 z-50'
-              onClick={burgerHandler}>
+            <nav className='flex flex-col flex-grow shadow gradient-blue-purple text-slate-50 absolute w-full top-14 right-0 z-50' onClick={burgerHandler}>
               <ul className='py-2'>
                 <li className='px-2'>
                   <Link to='/stock-explorer'>

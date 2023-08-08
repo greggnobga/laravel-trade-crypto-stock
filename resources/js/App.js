@@ -56,8 +56,8 @@ const App = () => {
         <Route path='/dashboard' element={<Layout />}>
           <Route path='/dashboard' element={<DashboardScreen />} />
           <Route path='/dashboard/stock-portfolio' element={<StockPortfolioScreen />} />
-          <Route path='/dashboard/stock-watchlist' element={<StockWatchlistScreen />} />
           <Route path='/dashboard/stock-trade' element={<StockTradeScreen />} />
+          <Route path='/dashboard/stock-watchlist' element={<StockWatchlistScreen />} />
           <Route path='/dashboard/stock-chart' element={<StockChartScreen />} />
           <Route path='/dashboard/crypto-portfolio' element={<CryptoPortfolioScreen />} />
           <Route path='/dashboard/crypto-trade' element={<CryptoTradeScreen />} />

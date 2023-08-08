@@ -23,7 +23,7 @@ import Container from '../../../components/Container';
 import { desktopHeader, desktopTemplate, mobileTemplate, paginationTemplate } from '../../template/stocks/Index';
 
 /** Action. */
-import { bluechipTrade, commonTrade, storeTrade } from '../../../actions/TradeActions';
+import { bluechipStockTrade, commonStockTrade, storeStockTrade } from '../../../actions/TradeActions';
 import { tokenUser } from '../../../actions/UserActions.js';
 
 const Trade = () => {
@@ -34,11 +34,11 @@ const Trade = () => {
   const userToken = useSelector((state) => state.userToken);
   const { valid } = userToken;
 
-  const tradeBluechip = useSelector((state) => state.tradeBluechip);
-  const { loading: loadBlue, bluechip } = tradeBluechip;
+  const stockTradeBluechip = useSelector((state) => state.stockTradeBluechip);
+  const { loading: loadBlue, bluechip } = stockTradeBluechip;
 
-  const tradeCommon = useSelector((state) => state.tradeCommon);
-  const { loading: loadCommon, common } = tradeCommon;
+  const stockTradeCommon = useSelector((state) => state.stockTradeCommon);
+  const { loading: loadCommon, common } = stockTradeCommon;
 
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;
@@ -80,13 +80,13 @@ const Trade = () => {
     /** Send request if no bluechip stock. */
     if (valid && !bluechip) {
       /** Dispatch action. */
-      dispatch(bluechipTrade(access_token));
+      dispatch(bluechipStockTrade(access_token));
     }
 
     /** Send request if no common stock. */
     if (valid && !common) {
       /** Dispatch action. */
-      dispatch(commonTrade(access_token));
+      dispatch(commonStockTrade(access_token));
     }
 
     /** Use helper. */
@@ -141,7 +141,7 @@ const Trade = () => {
 
   /** Store handler. */
   const storeHandler = (symbol) => {
-    dispatch(storeTrade(access_token, symbol));
+    dispatch(storeStockTrade(access_token, symbol));
   };
 
   /** Show search modal handler. */

@@ -61,18 +61,8 @@ class PortfolioController extends Controller {
                 ->first();
 
             if (!is_null($check)) {
-                /** fetch stocks. */
-                $chart['stocks']['object'] = DB::table('stock_portfolios')->select('symbol', 'capital')->get();
-                foreach ($chart['stocks']['object'] as $key => $value) {
-                    $chart['stocks']['array'][$key]['symbol'] = $value->symbol;
-                    $chart['stocks']['array'][$key]['capital'] = $value->capital;
-                }
-
-                /** append to result. */
-                $result['chart']['stocks'] = $chart['stocks']['array'];
-
                 /** plot month and year. */
-                $chart['plot'] = array();
+                $chart['plot'] = [];
                 for ($i = 11; $i >= 0; $i--) {
                     $month = Carbon::today()->startOfMonth()->subMonth($i);
                     $year = Carbon::today()->startOfMonth()->subMonth($i)->format('Y');
@@ -84,7 +74,7 @@ class PortfolioController extends Controller {
                 }
 
                 /** get data by month and year. */
-                $chart['data'] = array();
+                $chart['data'] = [];
                 foreach ($chart['plot'] as $key => $value) {
                     $chart['data'][$value['month']] = DB::table('stock_portfolios')
                         ->select('capital')
@@ -95,7 +85,7 @@ class PortfolioController extends Controller {
                 }
 
                 /** format chart data. */
-                $chart['capital'] = array();
+                $chart['capital'] = [];
                 foreach ($chart['data'] as $key => $value) {
                     if ($value->isEmpty()) {
                         $chart['capital'][$key]['month'] = $key;
@@ -108,28 +98,11 @@ class PortfolioController extends Controller {
                 }
 
                 /** resequence array keys*/
-                $result['chart']['capital'] = array_values($chart['capital']);
-
-                /** get asset summary. */
-                $chart['sum']['capital'] = DB::table('stock_portfolios')->select('capital')->get()->sum('capital');
-                $chart['sum']['fee'] = DB::table('stock_portfolios')->select('fee')->get()->sum('fee');
-                $chart['sum']['share'] = DB::table('stock_portfolios')->select('share')->get()->sum('share');
-
-                /** format chart data. */
-                $chart['total'] = array();
-                foreach ($chart['sum'] as $key => $value) {
-                    if ($value >= 0) {
-                        $chart['total'][$key]['label'] = ucfirst($key);
-                        $chart['total'][$key]['amount'] = number_format($value, 2, '.', '');
-                    }
-                }
-
-                /** append to result. */
-                $result['chart']['total'] = array_values($chart['total']);
+                $result['chart'] = array_values($chart['capital']);
 
                 /** order data. */
                 $stocks = DB::table('stock_portfolios')
-                    ->select('id', 'created_at as date', 'order', 'symbol', 'fee', 'share', 'capital')
+                    ->select('created_at as date', 'order', 'symbol', 'fee', 'share', 'capital')
                     ->where('userid', '=', Auth::id())
                     ->get();
 
@@ -138,7 +111,7 @@ class PortfolioController extends Controller {
                 }
 
                 /** hold data. */
-                $hold = array();
+                $hold = [];
                 $symbol = DB::table('stock_portfolios')
                     ->select('symbol')
                     ->where('userid', '=', Auth::id())
@@ -190,9 +163,7 @@ class PortfolioController extends Controller {
                     }
 
                     /** resequence array keys*/
-                    $result['hold']['buy'] = array_values($hold['buy']);
-                    $result['hold']['sell'] = array_values($hold['sell']);
-                    $result['hold']['total'] = array_values($hold['total']);
+                    $result['hold'] = array_values($hold['total']);
                 }
                 /** return if record found. */
                 return response(['message' => 'Please wait while we process your request.', 'order' => $result['order'], 'hold' => $result['hold'], 'chart' => $result['chart']], 200);
@@ -296,15 +267,15 @@ class PortfolioController extends Controller {
                         $result->forget('order');
                         $result->put('order', $order);
                     }
-                    if ($k === 'capital') {
-                        $price = number_format($v, '2', '.', ',');
-                        $result->forget('capital');
-                        $result->put('capital', $price);
-                    }
                     if ($k === 'share') {
                         $share = number_format($v, '2', '.', ',');
                         $result->forget('share');
                         $result->put('share', $share);
+                    }
+                    if ($k === 'capital') {
+                        $price = number_format($v, '2', '.', ',');
+                        $result->forget('capital');
+                        $result->put('capital', $price);
                     }
                     if ($k === 'fee') {
                         $fee = number_format($v, '2', '.', ',');

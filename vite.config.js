@@ -31,6 +31,7 @@ export default defineConfig({
     minify: true,
     outDir: 'public',
     emptyOutDir: false,
+    chunkSizeWarningLimit: 1500,
     rollupOptions: {
       output: {
         entryFileNames: `assets/[name].js`,
@@ -46,18 +47,18 @@ export default defineConfig({
       refresh: ['resources/views/**'],
       manifest: true,
     }),
-    // viteStaticCopy({
+    //   viteStaticCopy({
     //     targets: [
-    //         {
-    //             src: "resources/images/*",
-    //             dest: "images",
-    //         },
-    //         {
-    //             src: "resources/icons/*",
-    //             dest: "icons",
-    //         },
+    //       {
+    //         src: 'resources/images/*',
+    //         dest: 'images',
+    //       },
+    //       {
+    //         src: 'resources/icons/*',
+    //         dest: 'icons',
+    //       },
     //     ],
-    // }),
+    //   }),
     react(),
   ],
   server: {

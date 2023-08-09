@@ -15,10 +15,11 @@ import Modal from '../../../components/Modal';
 import Loader from '../../../components/Loader';
 import Notice from '../../../components/Notice';
 import Search from '../../../components/Search';
+
 import Container from '../../../components/Container';
 
 /** Template. */
-import { desktopContent } from '../../template/stocks/Portfolio';
+import { desktopContent, modalStoreContent } from '../../template/stocks/Portfolio';
 
 /** Action. */
 import { fetchStockPortfolio, storeStockPortfolio } from '../../../actions/PortfolioActions';
@@ -27,8 +28,10 @@ import { tokenUser } from '../../../actions/UserActions.js';
 const Portfolio = () => {
   /** Use state. */
   const [search, setSearch] = useState(false);
-  const [add, setAdd] = useState(false);
   const [notice, setNotice] = useState(false);
+  const [store, setStore] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [destroy, setDestroy] = useState(false);
 
   /** Use selector. */
   const userLogin = useSelector((state) => state.userLogin);
@@ -170,10 +173,17 @@ const Portfolio = () => {
     capitalInputReset();
 
     /** Hide modal. */
-    setAdd(false);
+    setStore(false);
 
-    /** Dispatch action. */
-    dispatch(fetchStockPortfolio(access_token));
+    /** Update state after timeout. */
+    const timeout = setTimeout(() => {
+      /** Dispatch action. */
+      dispatch(fetchStockPortfolio(access_token));
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   };
 
   /** Show search handler. */
@@ -181,15 +191,40 @@ const Portfolio = () => {
     setSearch(true);
   };
 
-  /** Show add handler. */
-  const showAddHandler = () => {
-    setAdd(true);
+  /** Show store handler. */
+  const showStoreHandler = () => {
+    setStore(true);
+  };
+
+  /** Show update handler. */
+  const showUpdateHandler = (item) => {
+    console.log(item);
+    setUpdate(true);
+  };
+
+  /** Show destroy handler. */
+  const showDestroyteHandler = (symbol) => {
+    console.log(symbol);
+    setDestroy(true);
   };
 
   /** Hide search handler. */
   const closeModalHandler = () => {
+    /** Set state. */
     setSearch(false);
-    setAdd(false);
+    setStore(false);
+    setUpdate(false);
+    setDestroy(false);
+
+    /** Update state after timeout. */
+    const timeout = setTimeout(() => {
+      /** Dispatch action. */
+      dispatch(fetchStockPortfolio(access_token));
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   };
 
   /** Container header for common. */
@@ -211,15 +246,23 @@ const Portfolio = () => {
     <Container header={containerHeader}>
       {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
       {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
-      {desktopContent({ header: 'account', icon: 'portfolio' })}
-      {desktopContent({ header: 'hold', icon: 'portfolio' })}
-      {desktopContent({ header: 'order', icon: 'trade', text: 'add', action: showAddHandler })}
+      {desktopContent({ header: 'chart', icon: 'portfolio', items: portfolio && portfolio ? portfolio['chart'] : [] })}
+      {desktopContent({ header: 'hold', icon: 'portfolio', items: portfolio && portfolio ? portfolio['hold'] : [] })}
+      {desktopContent({
+        header: 'order',
+        icon: 'trade',
+        text: 'add',
+        store: showStoreHandler,
+        update: showUpdateHandler,
+        destroy: showDestroyteHandler,
+        items: portfolio && portfolio ? portfolio['order'] : [],
+      })}
       {search && (
         <Modal>
           <Search close={closeModalHandler} />
         </Modal>
       )}
-      {add && (
+      {store && (
         <Modal>
           <div className='grid auto-rows-min h-fit rounded-t-md bg-stone-100'>
             <div className='flex flex-row flex-wrap justify-between align-center border-b border-stone-200 uppercase'>
@@ -229,97 +272,59 @@ const Portfolio = () => {
               </p>
             </div>
             <form classNams='form-group border border-green-500' onSubmit={submitHandler}>
-              <div className='p-2 p-2 form-control'>
-                <label className='form-label uppercase' htmlFor='order'>
-                  Order
-                </label>
-                <select
-                  className={`p-2 form-input focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 ${orderInputClasses}`}
-                  id='order'
-                  name='order'
-                  value={order}
-                  onChange={orderChangeHandler}
-                  onBlur={orderBlurHandler}>
-                  <option value=''></option>
-                  <option value='buy'>Buy</option>
-                  <option value='sell'>Sell</option>
-                </select>
-                {orderHasError && <p className='form-alert text-red-500'>Please select a valid order.</p>}
-              </div>
-              <div className='p-2 form-control'>
-                <label className='form-label uppercase' htmlFor='symbol'>
-                  Symbol
-                </label>
-                <input
-                  className={`p-2 form-input ${symbolInputClasses}`}
-                  type='text'
-                  id='symbol'
-                  name='symbol'
-                  value={symbol}
-                  placeholder='Symbol'
-                  onChange={symbolChangeHandler}
-                  onBlur={symbolBlurHandler}
-                  autoComplete='off'
-                />
-                {symbolHasError && <p className='form-alert text-red-500'>Please enter a valid symbol.</p>}
-              </div>
-              <div className='p-2 form-control'>
-                <label className='form-label uppercase' htmlFor='share'>
-                  Share
-                </label>
-                <input
-                  className={`p-2 form-input ${shareInputClasses}`}
-                  type='number'
-                  step='0.01'
-                  min='0.00'
-                  id='share'
-                  name='share'
-                  value={share}
-                  placeholder='0.00'
-                  onChange={shareChangeHandler}
-                  onBlur={shareBlurHandler}
-                  autoComplete='off'
-                />
-                {shareHasError && <p className='form-alert text-red-500'>Please enter a valid share.</p>}
-              </div>
-              <div className='p-2 form-control'>
-                <label className='form-label uppercase' htmlFor='capital'>
-                  Capital
-                </label>
-                <input
-                  className={`p-2 form-input ${capitalInputClasses}`}
-                  type='number'
-                  step='0.01'
-                  min='0.00'
-                  id='capital'
-                  name='capital'
-                  value={capital}
-                  placeholder='0.00'
-                  onChange={capitalChangeHandler}
-                  onBlur={capitalBlurHandler}
-                  autoComplete='off'
-                />
-                {capitalHasError && <p className='form-alert text-red-500'>Please enter a valid email.</p>}
-              </div>
-              <div className='p-2 form-control'>
-                <label className='form-label uppercase' htmlFor='fee'>
-                  Fee
-                </label>
-                <input
-                  className={`p-2 form-input ${feeInputClasses}`}
-                  type='number'
-                  step='0.01'
-                  min='0.00'
-                  id='fee'
-                  name='fee'
-                  value={fee}
-                  placeholder='0.00'
-                  onChange={feeChangeHandler}
-                  onBlur={feeBlurHandler}
-                  autoComplete='off'
-                />
-                {feeHasError && <p className='form-alert text-red-500'>Please enter a valid fee.</p>}
-              </div>
+              {modalStoreContent({
+                element: 'select',
+                label: 'order',
+                style: orderInputClasses,
+                value: order,
+                change: orderChangeHandler,
+                blur: orderBlurHandler,
+                error: orderHasError,
+              })}
+              {modalStoreContent({
+                element: 'input',
+                type: 'text',
+                label: 'symbol',
+                placeholder: 'symbol',
+                style: symbolInputClasses,
+                value: symbol,
+                change: symbolChangeHandler,
+                blur: symbolBlurHandler,
+                error: symbolHasError,
+              })}
+              {modalStoreContent({
+                element: 'input',
+                type: 'number',
+                label: 'share',
+                placeholder: '0.00',
+                style: shareInputClasses,
+                value: share,
+                change: shareChangeHandler,
+                blur: shareBlurHandler,
+                error: shareHasError,
+              })}
+              {modalStoreContent({
+                element: 'input',
+                type: 'number',
+                label: 'capital',
+                placeholder: '0.00',
+                style: capitalInputClasses,
+                value: capital,
+                change: capitalChangeHandler,
+                blur: capitalBlurHandler,
+                error: capitalHasError,
+              })}
+              {modalStoreContent({
+                element: 'input',
+                type: 'number',
+                label: 'fee',
+                placeholder: '0.00',
+                style: feeInputClasses,
+                value: fee,
+                change: feeChangeHandler,
+                blur: feeBlurHandler,
+                error: feeHasError,
+              })}
               <div className='form-button'>
                 <div className='p-2'>
                   <button className='btn btn-green' type='submit' onClick={submitHandler} disabled={!formIsValid}>
@@ -336,6 +341,8 @@ const Portfolio = () => {
           </div>
         </Modal>
       )}
+      {update && <p>Update modal</p>}
+      {destroy && <p>Destroy modal</p>}
     </Container>
   );
 };

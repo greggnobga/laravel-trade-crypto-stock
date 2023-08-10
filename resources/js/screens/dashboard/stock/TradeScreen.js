@@ -162,7 +162,7 @@ const Trade = () => {
 
   /** Container header for bluechip. */
   const containerBluechipHeader = (
-    <div className='flex flex-row flex-wrap justify-between align-center'>
+    <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
         <Icon id='trade' /> Bluechip Stocks
       </div>
@@ -176,7 +176,7 @@ const Trade = () => {
 
   /** Container header for common. */
   const containerCommonHeader = (
-    <div className='flex flex-row flex-wrap justify-between align-center'>
+    <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
         <Icon id='trade' /> Common Stocks
       </div>
@@ -191,12 +191,8 @@ const Trade = () => {
   /** Return something. */
   return (
     <>
-      {/**Show error. */}
       {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
-
-      {/**Show message. */}
       {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
-      {/** Bluechip section. */}
       <Container header={containerBluechipHeader}>
         {isMobile ? (
           loadBlue ? (
@@ -298,7 +294,6 @@ const Trade = () => {
           )}
         </div>
       </Container>
-      {/** Common section. */}
       <Container header={containerCommonHeader}>
         {isMobile ? (
           loadCommon ? (
@@ -391,7 +386,6 @@ const Trade = () => {
             )}
           </>
         )}
-
         <div className='grid auto-rows-min h-fit rounded'>
           {modalSearchCommon && (
             <Modal>

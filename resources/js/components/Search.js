@@ -40,7 +40,7 @@ const Search = ({ close, items, component }) => {
   /** Return something. */
   return (
     <>
-      <div className='flex flex-col md:flex-row justify-center align-center gap-2 w-full rounded-t-md bg-slate-50'>
+      <div className='flex flex-col md:flex-row justify-center items-center gap-2 w-full rounded-t-md bg-slate-50'>
         <div className='p-2 grow w-full md:w-1/4 text-center'>
           <label className='p-2 block uppercase' htmlFor='search'>
             Search
@@ -73,7 +73,7 @@ const Search = ({ close, items, component }) => {
           /** Return. */
           return (
             <div
-              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center align-center gap-2 my-2 w-full bg-slate-50 shadow ${
+              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 my-2 w-full bg-slate-50 shadow ${
                 index & (1 === 1) ? 'rounded-t-md' : 'rounded-b-md'
               }`}>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
@@ -121,7 +121,7 @@ const Search = ({ close, items, component }) => {
           /** Return. */
           return (
             <div
-              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center align-center gap-2 my-2 w-full bg-slate-50 shadow ${
+              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 my-2 w-full bg-slate-50 shadow ${
                 index & (1 === 1) ? 'rounded-t-md' : 'rounded-b-md'
               }`}>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>

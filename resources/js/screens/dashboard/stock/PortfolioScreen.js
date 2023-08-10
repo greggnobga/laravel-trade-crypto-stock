@@ -19,7 +19,7 @@ import Search from '../../../components/Search';
 import Container from '../../../components/Container';
 
 /** Template. */
-import { desktopContent, modalStoreContent } from '../../template/stocks/Portfolio';
+import { desktopContent, mobileContent } from '../../template/stocks/Portfolio';
 
 /** Action. */
 import { fetchStockPortfolio, storeStockPortfolio } from '../../../actions/PortfolioActions';
@@ -31,7 +31,9 @@ const Portfolio = () => {
   const [notice, setNotice] = useState(false);
   const [store, setStore] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [updateData, setUpdateData] = useState();
   const [destroy, setDestroy] = useState(false);
+  const [destroyData, setDestroyData] = useState();
 
   /** Use selector. */
   const userLogin = useSelector((state) => state.userLogin);
@@ -143,10 +145,10 @@ const Portfolio = () => {
         setNotice(false);
       }, 5000);
     }
-  }, [access_token, valid, message]);
+  }, [access_token, valid, isMobile, message]);
 
   /** Submit handler. */
-  const submitHandler = (event) => {
+  const storeHandler = (event) => {
     /** Prevent browser default behaviour */
     event.preventDefault();
 
@@ -186,6 +188,26 @@ const Portfolio = () => {
     };
   };
 
+  /** Destory handler. */
+  const updateHandler = (event) => {
+    /** Prevent browser default behaviour */
+    event.preventDefault();
+    /** Do the magic. */
+    console.log('Submitting...');
+    console.log(order, symbol, share, capital, fee);
+
+    /** Hide modal. */
+    setUpdate(false);
+  };
+
+  /** Destory handler. */
+  const destroyHandler = () => {
+    /** Do the magic. */
+    console.log(destroyData);
+    /** Hide modal. */
+    setDestroy(false);
+  };
+
   /** Show search handler. */
   const showSearchHandler = () => {
     setSearch(true);
@@ -198,14 +220,26 @@ const Portfolio = () => {
 
   /** Show update handler. */
   const showUpdateHandler = (item) => {
-    console.log(item);
+    /** Show modal. */
     setUpdate(true);
+
+    /** Check if item is set. */
+    if (item) {
+      /** Set modal data. */
+      setUpdateData(item);
+    }
   };
 
   /** Show destroy handler. */
   const showDestroyteHandler = (symbol) => {
-    console.log(symbol);
+    /** Show modal. */
     setDestroy(true);
+
+    /** Check if symbol is set. */
+    if (symbol) {
+      /** Set modal data. */
+      setDestroyData(symbol);
+    }
   };
 
   /** Hide search handler. */
@@ -229,7 +263,7 @@ const Portfolio = () => {
 
   /** Container header for common. */
   const containerHeader = (
-    <div className='flex flex-row flex-wrap justify-between align-center'>
+    <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
         <Icon id='trade' /> Portfolio
       </div>
@@ -246,17 +280,31 @@ const Portfolio = () => {
     <Container header={containerHeader}>
       {error && <Notice variant='alert-warning' children={error} duration={3000} show={notice} />}
       {message && <Notice variant='alert-success' children={message} duration={3000} show={notice} />}
-      {desktopContent({ header: 'chart', icon: 'portfolio', items: portfolio && portfolio ? portfolio['chart'] : [] })}
-      {desktopContent({ header: 'hold', icon: 'portfolio', items: portfolio && portfolio ? portfolio['hold'] : [] })}
-      {desktopContent({
-        header: 'order',
-        icon: 'trade',
-        text: 'add',
-        store: showStoreHandler,
-        update: showUpdateHandler,
-        destroy: showDestroyteHandler,
-        items: portfolio && portfolio ? portfolio['order'] : [],
-      })}
+      {isMobile
+        ? mobileContent({ header: 'chart', icon: 'portfolio', items: portfolio && portfolio ? portfolio['chart'] : [] })
+        : desktopContent({ header: 'chart', icon: 'portfolio', items: portfolio && portfolio ? portfolio['chart'] : [] })}
+      {isMobile
+        ? mobileContent({ header: 'hold', icon: 'portfolio', items: portfolio && portfolio ? portfolio['hold'] : [] })
+        : desktopContent({ header: 'hold', icon: 'portfolio', items: portfolio && portfolio ? portfolio['hold'] : [] })}
+      {isMobile
+        ? mobileContent({
+            header: 'order',
+            icon: 'trade',
+            text: 'add',
+            store: showStoreHandler,
+            update: showUpdateHandler,
+            destroy: showDestroyteHandler,
+            items: portfolio && portfolio ? portfolio['order'] : [],
+          })
+        : desktopContent({
+            header: 'order',
+            icon: 'trade',
+            text: 'add',
+            store: showStoreHandler,
+            update: showUpdateHandler,
+            destroy: showDestroyteHandler,
+            items: portfolio && portfolio ? portfolio['order'] : [],
+          })}
       {search && (
         <Modal>
           <Search close={closeModalHandler} />
@@ -264,75 +312,97 @@ const Portfolio = () => {
       )}
       {store && (
         <Modal>
-          <div className='grid auto-rows-min h-fit rounded-t-md bg-stone-100'>
-            <div className='flex flex-row flex-wrap justify-between align-center border-b border-stone-200 uppercase'>
+          <div className='grid auto-rows-min h-fit w-fit rounded-t-md bg-stone-100'>
+            <div className='flex flex-row flex-wrap justify-between items-center border-b border-stone-200 uppercase text-slate-50'>
               <p className='p-2'>Add Record</p>
               <p className='p-2 cursor-pointer' onClick={closeModalHandler}>
                 <Icon id='close' /> <span className='pl-2'>Close</span>
               </p>
             </div>
-            <form classNams='form-group border border-green-500' onSubmit={submitHandler}>
-              {modalStoreContent({
-                element: 'select',
-                label: 'order',
-                style: orderInputClasses,
-                value: order,
-                change: orderChangeHandler,
-                blur: orderBlurHandler,
-                error: orderHasError,
-              })}
-              {modalStoreContent({
-                element: 'input',
-                type: 'text',
-                label: 'symbol',
-                placeholder: 'symbol',
-                style: symbolInputClasses,
-                value: symbol,
-                change: symbolChangeHandler,
-                blur: symbolBlurHandler,
-                error: symbolHasError,
-              })}
-              {modalStoreContent({
-                element: 'input',
-                type: 'number',
-                label: 'share',
-                placeholder: '0.00',
-                style: shareInputClasses,
-                value: share,
-                change: shareChangeHandler,
-                blur: shareBlurHandler,
-                error: shareHasError,
-              })}
-              {modalStoreContent({
-                element: 'input',
-                type: 'number',
-                label: 'capital',
-                placeholder: '0.00',
-                style: capitalInputClasses,
-                value: capital,
-                change: capitalChangeHandler,
-                blur: capitalBlurHandler,
-                error: capitalHasError,
-              })}
-              {modalStoreContent({
-                element: 'input',
-                type: 'number',
-                label: 'fee',
-                placeholder: '0.00',
-                style: feeInputClasses,
-                value: fee,
-                change: feeChangeHandler,
-                blur: feeBlurHandler,
-                error: feeHasError,
-              })}
+            <form classNams='form-group border border-green-500' onSubmit={storeHandler}>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='order'>
+                  Order
+                </label>
+                <select className={`p-2 form-input uppercase ${orderInputClasses}`} onChange={orderChangeHandler} onBlur={orderBlurHandler}>
+                  <option value=''></option>
+                  <option value='buy'>Buy</option>
+                  <option value='sell'>Sell</option>
+                </select>
+                {orderHasError && <p className='form-alert text-red-500'>Please select a valid order.</p>}
+              </div>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='symbol'>
+                  Symbol
+                </label>
+                <input
+                  className={`p-2 form-input uppercase ${symbolInputClasses}`}
+                  type='text'
+                  id='symbol'
+                  name='symbol'
+                  value={symbol}
+                  onChange={symbolChangeHandler}
+                  onBlur={symbolBlurHandler}
+                  autoComplete='off'
+                />
+                {symbolHasError && <p className='form-alert text-red-500'>Please select a valid symbol.</p>}
+              </div>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='share'>
+                  Share
+                </label>
+                <input
+                  className={`p-2 form-input uppercase ${shareInputClasses}`}
+                  type='number'
+                  id='share'
+                  name='share'
+                  value={share}
+                  onChange={shareChangeHandler}
+                  onBlur={shareBlurHandler}
+                  autoComplete='off'
+                />
+                {shareHasError && <p className='form-alert text-red-500'>Please select a valid share.</p>}
+              </div>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='capital'>
+                  Capital
+                </label>
+                <input
+                  className={`p-2 form-input uppercase ${capitalInputClasses}`}
+                  type='number'
+                  id='capital'
+                  name='capital'
+                  value={capital}
+                  onChange={capitalChangeHandler}
+                  onBlur={capitalBlurHandler}
+                  autoComplete='off'
+                />
+                {capitalHasError && <p className='form-alert text-red-500'>Please select a valid capital.</p>}
+              </div>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='fee'>
+                  fee
+                </label>
+                <input
+                  className={`p-2 form-input uppercase ${feeInputClasses}`}
+                  type='number'
+                  id='fee'
+                  name='fee'
+                  value={fee}
+                  onChange={feeChangeHandler}
+                  onBlur={feeBlurHandler}
+                  autoComplete='off'
+                />
+                {feeHasError && <p className='form-alert text-red-500'>Please select a valid fee.</p>}
+              </div>
               <div className='form-button'>
                 <div className='p-2'>
-                  <button className='btn btn-green' type='submit' onClick={submitHandler} disabled={!formIsValid}>
+                  <button className='btn btn-green cursor-pointer' type='submit' onClick={storeHandler} disabled={!formIsValid}>
                     Submit
                   </button>
                 </div>
                 <div className='p-2'>
-                  <button className='btn btn-stone' type='button' onClick={closeModalHandler}>
+                  <button className='btn btn-stone cursor-pointer' type='button' onClick={closeModalHandler}>
                     Cancel
                   </button>
                 </div>
@@ -341,8 +411,134 @@ const Portfolio = () => {
           </div>
         </Modal>
       )}
-      {update && <p>Update modal</p>}
-      {destroy && <p>Destroy modal</p>}
+      {update && (
+        <Modal>
+          <div className='grid auto-rows-min h-fit w-fit rounded-t-md bg-stone-100'>
+            <div className='flex flex-row flex-wrap justify-between items-center border-b border-stone-200 uppercase text-slate-50'>
+              <p className='p-2'>Update Record</p>
+              <p className='p-2 cursor-pointer' onClick={closeModalHandler}>
+                <Icon id='close' /> <span className='pl-2'>Close</span>
+              </p>
+            </div>
+            <form classNams='form-group border border-green-500' onSubmit={updateHandler}>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='order'>
+                  Order
+                </label>
+                <select className={`p-2 form-input uppercase ${orderInputClasses}`} onChange={orderChangeHandler} onBlur={orderBlurHandler}>
+                  <option value={order ? order : updateData['order']}>{order ? order : updateData['order']}</option>
+                  <option value='buy'>Buy</option>
+                  <option value='sell'>Sell</option>
+                </select>
+                {orderHasError && <p className='form-alert text-red-500'>Please select a valid order.</p>}
+              </div>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='symbol'>
+                  Symbol
+                </label>
+                <input
+                  className={`p-2 form-input uppercase ${symbolInputClasses}`}
+                  type='text'
+                  id='symbol'
+                  name='symbol'
+                  value={symbol ? symbol : updateData['symbol']}
+                  onChange={symbolChangeHandler}
+                  onBlur={symbolBlurHandler}
+                  autoComplete='off'
+                />
+                {symbolHasError && <p className='form-alert text-red-500'>Please select a valid symbol.</p>}
+              </div>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='share'>
+                  Share
+                </label>
+                <input
+                  className={`p-2 form-input uppercase ${shareInputClasses}`}
+                  type='number'
+                  id='share'
+                  name='share'
+                  value={share ? share : updateData['share'].replace(/,/g, '')}
+                  onChange={shareChangeHandler}
+                  onBlur={shareBlurHandler}
+                  autoComplete='off'
+                />
+                {shareHasError && <p className='form-alert text-red-500'>Please select a valid share.</p>}
+              </div>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='capital'>
+                  Capital
+                </label>
+                <input
+                  className={`p-2 form-input uppercase ${capitalInputClasses}`}
+                  type='number'
+                  id='capital'
+                  name='capital'
+                  value={capital ? capital : updateData['capital'].replace(/,/g, '')}
+                  onChange={capitalChangeHandler}
+                  onBlur={capitalBlurHandler}
+                  autoComplete='off'
+                />
+                {capitalHasError && <p className='form-alert text-red-500'>Please select a valid capital.</p>}
+              </div>
+              <div className='p-2 p-2 form-control'>
+                <label className='form-label uppercase' htmlFor='fee'>
+                  fee
+                </label>
+                <input
+                  className={`p-2 form-input uppercase ${feeInputClasses}`}
+                  type='number'
+                  id='fee'
+                  name='fee'
+                  value={fee ? fee : updateData['fee'].replace(/,/g, '')}
+                  onChange={feeChangeHandler}
+                  onBlur={feeBlurHandler}
+                  autoComplete='off'
+                />
+                {feeHasError && <p className='form-alert text-red-500'>Please select a valid fee.</p>}
+              </div>
+              <div className='form-button'>
+                <div className='p-2'>
+                  <button className='btn btn-green cursor-pointer' type='submit' onClick={updateHandler} disabled={!formIsValid}>
+                    Update
+                  </button>
+                </div>
+                <div className='p-2'>
+                  <button className='btn btn-stone cursor-pointer' type='button' onClick={closeModalHandler}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </Modal>
+      )}
+      {destroy && (
+        <Modal>
+          <div className='grid auto-rows-min h-fit w-fit rounded-t-md bg-stone-100'>
+            <div className='flex flex-row flex-wrap justify-between items-center border-b border-stone-200 uppercase text-slate-50'>
+              <p className='p-2'>Delete Record</p>
+              <p className='p-2 cursor-pointer' onClick={closeModalHandler}>
+                <Icon id='close' /> <span className='pl-2'>Close</span>
+              </p>
+            </div>
+            <div className='form-prompt'>
+              <p className='form-label uppercase'>Are you sure you want to delete, {destroyData}?</p>
+            </div>
+            <div className='form-button'>
+              <div className='p-2'>
+                <button className='btn btn-green cursor-pointer' type='submit' onClick={() => destroyHandler()}>
+                  Submit
+                </button>
+              </div>
+              <div className='p-2'>
+                <button className='btn btn-stone cursor-pointer' type='button' onClick={closeModalHandler}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )}
     </Container>
   );
 };

@@ -196,7 +196,7 @@ export const desktopModalTemplate = ({ item, action, close, icon, text }) => {
   return (
     <>
       <div className='p-2'>
-        <div className='flex flex-row justify-between'>
+        <div className='flex flex-row justify-between text-slate-50'>
           <span className='uppercase'>
             <Icon id={modalIcon} /> {modalHeader}
           </span>
@@ -341,7 +341,7 @@ export const mobileModalTemplate = ({ item, action, close, icon, text }) => {
   return (
     <>
       <div className='p-2'>
-        <div className='flex flex-row justify-between'>
+        <div className='flex flex-row justify-between text-slate-50'>
           <span className='p-0 uppercase'>
             <Icon id={modalIcon} /> {modalHeader}
           </span>

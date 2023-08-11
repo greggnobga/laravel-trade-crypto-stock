@@ -7,5 +7,5 @@
 }
 
 .modal-scrollable {
-  @apply max-h-full overflow-y-auto !important;
+  @apply max-h-[80%] overflow-y-auto min-w-[75%] !important;
 }

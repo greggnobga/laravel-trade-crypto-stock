@@ -24,18 +24,19 @@ class PortfolioController extends Controller {
                 }
             }
 
-            // /** forward update command. */
-            // if ($request->input('table') === 'portfolio' && $request->input('section') === 'update') {
-            //     if (strtolower($request->input('input.order')) === 'buy') {
-            //         return $this->update(['table' => 'portfolio', 'input' => $request->input('input')]);
-            //     } else {
-            //         return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
-            //     }
-            // }
-            // /** forward destroy command. */
-            // if ($request->input('table') === 'portfolio' && $request->input('section') === 'destroy') {
-            //     return $this->destroy(['table' => 'portfolio', 'input' => $request->input('input')]);
-            // }
+            /** forward update function. */
+            if ($request->input('section') === 'update') {
+                if (strtolower($request->input('order')) === 'buy') {
+                    return $this->update($request->all());
+                } else {
+                    return response(['message' => 'No sell order allowed, just BTFD and HODL.'], 200);
+                }
+            }
+
+            /** forward destroy function. */
+            if ($request->input('section') === 'destroy') {
+                return $this->destroy($request->all());
+            }
         }
 
         /** check if request method equal to get. */
@@ -202,30 +203,27 @@ class PortfolioController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($data) {
-        if ($data['table'] === 'portfolio') {
+        if ($data['section'] === 'update') {
             /** run update query.*/
             $update = DB::table('stock_portfolios')
-                ->where('id', $data['input']['id'])
+                ->where('symbol', $data['symbol'])
                 ->where('userid', Auth::id())
                 ->update([
-                    'order' => strip_tags(strtolower($data['input']['order'])),
-                    'symbol' => strip_tags($data['input']['symbol']),
-                    'fee' => strip_tags($data['input']['fee']),
-                    'share' => strip_tags($data['input']['share']),
-                    'capital' => strip_tags($data['input']['capital']),
+                    'order' => strip_tags(strtolower($data['order'])),
+                    'symbol' => strip_tags($data['symbol']),
+                    'fee' => strip_tags($data['fee']),
+                    'share' => strip_tags($data['share']),
+                    'capital' => strip_tags($data['capital']),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
+
             /** if update not empty.*/
             if ($update) {
-                $stocks = DB::table('stock_portfolios')
-                    ->select('id', 'order', 'symbol', 'fee', 'share', 'capital')
-                    ->where('id', '=', $data['input']['id'])
-                    ->where('userid', '=', Auth::id())
-                    ->get();
-                $result = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stocks]);
-                return response(['message' => $data['input']['symbol'] . ' successfully updated.', 'stock' => $result], 200);
+                /** return something.*/
+                return ['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'];
             } else {
-                return response(['message' => $data['input']['symbol'] . ' no changes made.'], 200);
+                /** return something.*/
+                return ['message' => 'No modifications were made to the' . $data['symbol'] . ' data.'];
             }
         }
     }
@@ -234,15 +232,16 @@ class PortfolioController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($data) {
-        if ($data['table'] === 'portfolio') {
+        if ($data['section'] === 'destroy') {
             $delete = DB::table('stock_portfolios')
-                ->where('id', '=', $data['input']['id'])
+                ->where('symbol', '=', $data['symbol'])
                 ->where('userid', '=', Auth::id())
                 ->delete();
             if ($delete) {
-                return response(['message' => $data['input']['symbol'] . ' has been deleted.']);
+                return response(['message' => $data['symbol'] . ' has been deleted.']);
             } else {
-                return response(['message' => 'No changes made.']);
+                /** return something.*/
+                return ['message' => 'No modifications were made to the' . $data['symbol'] . ' data.'];
             }
         }
     }

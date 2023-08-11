@@ -5,6 +5,12 @@ import {
   STOCK_PORTFOLIO_STORE_REQUEST,
   STOCK_PORTFOLIO_STORE_SUCCESS,
   STOCK_PORTFOLIO_STORE_FAILURE,
+  STOCK_PORTFOLIO_UPDATE_REQUEST,
+  STOCK_PORTFOLIO_UPDATE_SUCCESS,
+  STOCK_PORTFOLIO_UPDATE_FAILURE,
+  STOCK_PORTFOLIO_DESTROY_REQUEST,
+  STOCK_PORTFOLIO_DESTROY_SUCCESS,
+  STOCK_PORTFOLIO_DESTROY_FAILURE,
 } from '../constants/PortfolioConstants';
 
 export const portfolioStockFetchReducer = (state = {}, action) => {
@@ -21,6 +27,32 @@ export const portfolioStockFetchReducer = (state = {}, action) => {
 };
 
 export const portfolioStockStoreReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STOCK_PORTFOLIO_STORE_REQUEST:
+      return { loading: true };
+    case STOCK_PORTFOLIO_STORE_SUCCESS:
+      return { loading: false, success: action.payload };
+    case STOCK_PORTFOLIO_STORE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const portfolioStockUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STOCK_PORTFOLIO_STORE_REQUEST:
+      return { loading: true };
+    case STOCK_PORTFOLIO_STORE_SUCCESS:
+      return { loading: false, success: action.payload };
+    case STOCK_PORTFOLIO_STORE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const portfolioStockDestroyReducer = (state = {}, action) => {
   switch (action.type) {
     case STOCK_PORTFOLIO_STORE_REQUEST:
       return { loading: true };

@@ -24,7 +24,7 @@ import {
   dashboardStockLosserReducer,
 } from './reducers/DashboardReducers';
 
-import { portfolioStockFetchReducer, portfolioStockStoreReducer } from './reducers/PortfolioReducers';
+import { portfolioStockFetchReducer, portfolioStockStoreReducer, portfolioStockUpdateReducer, portfolioStockDestroyReducer } from './reducers/PortfolioReducers';
 
 import { watchlistBuildReducer, watchlistStoreReducer, watchlistFetchReducer, watchlistDestroyReducer } from './reducers/WatchlistReducers';
 
@@ -56,6 +56,8 @@ const reducer = combineReducers({
   dashboardStockLosser: dashboardStockLosserReducer,
   portfolioStockFetch: portfolioStockFetchReducer,
   portfolioStockStore: portfolioStockStoreReducer,
+  portfolioStockUpdate: portfolioStockUpdateReducer,
+  portfolioStockDestroy: portfolioStockDestroyReducer,
   watchlistBuild: watchlistBuildReducer,
   watchlistStore: watchlistStoreReducer,
   watchlistFetch: watchlistFetchReducer,

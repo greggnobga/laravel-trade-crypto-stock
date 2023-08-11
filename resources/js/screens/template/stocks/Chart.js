@@ -36,7 +36,7 @@ export const desktopContent = ({ items }) => {
         </div>
       </div>
       <div className='grid auto-rows-min h-fit bg-stone-100'>
-        {items != 0 && items ? (
+        {items && items != 0 && items ? (
           items.map((item, key) => {
             return (
               <div className='grid auto-rows-min grid-cols-9 h-fit border-b border-stone-200 hover:text-purple-500'>
@@ -87,7 +87,7 @@ export const mobileContent = ({ items }) => {
   /** Return something. */
   return (
     <div className='grid auto-rows-min h-fit'>
-      {items != 0 && items ? (
+      {items && items != 0 && items ? (
         items.map((item, key) => {
           return (
             <div className='mb-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-purple-500'>

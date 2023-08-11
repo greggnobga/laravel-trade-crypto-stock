@@ -40,7 +40,7 @@ const Search = ({ close, items, component }) => {
   /** Return something. */
   return (
     <>
-      <div className='flex flex-col md:flex-row justify-center items-center gap-2 w-full rounded-t-md bg-slate-50'>
+      <div className='flex flex-col md:flex-row justify-center items-center gap-2 w-full rounded-t-md bg-slate-50 border-b border-stone-100'>
         <div className='p-2 grow w-full md:w-1/4 text-center'>
           <label className='p-2 block uppercase' htmlFor='search'>
             Search
@@ -73,7 +73,7 @@ const Search = ({ close, items, component }) => {
           /** Return. */
           return (
             <div
-              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 my-2 w-full bg-slate-50 shadow ${
+              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 w-full bg-slate-50 shadow ${
                 index & (1 === 1) ? 'rounded-t-md' : 'rounded-b-md'
               }`}>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
@@ -121,7 +121,7 @@ const Search = ({ close, items, component }) => {
           /** Return. */
           return (
             <div
-              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 my-2 w-full bg-slate-50 shadow ${
+              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 w-full bg-slate-50 shadow ${
                 index & (1 === 1) ? 'rounded-t-md' : 'rounded-b-md'
               }`}>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
@@ -145,8 +145,8 @@ const Search = ({ close, items, component }) => {
                 <div className='p-2 text-center pb-4'>{item.pricerange}</div>
               </div>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
-                <div className='p-2 uppercase text-green-500'>Total Assets</div>
-                <div className='p-2 text-center pb-4'>{item.totalassets}</div>
+                <div className='p-2 uppercase text-green-500'>Working Capital</div>
+                <div className='p-2 text-center pb-4'>{item.workingcapital}</div>
               </div>
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
                 <div className='p-2 uppercase text-green-500'>Net Income</div>
@@ -159,6 +159,45 @@ const Search = ({ close, items, component }) => {
               <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
                 <div className='p-2 uppercase text-green-500'>Dividend Yield</div>
                 <div className='p-2 text-center pb-4'>{item.dividendyield}</div>
+              </div>
+            </div>
+          );
+        })}
+      {component === 'portfolio' &&
+        search &&
+        search.map((item, index) => {
+          return (
+            <div
+              className={`p-2 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 w-full bg-slate-50 shadow ${
+                index & (1 === 1) ? 'rounded-t-md' : 'rounded-b-md'
+              }`}>
+              <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                <div className='p-2 uppercase text-green-500'>Symbol</div>
+                <div className='p-2 text-center pb-4'>{item.symbol}</div>
+              </div>
+              <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                <div className='p-2 uppercase text-green-500'>Share</div>
+                <div className='p-2 text-center pb-4'>{item.share}</div>
+              </div>
+              <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                <div className='p-2 uppercase text-green-500'>Capital</div>
+                <div className='p-2 text-center pb-4'>{item.capital}</div>
+              </div>
+              <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                <div className='p-2 uppercase text-green-500'>Fee</div>
+                <div className='p-2 text-center pb-4'>{item.fee}</div>
+              </div>
+              <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                <div className='p-2 uppercase text-green-500'>Average</div>
+                <div className='p-2 text-center pb-4'>{item.average}</div>
+              </div>
+              <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                <div className='p-2 uppercase text-green-500'>Price</div>
+                <div className='p-2 text-center pb-4'>{item.price}</div>
+              </div>
+              <div className='grow w-full sm:w-1/2 md:w-1/4 border border-slate-100'>
+                <div className='p-2 uppercase text-green-500'>Prospect</div>
+                <div className='p-2 text-center pb-4'>{item.prospect}</div>
               </div>
             </div>
           );

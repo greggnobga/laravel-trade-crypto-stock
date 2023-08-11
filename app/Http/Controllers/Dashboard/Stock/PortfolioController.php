@@ -170,7 +170,7 @@ class PortfolioController extends Controller {
                 return response(['message' => 'Please wait while we process your request.', 'order' => $result['order'], 'hold' => $result['hold'], 'chart' => $result['chart']], 200);
             } else {
                 /** return if no record. */
-                return response(['message' => 'No record found so far.'], 200);
+                return response(['message' => 'No record found so far.','order' => [], 'hold' => [], 'chart' => []], 200);
             }
         }
     }

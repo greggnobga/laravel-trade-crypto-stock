@@ -262,6 +262,7 @@ export const logoutUser = (token) => async (dispatch) => {
       localStorage.removeItem('dashboardEdge');
       localStorage.removeItem('dashboardStockGainer');
       localStorage.removeItem('dashboardStockLosser');
+      localStorage.removeItem('stockPortfolioFetch');
       localStorage.removeItem('watchlistBuild');
       localStorage.removeItem('watchlistFetch');
       localStorage.removeItem('stockTradeBluechip');
@@ -317,6 +318,7 @@ export const tokenUser = (token) => async (dispatch) => {
     localStorage.removeItem('dashboardEdge');
     localStorage.removeItem('dashboardStockGainer');
     localStorage.removeItem('dashboardStockLosser');
+    localStorage.removeItem('stockPortfolioFetch');
     localStorage.removeItem('watchlistBuild');
     localStorage.removeItem('watchlistFetch');
     localStorage.removeItem('stockTradeBluechip');

@@ -144,7 +144,7 @@ const Portfolio = () => {
         setNotice(false);
       }, 5000);
     }
-  }, [access_token, valid, isMobile, message]);
+  }, [access_token, valid, isMobile, portfolio, message]);
 
   /** Submit handler. */
   const storeHandler = (event) => {
@@ -313,11 +313,11 @@ const Portfolio = () => {
       ) : (
         <>
           {isMobile
-            ? mobileContent({ header: 'chart', icon: 'portfolio', items: portfolio && portfolio ? portfolio['chart'] : [] })
-            : desktopContent({ header: 'chart', icon: 'portfolio', items: portfolio && portfolio ? portfolio['chart'] : [] })}
+            ? mobileContent({ header: 'chart', icon: 'portfolio', items: portfolio ? portfolio['chart'] : [] })
+            : desktopContent({ header: 'chart', icon: 'portfolio', items: portfolio ? portfolio['chart'] : [] })}
           {isMobile
-            ? mobileContent({ header: 'hold', icon: 'portfolio', items: portfolio && portfolio ? portfolio['hold'] : [] })
-            : desktopContent({ header: 'hold', icon: 'portfolio', items: portfolio && portfolio ? portfolio['hold'] : [] })}
+            ? mobileContent({ header: 'hold', icon: 'portfolio', items: portfolio ? portfolio['hold'] : [] })
+            : desktopContent({ header: 'hold', icon: 'portfolio', items: portfolio ? portfolio['hold'] : [] })}
           {isMobile
             ? mobileContent({
                 header: 'order',
@@ -326,7 +326,7 @@ const Portfolio = () => {
                 store: showStoreHandler,
                 update: showUpdateHandler,
                 destroy: showDestroyteHandler,
-                items: portfolio && portfolio ? portfolio['order'] : [],
+                items: portfolio ? portfolio['order'] : [],
               })
             : desktopContent({
                 header: 'order',
@@ -335,14 +335,14 @@ const Portfolio = () => {
                 store: showStoreHandler,
                 update: showUpdateHandler,
                 destroy: showDestroyteHandler,
-                items: portfolio && portfolio ? portfolio['order'] : [],
+                items: portfolio ? portfolio['order'] : [],
               })}
         </>
       )}
       <div className='grid auto-rows-min h-fit rounded'>
         {search && (
           <Modal>
-            <Search close={closeModalHandler} component='portfolio' items={portfolio && portfolio ? portfolio['hold'] : []} />
+            <Search close={closeModalHandler} component='portfolio' items={portfolio ? portfolio['hold'] : []} />
           </Modal>
         )}
       </div>

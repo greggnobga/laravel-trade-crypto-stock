@@ -36,7 +36,8 @@ export const desktopContent = ({ icon, header, text, store, update, destroy, ite
             <div className='grow w-[14.25%] pb-2'>Price</div>
             <div className='grow w-[14.25%] pb-2'>Prospect</div>
           </div>
-          {items.length != 0 &&
+          {items !== 'undefined' &&
+            items.length !== 0 &&
             items.map((item) => {
               return (
                 <div className='flex flex-wrap flex-row justify-start items-center w-full h-fit border-b border-stone-200'>
@@ -64,7 +65,8 @@ export const desktopContent = ({ icon, header, text, store, update, destroy, ite
             <div className='grow w-[14.25%] pb-2'>Fee</div>
             <div className='grow w-[14.25%] pb-2'>Action</div>
           </div>
-          {items.length != 0 &&
+          {items !== 'undefined' &&
+            items.length !== 0 &&
             items.map((item) => {
               return (
                 <div className='flex flex-wrap flex-row justify-start items-center w-full h-fit border-b border-stone-200'>
@@ -115,7 +117,7 @@ export const mobileContent = ({ icon, header, text, store, update, destroy, item
       )}
 
       {header === 'hold' &&
-        items.length != 0 &&
+        items.length !== 0 &&
         items.map((item) => {
           return (
             <div className='p-2 grid auto-rows-min grid-cols-2 sm:grid-cols-3 gap-2 justify-start items-center w-full h-fit border-b border-stone-200'>
@@ -152,7 +154,7 @@ export const mobileContent = ({ icon, header, text, store, update, destroy, item
         })}
 
       {header === 'order' &&
-        items.length != 0 &&
+        items.length !== 0 &&
         items.map((item) => {
           return (
             <div className='p-2 grid auto-rows-min grid-cols-2 sm:grid-cols-3 gap-2 justify-start items-center w-full h-fit border-b border-stone-200'>

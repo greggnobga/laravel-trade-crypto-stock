@@ -47,7 +47,7 @@ export const fetchStockPortfolio = (token) => async (dispatch) => {
 
     /** Save to result to local storage. */
     if (stocks) {
-      localStorage.setItem('stockTradeBluechip', JSON.stringify(stocks));
+      localStorage.setItem('stockPortfolioFetch', JSON.stringify(stocks));
     }
   } catch (error) {
     /** Dispatch action if error occurred. */

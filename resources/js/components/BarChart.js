@@ -20,11 +20,11 @@ const BarChart = ({ items }) => {
       const config = {
         type: 'bar',
         data: {
-          labels: items.map((item) => item.month),
+          labels: items && items.map((item) => item.month),
           datasets: [
             {
               label: 'Capital Monthly Allocation',
-              data: items.map((item) => item.capital),
+              data: items && items.map((item) => item.capital),
               barPercentage: 0.75,
               barThickness: 10,
               maxBarThickness: 20,

@@ -14,14 +14,6 @@ class ChartController extends Controller {
      */
     public function init(Request $request) {
         /** check if request contains method equal to post. */
-        if ($request->method() === 'POST') {
-            /** forward average function */
-            // if ($request->input('section') === 'average') {
-            //     return $this->chartaverage($request->all());
-            // }
-        }
-
-        /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
             /** forward chart build function */
             if ($request->input('section') === 'fetch') {

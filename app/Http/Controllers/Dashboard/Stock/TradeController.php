@@ -51,7 +51,11 @@ class TradeController extends Controller {
         if (!is_null($check)) {
             /** Fecth all record in stock blue table. */
             $record = DB::table('stock_blues')
-                ->select('symbol')
+                ->join('stock_trades', 'stock_trades.symbol', 'stock_blues.symbol')
+                ->select('stock_blues.symbol')
+                ->where('value', '>', 0)
+                ->where('workingcapital', '>', 0)
+                ->where('netincomeaftertax', '>', 0)
                 ->where('userid', Auth::id())
                 ->get()
                 ->toArray();
@@ -110,6 +114,9 @@ class TradeController extends Controller {
             /** create stock list. */
             $items = DB::table('stock_trades')
                 ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
+                ->where('value', '>', 0)
+                ->where('workingcapital', '>', 0)
+                ->where('netincomeaftertax', '>', 0)
                 ->where('edge', '>', 0)
                 ->orderBy('netincomeaftertax', 'desc')
                 ->get();

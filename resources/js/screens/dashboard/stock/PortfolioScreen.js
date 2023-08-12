@@ -42,7 +42,7 @@ const Portfolio = () => {
   const { valid } = userToken;
 
   const portfolioStockFetch = useSelector((state) => state.portfolioStockFetch);
-  const { portfolio, loading } = portfolioStockFetch;
+  const { loading, portfolio } = portfolioStockFetch;
 
   const showMessage = useSelector((state) => state.showMessage);
   const { message, error } = showMessage;

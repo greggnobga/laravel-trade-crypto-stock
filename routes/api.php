@@ -18,6 +18,9 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('/login', [App\Http\Controllers\Auth\AuthController::class, 'login'])->name('login');
     Route::post('/reset', [App\Http\Controllers\Auth\AuthController::class, 'reset'])->name('reset');
     Route::post('/verify', [App\Http\Controllers\Auth\AuthController::class, 'verify'])->name('verify');
+
+    Route::post('/stock-explorer-store', [App\Http\Controllers\App\StockExplorerController::class, 'init']);
+    Route::get('/stock-explorer-retrieve', [App\Http\Controllers\App\StockExplorerController::class, 'init']);
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {

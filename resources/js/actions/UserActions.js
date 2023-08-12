@@ -267,6 +267,7 @@ export const logoutUser = (token) => async (dispatch) => {
       localStorage.removeItem('watchlistFetch');
       localStorage.removeItem('stockTradeBluechip');
       localStorage.removeItem('stockTradeCommon');
+      localStorage.removeItem('stockExplorerFetch');
       localStorage.removeItem('chartWatchlist');
       localStorage.removeItem('chartFetch');
     }
@@ -323,6 +324,7 @@ export const tokenUser = (token) => async (dispatch) => {
     localStorage.removeItem('watchlistFetch');
     localStorage.removeItem('stockTradeBluechip');
     localStorage.removeItem('stockTradeCommon');
+    localStorage.removeItem('stockExplorerFetch');
     localStorage.removeItem('chartWatchlist');
     localStorage.removeItem('chartFetch');
 

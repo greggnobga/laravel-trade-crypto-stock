@@ -6,7 +6,9 @@ import Layout from './components/Layout';
 
 import HomeScreen from './screens/HomeScreen';
 import CryptoScreen from './screens/CryptoScreen';
+
 import StockScreen from './screens/StockScreen';
+import StockPage from './screens/pages/StockPage';
 
 import LoginScreen from './screens/auth/LoginScreen';
 import RegisterScreen from './screens/auth/RegisterScreen';
@@ -42,6 +44,7 @@ const App = () => {
           <Route path='/' element={<HomeScreen />} />
           <Route path='/crypto-explorer' element={<CryptoScreen />} />
           <Route path='/stock-explorer' element={<StockScreen />} />
+          <Route path='/stock-explorer/:symbol' element={<StockPage />} />
         </Route>
         <Route path='/auth' element={<Layout />}>
           <Route path='/auth/register' element={<RegisterScreen />} />

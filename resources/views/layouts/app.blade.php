@@ -10,7 +10,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- Title -->
-    <title>Trade - Buy High Sell Low - A Classic Approach</title>
+    <title>Buy High, Sell Low: A Timeless Strategy</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="48x48" href="/public/icons/favicon.ico" />
     <!-- Pure CSS -->

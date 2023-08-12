@@ -30,6 +30,8 @@ import { watchlistBuildReducer, watchlistStoreReducer, watchlistFetchReducer, wa
 
 import { stockTradeBluechipReducer, stockTradeCommonReducer, stockTradeStoreReducer } from './reducers/TradeReducers';
 
+import { stockExplorerFetchReducer } from './reducers/ExplorerReducers';
+
 import { chartAverageReducer, chartFetchReducer } from './reducers/ChartReducers';
 
 /** Combine reducer. */
@@ -62,6 +64,7 @@ const reducer = combineReducers({
   watchlistStore: watchlistStoreReducer,
   watchlistFetch: watchlistFetchReducer,
   watchlistDestroy: watchlistDestroyReducer,
+  stockExplorerFetch: stockExplorerFetchReducer,
   stockTradeBluechip: stockTradeBluechipReducer,
   stockTradeCommon: stockTradeCommonReducer,
   stockTradeStore: stockTradeStoreReducer,
@@ -93,6 +96,8 @@ const stockTradeBluechipFromStorage = localStorage.getItem('stockTradeBluechip')
 
 const stockTradeCommonFromStorage = localStorage.getItem('stockTradeCommon') ? JSON.parse(localStorage.getItem('stockTradeCommon')) : {};
 
+const stockExplorerFetchFromStorage = localStorage.getItem('stockExplorerFetch') ? JSON.parse(localStorage.getItem('stockExplorerFetch')) : {};
+
 const chartFetchFromStorage = localStorage.getItem('chartFetch') ? JSON.parse(localStorage.getItem('chartFetch')) : {};
 
 const initialState = {
@@ -107,6 +112,7 @@ const initialState = {
   watchlistFetch: watchlistFetchFromStorage,
   stockTradeBluechip: stockTradeBluechipFromStorage,
   stockTradeCommon: stockTradeCommonFromStorage,
+  stockExplorerFetch: stockExplorerFetchFromStorage,
   chartFetch: chartFetchFromStorage,
 };
 

@@ -1,7 +1,5 @@
-const Unccharted = () => {
-    return (
-        <h1>Uncharted page.</h1>
-    );
-}
+const Uncharted = () => {
+  return <h1>Uncharted page.</h1>;
+};
 
-export default Unccharted;
+export default Uncharted;

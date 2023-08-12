@@ -5,7 +5,7 @@
   "bracketSpacing": true,
   "jsxSingleQuote": true,
   "htmlWhitespaceSensitivity": "ignore",
-  "printWidth": 165,
+  "printWidth": 140,
   "singleQuote": true,
   "singleAttributePerLine": false,
   "semi": true,

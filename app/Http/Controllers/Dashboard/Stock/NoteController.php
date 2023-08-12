@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Dashboard\Stock;
 
 use App\Http\Controllers\Controller;
@@ -7,11 +8,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller {
-     /**
-   * Display a listing of the resource.
-   */
+    /**
+     * Display a listing of the resource.
+     */
     public function init(Request $request) {
-         /** check if request contains method equal to post. */
+        /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward insert command. */
             if ($request->input('table') === 'note' && $request->input('statement') === 'insert') {
@@ -27,10 +28,8 @@ class NoteController extends Controller {
             }
         }
 
-         /** check if request contains method equal to get. */
+        /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
-            /** repository. */
-           $response = [];
             /** forward get command. */
             if ($request->input('table') === 'note' && $request->input('statement') === 'select') {
                 /** fetch unique sector. */
@@ -39,7 +38,7 @@ class NoteController extends Controller {
                     ->where('userid', '=', Auth::id())
                     ->get()
                     ->unique();
-                if ($note->isNotEmpty()) {   
+                if ($note->isNotEmpty()) {
                     $notes = DB::table('stock_notes')
                         ->select('id', 'created_at as date', 'note', 'section')
                         ->where('userid', '=', Auth::id())
@@ -49,7 +48,7 @@ class NoteController extends Controller {
                 } else {
                     return ['status' => false, 'sql' => 'select', 'message' => 'No record found.', 'notes' => ''];
                 }
-            }        
+            }
         }
     }
 
@@ -59,20 +58,20 @@ class NoteController extends Controller {
     public function store($data) {
         if ($data['table'] === 'note') {
             $check = DB::table('stock_notes')
-            ->select('id')
-            ->where('userid', '=', Auth::id())
-            ->where('id', '=', $data['input']['id'])
-            ->get();
+                ->select('id')
+                ->where('userid', '=', Auth::id())
+                ->where('id', '=', $data['input']['id'])
+                ->get();
 
             if ($check->isEmpty()) {
                 /** insert with appropriate data. */
                 $insert = DB::table('stock_notes')
-                ->insertGetId([
-                    'userid' => Auth::id(),
-                    'note' => strip_tags($data['input']['note']),
-                    'section' => strip_tags($data['input']['section']),
-                    'created_at' => date('Y-m-d H:i:s')
-                ]);
+                    ->insertGetId([
+                        'userid' => Auth::id(),
+                        'note' => strip_tags($data['input']['note']),
+                        'section' => strip_tags($data['input']['section']),
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]);
                 if ($insert) {
                     $note = DB::table('stock_notes')
                         ->select('id', 'created_at as date', 'note', 'section')
@@ -82,27 +81,27 @@ class NoteController extends Controller {
                     $result = $this->helpers(['purpose' => 'format', 'source' => 'note', 'notes' => $note]);
                     return ['status' =>  true, 'sql' => 'select', 'message' => ' Note has been added to the database.', 'notes' => $result];
                 }
-            }  else {
+            } else {
                 /** forward to update instead. */
                 return $this->update($data);
-          }
+            }
         }
     }
 
-        /**
+    /**
      * Update the specified resource in storage.
      */
     public function update($data) {
-      if ($data['table'] === 'note') {
-          /** run update query.*/
-          $update = DB::table('stock_notes')
-              ->where('id', '=', $data['input']['id'])
-              ->update([
-                'userid' => Auth::id(),
-                'note' => strip_tags($data['input']['note']),
-                'section' => strip_tags($data['input']['section']),
-                'updated_at' => date('Y-m-d H:i:s'),
-              ]);
+        if ($data['table'] === 'note') {
+            /** run update query.*/
+            $update = DB::table('stock_notes')
+                ->where('id', '=', $data['input']['id'])
+                ->update([
+                    'userid' => Auth::id(),
+                    'note' => strip_tags($data['input']['note']),
+                    'section' => strip_tags($data['input']['section']),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
             /** if update not empty.*/
             if ($update) {
                 $note = DB::table('stock_notes')
@@ -111,8 +110,8 @@ class NoteController extends Controller {
                     ->get();
                 $result = $this->helpers(['purpose' => 'format', 'source' => 'note', 'notes' => $note]);
                 return ['status' =>  true, 'sql' => 'update', 'message' => 'Note has been  successfully updated.', 'notes' => $result];
-          }
-      }
+            }
+        }
     }
 
     /**
@@ -127,7 +126,7 @@ class NoteController extends Controller {
             if ($delete) {
                 return ['status' =>  true, 'sql' => 'destroy', 'message' => 'Note with ID #' . $data['input']['id'] . ' has been deleted.', 'notes' => $data['input']['id']];
             } else {
-                return ['status' =>  false, 'sql' => 'destroy', 'message' => 'Your attempt to delete ' . $data['input']['id'] . ' could not be completed.' , 'notes' => '' ];
+                return ['status' =>  false, 'sql' => 'destroy', 'message' => 'Your attempt to delete ' . $data['input']['id'] . ' could not be completed.', 'notes' => ''];
             }
         }
     }
@@ -148,8 +147,8 @@ class NoteController extends Controller {
                     }
                 }
                 $return[$key] = $result;
-              }
-              return $return;
-          }
+            }
+            return $return;
+        }
     }
 }

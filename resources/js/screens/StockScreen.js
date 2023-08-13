@@ -16,7 +16,7 @@ import Search from '../components/Search';
 import Container from '../components/Container';
 
 /** Template. */
-import { desktopFundamentalContent, desktopTechnicalContent } from './template/Explorer';
+import { desktopFundamentalContent, desktopTechnicalContent, mobileFundamentalContent, mobileTechnicalContent } from './template/Explorer';
 
 /** Action. */
 import { fetchStockExplorer } from '../actions/ExplorerActions';
@@ -61,12 +61,7 @@ const StockExplorer = () => {
   const fundamentalHeader = (
     <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
-        <Icon id='trade' /> Top Stocks By For Da Mental
-      </div>
-      <div className='p-0'>
-        <span className='p-2 cursor-pointer'>
-          <Icon id='search' /> Search
-        </span>
+        <Icon id='trade' /> Top Stocks By For Da Person
       </div>
     </div>
   );
@@ -76,11 +71,6 @@ const StockExplorer = () => {
     <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
         <Icon id='trade' /> Top Stocks By Hula Ni Sis
-      </div>
-      <div className='p-0'>
-        <span className='p-2 cursor-pointer'>
-          <Icon id='search' /> Search
-        </span>
       </div>
     </div>
   );
@@ -93,12 +83,16 @@ const StockExplorer = () => {
         <>
           <Container header={fundamentalHeader}>
             <div className='grid auto-rows-min rounded-t-md bg-stone-100 text-[.65rem]'>
-              {desktopFundamentalContent({ items: stockexplorer ? stockexplorer['fundamental'] : [] })}
+              {isMobile
+                ? mobileFundamentalContent({ items: stockexplorer ? stockexplorer['fundamental'] : [] })
+                : desktopFundamentalContent({ items: stockexplorer ? stockexplorer['fundamental'] : [] })}
             </div>
           </Container>
           <Container header={technicalHeader}>
             <div className='grid auto-rows-min rounded-t-md bg-stone-100 text-[.65rem]'>
-              {desktopTechnicalContent({ items: stockexplorer ? stockexplorer['technical'] : [] })}
+              {isMobile
+                ? mobileTechnicalContent({ items: stockexplorer ? stockexplorer['technical'] : [] })
+                : desktopTechnicalContent({ items: stockexplorer ? stockexplorer['technical'] : [] })}
             </div>
           </Container>
         </>

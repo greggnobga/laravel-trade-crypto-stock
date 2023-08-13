@@ -13,11 +13,6 @@ const CryptoExplorer = () => {
       <div className='p-0'>
         <Icon id='trade' /> Top Crypto By For Da Mental
       </div>
-      <div className='p-0'>
-        <span className='p-2 cursor-pointer'>
-          <Icon id='search' /> Search
-        </span>
-      </div>
     </div>
   );
 
@@ -27,11 +22,6 @@ const CryptoExplorer = () => {
       <div className='p-0'>
         <Icon id='trade' /> Top Crypto By Hula Ni Sis
       </div>
-      <div className='p-0'>
-        <span className='p-2 cursor-pointer'>
-          <Icon id='search' /> Search
-        </span>
-      </div>
     </div>
   );
   /** Return something. */
@@ -39,12 +29,12 @@ const CryptoExplorer = () => {
     <>
       <Container header={fundamentalHeader}>
         <div className='grid auto-rows-min rounded-t-md bg-stone-100'>
-          <p className='p-2'>Individual crypto item render here.</p>
+          <p className='p-2'>Individual crypto item render.</p>
         </div>
       </Container>
       <Container header={technicalHeader}>
         <div className='grid auto-rows-min rounded-t-md bg-stone-100'>
-          <p className='p-2'>Individual crypto item render here.</p>
+          <p className='p-2'>Individual crypto item render.</p>
         </div>
       </Container>
     </>

@@ -11,7 +11,7 @@ const CryptoExplorer = () => {
   const fundamentalHeader = (
     <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
-        <Icon id='trade' /> Top Crypto By For Da Mental
+        <Icon id='trade' /> Fundamental Top Coins
       </div>
     </div>
   );
@@ -20,7 +20,7 @@ const CryptoExplorer = () => {
   const technicalHeader = (
     <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
-        <Icon id='trade' /> Top Crypto By Hula Ni Sis
+        <Icon id='trade' /> Technical Top Coins
       </div>
     </div>
   );

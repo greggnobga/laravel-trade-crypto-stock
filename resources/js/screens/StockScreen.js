@@ -61,7 +61,7 @@ const StockExplorer = () => {
   const fundamentalHeader = (
     <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
-        <Icon id='trade' /> Top Stocks By For Da Person
+        <Icon id='trade' /> Fundamental Top Stocks
       </div>
     </div>
   );
@@ -70,7 +70,7 @@ const StockExplorer = () => {
   const technicalHeader = (
     <div className='flex flex-row flex-wrap justify-between items-center'>
       <div className='p-0'>
-        <Icon id='trade' /> Top Stocks By Hula Ni Sis
+        <Icon id='trade' /> Technical Top Stocks
       </div>
     </div>
   );

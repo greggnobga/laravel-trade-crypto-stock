@@ -77,7 +77,7 @@ export const desktopTemplate = ({ item, action, icon, text }) => {
 /** Mobile template. */
 export const mobileTemplate = ({ item, action, icon, text }) => {
   return (
-    <div className='mb-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 md:grid-cols-4 hover:text-purple-500'>
+    <div className='mb-2 card-rounded grid auto-rows-min grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-4 hover:text-purple-500'>
       <div className='p-2'>
         <p className='p-2 rounded-t-md bg-stone-100 border-b border-stone-100 text-green-500'>Symbol</p>
         <p className='pt-2 text-center'>

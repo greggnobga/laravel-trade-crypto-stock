@@ -22,16 +22,3 @@
     # Prevent dot files.
     RewriteRule (^\.|/\.) – [F]
 </IfModule>
-
-AddType image/svg+xml svg
-AddType image/svg+xml svgz
-
-<Files .env>
-Order allow,deny
-Deny from all
-</Files>
-
-<FilesMatch "^\.">
-Order allow,deny
-Deny from all
-</FilesMatch>

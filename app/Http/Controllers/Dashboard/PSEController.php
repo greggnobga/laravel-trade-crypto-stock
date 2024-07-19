@@ -11,11 +11,13 @@ use Carbon\Carbon;
 
 use App\Http\Controllers\Controller;
 
-class PSEController extends Controller {
+class PSEController extends Controller
+{
     /**
      * Declare init function.
      */
-    public function init(Request $request) {
+    public function init(Request $request)
+    {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward prices function */
@@ -65,7 +67,8 @@ class PSEController extends Controller {
     /**
      * Declare stocklists function.
      */
-    public function stocklists() {
+    public function stocklists()
+    {
         /** repository. */
         $result = [];
 
@@ -185,7 +188,8 @@ class PSEController extends Controller {
     /**
      * Declare stocks function.
      */
-    public function stockprices($data) {
+    public function stockprices($data)
+    {
         /** repository. */
         $result = [];
 
@@ -201,34 +205,95 @@ class PSEController extends Controller {
         });
 
         if (count($stockprice) != 0) {
-            /** variable pointer. */
-            $amount = [];
+
+            /** mapping value. */
+            $stockdata['price'] = $stockprice['12'];
+
+            /** save to database.. */
+            if (array_key_exists("price", $stockdata)) {
+                /** variable pointer. */
+                $var_price = [];
+
+                /** replace comma with nothing. */
+                $data_price['price'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['price']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $data_price['price'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '(', '-'], '', $data_price['price']);
+                    /** then turn negative using abs function. */
+                    $var_price['price'] = -abs($negative);
+                } else {
+                    $var_price['price'] = $data_price['price'];
+                }
+
+                /** match string if has no value. */
+                if ($data_price['price'] == '') {
+                    $var_price['price'] = 0.00;
+                }
+
+                /** convert into float value. */
+                $result['price'] = floatval($var_price['price']);
+            }
 
             /** mapping value. */
             $stockdata['value'] = $stockprice['18'];
 
             /** save to database.. */
             if (array_key_exists("value", $stockdata)) {
+                /** variable pointer. */
+                $var_value = [];
+
                 /** replace comma with nothing. */
-                $price['value'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['value']]);
+                $data_value['value'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['value']]);
 
                 /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $price['value'])) {
+                if (preg_match("/([)(])\w+/", $data_value['value'])) {
                     /** string replace parentheses. */
-                    $negative = str_replace([')', '(', '-'], '', $price['value']);
+                    $negative = str_replace([')', '(', '-'], '', $data_value['value']);
                     /** then turn negative using abs function. */
-                    $amount['value'] = -abs($negative);
+                    $var_value['value'] = -abs($negative);
                 } else {
-                    $amount['value'] = $price['value'];
+                    $var_value['value'] = $data_value['value'];
                 }
 
                 /** match string if has no value. */
-                if ($price['value'] == '') {
-                    $amount['value'] = 0.00;
+                if ($data_value['value'] == '') {
+                    $var_value['value'] = 0.00;
                 }
 
                 /** convert into float value. */
-                $result['value'] = floatval($amount['value']);
+                $result['value'] = floatval($var_value['value']);
+            }
+
+            /** mapping value. */
+            $stockdata['volume'] = $stockprice['21'];
+
+            /** save to database.. */
+            if (array_key_exists("volume", $stockdata)) {
+                /** variable pointer. */
+                $var_volume = [];
+
+                /** replace comma with nothing. */
+                $data_volume['volume'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['volume']]);
+
+                /** preg match if contains parentheses. */
+                if (preg_match("/([)(])\w+/", $data_volume['volume'])) {
+                    /** string replace parentheses. */
+                    $negative = str_replace([')', '(', '-'], '', $data_volume['volume']);
+                    /** then turn negative using abs function. */
+                    $var_volume['volume'] = -abs($negative);
+                } else {
+                    $var_volume['volume'] = $data_volume['volume'];
+                }
+
+                /** match string if has no value. */
+                if ($data_volume['volume'] == '') {
+                    $var_volume['volume'] = 0.00;
+                }
+
+                /** convert into float value. */
+                $result['volume'] = floatval($var_volume['volume']);
             }
 
             /** mapping year high price. */
@@ -281,7 +346,7 @@ class PSEController extends Controller {
 
             /** Compute year pice range. */
             if ($amount['high'] > 0 && $amount['low'] > 0) {
-                $result['pricerange'] = $this->helpers(['sanitized' => 'subtract', 'one' => $amount['low'], 'two' => $amount['high']]);
+                $result['pricerange'] = $this->helpers(['sanitized' => 'subtract', 'two' => $amount['low'], 'one' => $amount['high']]);
             } else {
                 $result['pricerange'] = floatval('0.00');
             }
@@ -290,6 +355,8 @@ class PSEController extends Controller {
             DB::table('stock_trades')
                 ->where('edge', '=', $data['edge'])
                 ->update([
+                    'price' => strip_tags($result['price']),
+                    'volume' => strip_tags($result['volume']),
                     'value' => strip_tags($result['value']),
                     'pricerange' => strip_tags($result['pricerange']),
                     'updated_at' => date('Y-m-d H:i:s'),
@@ -309,7 +376,8 @@ class PSEController extends Controller {
     /**
      * Declare financials function.
      */
-    public function stockreports($data) {
+    public function stockreports($data)
+    {
         /** repository. */
         $result = [];
 
@@ -606,7 +674,8 @@ class PSEController extends Controller {
     /**
      * Declare stocks function.
      */
-    public function stockdividends($data) {
+    public function stockdividends($data)
+    {
         /** create request. */
         $dividends = Http::get('https://edge.pse.com.ph/companyPage/dividends_and_rights_list.ax?cmpy_id=' . $data['edge'])->body();
 
@@ -674,7 +743,8 @@ class PSEController extends Controller {
     /**
      * Declare stocks function.
      */
-    public function stocksectors($data) {
+    public function stocksectors($data)
+    {
         /** repository. */
         $result = [];
 
@@ -731,7 +801,8 @@ class PSEController extends Controller {
     /**
      * Declare stock companies function.
      */
-    public function stockcompanies($data) {
+    public function stockcompanies($data)
+    {
         /** repository. */
         $result = [];
 
@@ -826,7 +897,8 @@ class PSEController extends Controller {
     /**
      * Declare stock edges function.
      */
-    public function stockchart($data) {
+    public function stockchart($data)
+    {
         /** repository. */
         $result = [];
 
@@ -945,7 +1017,8 @@ class PSEController extends Controller {
     /**
      * Declare stocks function.
      */
-    public function stocktrades() {
+    public function stocktrades()
+    {
         /** repository. */
         $stocks = DB::table('stock_trades')
             ->select('edge', 'security', 'symbol')
@@ -969,7 +1042,8 @@ class PSEController extends Controller {
     /**
      * Helper function.
      */
-    public function helpers($data) {
+    public function helpers($data)
+    {
         /** if string is decimal */
         if ($data['sanitized'] === 'decimal') {
             /** replace string. */

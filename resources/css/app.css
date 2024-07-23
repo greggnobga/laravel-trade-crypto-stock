@@ -1,0 +1,306 @@
+/** Import Tailwind.*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .util {
+        @apply border border-green-500;
+    }
+}
+
+/** Alerts. */
+.alert-info {
+    @apply w-full p-2 bg-blue-200 text-stone-200 font-thin !important;
+}
+
+.alert-danger {
+    @apply w-full p-2  bg-red-200 text-stone-200 font-thin !important;
+}
+
+.alert-success {
+    @apply w-full p-2  bg-green-200 text-stone-200 font-thin !important;
+}
+
+.alert-warning {
+    @apply w-full p-2  bg-orange-200 text-stone-200 font-thin !important;
+}
+
+.alert-spinner {
+    color: #111827;
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.alert-spinner div {
+    transform-origin: 40px 40px;
+    animation: alert-spinner 1.2s linear infinite;
+}
+
+.alert-spinner div:after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: 3px;
+    left: 37px;
+    width: 6px;
+    height: 18px;
+    border-radius: 20%;
+    background: #fff;
+}
+
+.alert-spinner div:nth-child(1) {
+    transform: rotate(0deg);
+    animation-delay: -1.1s;
+}
+
+.alert-spinner div:nth-child(2) {
+    transform: rotate(30deg);
+    animation-delay: -1s;
+}
+
+.alert-spinner div:nth-child(3) {
+    transform: rotate(60deg);
+    animation-delay: -0.9s;
+}
+
+.alert-spinner div:nth-child(4) {
+    transform: rotate(90deg);
+    animation-delay: -0.8s;
+}
+
+.alert-spinner div:nth-child(5) {
+    transform: rotate(120deg);
+    animation-delay: -0.7s;
+}
+
+.alert-spinner div:nth-child(6) {
+    transform: rotate(150deg);
+    animation-delay: -0.6s;
+}
+
+.alert-spinner div:nth-child(7) {
+    transform: rotate(180deg);
+    animation-delay: -0.5s;
+}
+
+.alert-spinner div:nth-child(8) {
+    transform: rotate(210deg);
+    animation-delay: -0.4s;
+}
+
+.alert-spinner div:nth-child(9) {
+    transform: rotate(240deg);
+    animation-delay: -0.3s;
+}
+
+.alert-spinner div:nth-child(10) {
+    transform: rotate(270deg);
+    animation-delay: -0.2s;
+}
+
+.alert-spinner div:nth-child(11) {
+    transform: rotate(300deg);
+    animation-delay: -0.1s;
+}
+
+.alert-spinner div:nth-child(12) {
+    transform: rotate(330deg);
+    animation-delay: 0s;
+}
+
+@keyframes alert-spinner {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/** Background. */
+.background-dot {
+    background-image: radial-gradient(#6d28d9 0.5px, transparent 0.5px) !important;
+    background-size: 19px 19px !important;
+    background-color: #c7d2fe !important;
+}
+
+/** Hero.*/
+.hero-bg-image {
+    background-image: url(../images/hero.jpg);
+}
+
+/** Borders. */
+.border-bottom {
+    @apply p-2 border-b border-stone-100 border-opacity-50 hover:border-slate-100 !important;
+}
+
+/** Buttons. */
+.btn {
+    @apply w-full hover:scale-95 transition duration-150 ease-out hover:ease-in hover:border hover:border-slate-100 hover:border-opacity-50 hover:shadow-md rounded-md mb-2 p-2 !important;
+}
+
+.btn-red {
+    @apply shadow border border-stone-300 bg-red-500 hover:bg-red-400 text-red-200 hover:text-slate-50 !important;
+}
+
+.btn-red-outline {
+    @apply shadow border border-slate-100 hover:bg-red-300 text-red-700 hover:text-slate-50 !important;
+}
+
+.btn-green {
+    @apply shadow border border-stone-300 bg-green-500 hover:bg-green-400 text-green-200 hover:text-slate-50 !important;
+}
+
+.btn-green-outline {
+    @apply shadow border border-slate-100 hover:bg-green-300 text-green-700 hover:text-slate-50 !important;
+}
+
+.btn-blue {
+    @apply shadow border border-stone-300 bg-blue-500 hover:bg-blue-400 text-blue-200 hover:text-slate-50 !important;
+}
+
+.btn-blue-outline {
+    @apply shadow border border-slate-100 hover:bg-blue-300 text-blue-700 hover:text-slate-50 !important;
+}
+
+.btn-emerald {
+    @apply shadow border border-stone-300 bg-emerald-600 hover:bg-emerald-400 text-emerald-200 hover:text-slate-50 !important;
+}
+
+.btn-emerald-outline {
+    @apply shadow border border-slate-100 hover:bg-emerald-300 hover:border-emerald-400 text-emerald-700 hover:text-slate-50 !important;
+}
+
+.btn-indigo {
+    @apply shadow border border-stone-300 bg-indigo-500 hover:bg-indigo-400 text-indigo-200 hover:text-slate-50 !important;
+}
+
+.btn-indigo-outline {
+    @apply shadow border border-slate-100 hover:bg-indigo-300 text-indigo-700 hover:text-slate-50 !important;
+}
+
+.btn-orange {
+    @apply shadow border border-stone-300 bg-orange-600 hover:bg-orange-400 text-orange-200 hover:text-slate-50 !important;
+}
+
+.btn-orange-outline {
+    @apply shadow border border-slate-100 hover:bg-orange-300 text-orange-700 hover:text-slate-50 !important;
+}
+
+.btn-stone {
+    @apply shadow border border-stone-100 bg-stone-400 hover:bg-stone-300 text-slate-200 hover:text-slate-500 !important;
+}
+
+.btn-stone-outline {
+    @apply shadow border border-slate-100 hover:bg-stone-300 text-slate-700 hover:text-slate-500 !important;
+}
+
+/** Cards. */
+.card {
+    @apply shadow hover:shadow-lg border border-slate-50 cursor-pointer !important;
+}
+
+.card-rounded {
+    @apply shadow hover:shadow-lg rounded border border-slate-50 bg-slate-50 cursor-pointer !important;
+}
+
+/** Fonts. */
+@font-face {
+    font-family: Montserrat;
+    src: local('../fonts/montserrat-serif.ttf');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: local('../fonts/open-sans.ttf');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Roboto Mono';
+    src: local('../fonts/roboto-mono.ttf');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Kalam';
+    src: local('../fonts/kalam-hand.ttf');
+    font-weight: normal;
+}
+
+/** Fonts. */
+.form-center {
+    @apply p-2 flex items-center justify-center h-fit mt-2 bg-indigo-200 bg-opacity-20 !important;
+}
+
+.form-center-margin {
+    @apply p-2 flex items-center justify-center h-fit mt-10 bg-indigo-200 bg-opacity-20 !important;
+}
+
+.form-group {
+    @apply px-6 grid auto-rows-min rounded-lg shadow border border-slate-50 text-slate-50 !important;
+}
+
+.form-header {
+    @apply p-6 uppercase text-center my-auto !important;
+}
+
+.form-control {
+    @apply grid py-2 auto-rows-min sm:grid-cols-6 !important;
+}
+
+.form-input {
+    @apply sm:col-span-4 mt-1 px-1 py-1 rounded-lg bg-white shadow border focus:border-green-500 focus:outline-none text-sm sm:text-base text-stone-500 !important;
+}
+
+.form-label {
+    @apply sm:col-span-2 mt-1 px-1 py-1 !important;
+}
+
+.form-alert {
+    @apply sm:col-span-6 py-1 text-right !important;
+}
+
+.form-notice {
+    @apply grid auto-rows-min !important;
+}
+
+.form-button {
+    @apply p-4 grid auto-rows-min sm:grid-cols-2 !important;
+}
+
+.form-prompt {
+    @apply grid auto-rows-min text-center p-2 !important;
+}
+
+/** Gradients.*/
+.gradient-blue-purple {
+    @apply hover:bg-gradient-to-l bg-gradient-to-r from-blue-500 to-purple-500 !important;
+}
+
+.gradient-huckle-berry {
+    @apply hover:bg-gradient-to-l bg-gradient-to-r from-purple-400 via-purple-600 to-purple-800 !important;
+}
+
+/** Screens. */
+.screen-size {
+    @apply w-full sm:w-3/4 !important;
+}
+
+/** Tooltips. */
+.tooltip {
+    @apply invisible absolute shadow rounded p-2 text-[.50rem] font-thin w-fit bg-stone-300 border border-slate-200 text-stone-800 -mt-8 !important;
+}
+
+.has-tooltip:hover .tooltip {
+    @apply visible z-50 scale-95 !important;
+}
+
+/** Scale. */
+.scale-down {
+    @apply hover:scale-95 transition duration-150 ease-out hover:ease-in shadow-md;
+}

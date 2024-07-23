@@ -1,12 +1,21 @@
 {
-  "resources/css/App.css": {
-    "file": "assets/App.css",
-    "isEntry": true,
-    "src": "resources/css/App.css"
+  "hero.jpg": {
+    "file": "images/hero.jpg",
+    "src": "hero.jpg"
   },
-  "resources/js/Main.js": {
-    "file": "assets/Main.js",
-    "isEntry": true,
-    "src": "resources/js/Main.js"
+  "resources/css/app.css": {
+    "file": "css/app.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/images/hero.jpg": {
+    "file": "images/hero.jpg",
+    "src": "resources/images/hero.jpg"
+  },
+  "resources/js/main.tsx": {
+    "file": "js/main.js",
+    "name": "main",
+    "src": "resources/js/main.tsx",
+    "isEntry": true
   }
 }

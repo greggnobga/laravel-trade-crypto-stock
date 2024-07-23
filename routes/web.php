@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/debug', [App\Http\Controllers\Dashboard\Stock\ChartController::class, 'chartaverage']);
 
-Route::get('/debug', [App\Http\Controllers\Dashboard\PSEController::class, 'stockprices']);
+Route::get('/debug', [App\Http\Controllers\Dashboard\Stock\ChartController::class, 'chartbuild']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/stock-reports-store', [App\Http\Controllers\Dashboard\PSEController::class, 'init']);

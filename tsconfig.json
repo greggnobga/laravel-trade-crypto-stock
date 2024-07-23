@@ -20,6 +20,7 @@
             "$lib/*": ["./resources/js/*"]
         }
     },
-    "include": ["resources/js", "resources/types/global"],
+    "include": ["resources/js"],
+    "exclude": ["node_modules", "**/*.test.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

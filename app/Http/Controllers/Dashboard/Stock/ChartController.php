@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-class ChartController extends Controller {
+class ChartController extends Controller
+{
     /**
      * Display a listing of the resource.
      */
-    public function init(Request $request) {
+    public function init(Request $request)
+    {
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
             /** forward chart build function */
@@ -29,7 +31,8 @@ class ChartController extends Controller {
     /**
      * Build list function.
      */
-    public function chartfetch($data) {
+    public function chartfetch($data)
+    {
         /** match params. */
         if ($data['statement'] === 'select') {
             /** fetch stock chart entry. */
@@ -79,7 +82,8 @@ class ChartController extends Controller {
     /**
      * Build list function.
      */
-    public function chartbuild($data) {
+    public function chartbuild($data)
+    {
         /** match params. */
         if ($data['statement'] === 'select') {
             /** select record. */
@@ -101,7 +105,8 @@ class ChartController extends Controller {
     /**
      * Helper function.
      */
-    private function helpers($data) {
+    private function helpers($data)
+    {
         /** pointer. */
         $result = [];
 

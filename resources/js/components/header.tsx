@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import Icon from './icon';
 
 /** Hook. */
-import useScreen from '../hooks/use-screen';
+import useScreen from '$lib/hooks/use-screen';
 
 const Header = () => {
     // /** Use dispatch. */

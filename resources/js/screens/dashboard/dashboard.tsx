@@ -429,7 +429,7 @@ const Dashboard = () => {
                     <div className='text-red-500 flex-1 card-rounded'>
                         <div className='h-8 p-2 mb-6 text-xs font-thin'>
                             <p className='uppercase'>
-                                <Icon id='stock' /> Stock
+                                <Icon id='stock' width='w-6' height='h-6' /> Stock
                             </p>
                         </div>
                         <div className='h-20'>
@@ -444,7 +444,7 @@ const Dashboard = () => {
                     <div className='text-green-500 flex-1 card-rounded'>
                         <div className='h-8 p-2 mb-6 text-xs font-thin'>
                             <p className='uppercase'>
-                                <Icon id='crypto' /> Crypto
+                                <Icon id='crypto' width='w-6' height='h-6' /> Crypto
                             </p>
                         </div>
                         <div className='h-20'>
@@ -459,7 +459,7 @@ const Dashboard = () => {
                     <div className='text-blue-500 flex-1 card-rounded'>
                         <div className='h-8 p-2 mb-6 text-xs font-thin'>
                             <p className='uppercase'>
-                                <Icon id='fund' /> Fund
+                                <Icon id='fund' width='w-6' height='h-6' /> Fund
                             </p>
                         </div>
                         <div className='h-20'>
@@ -474,7 +474,7 @@ const Dashboard = () => {
                     <div className='text-orange-500 flex-1 card-rounded'>
                         <div className='h-8 p-2 mb-6 text-xs font-thin'>
                             <p className='uppercase'>
-                                <Icon id='note' /> Note
+                                <Icon id='note' width='w-6' height='h-6' /> Note
                             </p>
                         </div>
                         <div className='h-20'>

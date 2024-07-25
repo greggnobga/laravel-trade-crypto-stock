@@ -14,15 +14,16 @@ const Profile = () => {
                 </div>
                 <div className='p-4 flex flex-wrap flex-col sm:flex-row scroll-page'>
                     <p className='block text-xs p-2'>
-                        <span class='font-thin text-[.65rem] pr-2'>Stocks</span>{' '}
-                        <span class='text-purple-500'>100</span>
+                        <span className='font-thin text-[.65rem] pr-2'>Stocks</span>{' '}
+                        <span className='text-purple-500'>100</span>
                     </p>
                     <p className='block text-xs p-2'>
-                        <span class='font-thin text-[.65rem] pr-2'>Crypto</span>{' '}
-                        <span class='text-purple-500'>100</span>
+                        <span className='font-thin text-[.65rem] pr-2'>Crypto</span>{' '}
+                        <span className='text-purple-500'>100</span>
                     </p>
                     <p className='block text-xs p-2'>
-                        <span class='font-thin text-[.65rem] pr-2'>Cash</span> <span class='text-purple-500'>100</span>
+                        <span className='font-thin text-[.65rem] pr-2'>Cash</span>{' '}
+                        <span className='text-purple-500'>100</span>
                     </p>
                 </div>
                 <div className='p-4 w-full grid grid-cols-1 gap-4 sm:grid-cols-3'>

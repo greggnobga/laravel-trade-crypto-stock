@@ -668,461 +668,461 @@ const TradeStock = () => {
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
             </div>
@@ -1160,369 +1160,369 @@ const TradeStock = () => {
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Symbol
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>JFC</p>
+                        <p className='text-center sm:text-left'>JFC</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Price
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Value
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Range
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Capital
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Income
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Debt Asset
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Dividend
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>100.00</p>
+                        <p className='text-center sm:text-left'>100.00</p>
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div class='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
                                 Action
                             </div>
                         ) : (
                             ' '
                         )}
-                        <p class='text-center sm:text-left'>Add</p>
+                        <p className='text-center sm:text-left'>Add</p>
                     </div>
                 </div>
             </div>

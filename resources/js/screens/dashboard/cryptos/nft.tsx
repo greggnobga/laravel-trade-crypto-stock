@@ -6,7 +6,7 @@ const NFTCrypto = () => {
         <section className='m-2 grid auto-rows-min h-fit'>
             <div className='p-2 h-8 sm:10 uppercase'>NFT</div>
             {/** NFT */}
-            <div class='flex flex-wrap flex-col sm:flex-row gap-2 justify-between items-center h-fit'>
+            <div className='flex flex-wrap flex-col sm:flex-row gap-2 justify-between items-center h-fit'>
                 <div className='rounded-t-md bg-stone-100 cursor-pointer w-full'>
                     <div className='flex flex-wrap flex-col sm:flex-row gap-2 justify-between items-center h-fit border-b border-stone-200'>
                         <div className='flex flex-row flex-wrap justify-between items-center w-full'>

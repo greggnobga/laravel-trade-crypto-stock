@@ -1,5 +1,5 @@
 // /** Vendor. */
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 // import { useEffect } from 'react';
 
 // import { useDispatch, useSelector } from 'react-redux';
@@ -8,11 +8,12 @@ import { Link } from 'react-router-dom';
 // import Loader from '../../components/Loader.js';
 // import Message from '../../components/Message.js';
 
-// /** Action. */
-// import { loginUser, tokenUser } from '../../actions/UserActions.js';
-
 /** Hook. */
-import useValidate from '$lib/hooks/use-validate';
+import useValidate from '$lib/hooks/use-validate'
+import { useAppDispatch } from '$lib/hooks/use-rtk'
+
+/** Action. */
+import { loginRequest } from '$lib/store/feature/user/login-slice'
 
 const Login = () => {
     // /** Define dispatch. */
@@ -48,9 +49,7 @@ const Login = () => {
         valueChangeHandler: emailChangeHandler,
         inputBlurHandler: emailBlurHandler,
         resetHandler: emailInputReset,
-    } = useValidate(
-        (value: any) => value.trim() !== '' && value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/),
-    );
+    } = useValidate((value: any) => value.trim() !== '' && value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/))
     const {
         value: password,
         hasError: passwordHasError,
@@ -58,40 +57,45 @@ const Login = () => {
         valueChangeHandler: passwordChangeHandler,
         inputBlurHandler: passwordBlurHandler,
         resetHandler: passwordInputReset,
-    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
+    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/))
 
     /** Change class logic if valid or otherwise. */
-    const emailInputClasses = emailHasError ? 'font-thin text-red-400' : '';
-    const passwordInputClasses = passwordHasError ? 'font-thin text-red-400' : '';
+    const emailInputClasses = emailHasError ? 'font-thin text-red-400' : ''
+    const passwordInputClasses = passwordHasError ? 'font-thin text-red-400' : ''
 
     /** Set overall form validity. */
-    let formIsValid = false;
+    let formIsValid = false
     if (emailIsValid && passwordIsValid) {
-        formIsValid = true;
+        formIsValid = true
     }
 
+    /** Use dispatch. */
+    const dispatch = useAppDispatch()
+
     /** Submit handler. */
-    const submitHandler = (event: any) => {
+    const submitHandler = async (event: any) => {
         /** Prevent browser default behaviour */
-        event.preventDefault();
+        event.preventDefault()
 
-        /** Change blur state. */
-        emailBlurHandler();
-        passwordBlurHandler();
+        await dispatch(loginRequest())
 
-        /** Check if there is invalid input. */
-        if (!emailIsValid && !passwordIsValid) {
-            return;
-        }
+        // /** Change blur state. */
+        // emailBlurHandler()
+        // passwordBlurHandler()
 
-        /** Dispatch action. */
+        // /** Check if there is invalid input. */
+        // if (!emailIsValid && !passwordIsValid) {
+        //     return
+        // }
+
+        // /** Dispatch action. */
         // dispatch(loginUser(email, password));
-        console.log(email, password);
+        // console.log(email, password)
 
-        /** Reset input. */
-        emailInputReset();
-        passwordInputReset();
-    };
+        // /** Reset input. */
+        // emailInputReset()
+        // passwordInputReset()
+    }
 
     /** Return something. */
     return (
@@ -165,7 +169,7 @@ const Login = () => {
                 </div>
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

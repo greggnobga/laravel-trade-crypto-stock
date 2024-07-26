@@ -1,52 +1,53 @@
 /** Vendor. */
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 // /** Vendor. */
 // import { Link } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
 
 // /** Actions. */
 // import { logoutUser, tokenUser } from '../actions/UserActions';
 
 /** Component. */
-import Icon from './icon';
+import Icon from './icon'
 
 /** Hook. */
-import useScreen from '$lib/hooks/use-screen';
+import useScreen from '$lib/hooks/use-screen'
+import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk'
 
+/** Action. */
+import { logoutRequest } from '$lib/store/feature/user/auth-slice'
+
+/** Header function. */
 const Header = () => {
-    // /** Use dispatch. */
-    // const dispatch = useDispatch();
+    /** Use selector. */
+    const auth = useAppSelector((state) => state.auth)
+    const { access_token } = auth
 
-    // /** Use selector. */
-    // const userLogin = useSelector((state) => state.userLogin);
-    // const { access_token } = userLogin;
+    /** Use dispatch. */
+    const dispatch = useAppDispatch()
 
-    // const userToken = useSelector((state) => state.userToken);
-    // const { valid } = userToken;
-
-    // /** Logout handler. */
-    // const logoutHandler = () => {
-    //     /** Check if auth is not empty. */
-    //     if (access_token) {
-    //         /** Dispatch actions. */
-    //         dispatch(logoutUser(access_token));
-    //     }
-    // };
+    /** Logout handler. */
+    const logoutHandler = () => {
+        /** Check if token is not empty. */
+        if (access_token) {
+            /** Dispatch actions. */
+            dispatch(logoutRequest({ token: access_token }))
+        }
+    }
 
     /** Use state. */
-    const [menu, setMenu] = useState<boolean>(false);
+    const [menu, setMenu] = useState<boolean>(false)
 
     const menuHandler = () => {
-        setMenu((menu) => !menu);
-    };
+        setMenu((menu) => !menu)
+    }
 
     /** Use screen hook. */
-    const isMobile = useScreen();
+    const isMobile = useScreen()
 
     /** Is logged. */
-    const isLogged = true;
+    const isLogged = access_token ? true : false
 
     return (
         <>
@@ -102,7 +103,7 @@ const Header = () => {
                                     </span>
                                 </Link>
                             </li>
-                            <li className='md:text-xs' onClick={() => console.log('Hello world!')}>
+                            <li className='md:text-xs' onClick={logoutHandler}>
                                 <Link to='/'>
                                     <span className='ml-6 hover:text-orange-300'>
                                         <Icon id='logout' width='w-6' height='h-6' /> {isMobile ? ' ' : 'Logout'}
@@ -210,7 +211,7 @@ const Header = () => {
                 ''
             )}
         </>
-    );
-};
+    )
+}
 
-export default Header;
+export default Header

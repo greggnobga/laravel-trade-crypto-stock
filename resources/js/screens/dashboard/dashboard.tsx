@@ -1,6 +1,6 @@
-// /** React. */
-// import { useEffect, useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
+// /** Vendor. */
+// import { useEffect } from 'react'
+// import { Link, useNavigate } from 'react-router-dom'
 
 // /** Hook. */
 // import useValidate from '../hooks/UseValidate';
@@ -33,10 +33,13 @@
 // } from '../actions/DashboardActions';
 
 /** Vendor. */
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+
+/** Hook. */
+import useProtect from '$lib/hooks/use-protect'
 
 /** Component. */
-import Icon from '$lib/components/icon';
+import Icon from '$lib/components/icon'
 
 const Dashboard = () => {
     // /** Use selector. */
@@ -346,6 +349,16 @@ const Dashboard = () => {
     //     </>
     // );
 
+    // /** Use selector. */
+    // const auth = useAppSelector((state) => state.auth)
+    // const { access_token } = auth
+
+    // /** Use navigate. */
+    // const navigate = useNavigate()
+
+    /** Use protect. */
+    useProtect()
+
     /** Return something. */
     return (
         <>
@@ -503,7 +516,7 @@ const Dashboard = () => {
                 </div>
             </section>
         </>
-    );
-};
+    )
+}
 
-export default Dashboard;
+export default Dashboard

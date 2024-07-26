@@ -1,6 +1,6 @@
-// /** Vendor. */
-import { Link } from 'react-router-dom'
-// import { useEffect } from 'react';
+/** Vendor. */
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 // import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,36 +10,15 @@ import { Link } from 'react-router-dom'
 
 /** Hook. */
 import useValidate from '$lib/hooks/use-validate'
-import { useAppDispatch } from '$lib/hooks/use-rtk'
+import useProtect from '$lib/hooks/use-protect'
 
 /** Action. */
-import { loginRequest } from '$lib/store/feature/user/login-slice'
+import { useAppDispatch } from '$lib/hooks/use-rtk'
+import { loginRequest } from '$lib/store/feature/user/auth-slice'
 
 const Login = () => {
-    // /** Define dispatch. */
-    // const dispatch = useDispatch();
-    // /** Select state from redux. */
-    // const userLogin = useSelector((state) => state.userLogin);
-    // const { loading, access_token } = userLogin;
-    // const userToken = useSelector((state) => state.userToken);
-    // const { valid } = userToken;
-    // const showMessage = useSelector((state) => state.showMessage);
-    // const { message, error } = showMessage;
-    // /** Use navigate. */
-    // const navigate = useNavigate();
-    // /** Use effect. */
-    // useEffect(() => {
-    //     /** Check valid state. */
-    //     if (!valid && access_token) {
-    //         dispatch(tokenUser(access_token));
-    //     }
-    //     /** Check if token is valid. */
-    //     if (valid && access_token) {
-    //         navigate('/dashboard');
-    //     } else {
-    //         navigate('/auth/login');
-    //     }
-    // }, [access_token, valid]);
+    /** Use protect. */
+    useProtect()
 
     /** Map html element to validate hook. */
     const {
@@ -77,24 +56,21 @@ const Login = () => {
         /** Prevent browser default behaviour */
         event.preventDefault()
 
-        await dispatch(loginRequest())
+        /** Change blur state. */
+        emailBlurHandler()
+        passwordBlurHandler()
 
-        // /** Change blur state. */
-        // emailBlurHandler()
-        // passwordBlurHandler()
+        /** Check if there is invalid input. */
+        if (!emailIsValid && !passwordIsValid) {
+            return
+        }
 
-        // /** Check if there is invalid input. */
-        // if (!emailIsValid && !passwordIsValid) {
-        //     return
-        // }
+        /** Dispatch action. */
+        dispatch(loginRequest({ email, password }))
 
-        // /** Dispatch action. */
-        // dispatch(loginUser(email, password));
-        // console.log(email, password)
-
-        // /** Reset input. */
-        // emailInputReset()
-        // passwordInputReset()
+        /** Reset input. */
+        emailInputReset()
+        passwordInputReset()
     }
 
     /** Return something. */

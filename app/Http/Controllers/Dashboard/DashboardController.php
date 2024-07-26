@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
-class DashboardController extends Controller {
+class DashboardController extends Controller
+{
     /**
      * Declare init function.
      */
-    public function init(Request $request) {
+    public function init(Request $request)
+    {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward bluechip function with store. */
@@ -33,7 +36,16 @@ class DashboardController extends Controller {
         if ($request->method() === 'GET') {
             /** sentinel response. */
             if ($request->input('section') === 'sentinel') {
-                return response(['message' => 'Token is valid.', 'valid' => true], 200);
+                /** Get bearer token and find it the record. */
+                $access_token = $request->bearerToken();
+                $token_found = PersonalAccessToken::findToken($access_token);
+
+                /** Return depends on the result of the query. */
+                if ($token_found) {
+                    return response(['message' => 'Token is valid.', 'valid' => true], 200);
+                } else {
+                    return response(['message' => 'Token is not valid.', 'valid' => false], 401);
+                }
             }
 
             /** forward blue function. */
@@ -61,7 +73,8 @@ class DashboardController extends Controller {
     /**
      * Declare bluechip function.
      */
-    public function bluechip($data) {
+    public function bluechip($data)
+    {
         /** check if statement is select. */
         if ($data['statement'] === 'select') {
             /** get all bluechip stocks. */
@@ -139,7 +152,8 @@ class DashboardController extends Controller {
     /**
      * Declare edge function.
      */
-    public function edge($data) {
+    public function edge($data)
+    {
 
         /** query logged user role. */
         $admin = DB::table('users')
@@ -206,7 +220,8 @@ class DashboardController extends Controller {
     /**
      * Declare stock gainers function.
      */
-    public function gainers() {
+    public function gainers()
+    {
         /** query logged user role. */
         $check = DB::table('stock_trades')
             ->select('symbol')
@@ -234,7 +249,8 @@ class DashboardController extends Controller {
     /**
      * Declare stock lossers function.
      */
-    public function lossers() {
+    public function lossers()
+    {
         /** query logged user role. */
         $check = DB::table('stock_trades')
             ->select('symbol')

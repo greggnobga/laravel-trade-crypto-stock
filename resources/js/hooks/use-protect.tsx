@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 
 /** Hook. */
 import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk'
+
+/** Action. */
 import { validateRequest } from '$lib/store/feature/user/auth-slice'
 
 const useProtect = () => {

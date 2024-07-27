@@ -1,20 +1,23 @@
+/** Vendor. */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-/** Error type. */
-type Error = {
-    error: number
-    message: string
+/** Async thunk type. */
+type Error<T> = {
+    error?: T
+    message?: string
+    status?: number
 }
 
 /** User type. */
 type User = {
-    loading: boolean
     email_verified: boolean
     role: string
     access_token: string
     message: string
-    status: number
-    valid: boolean
+    show_message: boolean
+    status?: number
+    valid?: boolean
+    loading?: boolean
 }
 
 /** Input login type. */
@@ -39,7 +42,7 @@ const initialState: User = {
 }
 
 /** Login request. */
-export const loginRequest = createAsyncThunk<any, InputCredentials, { rejectValue: Error }>(
+export const loginRequest = createAsyncThunk<any, InputCredentials, { rejectValue: Error<any> }>(
     'user/login',
     async (inputData, { rejectWithValue }) => {
         try {
@@ -62,7 +65,7 @@ export const loginRequest = createAsyncThunk<any, InputCredentials, { rejectValu
             }
 
             /** Return something. */
-            return { status: status, ...data }
+            return { status, ...(data as unknown as Record<any, unknown>) }
         } catch (error: any) {
             /** Capture error details */
             if (error.response) {
@@ -79,7 +82,7 @@ export const loginRequest = createAsyncThunk<any, InputCredentials, { rejectValu
             } else {
                 /** Something happened in setting up the request that triggered an error */
                 return rejectWithValue({
-                    message: error.message,
+                    message: error.message || 'Something went wrong!',
                 })
             }
         }
@@ -87,7 +90,7 @@ export const loginRequest = createAsyncThunk<any, InputCredentials, { rejectValu
 )
 
 /** Logout request. */
-export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Error }>(
+export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Error<any> }>(
     'user/logout',
     async (inputData, { rejectWithValue }) => {
         try {
@@ -110,7 +113,7 @@ export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Er
             }
 
             /** Return something. */
-            return { status: status, ...data }
+            return { status, ...(data as unknown as Record<any, unknown>) }
         } catch (error: any) {
             /** Capture error details */
             if (error.response) {
@@ -127,7 +130,7 @@ export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Er
             } else {
                 /** Something happened in setting up the request that triggered an error */
                 return rejectWithValue({
-                    message: error.message,
+                    message: error.message || 'Something went wrong!',
                 })
             }
         }
@@ -135,7 +138,7 @@ export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Er
 )
 
 /** Logout request. */
-export const validateRequest = createAsyncThunk<any, InputToken, { rejectValue: Error }>(
+export const validateRequest = createAsyncThunk<any, InputToken, { rejectValue: Error<any> }>(
     'user/validate',
     async (inputData, { rejectWithValue }) => {
         try {
@@ -154,7 +157,7 @@ export const validateRequest = createAsyncThunk<any, InputToken, { rejectValue: 
             })
 
             /** Return something. */
-            return { status: status, ...data }
+            return { status, ...(data as unknown as Record<any, unknown>) }
         } catch (error: any) {
             /** Remove auth from local storage. */
             localStorage.removeItem('auth')
@@ -174,7 +177,7 @@ export const validateRequest = createAsyncThunk<any, InputToken, { rejectValue: 
             } else {
                 /** Something happened in setting up the request that triggered an error */
                 return rejectWithValue({
-                    message: error.message,
+                    message: error.message || 'Something went wrong!',
                 })
             }
         }
@@ -185,12 +188,13 @@ export const validateRequest = createAsyncThunk<any, InputToken, { rejectValue: 
 export const AuthSlice = createSlice({
     name: 'auth',
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        displayNotification: () => {},
+    },
     extraReducers: (builder) => {
         /** Login request case. */
         builder.addCase(loginRequest.pending, (state) => {
             state.loading = true
-            state.message = ''
         })
 
         builder.addCase(loginRequest.fulfilled, (state, action: any) => {
@@ -198,6 +202,7 @@ export const AuthSlice = createSlice({
             state.email_verified = action.payload.email_verified
             state.role = action.payload.role
             state.access_token = action.payload.access_token
+            state.show_message = action.payload?.show_message
             state.message = action.payload?.message || 'Something went wrong!'
             state.status = action.payload?.status || null
         })
@@ -207,6 +212,7 @@ export const AuthSlice = createSlice({
             state.email_verified = false
             state.role = ''
             state.access_token = ''
+            state.show_message = false
             state.message = action.payload?.message || 'Something went wrong!'
             state.status = action.payload?.status || null
         })
@@ -214,12 +220,12 @@ export const AuthSlice = createSlice({
         /** Logout request case. */
         builder.addCase(logoutRequest.pending, (state) => {
             state.loading = true
-            state.message = ''
         })
 
         builder.addCase(logoutRequest.fulfilled, (state, action: any) => {
             state.loading = false
             state.access_token = ''
+            state.show_message = false
             state.message = action.payload?.message || 'Adios amigo, see you next time!'
             state.status = action.payload?.status || null
         })
@@ -239,14 +245,12 @@ export const AuthSlice = createSlice({
             state.loading = false
             state.valid = action.payload.valid
             state.access_token = action.payload.valid ? state.access_token : ''
-            state.status = action.payload?.status || null
         })
 
         builder.addCase(validateRequest.rejected, (state, action: any) => {
             state.loading = false
             state.valid = false
             state.access_token = ''
-            state.status = action.payload?.status || null
         })
     },
 })

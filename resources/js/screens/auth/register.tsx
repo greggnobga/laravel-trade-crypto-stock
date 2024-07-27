@@ -1,6 +1,6 @@
 /** Vendor. */
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 // import { useDispatch, useSelector } from 'react-redux';
 
 // /** Component. */
@@ -11,7 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // import { registerUser, tokenUser } from '../../actions/UserActions.js';
 
 /** Hook. */
-import useValidate from '$lib/hooks/use-validate';
+import useValidate from '$lib/hooks/use-validate'
 
 const Register = () => {
     // /** Define dispatch. */
@@ -43,7 +43,7 @@ const Register = () => {
         valueChangeHandler: userNameChangeHandler,
         inputBlurHandler: userNameBlurHandler,
         resetHandler: userNameInputReset,
-    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
+    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/))
     const {
         value: firstName,
         hasError: firstNameHasError,
@@ -51,7 +51,7 @@ const Register = () => {
         valueChangeHandler: firstNameChangeHandler,
         inputBlurHandler: firstNameBlurHandler,
         resetHandler: firstNameInputReset,
-    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
+    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/))
     const {
         value: lastName,
         hasError: lastNameHasError,
@@ -59,7 +59,7 @@ const Register = () => {
         valueChangeHandler: lastNameChangeHandler,
         inputBlurHandler: lastNameBlurHandler,
         resetHandler: lastNameInputReset,
-    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
+    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/))
     const {
         value: email,
         hasError: emailHasError,
@@ -67,9 +67,7 @@ const Register = () => {
         valueChangeHandler: emailChangeHandler,
         inputBlurHandler: emailBlurHandler,
         resetHandler: emailInputReset,
-    } = useValidate(
-        (value: any) => value.trim() !== '' && value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/),
-    );
+    } = useValidate((value: any) => value.trim() !== '' && value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/))
     const {
         value: password,
         hasError: passwordHasError,
@@ -77,7 +75,7 @@ const Register = () => {
         valueChangeHandler: passwordChangeHandler,
         inputBlurHandler: passwordBlurHandler,
         resetHandler: passwordInputReset,
-    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
+    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/))
     const {
         value: confirm,
         hasError: confirmHasError,
@@ -85,25 +83,25 @@ const Register = () => {
         valueChangeHandler: confirmChangeHandler,
         inputBlurHandler: confirmBlurHandler,
         resetHandler: confirmInputReset,
-    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/));
+    } = useValidate((value: any) => value.trim() !== '' && value.match(/^[ A-Za-z0-9!@#$%^&*()_+]*$/))
 
     /** Check if password match and length. */
-    const [passwordMatched, setPasswordMatched] = useState<boolean>(false);
-    const [passwordLength, setpasswordLength] = useState<boolean>(false);
+    const [passwordMatched, setPasswordMatched] = useState<boolean>(false)
+    const [passwordLength, setpasswordLength] = useState<boolean>(false)
 
     /** Use effect. */
     useEffect(() => {
         /** Check if password length is greater than 10. */
         if (password.length != 0 && password.length < 10) {
-            setpasswordLength(true);
+            setpasswordLength(true)
         } else {
-            setpasswordLength(false);
+            setpasswordLength(false)
         }
         /** Check if password and confirm match. */
         if (password !== confirm) {
-            setPasswordMatched(true);
+            setPasswordMatched(true)
         } else {
-            setPasswordMatched(false);
+            setPasswordMatched(false)
         }
         // /** Check valid state. */
         // if (!valid && access_token) {
@@ -115,33 +113,33 @@ const Register = () => {
         // } else {
         //     navigate('/auth/register');
         // }
-    }, [password, confirm]);
+    }, [password, confirm])
 
     /** Set overall form validity. */
-    let formIsValid = false;
+    let formIsValid = false
     if (userNameIsValid && firstNameIsValid && lastNameIsValid && emailIsValid && passwordIsValid && confirmIsValid) {
-        formIsValid = true;
+        formIsValid = true
     }
     /** Change class logic if valid or otherwise. */
-    const userNameInputClasses = userNameHasError ? 'font-thin text-red-400' : '';
-    const firstNameInputClasses = firstNameHasError ? 'font-thin text-red-400' : '';
-    const lastNameInputClasses = lastNameHasError ? 'font-thin text-red-400' : '';
-    const emailInputClasses = emailHasError ? 'font-thin text-red-400' : '';
-    const passwordInputClasses = passwordHasError ? 'font-thin text-red-400' : '';
-    const confirmInputClasses = confirmHasError ? 'font-thin text-red-400' : '';
-    const passwordMatchedClasses = passwordMatched ? 'font-thin text-red-400' : '';
+    const userNameInputClasses = userNameHasError ? 'font-thin text-red-100' : ''
+    const firstNameInputClasses = firstNameHasError ? 'font-thin text-red-100' : ''
+    const lastNameInputClasses = lastNameHasError ? 'font-thin text-red-100' : ''
+    const emailInputClasses = emailHasError ? 'font-thin text-red-100' : ''
+    const passwordInputClasses = passwordHasError ? 'font-thin text-red-100' : ''
+    const confirmInputClasses = confirmHasError ? 'font-thin text-red-100' : ''
+    const passwordMatchedClasses = passwordMatched ? 'font-thin text-red-100' : ''
 
     /** Submit handler. */
     const submitHandler = (event: any) => {
         /** Prevent browser default behaviour */
-        event.preventDefault();
+        event.preventDefault()
         /** Change blur state. */
-        userNameBlurHandler();
-        firstNameBlurHandler();
-        lastNameBlurHandler();
-        emailBlurHandler();
-        passwordBlurHandler();
-        confirmBlurHandler();
+        userNameBlurHandler()
+        firstNameBlurHandler()
+        lastNameBlurHandler()
+        emailBlurHandler()
+        passwordBlurHandler()
+        confirmBlurHandler()
         /** Check if there is invalid input. */
         if (
             !userNameIsValid &&
@@ -151,20 +149,20 @@ const Register = () => {
             !passwordIsValid &&
             !confirmIsValid
         ) {
-            return;
+            return
         }
         /** Dispatch action. */
         // dispatch(registerUser(userName, firstName, lastName, email, password));
-        console.log(userName, firstName, lastName, email, password);
+        console.log(userName, firstName, lastName, email, password)
 
         /** Reset input. */
-        userNameInputReset();
-        firstNameInputReset();
-        lastNameInputReset();
-        emailInputReset();
-        passwordInputReset();
-        confirmInputReset();
-    };
+        userNameInputReset()
+        firstNameInputReset()
+        lastNameInputReset()
+        emailInputReset()
+        passwordInputReset()
+        confirmInputReset()
+    }
 
     /** Return something. */
     return (
@@ -316,7 +314,7 @@ const Register = () => {
                 </div>
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default Register;
+export default Register

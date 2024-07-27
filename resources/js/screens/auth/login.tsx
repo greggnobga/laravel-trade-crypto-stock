@@ -75,13 +75,15 @@ const Login = () => {
 
     /** Use selector. */
     const auth = useAppSelector((state) => state.auth)
-    const { loading, message, status } = auth
+    const { loading, message, status, show_message } = auth
 
     /** Return something. */
     return (
         <>
             {loading && <Loader />}
-            {message && <Notification children={message} duration={5000} status={status} />}
+            {!show_message && message && (
+                <Notification children={message} duration={5000} status={status ? status : 200} />
+            )}
             <div className='form-center-margin my-2'>
                 <form method='post' onSubmit={submitHandler} className='form-group screen-size gradient-huckle-berry'>
                     <div className='form-header border-bottom'>

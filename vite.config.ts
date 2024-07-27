@@ -1,11 +1,11 @@
 /** Vendor. */
-import fs from 'fs/promises';
-import path from 'path';
-import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-import react from '@vitejs/plugin-react';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
-import { tscWatch } from 'vite-plugin-tsc-watch';
+import fs from 'fs/promises'
+import path from 'path'
+import { defineConfig } from 'vite'
+import laravel from 'laravel-vite-plugin'
+import react from '@vitejs/plugin-react'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
+import { tscWatch } from 'vite-plugin-tsc-watch'
 
 /** Config. */
 export default defineConfig({
@@ -24,7 +24,7 @@ export default defineConfig({
                         build.onLoad({ filter: /resources\/js\/.*\.js$/ }, async (args) => ({
                             loader: 'tsx',
                             contents: await fs.readFile(args.path, 'utf8'),
-                        }));
+                        }))
                     },
                 },
             ],
@@ -42,14 +42,14 @@ export default defineConfig({
 
                 assetFileNames: ({ name }) => {
                     if (/\.(gif|jpe?g|png|svg)$/.test(name ?? '')) {
-                        return 'images/[name][extname]';
+                        return 'images/[name][extname]'
                     }
 
                     if (/\.css$/.test(name ?? '')) {
-                        return 'css/[name][extname]';
+                        return 'css/[name][extname]'
                     }
                     /** Return something. */
-                    return 'assets/[name][extname]';
+                    return 'assets/[name][extname]'
                 },
             },
             external: [],
@@ -87,4 +87,4 @@ export default defineConfig({
             usePolling: true,
         },
     },
-});
+})

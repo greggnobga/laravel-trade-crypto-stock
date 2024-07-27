@@ -321,7 +321,8 @@ class AuthController extends Controller
                 'email_verified' => $user->email_verified_at,
                 'role' => $user->role,
                 'access_token' => $token,
-                'message' => $user->firstname . ' ' . $user->lastname . $message
+                'message' => $user->firstname . ' ' . $user->lastname . $message,
+                'show_message' => false
             ];
         }
     }

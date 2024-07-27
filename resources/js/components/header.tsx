@@ -22,7 +22,7 @@ import { logoutRequest } from '$lib/store/feature/user/auth-slice'
 const Header = () => {
     /** Use selector. */
     const auth = useAppSelector((state) => state.auth)
-    const { access_token } = auth
+    const { access_token, show_message } = auth
 
     /** Use dispatch. */
     const dispatch = useAppDispatch()
@@ -33,6 +33,15 @@ const Header = () => {
         if (access_token) {
             /** Dispatch actions. */
             dispatch(logoutRequest({ token: access_token }))
+        }
+
+        /** Remove auth local storage. */
+        if (show_message) {
+            const timer = setTimeout(() => {
+                localStorage.removeItem('auth')
+            }, 6000)
+
+            return () => clearTimeout(timer)
         }
     }
 

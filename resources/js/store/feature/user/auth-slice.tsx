@@ -24,6 +24,9 @@ type User = {
 type InputCredentials = {
     email: string
     password: string
+    userName?: string
+    firstName?: string
+    lastName?: string
 }
 
 /** Input token. */
@@ -61,6 +64,9 @@ export const loginRequest = createAsyncThunk<any, InputCredentials, { rejectValu
 
             /** Save to local storage. */
             if (data) {
+                /** Remove existing data. */
+                localStorage.removeItem('auth')
+                /** Replace it with new data. */
                 localStorage.setItem('auth', JSON.stringify(data))
             }
 
@@ -109,6 +115,7 @@ export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Er
             })
 
             if (data) {
+                /** Remove existing data. */
                 localStorage.removeItem('auth')
             }
 
@@ -184,17 +191,69 @@ export const validateRequest = createAsyncThunk<any, InputToken, { rejectValue: 
     },
 )
 
+/** Register request. */
+export const registerRequest = createAsyncThunk<any, InputCredentials, { rejectValue: Error<any> }>(
+    'user/register',
+    async (inputData, { rejectWithValue }) => {
+        try {
+            /** Deconstruct input data. */
+            const { userName, firstName, lastName, email, password } = inputData
+
+            /** Request data from backend. */
+            const { data, status } = await axios({
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                url: '/api/register',
+                params: { userName, firstName, lastName, email, password },
+            })
+
+            console.log(data);
+            
+            /** Save to local storage. */
+            if (data) {
+                /** Remove existing data. */
+                localStorage.removeItem('auth')
+                /** Replace it with new data. */
+                localStorage.setItem('auth', JSON.stringify(data))
+            }
+
+            /** Return something. */
+            return { status, ...(data as unknown as Record<any, unknown>) }
+        } catch (error: any) {
+            /** Capture error details */
+            if (error.response) {
+                /** The request was made and the server responded with a status code */
+                return rejectWithValue({
+                    status: error.response.status,
+                    message: error.response.data.message || 'Something went wrong!',
+                })
+            } else if (error.request) {
+                /** The request was made but no response was received */
+                return rejectWithValue({
+                    message: 'No response received from the server',
+                })
+            } else {
+                /** Something happened in setting up the request that triggered an error */
+                return rejectWithValue({
+                    message: error.message || 'Something went wrong!',
+                })
+            }
+        }
+    },
+)
+
 /** Export slice. */
 export const AuthSlice = createSlice({
     name: 'auth',
     initialState: initialState,
-    reducers: {
-        displayNotification: () => {},
-    },
+    reducers: {},
     extraReducers: (builder) => {
         /** Login request case. */
         builder.addCase(loginRequest.pending, (state) => {
             state.loading = true
+            state.show_message = false
         })
 
         builder.addCase(loginRequest.fulfilled, (state, action: any) => {
@@ -212,7 +271,7 @@ export const AuthSlice = createSlice({
             state.email_verified = false
             state.role = ''
             state.access_token = ''
-            state.show_message = false
+            state.show_message = true
             state.message = action.payload?.message || 'Something went wrong!'
             state.status = action.payload?.status || null
         })
@@ -220,18 +279,20 @@ export const AuthSlice = createSlice({
         /** Logout request case. */
         builder.addCase(logoutRequest.pending, (state) => {
             state.loading = true
+            state.show_message = false
         })
 
         builder.addCase(logoutRequest.fulfilled, (state, action: any) => {
             state.loading = false
             state.access_token = ''
-            state.show_message = false
+            state.show_message = true
             state.message = action.payload?.message || 'Adios amigo, see you next time!'
             state.status = action.payload?.status || null
         })
 
         builder.addCase(logoutRequest.rejected, (state, action: any) => {
             state.loading = false
+            state.show_message = true
             state.message = action.payload?.message || 'Something went wrong!'
             state.status = action.payload?.status || null
         })
@@ -251,6 +312,32 @@ export const AuthSlice = createSlice({
             state.loading = false
             state.valid = false
             state.access_token = ''
+        })
+
+        /** Register request case. */
+        builder.addCase(registerRequest.pending, (state) => {
+            state.loading = true
+            state.show_message = false
+        })
+
+        builder.addCase(registerRequest.fulfilled, (state, action: any) => {
+            state.loading = false
+            state.email_verified = action.payload.email_verified
+            state.role = action.payload.role
+            state.access_token = action.payload.access_token
+            state.show_message = action.payload?.show_message
+            state.message = action.payload?.message || 'Something went wrong!'
+            state.status = action.payload?.status || null
+        })
+
+        builder.addCase(registerRequest.rejected, (state, action: any) => {
+            state.loading = false
+            state.email_verified = false
+            state.role = ''
+            state.access_token = ''
+            state.show_message = true
+            state.message = action.payload?.message || 'Something went wrong!'
+            state.status = action.payload?.status || null
         })
     },
 })

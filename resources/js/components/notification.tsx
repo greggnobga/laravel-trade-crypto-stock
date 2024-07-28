@@ -38,7 +38,7 @@ const Notice: React.FC<NoticeProps> = ({ children, duration, status }) => {
     return (
         <>
             {notice && (
-                <div className='rounded-md absolute top-0 right-0 m-2 cursor-pointer animate-bounce transition-all duration-1000 ease-in-out z-50'>
+                <div className='fixed top-0 right-0 p-2 z-50 cursor-pointer animate-fade-left animate-once animate-ease-in'>
                     {status > 300 ? (
                         <p className='alert-danger text-xs'>
                             <span className='pr-2 text-red-700'>

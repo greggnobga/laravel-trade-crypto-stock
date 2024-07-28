@@ -1,7 +1,35 @@
+/** Vendor. */
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+/** Hook. */
+import { useAppSelector } from '$lib/hooks/use-rtk';
+import useScreen from '$lib/hooks/use-screen';
+import useProtect from '$lib/hooks/use-protect';
+
 /** Component. */
 import Icon from '$lib/components/icon';
 
+/** Game crypto function. */
 const GameCrypto = () => {
+    /** Use navigate. */
+    const navigate = useNavigate();
+
+    /** Use protect. */
+    useProtect();
+
+    /** Use selector. */
+    const auth = useAppSelector((state) => state.auth);
+    const { valid } = auth;
+
+    /** Use effect. */
+    useEffect(() => {
+        if (!valid) {
+            navigate('/auth/login');
+        }
+    }, [valid]);
+
+    /** Return something. */
     return (
         <section className='m-2 grid auto-rows-min h-fit'>
             <div className='p-2 h-8 sm:10 uppercase'>Game</div>
@@ -24,4 +52,5 @@ const GameCrypto = () => {
     );
 };
 
+/** Export something. */
 export default GameCrypto;

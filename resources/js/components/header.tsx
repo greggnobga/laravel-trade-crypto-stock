@@ -1,5 +1,5 @@
 /** Vendor. */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 // /** Vendor. */
@@ -13,6 +13,7 @@ import Icon from './icon'
 
 /** Hook. */
 import useScreen from '$lib/hooks/use-screen'
+import useAnimate from '$lib/hooks/use-animate'
 import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk'
 
 /** Action. */
@@ -58,9 +59,21 @@ const Header = () => {
     /** Is logged. */
     const isLogged = access_token ? true : false
 
+    /** Use animate. */
+    const animate_one = useRef(null)
+
+    useAnimate([
+        {
+            ref: animate_one,
+            animations: [{ threshold: 0.1, animationClass: 'animate-fade-down' }],
+        },
+    ])
+
     return (
-        <>
-            <header className='flex justify-between h-fit font-size gradient-blue-purple border-bottom text-slate-50 relative'>
+        <section className='relative top-0 left-0 z-50'>
+            <header
+                ref={animate_one}
+                className='flex justify-between h-fit font-size gradient-blue-purple border-bottom text-slate-50 relative animate-once animate-ease-in z-40'>
                 <div className='p-2 md:text-xs'>
                     <div className='grid grid-cols-2 place-items-center'>
                         <Link to='/stock-explorer'>
@@ -142,7 +155,7 @@ const Header = () => {
             </header>
             {menu ? (
                 <nav
-                    className='flex flex-row justify-between font-size shadow bg-slate-400 text-slate-50 absolute w-full top-14 right-0 z-50'
+                    className='flex flex-row justify-between font-size shadow bg-slate-400 text-slate-50 absolute w-full top-14 right-0 z-40'
                     onClick={() => menuHandler()}>
                     <ul className='p-2 flex-grow'>
                         <li className='px-2'>
@@ -219,7 +232,7 @@ const Header = () => {
             ) : (
                 ''
             )}
-        </>
+        </section>
     )
 }
 

@@ -30,10 +30,13 @@
 // import { tokenUser } from '../../../actions/UserActions.js';
 
 /** Vendor. */
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /** Hook. */
+import { useAppSelector } from '$lib/hooks/use-rtk';
 import useScreen from '$lib/hooks/use-screen';
+import useProtect from '$lib/hooks/use-protect';
 
 /** Component. */
 import Icon from '$lib/components/icon';
@@ -630,6 +633,23 @@ const WatchlistStock = () => {
     /** Use screen hook. */
     const isMobile = useScreen();
 
+    /** Use navigate. */
+    const navigate = useNavigate();
+
+    /** Use protect. */
+    useProtect();
+
+    /** Use selector. */
+    const auth = useAppSelector((state) => state.auth);
+    const { valid } = auth;
+
+    /** Use effect. */
+    useEffect(() => {
+        if (!valid) {
+            navigate('/auth/login');
+        }
+    }, [valid]);
+
     /** Return something. */
     return (
         <section className='m-2 grid auto-rows-min h-fit'>
@@ -645,21 +665,19 @@ const WatchlistStock = () => {
                         </div>
                     </div>
                     <div className='p-2 border-b border-stone-200 hover:text-purple-500 text-xs'>
-                        Debt Asset Ratio - Always try to find a company to invest which has debt equity ratio of less
-                        than one.
+                        Debt Asset Ratio - Always try to find a company to invest which has debt equity ratio of less than one.
                     </div>
                     <div className='p-2 border-b border-stone-200 hover:text-purple-500 text-xs'>
-                        Price Range - Year low minus year high, when the range is getting near to zero or even turning
-                        positive, it indicates that the price is going down and that it is a good idea to add to your
-                        stack.
+                        Price Range - Year low minus year high, when the range is getting near to zero or even turning positive, it indicates that the
+                        price is going down and that it is a good idea to add to your stack.
                     </div>
                     <div className='p-2 border-b border-stone-200 hover:text-purple-500 text-xs'>
-                        Working Capital - Working capital is the amount of available capital that a company can readily
-                        use for day-to-day operations. year.
+                        Working Capital - Working capital is the amount of available capital that a company can readily use for day-to-day operations.
+                        year.
                     </div>
                     <div className='p-2 hover:text-purple-500 text-xs'>
-                        Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its
-                        stock divided by its current stock price.
+                        Dividend Yield - Is the amount of money a company pays shareholders for owning a share of its stock divided by its current
+                        stock price.
                     </div>
                 </div>
             </div>
@@ -671,9 +689,7 @@ const WatchlistStock = () => {
                             <Icon id='trade' width='w-6' height='h-6' /> Stocks (28)
                         </div>
                         <div className='p-2'>
-                            <span
-                                className='p-2 cursor-pointer text-xs'
-                                onClick={() => console.log('showSearchHandler')}>
+                            <span className='p-2 cursor-pointer text-xs' onClick={() => console.log('showSearchHandler')}>
                                 <Icon id='search' width='w-6' height='h-6' /> Search
                             </span>
                         </div>
@@ -697,9 +713,7 @@ const WatchlistStock = () => {
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Symbol
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
                         ) : (
                             ' '
                         )}
@@ -707,9 +721,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Price
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Price</div>
                         ) : (
                             ' '
                         )}
@@ -717,9 +729,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Value
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Value</div>
                         ) : (
                             ' '
                         )}
@@ -727,9 +737,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Range
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Range</div>
                         ) : (
                             ' '
                         )}
@@ -737,9 +745,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Capital
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
                         ) : (
                             ' '
                         )}
@@ -747,9 +753,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Income
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Income</div>
                         ) : (
                             ' '
                         )}
@@ -757,9 +761,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Debt Asset
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Debt Asset</div>
                         ) : (
                             ' '
                         )}
@@ -767,9 +769,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Dividend
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Dividend</div>
                         ) : (
                             ' '
                         )}
@@ -777,9 +777,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Action
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
                         ) : (
                             ' '
                         )}
@@ -789,9 +787,7 @@ const WatchlistStock = () => {
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Symbol
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
                         ) : (
                             ' '
                         )}
@@ -799,9 +795,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Price
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Price</div>
                         ) : (
                             ' '
                         )}
@@ -809,9 +803,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Value
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Value</div>
                         ) : (
                             ' '
                         )}
@@ -819,9 +811,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Range
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Range</div>
                         ) : (
                             ' '
                         )}
@@ -829,9 +819,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Capital
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
                         ) : (
                             ' '
                         )}
@@ -839,9 +827,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Income
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Income</div>
                         ) : (
                             ' '
                         )}
@@ -849,9 +835,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Debt Asset
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Debt Asset</div>
                         ) : (
                             ' '
                         )}
@@ -859,9 +843,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Dividend
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Dividend</div>
                         ) : (
                             ' '
                         )}
@@ -869,9 +851,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Action
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
                         ) : (
                             ' '
                         )}
@@ -881,9 +861,7 @@ const WatchlistStock = () => {
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Symbol
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
                         ) : (
                             ' '
                         )}
@@ -891,9 +869,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Price
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Price</div>
                         ) : (
                             ' '
                         )}
@@ -901,9 +877,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Value
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Value</div>
                         ) : (
                             ' '
                         )}
@@ -911,9 +885,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Range
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Range</div>
                         ) : (
                             ' '
                         )}
@@ -921,9 +893,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Capital
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
                         ) : (
                             ' '
                         )}
@@ -931,9 +901,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Income
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Income</div>
                         ) : (
                             ' '
                         )}
@@ -941,9 +909,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Debt Asset
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Debt Asset</div>
                         ) : (
                             ' '
                         )}
@@ -951,9 +917,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Dividend
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Dividend</div>
                         ) : (
                             ' '
                         )}
@@ -961,9 +925,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Action
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
                         ) : (
                             ' '
                         )}
@@ -973,9 +935,7 @@ const WatchlistStock = () => {
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Symbol
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
                         ) : (
                             ' '
                         )}
@@ -983,9 +943,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Price
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Price</div>
                         ) : (
                             ' '
                         )}
@@ -993,9 +951,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Value
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Value</div>
                         ) : (
                             ' '
                         )}
@@ -1003,9 +959,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Range
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Range</div>
                         ) : (
                             ' '
                         )}
@@ -1013,9 +967,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Capital
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
                         ) : (
                             ' '
                         )}
@@ -1023,9 +975,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Income
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Income</div>
                         ) : (
                             ' '
                         )}
@@ -1033,9 +983,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Debt Asset
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Debt Asset</div>
                         ) : (
                             ' '
                         )}
@@ -1043,9 +991,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Dividend
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Dividend</div>
                         ) : (
                             ' '
                         )}
@@ -1053,9 +999,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Action
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
                         ) : (
                             ' '
                         )}
@@ -1065,9 +1009,7 @@ const WatchlistStock = () => {
                 <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Symbol
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
                         ) : (
                             ' '
                         )}
@@ -1075,9 +1017,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Price
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Price</div>
                         ) : (
                             ' '
                         )}
@@ -1085,9 +1025,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Value
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Value</div>
                         ) : (
                             ' '
                         )}
@@ -1095,9 +1033,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Range
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Range</div>
                         ) : (
                             ' '
                         )}
@@ -1105,9 +1041,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Capital
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
                         ) : (
                             ' '
                         )}
@@ -1115,9 +1049,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Income
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Income</div>
                         ) : (
                             ' '
                         )}
@@ -1125,9 +1057,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Debt Asset
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Debt Asset</div>
                         ) : (
                             ' '
                         )}
@@ -1135,9 +1065,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Dividend
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Dividend</div>
                         ) : (
                             ' '
                         )}
@@ -1145,9 +1073,7 @@ const WatchlistStock = () => {
                     </div>
                     <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
                         {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
-                                Action
-                            </div>
+                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
                         ) : (
                             ' '
                         )}

@@ -1,16 +1,33 @@
-/** Vendor, */
-// import { useState } from 'react';
+/** Vendor. */
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+/** Hook. */
+import { useAppSelector } from '$lib/hooks/use-rtk';
+import useProtect from '$lib/hooks/use-protect';
 
 /** Component. */
 import Icon from '$lib/components/icon';
 
 const Note = () => {
-    // const [search, setSearch] = useState(false);
+    /** Use navigate. */
+    const navigate = useNavigate();
 
-    // const searchHandler = () => {
-    //     setSearch(!search);
-    // };
+    /** Use protect. */
+    useProtect();
 
+    /** Use selector. */
+    const auth = useAppSelector((state) => state.auth);
+    const { valid } = auth;
+
+    /** Use effect. */
+    useEffect(() => {
+        if (!valid) {
+            navigate('/auth/login');
+        }
+    }, [valid]);
+
+    /** Return something. */
     return (
         <section className='m-2 grid auto-rows-min h-fit'>
             <div className='p-2 h-8 sm:10 uppercase'>Note</div>

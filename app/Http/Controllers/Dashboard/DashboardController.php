@@ -42,9 +42,9 @@ class DashboardController extends Controller
 
                 /** Return depends on the result of the query. */
                 if ($token_found) {
-                    return response(['message' => 'Token is valid.', 'valid' => true], 200);
+                    return response(['message' => 'Token is valid.', 'show_message' => true, 'valid' => true], 200);
                 } else {
-                    return response(['message' => 'Token is not valid.', 'valid' => false], 401);
+                    return response(['message' => 'Token is not valid.', 'show_message' => true, 'valid' => false], 401);
                 }
             }
 

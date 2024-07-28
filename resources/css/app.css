@@ -1,23 +1,23 @@
-/** Import Tailwind.*/
+/** Tailwind css.*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /** Alerts. */
 .alert-info {
-    @apply w-full rounded-md p-2 bg-blue-500 text-stone-200 font-thin !important;
+    @apply w-full z-50 rounded-md p-2 bg-blue-500 text-stone-200 font-thin !important;
 }
 
 .alert-danger {
-    @apply w-full rounded-md p-2  bg-red-500 text-stone-200 font-thin !important;
+    @apply w-full z-50 rounded-md p-2  bg-red-500 text-stone-200 font-thin !important;
 }
 
 .alert-success {
-    @apply w-full rounded-md p-2  bg-green-500 text-stone-200 font-thin !important;
+    @apply w-full z-50 rounded-md p-2  bg-green-500 text-stone-200 font-thin !important;
 }
 
 .alert-warning {
-    @apply w-full rounded-md p-2  bg-orange-500 text-stone-200 font-thin !important;
+    @apply w-full z-50 rounded-md p-2  bg-orange-500 text-stone-200 font-thin !important;
 }
 
 .alert-spinner {

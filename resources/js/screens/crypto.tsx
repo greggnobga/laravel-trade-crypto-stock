@@ -102,7 +102,7 @@ const CryptoExplorer = () => {
     /** Return something. */
     return (
         <section className='p-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5'>
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow rounded'>
+            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
                 <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                     <p className='text-xs text-purple-500'>Name</p>
                     <p className='px-2 py-1 text-lg'>Bitcoin</p>
@@ -143,7 +143,7 @@ const CryptoExplorer = () => {
                 </div>
             </div>
 
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow rounded'>
+            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
                 <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                     <p className='text-xs text-purple-500'>Name</p>
                     <p className='px-2 py-1 text-lg'>Bitcoin</p>
@@ -184,7 +184,7 @@ const CryptoExplorer = () => {
                 </div>
             </div>
 
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow rounded'>
+            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
                 <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                     <p className='text-xs text-purple-500'>Name</p>
                     <p className='px-2 py-1 text-lg'>Bitcoin</p>
@@ -225,7 +225,7 @@ const CryptoExplorer = () => {
                 </div>
             </div>
 
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow rounded'>
+            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
                 <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                     <p className='text-xs text-purple-500'>Name</p>
                     <p className='px-2 py-1 text-lg'>Bitcoin</p>
@@ -266,7 +266,7 @@ const CryptoExplorer = () => {
                 </div>
             </div>
 
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow rounded'>
+            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
                 <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                     <p className='text-xs text-purple-500'>Name</p>
                     <p className='px-2 py-1 text-lg'>Bitcoin</p>
@@ -307,7 +307,7 @@ const CryptoExplorer = () => {
                 </div>
             </div>
 
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow rounded'>
+            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
                 <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                     <p className='text-xs text-purple-500'>Name</p>
                     <p className='px-2 py-1 text-lg'>Bitcoin</p>
@@ -348,7 +348,7 @@ const CryptoExplorer = () => {
                 </div>
             </div>
 
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow rounded'>
+            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
                 <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                     <p className='text-xs text-purple-500'>Name</p>
                     <p className='px-2 py-1 text-lg'>Bitcoin</p>

@@ -1,45 +1,15 @@
-// /** Vendor. */
-// import { useEffect } from 'react'
-// import { Link, useNavigate } from 'react-router-dom'
-
-// /** Hook. */
-// import useValidate from '../hooks/UseValidate';
-
-// import Modal from '../components/Modal';
-// import Loader from '../components/Loader';
-// import Notice from '../components/Notice';
-// import Container from '../components/Container';
-
-// /** Template. */
-// import { modalBlueTemplate, modalEdgeTemplate, stockLeaderBoard } from './template/Dashboard';
-
-// /** Action. */
-// import { resendEmail, tokenUser } from '../actions/UserActions';
-// import {
-//     startDashboard,
-//     priceDashboard,
-//     reportDashboard,
-//     dividendDashboard,
-//     sectorDashboard,
-//     listDashboard,
-//     companyDashboard,
-//     bluechipDashboard,
-//     bluechipStoreDashboard,
-//     bluechipDestroyDashboard,
-//     edgeDashboard,
-//     edgeUpdateDashboard,
-//     stockGainerDashboard,
-//     stockLosserDashboard,
-// } from '../actions/DashboardActions';
-
 /** Vendor. */
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 /** Hook. */
-import useProtect from '$lib/hooks/use-protect'
+import { useAppSelector } from '$lib/hooks/use-rtk';
+import useProtect from '$lib/hooks/use-protect';
 
 /** Component. */
-import Icon from '$lib/components/icon'
+import Icon from '$lib/components/icon';
+import Loader from '$lib/components/loader.js';
+import Notification from '$lib//components/notification.js';
 
 const Dashboard = () => {
     // /** Use selector. */
@@ -353,84 +323,70 @@ const Dashboard = () => {
     // const auth = useAppSelector((state) => state.auth)
     // const { access_token } = auth
 
-    // /** Use navigate. */
-    // const navigate = useNavigate()
+    /** Use navigate. */
+    const navigate = useNavigate();
 
     /** Use protect. */
-    useProtect()
+    useProtect();
+
+    /** Use selector. */
+    const auth = useAppSelector((state) => state.auth);
+    const { loading, message, status, show_message, valid } = auth;
+
+    /** Use effect. */
+    useEffect(() => {
+        if (!valid) {
+            navigate('/auth/login');
+        }
+    }, [show_message, valid]);
 
     /** Return something. */
     return (
         <>
+            {loading && <Loader />}
+            {show_message && message && <Notification children={message} duration={5000} status={status ? status : 200} />}
             <section className='m-2 grid auto-rows-min h-fit'>
                 <div className='p-2 h-8 sm:10 uppercase'>Fetch External Data</div>
                 <div className='p-2 card-rounded grid auto-rows-min gap-4 sm:grid-cols-2 md:grid-cols-4'>
                     <div className='has-tooltip'>
                         <span className='tooltip uppercase text-center'>Fetch the stock symbol from PSE Edge.</span>
-                        <button
-                            onClick={() => console.log('dashboardListHandler')}
-                            className='btn btn-green'
-                            type='button'>
+                        <button onClick={() => console.log('dashboardListHandler')} className='btn btn-green' type='button'>
                             <Icon id='start' width='w-6' height='h-6' /> Stock List
                         </button>
                     </div>
                     <div className='has-tooltip'>
-                        <span className='tooltip uppercase text-center'>
-                            Fetch company and security identification from PSE Edge.
-                        </span>
-                        <button
-                            onClick={() => console.log('dashboardCompanyHandler')}
-                            className='btn btn-orange'
-                            type='button'>
+                        <span className='tooltip uppercase text-center'>Fetch company and security identification from PSE Edge.</span>
+                        <button onClick={() => console.log('dashboardCompanyHandler')} className='btn btn-orange' type='button'>
                             <Icon id='start' width='w-6' height='h-6' /> Company ID
                         </button>
                     </div>
                     <div className='has-tooltip'>
-                        <span className='tooltip uppercase text-center'>
-                            Get the symbol, name, price, volume, and change.
-                        </span>
-                        <button
-                            onClick={() => console.log('dashboardStartHandler')}
-                            className='btn btn-red'
-                            type='button'>
+                        <span className='tooltip uppercase text-center'>Get the symbol, name, price, volume, and change.</span>
+                        <button onClick={() => console.log('dashboardStartHandler')} className='btn btn-red' type='button'>
                             <Icon id='start' width='w-6' height='h-6' /> Start
                         </button>
                     </div>
                     <div className='has-tooltip'>
                         <span className='tooltip uppercase text-center'>Get value, year high and low prices.</span>
-                        <button
-                            onClick={() => console.log('dashboardPriceHandler')}
-                            className='btn btn-blue'
-                            type='button'>
+                        <button onClick={() => console.log('dashboardPriceHandler')} className='btn btn-blue' type='button'>
                             <Icon id='price' width='w-6' height='h-6' /> Price
                         </button>
                     </div>
                     <div className='has-tooltip'>
-                        <span className='tooltip uppercase text-center'>
-                            Get income after tax and earnings per share.
-                        </span>
-                        <button
-                            onClick={() => console.log('dashboardReportHandler')}
-                            className='btn btn-green'
-                            type='button'>
+                        <span className='tooltip uppercase text-center'>Get income after tax and earnings per share.</span>
+                        <button onClick={() => console.log('dashboardReportHandler')} className='btn btn-green' type='button'>
                             <Icon id='report' width='w-6' height='h-6' /> Report
                         </button>
                     </div>
                     <div className='has-tooltip'>
                         <span className='tooltip uppercase text-center'>Get the yearly dividend yield.</span>
-                        <button
-                            onClick={() => console.log('dashboardDividendHandler')}
-                            className='btn btn-emerald'
-                            type='button'>
+                        <button onClick={() => console.log('dashboardDividendHandler')} className='btn btn-emerald' type='button'>
                             <Icon id='dividend' width='w-6' height='h-6' /> Dividend
                         </button>
                     </div>
                     <div className='has-tooltip'>
                         <span className='tooltip uppercase text-center'>Get the sector to which stock belongs.</span>
-                        <button
-                            onClick={() => console.log('dashboardSectorHandler')}
-                            className='btn btn-indigo'
-                            type='button'>
+                        <button onClick={() => console.log('dashboardSectorHandler')} className='btn btn-indigo' type='button'>
                             <Icon id='sector' width='w-6' height='h-6' /> Sector
                         </button>
                     </div>
@@ -516,7 +472,7 @@ const Dashboard = () => {
                 </div>
             </section>
         </>
-    )
-}
+    );
+};
 
-export default Dashboard
+export default Dashboard;

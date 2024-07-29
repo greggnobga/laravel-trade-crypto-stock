@@ -6,87 +6,82 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class StockExplorerController extends Controller {
+class StockExplorerController extends Controller
+{
     /**
      * Display a listing of the resource.
      */
-    public function init(Request $request) {
-
-        // /** check if request contains method equal to post. */
-        // if ($request->method() === 'POST') {
-        //     /** forward bluechip function with store. */
-        //     if ($request->input('section') === 'bluechip' && $request->input('statement') === 'store') {
-        //         return $this->bluechip($request->all());
-        //     }
-        // }
-
+    public function init(Request $request, $page = 1)
+    {
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
             /** sentinel response. */
-            if ($request->input('section') === 'fetch') {
-                return $this->fetch($request->all());
+            if ($request->input('section') === 'explorer') {
+                /** Return something. */
+                return $this->fetch(['statement' => $request->input('statement'), 'page' => $page]);
             }
         }
+        /** Return something. */
+        return response(['message' => 'Requests made with this endpoint need to have at least one parameter value.'], 404);
     }
 
     /**
      * Declare fetch function.
      */
-    public function fetch($data) {
+    public function fetch($data)
+    {
+        /** Check if required parameter is not empty. */
+        if (!$data['statement'] || !$data['page']) {
+            return response(['message' => 'Important parameters are missing in the request.']);
+        }
+
         /** declare pointer */
         $result = [];
 
         /** check if section match. */
         if ($data['statement'] === 'select') {
+            /** Item per page. */
+            $itemPerPage = 15;
+
+            /** Get total number of records. */
+            $totalRecords = DB::table('stock_trades')
+                ->select('symbol', 'price', 'value', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'priceearningratio', 'netprofitmargin', 'returnonequity', 'dividendyield')
+                ->where('value', '>', 0)
+                ->where('workingcapital', '>', 0)
+                ->where('netincomeaftertax', '>', 0)
+                ->count();
+
+            /** Calculate the number of pages */
+            $numberOfPages = ceil($totalRecords / $itemPerPage);
+
             /** fetch top stocks base on fundametal data. */
-            $fundamental = DB::table('stock_trades')
+            $stocks = DB::table('stock_trades')
                 ->select('symbol', 'price', 'value', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'priceearningratio', 'netprofitmargin', 'returnonequity', 'dividendyield')
                 ->where('value', '>', 0)
                 ->where('workingcapital', '>', 0)
                 ->where('netincomeaftertax', '>', 0)
                 ->orderBy('netincomeaftertax', 'desc')
-                ->limit(25)
-                ->get()
+                ->paginate($itemPerPage, '*', 'page', $data['page'])
                 ->toArray();
 
             /** check if not empty. */
-            if (count($fundamental) > 1) {
+            if (count($stocks['data']) > 1) {
                 /** then call helper to add standard format. */
-                $result['fundamental'] = $this->helpers(['purpose' => 'format', 'source' => $fundamental]);
+                $result['data'] = $this->helpers(['purpose' => 'format', 'source' => $stocks['data']]);
             } else {
                 /** set to empty array. */
-                $result['fundamental'] = [];
-            }
-
-            /** fetch top stocks base on fundametal data. */
-            $technical = DB::table('stock_trades')
-                ->join('stock_charts', 'stock_trades.symbol', '=', 'stock_charts.symbol')
-                ->select('stock_trades.symbol', 'stock_trades.price', 'stock_trades.value', 'stock_trades.pricerange', 'supportlevel', 'resistancelevel', 'movingaverage', 'movingsignal')
-                ->where('value', '>', 0)
-                ->where('workingcapital', '>', 0)
-                ->where('netincomeaftertax', '>', 0)
-                ->orderBy('value', 'desc')
-                ->limit(25)
-                ->get()
-                ->toArray();
-
-            /** check if not empty. */
-            if (count($technical) > 1) {
-                /** then call helper to add standard format. */
-                $result['technical'] = $this->helpers(['purpose' => 'format', 'source' => $technical]);
-            } else {
-                /** set to empty array. */
-                $result['technical'] = [];
+                $result['data'] = [];
             }
         }
 
-        return response(['message' => 'Please wait while we are processing your request.', 'fundamental' => $result['fundamental'], 'technical' => $result['technical']], 200);
+        return response(['message' => 'Please wait while we are processing your request.', 'pages' => $numberOfPages, 'stocks' => $result['data'], 'show_message' => true], 200);
     }
 
     /**
      * Helper function.
      */
-    private function helpers($data) {
+    private function helpers($data)
+    {
         if ($data['purpose'] === 'format') {
             /** return variable. */
             $return = [];

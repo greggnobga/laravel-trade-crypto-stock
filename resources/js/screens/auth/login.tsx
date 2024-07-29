@@ -13,8 +13,8 @@ import useAnimate from '$lib/hooks/use-animate';
 import { loginRequest } from '$lib/store/feature/user/auth-slice';
 
 /** Component. */
-import Loader from '$lib/components/loader.js';
-import Notification from '$lib//components/notification.js';
+import Loader from '$lib/components/loader';
+import Notification from '$lib//components/notification';
 
 const Login = () => {
     /** Map html element to validate hook. */

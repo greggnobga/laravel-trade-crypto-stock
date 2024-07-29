@@ -8,8 +8,7 @@ const Footer = () => {
             <div className='p-2 mb-2'>
                 <h3 className='border-bottom pb-2 uppercase text-slate-100 hover:text-stone-200'>About</h3>
                 <p className='p-2'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
             </div>
             <div className='p-2 mb-2'>

@@ -1,889 +1,123 @@
-// /** React. */
-// import { useState, useEffect } from 'react';
+/** Vendor. */
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
-// /** Vendor. */
-// import { useDispatch, useSelector } from 'react-redux';
+/** Hook. */
+import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk';
+import useNotification from '$lib/hooks/use-notification';
 
-// /** Hook. */
-// import useScreen from '../hooks/UseScreen';
+/** Action. */
+import { explorerRequest } from '$lib/store/feature/stock/explorer-slice';
 
-// /** Component. */
-// import Icon from '../components/Icon';
-// import Modal from '../components/Modal';
-// import Loader from '../components/Loader';
-// import Notice from '../components/Notice';
-// import Search from '../components/Search';
-// import Container from '../components/Container';
-
-// /** Template. */
-// import {
-//     desktopFundamentalContent,
-//     desktopTechnicalContent,
-//     mobileFundamentalContent,
-//     mobileTechnicalContent,
-// } from './template/Explorer';
-
-// /** Action. */
-// import { fetchStockExplorer } from '../actions/ExplorerActions';
+/** Component. */
+import Loader from '$lib/components/loader';
+import Pagination from '$lib/components/pagination';
 
 const StockExplorer = () => {
-    // /** Use state. */
-    // const [notice, setNotice] = useState(false);
-    // /** Use selector. */
-    // const stockExplorerFetch = useSelector((state) => state.stockExplorerFetch);
-    // const { loading, stockexplorer } = stockExplorerFetch;
-    // const showMessage = useSelector((state) => state.showMessage);
-    // const { message, error } = showMessage;
-    // /** Use screen. */
-    // const { isMobile } = useScreen();
-    // /** Use dispatch. */
-    // const dispatch = useDispatch();
-    // /** Use effect. */
-    // useEffect(() => {
-    //     /** Send request if no stocks. */
-    //     if (!stockexplorer) {
-    //         /** Dispatch action. */
-    //         dispatch(fetchStockExplorer());
-    //     }
-    //     /** Monitor new message. */
-    //     if (message) {
-    //         /** Set state. */
-    //         setNotice(true);
-    //         /** Reset state. */
-    //         setTimeout(() => {
-    //             setNotice(false);
-    //         }, 5000);
-    //     }
-    // }, [message, stockexplorer]);
+    /** Use params. */
+    const { page } = useParams();
+    const currentPage = Number(page) || 1;
+
+    /** Use navigate. */
+    const navigate = useNavigate();
+
+    /** Use selector. */
+    const stockExplorer = useAppSelector((state) => state.stockExplorer);
+    const { loading, show_message, pages, stocks } = stockExplorer;
+
+    /** Use dispatch. */
+    const dispatch = useAppDispatch();
+
+    /** Use effect. */
+    useEffect(() => {
+        /** If no page is provided, redirect to page 1 */
+        if (!page) {
+            navigate('/stock-explorer', { replace: true });
+        }
+
+        /** Dispatch request on reload. */
+        dispatch(explorerRequest({ section: 'explorer', statement: 'select', page: currentPage }));
+    }, [page, navigate, show_message, pages]);
+
+    /** Pagination handler. */
+    const paginationHandler = (pageNumber: number) => {
+        /** Dispatch request on reload. */
+        dispatch(explorerRequest({ section: 'explorer', statement: 'select', page: pageNumber }));
+    };
 
     /** Return something. */
     return (
-        <section className='p-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5'>
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-
-            <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Ticker</p>
-                    <p className='px-2 py-1 text-lg'>RLC</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>10,000,099.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Value</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Working Capital</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Icome</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Debt Asset Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Price Earning Ratio</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Net Profit Margin</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-                <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
-                    <p className='text-xs text-purple-500'>Return On Equity</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 justify-items-start'>
-                    <p className='text-xs text-purple-500'>Dividend Yield</p>
-                    <p className='px-2 py-1 text-sm text-slate-600'>99.00</p>
-                </div>
-
-                <div className='grid grid-cols-1 gap-2 justify-items-end'>
-                    <a className='px-4 hover:text-blue-500' href='#'>
-                        View
-                    </a>
-                </div>
-            </div>
-        </section>
+        <>
+            {loading ? (
+                <Loader />
+            ) : (
+                <section className='p-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                    {stocks &&
+                        stocks.map((item) => {
+                            return (
+                                <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1 text-xs text-purple-500'>Ticker</p>
+                                        <p className='px-2 py-1 text-lg'>{item.symbol}</p>
+                                    </div>
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Price</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.price}</p>
+                                    </div>
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Value</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.value}</p>
+                                    </div>
+
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Working Capital</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.workingcapital}</p>
+                                    </div>
+
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Net Icome</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.netincomeaftertax}</p>
+                                    </div>
+
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Debt Asset Ratio</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.debtassetratio}</p>
+                                    </div>
+
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Price Earning Ratio</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.priceearningratio}</p>
+                                    </div>
+
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Net Profit Margin</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.netprofitmargin}</p>
+                                    </div>
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Return On Equity</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.returnonequity}</p>
+                                    </div>
+
+                                    <div className='grid grid-cols-2 gap-2 justify-items-start'>
+                                        <p className='px-2 py-1  text-xs font-thin text-purple-500'>Dividend Yield</p>
+                                        <p className='px-2 py-1 text-xs text-slate-600'>{item.dividendyield}</p>
+                                    </div>
+
+                                    <div className='grid grid-cols-1 gap-2 justify-items-end'>
+                                        <a
+                                            className='bg-purple-500 hover:bg-purple-700 px-5 py-1 text-slate-100 text-xs font-thin rounded shadow'
+                                            href={`/stock-explorer/details/${item.symbol}`}>
+                                            View
+                                        </a>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                </section>
+            )}
+
+            <Pagination pages={pages} target='/stock-explorer' handler={paginationHandler} current={currentPage} />
+        </>
     );
 };
 

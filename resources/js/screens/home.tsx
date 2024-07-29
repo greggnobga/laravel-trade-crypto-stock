@@ -29,7 +29,7 @@ const Home = () => {
         },
         {
             ref: animate_four,
-            animations: [{ threshold: 0.5, animationClass: 'animate-fade-up' }],
+            animations: [{ threshold: 0.5, animationClass: 'animate-fade' }],
         },
     ]);
 

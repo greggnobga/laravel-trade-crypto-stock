@@ -8,8 +8,8 @@ import useProtect from '$lib/hooks/use-protect';
 
 /** Component. */
 import Icon from '$lib/components/icon';
-import Loader from '$lib/components/loader.js';
-import Notification from '$lib//components/notification.js';
+import Loader from '$lib/components/loader';
+import Notification from '$lib//components/notification';
 
 const Dashboard = () => {
     // /** Use selector. */

@@ -4,9 +4,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 /** Component. */
 import Layout from '$lib/components/layout';
 import Home from '$lib/screens/home';
-import Stock from '$lib/screens/stock';
 import Crypto from '$lib/screens/crypto';
 import Error from '$lib/screens/error';
+
+import Stock from '$lib/screens/stock';
+import StockDetails from '$lib/screens/stock-details';
 
 import Register from '$lib/screens/auth/register';
 import Login from '$lib/screens/auth/login';
@@ -34,7 +36,8 @@ const App = () => {
             <Routes>
                 <Route path='/' element={<Layout />}>
                     <Route path='/' element={<Home />} />
-                    <Route path='/stock-explorer' element={<Stock />} />
+                    <Route path='/stock-explorer/:page?' element={<Stock />} />
+                    <Route path='/stock-explorer/details/:ticker?' element={<StockDetails />} />
                     <Route path='/crypto-explorer' element={<Crypto />} />
                 </Route>
                 <Route path='/auth' element={<Layout />}>

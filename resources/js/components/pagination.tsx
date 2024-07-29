@@ -54,16 +54,18 @@ const Pagination: React.FC<PaginationProps> = ({ pages, target, handler, current
                     <span>Prev</span>
                 </button>
                 <div className='flex flex-wrap items-center gap-x-1'>
-                    {Array.from({ length: pages }, (_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => handlePageChange(Number(index + 1))}
-                            className={`px-4 py-2 text-sm rounded-lg hover:bg-gray-100 ${
-                                currentPage === index + 1 ? 'bg-purple-400 text-slate-100' : ''
-                            }`}>
-                            {index + 1}
-                        </button>
-                    ))}
+                    {Array.from({ length: pages }, (_, index) => {
+                        return (
+                            <button
+                                key={index}
+                                onClick={() => handlePageChange(Number(index + 1))}
+                                className={`px-4 py-2 text-sm rounded-lg hover:bg-gray-100 ${
+                                    currentPage === index + 1 ? 'bg-purple-400 text-slate-100' : ''
+                                }`}>
+                                {index + 1}
+                            </button>
+                        );
+                    })}
                 </div>
                 <button
                     type='button'

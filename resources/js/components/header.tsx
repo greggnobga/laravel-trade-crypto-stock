@@ -1,6 +1,6 @@
 /** Vendor. */
-import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 // /** Vendor. */
 // import { Link } from 'react-router-dom';
@@ -9,71 +9,71 @@ import { Link } from 'react-router-dom'
 // import { logoutUser, tokenUser } from '../actions/UserActions';
 
 /** Component. */
-import Icon from './icon'
+import Icon from './icon';
 
 /** Hook. */
-import useScreen from '$lib/hooks/use-screen'
-import useAnimate from '$lib/hooks/use-animate'
-import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk'
+import useScreen from '$lib/hooks/use-screen';
+import useAnimate from '$lib/hooks/use-animate';
+import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk';
 
 /** Action. */
-import { logoutRequest } from '$lib/store/feature/user/auth-slice'
+import { logoutRequest } from '$lib/store/feature/user/auth-slice';
 
 /** Header function. */
 const Header = () => {
     /** Use selector. */
-    const auth = useAppSelector((state) => state.auth)
-    const { access_token, show_message } = auth
+    const auth = useAppSelector((state) => state.auth);
+    const { access_token, show_message } = auth;
 
     /** Use dispatch. */
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
     /** Logout handler. */
     const logoutHandler = () => {
         /** Check if token is not empty. */
         if (access_token) {
             /** Dispatch actions. */
-            dispatch(logoutRequest({ token: access_token }))
+            dispatch(logoutRequest({ token: access_token }));
         }
 
         /** Remove auth local storage. */
         if (show_message) {
             const timer = setTimeout(() => {
-                localStorage.removeItem('auth')
-            }, 6000)
+                localStorage.removeItem('auth');
+            }, 6000);
 
-            return () => clearTimeout(timer)
+            return () => clearTimeout(timer);
         }
-    }
+    };
 
     /** Use state. */
-    const [menu, setMenu] = useState<boolean>(false)
+    const [menu, setMenu] = useState<boolean>(false);
 
     const menuHandler = () => {
-        setMenu((menu) => !menu)
-    }
+        setMenu((menu) => !menu);
+    };
 
     /** Use screen hook. */
-    const isMobile = useScreen()
+    const isMobile = useScreen();
 
     /** Is logged. */
-    const isLogged = access_token ? true : false
+    const isLogged = access_token ? true : false;
 
     /** Use animate. */
-    const animate_one = useRef(null)
+    const animate_one = useRef(null);
 
     useAnimate([
         {
             ref: animate_one,
             animations: [{ threshold: 0.1, animationClass: 'animate-fade-down' }],
         },
-    ])
+    ]);
 
     return (
         <section className='relative top-0 left-0 z-50'>
             <header
                 ref={animate_one}
-                className='flex justify-between h-fit font-size gradient-blue-purple border-bottom text-slate-50 relative animate-once animate-ease-in z-40'>
+                className='flex justify-between h-fit gradient-blue-purple border-bottom text-slate-50 relative animate-once animate-ease-in z-40'>
                 <div className='p-2 md:text-xs'>
                     <div className='grid grid-cols-2 place-items-center'>
                         <Link to='/stock-explorer'>
@@ -93,7 +93,7 @@ const Header = () => {
                         ' '
                     ) : (
                         <Link to='/'>
-                            <span className='uppercase text-yellow-500 hover:text-slate-200'>
+                            <span className='uppercase font-serif text-yellow-500 hover:text-slate-200'>
                                 <Icon id='logo' width='w-6' height='h-6' /> Orion Trade
                             </span>
                         </Link>
@@ -105,8 +105,7 @@ const Header = () => {
                             <li className='md:text-xs'>
                                 <Link to='#'>
                                     <span className='hover:text-orange-300' onClick={() => menuHandler()}>
-                                        <Icon id='control' width='w-6' height='h-6' />{' '}
-                                        {isMobile ? ' ' : 'Control Panel '}
+                                        <Icon id='control' width='w-6' height='h-6' /> {isMobile ? ' ' : 'Control Panel '}
                                     </span>
                                 </Link>
                             </li>
@@ -155,7 +154,7 @@ const Header = () => {
             </header>
             {menu ? (
                 <nav
-                    className='flex flex-row justify-between font-size shadow bg-slate-400 text-slate-50 absolute w-full top-14 right-0 z-40'
+                    className='flex flex-row justify-between shadow bg-slate-400 text-slate-50 absolute w-full top-14 right-0 z-40'
                     onClick={() => menuHandler()}>
                     <ul className='p-2 flex-grow'>
                         <li className='px-2'>
@@ -233,7 +232,7 @@ const Header = () => {
                 ''
             )}
         </section>
-    )
-}
+    );
+};
 
-export default Header
+export default Header;

@@ -17,7 +17,7 @@
         <link href="/public/css/app.css" rel="stylesheet" type="text/css" />
     </head>
 
-    <body class="font-monster font-size background-dot">
+    <body class="font-sans text-base background-dot text-slate-700">
         <aside id="modal"></aside>
         <main id="root"></main>
         <script src="/public/js/main.js"></script>

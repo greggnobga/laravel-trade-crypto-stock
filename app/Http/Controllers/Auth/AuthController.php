@@ -31,9 +31,9 @@ class AuthController extends Controller
 
         /** Validate request data */
         $validator = Validator::make($request->all(), [
-            'userName' => 'required|string|unique:users|max:255',
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
+            'username' => 'required|string|unique:users|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'role' => 'required|string|max:255',
             'password' => 'required|min:10',
@@ -49,9 +49,9 @@ class AuthController extends Controller
         $url = '';
         if ($validator->passes()) {
             $Users = Users::create([
-                'username' => strip_tags($request->userName),
-                'firstname' => strip_tags($request->firstName),
-                'lastname' => strip_tags($request->lastName),
+                'username' => strip_tags($request->username),
+                'firstname' => strip_tags($request->firstname),
+                'lastname' => strip_tags($request->lastname),
                 'email' => strip_tags($request->email),
                 'role' => strip_tags($request->role),
                 'password' => Hash::make($request->password)
@@ -73,7 +73,7 @@ class AuthController extends Controller
             $verifyData = [
                 'title' => 'Email Verification',
                 'body' => 'Please verify your email address before proceeding to fully enjoy the benefits we have provided.',
-                'fullname' => strip_tags($request->firstName) . ' ' . strip_tags($request->lastName),
+                'fullname' => strip_tags($request->firstname) . ' ' . strip_tags($request->lastname),
                 'link' => $url
             ];
             /** Send mail. */

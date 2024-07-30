@@ -105,7 +105,7 @@ const StockExplorer = () => {
 
                                     <div className='grid grid-cols-1 gap-2 justify-items-end overflow-hidden'>
                                         <a
-                                            className='h-fit bg-purple-500 hover:bg-purple-700 px-5 py-1 text-slate-100 text-xs font-thin rounded shadow '
+                                            className='h-fit bg-purple-500 hover:bg-purple-700 px-5 py-1 text-slate-100 text-xs font-thin rounded shadow'
                                             href={`/stock-explorer/details/${item.symbol}`}>
                                             View
                                         </a>

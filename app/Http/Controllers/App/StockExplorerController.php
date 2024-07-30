@@ -6,21 +6,31 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\Dashboard\PSEController;
+
 class StockExplorerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function init(Request $request, $page = 1)
+    public function init(Request $request)
     {
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
-            /** sentinel response. */
+
+            /** Explorer response. */
             if ($request->input('section') === 'explorer') {
                 /** Return something. */
-                return $this->fetch(['statement' => $request->input('statement'), 'page' => $page]);
+                return $this->fetch(['statement' => $request->input('statement'), 'page' => $request->input('page')]);
+            }
+
+            /** Details response. */
+            if ($request->input('section') === 'details') {
+                /** Return something. */
+                return $this->details(['statement' => $request->input('statement'), 'symbol' => $request->input('symbol')]);
             }
         }
+
         /** Return something. */
         return response(['message' => 'Requests made with this endpoint need to have at least one parameter value.'], 404);
     }
@@ -75,6 +85,74 @@ class StockExplorerController extends Controller
         }
 
         return response(['message' => 'Please wait while we are processing your request.', 'pages' => $numberOfPages, 'stocks' => $result['data'], 'show_message' => true], 200);
+    }
+
+    /**
+     * Declare fetch function.
+     */
+    public function details($data)
+    {
+        /** Check if required parameter is not empty. */
+        if (!$data['statement'] || !$data['symbol']) {
+            return response(['message' => 'Important parameters are missing in the request.']);
+        }
+
+        /** Select neccessary fields to be used later. */
+        $stock = DB::table('stock_trades')
+            ->select('edge', 'security', 'symbol')
+            ->where('symbol', $data['symbol'])
+            ->first();
+
+        /** Forward to pse controller to build the technical information. */
+        $pse_controller = new PSEController();
+        $stock_chart = $pse_controller->stockchart(['edge' => $stock->edge, 'security' => $stock->security, 'symbol' => $stock->symbol]);
+
+        /** declare pointer */
+        $result = [];
+
+        /** check if fetching chart data is a success.*/
+        if ($stock_chart->original['success']) {
+            /** check if section match. */
+            if ($data['statement'] === 'select') {
+                /** techincal data. */
+                $result['technical'] = DB::table('stock_charts')
+                    ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_charts.symbol')
+                    ->select('stock_trades.price', 'stock_trades.change', 'stock_trades.volume', 'stock_trades.pricerange', 'supportlevel', 'resistancelevel', 'movingaverage', 'movingsignal')
+                    ->where('stock_charts.symbol', '=', $data['symbol'])
+                    ->get()
+                    ->toArray();
+
+                /** check if not empty. */
+                if ($result['technical']) {
+                    /** then call helper to add standard format. */
+                    $result['technical'] = $this->helpers(['purpose' => 'format', 'source' => $result['technical']]);
+                } else {
+                    /** set to empty array. */
+                    $result['technical'] = [];
+                }
+
+                /** fundametal data. */
+                $result['fundamental'] = DB::table('stock_trades')
+                    ->select('sector', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'priceearningratio', 'netprofitmargin', 'returnonequity', 'dividendyield')
+                    ->where('symbol', '=', $data['symbol'])
+                    ->get()
+                    ->toArray();
+
+                /** check if not empty. */
+                if ($result['fundamental']) {
+                    /** then call helper to add standard format. */
+                    $result['fundamental'] = $this->helpers(['purpose' => 'format', 'source' => $result['fundamental']]);
+                } else {
+                    /** set to empty array. */
+                    $result['fundamental'] = [];
+                }
+            }
+        } else {
+            return response(['message' => 'Something went wrong.', 'data' => $stock_chart], 401);
+        }
+
+        /** Return something. */
+        return response(['message' => 'Please wait while we are processing your request.', 'technical' => $result['technical'], 'fundamental' => $result['fundamental'], 'show_message' => true], 200);
     }
 
     /**

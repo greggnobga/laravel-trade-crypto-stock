@@ -21,7 +21,6 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::post('/stock-explorer-store', [App\Http\Controllers\App\StockExplorerController::class, 'init']);
     Route::get('/stock-explorer-retrieve', [App\Http\Controllers\App\StockExplorerController::class, 'init']);
-    Route::get('/stock-explorer-retrieve/page/{page?}', [App\Http\Controllers\App\StockExplorerController::class, 'init']);
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {

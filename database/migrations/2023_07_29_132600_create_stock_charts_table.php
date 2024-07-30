@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('stock_charts', function (Blueprint $table) {
             $table->id();
-            $table->integer('userid');
             $table->string('symbol');
             $table->decimal('supportlevel', 24, 2)->signed()->default(0.00);
             $table->decimal('resistancelevel', 24, 2)->signed()->default(0.00);

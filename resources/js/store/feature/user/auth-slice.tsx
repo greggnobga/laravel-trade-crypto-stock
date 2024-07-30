@@ -52,6 +52,12 @@ export const loginRequest = createAsyncThunk<any, InputCredentials, { rejectValu
             /** Deconstruct input data. */
             const { email, password } = inputData;
 
+            /** Prepare form data. */
+            let form_data = new FormData();
+
+            form_data.append('email', email as string);
+            form_data.append('password', password as string);
+
             /** Request data from backend. */
             const { data, status } = await axios({
                 headers: {
@@ -59,7 +65,7 @@ export const loginRequest = createAsyncThunk<any, InputCredentials, { rejectValu
                 },
                 method: 'POST',
                 url: '/api/login',
-                params: { email, password },
+                data: form_data,
             });
 
             /** Save to local storage. */
@@ -101,6 +107,11 @@ export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Er
         /** Deconstruct input data. */
         const { token } = inputData;
 
+        /** Prepare form data. */
+        let form_data = new FormData();
+
+        form_data.append('token', token as string);
+
         /** Request data from backend. */
         const { data } = await axios({
             headers: {
@@ -109,12 +120,13 @@ export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Er
             },
             method: 'POST',
             url: '/api/logout',
-            params: { token },
+            data: form_data,
         });
 
         if (data) {
             /** Remove existing data. */
             localStorage.removeItem('auth');
+            localStorage.removeItem('stock-explorer');
         }
 
         /** Return something. */
@@ -196,6 +208,15 @@ export const registerRequest = createAsyncThunk<any, InputCredentials, { rejectV
             /** Deconstruct input data. */
             const { userName, firstName, lastName, email, password } = inputData;
 
+            /** Prepare form data. */
+            let form_data = new FormData();
+
+            form_data.append('username', userName as string);
+            form_data.append('firstname', firstName as string);
+            form_data.append('lastname', lastName as string);
+            form_data.append('email', email as string);
+            form_data.append('password', password as string);
+
             /** Request data from backend. */
             const { data, status } = await axios({
                 headers: {
@@ -203,10 +224,8 @@ export const registerRequest = createAsyncThunk<any, InputCredentials, { rejectV
                 },
                 method: 'POST',
                 url: '/api/register',
-                params: { userName, firstName, lastName, email, password },
+                data: form_data,
             });
-
-            console.log(data);
 
             /** Save to local storage. */
             if (data) {
@@ -269,6 +288,7 @@ export const AuthSlice = createSlice({
             state.role = '';
             state.access_token = '';
             state.show_message = true;
+            state.valid = false;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
         });
@@ -283,6 +303,7 @@ export const AuthSlice = createSlice({
             state.loading = false;
             state.access_token = '';
             state.show_message = true;
+            state.valid = false;
             state.message = action.payload?.message || 'Adios amigo, see you next time!';
             state.status = action.payload?.status || null;
         });
@@ -290,6 +311,7 @@ export const AuthSlice = createSlice({
         builder.addCase(logoutRequest.rejected, (state, action: any) => {
             state.loading = false;
             state.show_message = true;
+            state.valid = false;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
         });

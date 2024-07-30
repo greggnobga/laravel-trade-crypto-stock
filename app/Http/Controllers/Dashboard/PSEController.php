@@ -977,17 +977,14 @@ class PSEController extends Controller
             /** save to database. */
             $check = DB::table('stock_charts')
                 ->select('symbol')
-                ->where('userid', Auth::id())
                 ->where('symbol', $data['symbol'])
                 ->first();
 
             /** if not then insert else update. */
             if (is_null($check)) {
                 DB::table('stock_charts')
-                    ->where('userid', Auth::id())
                     ->where('symbol', $data['symbol'])
                     ->insert([
-                        'userid' => Auth::id(),
                         'symbol' => strip_tags($data['symbol']),
                         'movingsignal' => strip_tags($result['movingsignal']),
                         'movingaverage' => strip_tags($result['movingaverage']),
@@ -998,7 +995,6 @@ class PSEController extends Controller
                     ]);
             } else {
                 DB::table('stock_charts')
-                    ->where('userid', Auth::id())
                     ->where('symbol', $data['symbol'])
                     ->update([
                         'movingsignal' => strip_tags($result['movingsignal']),
@@ -1011,7 +1007,7 @@ class PSEController extends Controller
         }
 
         /** return something. */
-        return response(['message' => 'The ' . $data['symbol'] . ' information was successfully updated.'], 200);
+        return response(['message' => 'The ' . $data['symbol'] . ' information was successfully updated.', 'success' => true], 200);
     }
 
     /**

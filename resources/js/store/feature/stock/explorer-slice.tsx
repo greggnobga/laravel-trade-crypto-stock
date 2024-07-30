@@ -62,8 +62,8 @@ export const explorerRequest = createAsyncThunk<any, InputExplorer, { rejectValu
                     'Content-Type': 'application/json',
                 },
                 method: 'GET',
-                url: `/api/stock-explorer-retrieve/page/${page}`,
-                params: { section, statement },
+                url: `/api/stock-explorer-retrieve/`,
+                params: { section, statement, page },
             });
 
             /** Save to local storage. */

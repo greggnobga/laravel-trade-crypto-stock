@@ -8,11 +8,30 @@ type Error<T> = {
     status?: number;
 };
 
-/** Explorer type. */
-type Explorer = {
-    symbol: string;
+/** Fetch user data from local storage. */
+const stockDetailFromStorage = JSON.parse(localStorage.getItem('stock-detail') || '{}');
+
+/** Set inital state. */
+const initialState = {
+    loading: false,
+    ...stockDetailFromStorage,
+};
+
+/** Technical type. */
+type Technical = {
     price: string;
-    value: string;
+    change: string;
+    volume: string;
+    pricerange: string;
+    supportlevel: string;
+    resistantlevel: string;
+    movingaverage: string;
+    movingsignal: string;
+};
+
+/** Fundamental type. */
+type Fundamental = {
+    sector: string;
     workingcapital: string;
     netincomeaftertax: string;
     debtassetratio: string;
@@ -22,39 +41,28 @@ type Explorer = {
     dividendyield: string;
 };
 
-/** Explorers type. */
-type Explorers = {
+/** Input detail. */
+type Detail = {
     message: string;
-    pages: number;
-    stocks: Explorer[];
-    loading: boolean;
-    status: number;
+    technical: Technical[];
+    fundamental: Fundamental[];
     show_message: boolean;
 };
 
-/** Input login type. */
-type InputExplorer = {
-    page: number;
+/** Detail input type. */
+type InputDetail = {
+    symbol: string;
     section: string;
     statement: string;
 };
 
-/** Fetch user data from local storage. */
-const stockExplorerFromStorage = JSON.parse(localStorage.getItem('stock-explorer') || '{}');
-
-/** Set inital state. */
-const initialState = {
-    loading: false,
-    ...stockExplorerFromStorage,
-};
-
-/** Explorer request. */
-export const explorerRequest = createAsyncThunk<any, InputExplorer, { rejectValue: Error<any> }>(
-    'stock/explorer',
+/** Login request. */
+export const detailRequest = createAsyncThunk<any, InputDetail, { rejectValue: Error<any> }>(
+    'stock/detail',
     async (inputData, { rejectWithValue }) => {
         try {
             /** Deconstruct input data. */
-            const { section, statement, page } = inputData;
+            const { symbol, section, statement } = inputData;
 
             /** Request data from backend. */
             const { data, status } = await axios({
@@ -63,12 +71,12 @@ export const explorerRequest = createAsyncThunk<any, InputExplorer, { rejectValu
                 },
                 method: 'GET',
                 url: `/api/stock-explorer-retrieve`,
-                params: { section, statement, page },
+                params: { symbol, section, statement },
             });
 
             /** Save to local storage. */
             if (data) {
-                localStorage.setItem('stock-explorer', JSON.stringify(data));
+                localStorage.setItem('stock-detail', JSON.stringify(data));
             }
 
             /** Return something. */
@@ -97,27 +105,29 @@ export const explorerRequest = createAsyncThunk<any, InputExplorer, { rejectValu
 );
 
 /** Export slice. */
-export const stockExplorer = createSlice({
-    name: 'stockExplorer',
+export const stockDetail = createSlice({
+    name: 'stockDetail',
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
-        /** Explorer request case. */
-        builder.addCase(explorerRequest.pending, (state) => {
+        /** Detail request case. */
+        builder.addCase(detailRequest.pending, (state) => {
             state.loading = true;
         });
 
-        builder.addCase(explorerRequest.fulfilled, (state, action: any) => {
+        builder.addCase(detailRequest.fulfilled, (state, action: any) => {
             state.loading = false;
-            state.stocks = action.payload.stocks;
+            state.technical = action.payload.technical;
+            state.fundamental = action.payload.fundamental;
             state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
         });
 
-        builder.addCase(explorerRequest.rejected, (state, action: any) => {
+        builder.addCase(detailRequest.rejected, (state, action: any) => {
             state.loading = false;
-            state.stocks = [];
+            state.technical = [];
+            state.fundamental = [];
             state.show_message = true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
@@ -126,4 +136,4 @@ export const stockExplorer = createSlice({
 });
 
 /** Export something. */
-export default stockExplorer.reducer;
+export default stockDetail.reducer;

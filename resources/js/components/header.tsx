@@ -154,7 +154,7 @@ const Header = () => {
             </header>
             {menu ? (
                 <nav
-                    className='flex flex-row justify-between shadow bg-slate-400 text-slate-50 absolute w-full top-14 right-0 z-40'
+                    className='flex flex-row justify-between shadow bg-slate-400 text-slate-50 absolute w-full top-14 right-0 z-40 animate-fade animate-once animate-ease-in-out'
                     onClick={() => menuHandler()}>
                     <ul className='p-2 flex-grow'>
                         <li className='px-2'>

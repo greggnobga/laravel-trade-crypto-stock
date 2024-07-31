@@ -4,13 +4,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 /** Hook. */
 import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk';
-import useNotification from '$lib/hooks/use-notification';
 
 /** Action. */
 import { explorerRequest } from '$lib/store/feature/stock/explorer-slice';
 
 /** Component. */
 import Loader from '$lib/components/loader';
+import Notification from '$lib//components/notification';
 import Pagination from '$lib/components/pagination';
 
 const StockExplorer = () => {
@@ -23,7 +23,7 @@ const StockExplorer = () => {
 
     /** Use selector. */
     const stockExplorer = useAppSelector((state) => state.stockExplorer);
-    const { loading, show_message, pages, stocks } = stockExplorer;
+    const { loading, show_message, message, status, pages, stocks } = stockExplorer;
 
     /** Use dispatch. */
     const dispatch = useAppDispatch();
@@ -37,7 +37,7 @@ const StockExplorer = () => {
 
         /** Dispatch request on reload. */
         dispatch(explorerRequest({ section: 'explorer', statement: 'select', page: currentPage }));
-    }, [page, navigate, show_message, pages]);
+    }, [page, pages]);
 
     /** Pagination handler. */
     const paginationHandler = (pageNumber: number) => {
@@ -48,14 +48,15 @@ const StockExplorer = () => {
     /** Return something. */
     return (
         <>
+            {show_message && message && <Notification children={message} duration={5000} status={status ? status : 200} />}
             {loading ? (
                 <Loader />
             ) : (
-                <section className='p-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                <section className='p-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 animate-fade animate-once animate-ease-in-out'>
                     {stocks &&
-                        stocks.map((item) => {
+                        stocks.map((item: any) => {
                             return (
-                                <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
+                                <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded '>
                                     <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                                         <p className='px-2 py-1 text-xs text-purple-500'>Ticker</p>
                                         <p className='px-2 py-1 text-lg'>{item.symbol}</p>
@@ -106,7 +107,7 @@ const StockExplorer = () => {
                                     <div className='grid grid-cols-1 gap-2 justify-items-end overflow-hidden'>
                                         <a
                                             className='h-fit bg-purple-500 hover:bg-purple-700 px-5 py-1 text-slate-100 text-xs font-thin rounded shadow'
-                                            href={`/stock-explorer/details/${item.symbol}`}>
+                                            href={`/stock-explorer/details/${item.symbol.toLowerCase()}`}>
                                             View
                                         </a>
                                     </div>

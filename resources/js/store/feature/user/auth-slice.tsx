@@ -41,7 +41,6 @@ const userFromStorage = JSON.parse(localStorage.getItem('auth') || '{}');
 const initialState: User = {
     loading: false,
     ...userFromStorage,
-    error: '',
 };
 
 /** Login request. */
@@ -127,6 +126,7 @@ export const logoutRequest = createAsyncThunk<any, InputToken, { rejectValue: Er
             /** Remove existing data. */
             localStorage.removeItem('auth');
             localStorage.removeItem('stock-explorer');
+            localStorage.removeItem('stock-detail');
         }
 
         /** Return something. */
@@ -269,7 +269,6 @@ export const AuthSlice = createSlice({
         /** Login request case. */
         builder.addCase(loginRequest.pending, (state) => {
             state.loading = true;
-            state.show_message = false;
         });
 
         builder.addCase(loginRequest.fulfilled, (state, action: any) => {
@@ -277,7 +276,7 @@ export const AuthSlice = createSlice({
             state.email_verified = action.payload.email_verified;
             state.role = action.payload.role;
             state.access_token = action.payload.access_token;
-            state.show_message = action.payload?.show_message;
+            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
         });
@@ -287,8 +286,8 @@ export const AuthSlice = createSlice({
             state.email_verified = false;
             state.role = '';
             state.access_token = '';
-            state.show_message = true;
             state.valid = false;
+            state.show_message = true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
         });
@@ -296,22 +295,21 @@ export const AuthSlice = createSlice({
         /** Logout request case. */
         builder.addCase(logoutRequest.pending, (state) => {
             state.loading = true;
-            state.show_message = false;
         });
 
         builder.addCase(logoutRequest.fulfilled, (state, action: any) => {
             state.loading = false;
             state.access_token = '';
-            state.show_message = true;
             state.valid = false;
+            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
             state.message = action.payload?.message || 'Adios amigo, see you next time!';
             state.status = action.payload?.status || null;
         });
 
         builder.addCase(logoutRequest.rejected, (state, action: any) => {
             state.loading = false;
-            state.show_message = true;
             state.valid = false;
+            state.show_message = true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
         });
@@ -336,7 +334,6 @@ export const AuthSlice = createSlice({
         /** Register request case. */
         builder.addCase(registerRequest.pending, (state) => {
             state.loading = true;
-            state.show_message = false;
         });
 
         builder.addCase(registerRequest.fulfilled, (state, action: any) => {
@@ -344,7 +341,7 @@ export const AuthSlice = createSlice({
             state.email_verified = action.payload.email_verified;
             state.role = action.payload.role;
             state.access_token = action.payload.access_token;
-            state.show_message = action.payload?.show_message;
+            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
         });

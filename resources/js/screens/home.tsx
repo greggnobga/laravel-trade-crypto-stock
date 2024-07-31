@@ -21,11 +21,11 @@ const Home = () => {
         },
         {
             ref: animate_two,
-            animations: [{ threshold: 0.2, animationClass: 'animate-fade-left' }],
+            animations: [{ threshold: 0.2, animationClass: 'animate-fade' }],
         },
         {
             ref: animate_three,
-            animations: [{ threshold: 0.5, animationClass: 'animate-fade-right' }],
+            animations: [{ threshold: 0.5, animationClass: 'animate-fade' }],
         },
         {
             ref: animate_four,

@@ -29,7 +29,7 @@ const Profile = () => {
 
     /** Return something. */
     return (
-        <section className='p-2 flex flex-col flex-wrap min-h-screen overflow-hidden animate-fade-right animate-once animate-ease-in-out '>
+        <section className='p-2 flex flex-col flex-wrap min-h-screen overflow-hidden animate-fade-right animate-once animate-ease-in-out'>
             <div className='p-2 grid place-items-center rounded-t-md bg-stone-100 w-full'>
                 <div className='p-4'>
                     <img className='w-52 h-52 border-2 border-slate-200 shadow rounded-full' src='/public/images/profile.png' alt='Profile' />

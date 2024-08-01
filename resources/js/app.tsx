@@ -23,6 +23,7 @@ import Note from '$lib/screens/dashboard/note';
 
 import PortfolioStock from '$lib/screens/dashboard/stocks/portfolio';
 import WatchlistStock from '$lib/screens/dashboard/stocks/watchlist';
+import PortfolioChart from '$lib/screens/dashboard/stocks/chart';
 import TradeStock from '$lib/screens/dashboard/stocks/trade';
 
 import PortfolioCrypto from '$lib/screens/dashboard/cryptos/portfolio';
@@ -55,6 +56,7 @@ const App = () => {
                         <Route path='/dashboard/extra-note' element={<Note />} />
                         <Route path='/dashboard/stock-portfolio' element={<PortfolioStock />} />
                         <Route path='/dashboard/stock-watchlist' element={<WatchlistStock />} />
+                        <Route path='/dashboard/stock-chart' element={<PortfolioChart />} />
                         <Route path='/dashboard/stock-trade' element={<TradeStock />} />
                         <Route path='/dashboard/crypto-portfolio' element={<PortfolioCrypto />} />
                         <Route path='/dashboard/crypto-trade' element={<TradeCrypto />} />

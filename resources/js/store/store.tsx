@@ -6,6 +6,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import authReducer from '$lib/store/feature/user/auth-slice';
 import stockExplorerReducer from '$lib/store/feature/stock/explorer-slice';
 import stockDetailReducer from '$lib/store/feature/stock/detail-slice';
+import stockPortfolioReducer from '$lib/store/feature/stock/portfolio-slice';
 
 /** Configure store. */
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
         auth: authReducer,
         stockExplorer: stockExplorerReducer,
         stockDetail: stockDetailReducer,
+        stockPorfolio: stockPortfolioReducer,
     },
 });
 

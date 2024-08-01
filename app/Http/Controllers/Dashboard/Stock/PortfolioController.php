@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class PortfolioController extends Controller {
+class PortfolioController extends Controller
+{
     /**
      * Display a listing of the resource.
      */
-    public function init(Request $request) {
+    public function init(Request $request)
+    {
         /** check if request method equal to post. */
         if ($request->method() === 'POST') {
             /** forward store function. */
@@ -49,7 +51,8 @@ class PortfolioController extends Controller {
     }
 
     /** Fetch portfolio. */
-    public function fetch($data) {
+    public function fetch($data)
+    {
         /** check if section match. */
         if ($data['section'] === 'fetch') {
             /** repository. */
@@ -62,45 +65,6 @@ class PortfolioController extends Controller {
                 ->first();
 
             if (!is_null($check)) {
-                /** plot month and year. */
-                $chart['plot'] = [];
-                for ($i = 11; $i >= 0; $i--) {
-                    $month = Carbon::today()->startOfMonth()->subMonth($i);
-                    $year = Carbon::today()->startOfMonth()->subMonth($i)->format('Y');
-                    array_push($chart['plot'], array(
-                        'id' => $month->format('m'),
-                        'month' => $month->shortMonthName,
-                        'year' => $year
-                    ));
-                }
-
-                /** get data by month and year. */
-                $chart['data'] = [];
-                foreach ($chart['plot'] as $key => $value) {
-                    $chart['data'][$value['month']] = DB::table('stock_portfolios')
-                        ->select('capital')
-                        ->whereYear('created_at', $value['year'])
-                        ->whereMonth('created_at', $value['id'])
-                        ->orderBy('created_at')
-                        ->get();
-                }
-
-                /** format chart data. */
-                $chart['capital'] = [];
-                foreach ($chart['data'] as $key => $value) {
-                    if ($value->isEmpty()) {
-                        $chart['capital'][$key]['month'] = $key;
-                        $chart['capital'][$key]['capital'] = number_format(0.00, 2, '.', '');
-                    }
-                    if ($value->isNotEmpty()) {
-                        $chart['capital'][$key]['month'] = $key;
-                        $chart['capital'][$key]['capital'] = number_format($value->sum('capital'), 2, '.', '');
-                    }
-                }
-
-                /** resequence array keys*/
-                $result['chart'] = array_values($chart['capital']);
-
                 /** order data. */
                 $stocks = DB::table('stock_portfolios')
                     ->select('created_at as date', 'order', 'symbol', 'fee', 'share', 'capital')
@@ -167,10 +131,10 @@ class PortfolioController extends Controller {
                     $result['hold'] = array_values($hold['total']);
                 }
                 /** return if record found. */
-                return response(['message' => 'Please wait while we process your request.', 'order' => $result['order'], 'hold' => $result['hold'], 'chart' => $result['chart']], 200);
+                return response(['message' => 'Please wait while we process your request.', 'order' => $result['order'], 'hold' => $result['hold'], 'show_message' => true], 200);
             } else {
                 /** return if no record. */
-                return response(['message' => 'No record found so far.','order' => [], 'hold' => [], 'chart' => []], 200);
+                return response(['message' => 'No record found so far.', 'order' => [], 'hold' => [], 'show_message' => true], 200);
             }
         }
     }
@@ -178,7 +142,8 @@ class PortfolioController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store($data) {
+    public function store($data)
+    {
         if ($data['section'] === 'store') {
             /** insert with appropriate data. */
             $insert = DB::table('stock_portfolios')
@@ -202,7 +167,8 @@ class PortfolioController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update($data) {
+    public function update($data)
+    {
         if ($data['section'] === 'update') {
             /** run update query.*/
             $update = DB::table('stock_portfolios')
@@ -231,7 +197,8 @@ class PortfolioController extends Controller {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($data) {
+    public function destroy($data)
+    {
         if ($data['section'] === 'destroy') {
             $delete = DB::table('stock_portfolios')
                 ->where('symbol', '=', $data['symbol'])
@@ -249,7 +216,8 @@ class PortfolioController extends Controller {
     /**
      * Helper function,.
      */
-    private function helpers($data) {
+    private function helpers($data)
+    {
         if ($data['purpose'] === 'format' && $data['source'] === 'order') {
             $return = [];
             foreach ($data['stock'] as $key => $value) {

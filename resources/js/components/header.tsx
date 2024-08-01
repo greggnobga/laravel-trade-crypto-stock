@@ -175,6 +175,13 @@ const Header = () => {
                             </Link>
                         </li>
                         <li className='px-2'>
+                            <Link to='/dashboard/stock-chart'>
+                                <span className='block border-bottom hover:text-orange-300'>
+                                    <Icon id='chart' width='w-6' height='h-6' /> {isMobile ? ' ' : 'Chart'}
+                                </span>
+                            </Link>
+                        </li>
+                        <li className='px-2'>
                             <Link to='/dashboard/stock-watchlist'>
                                 <span className='block border-bottom hover:text-orange-300'>
                                     <Icon id='watchlist' width='w-6' height='h-6' /> {isMobile ? ' ' : 'Watchlist'}

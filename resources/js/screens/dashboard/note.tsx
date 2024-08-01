@@ -29,7 +29,7 @@ const Note = () => {
 
     /** Return something. */
     return (
-        <section className='m-2 grid auto-rows-min h-fit'>
+        <section className='m-2 grid auto-rows-min h-fit animate-fade animate-once animate-ease-in-out'>
             <div className='p-2 h-8 sm:10 uppercase'>Note</div>
             {/** Note */}
             <div className='flex flex-wrap flex-col sm:flex-row gap-2 justify-between items-center h-fit'>

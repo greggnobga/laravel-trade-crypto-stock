@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk';
 
 /** Action. */
-import { explorerRequest } from '$lib/store/feature/stock/explorer-slice';
+import { stockExplorerRequest } from '$lib/store/feature/stock/explorer-slice';
 
 /** Component. */
 import Loader from '$lib/components/loader';
@@ -36,13 +36,13 @@ const StockExplorer = () => {
         }
 
         /** Dispatch request on reload. */
-        dispatch(explorerRequest({ section: 'explorer', statement: 'select', page: currentPage }));
+        dispatch(stockExplorerRequest({ section: 'explorer', statement: 'select', page: currentPage }));
     }, [page, pages]);
 
     /** Pagination handler. */
     const paginationHandler = (pageNumber: number) => {
         /** Dispatch request on reload. */
-        dispatch(explorerRequest({ section: 'explorer', statement: 'select', page: pageNumber }));
+        dispatch(stockExplorerRequest({ section: 'explorer', statement: 'select', page: pageNumber }));
     };
 
     /** Return something. */
@@ -56,7 +56,7 @@ const StockExplorer = () => {
                     {stocks &&
                         stocks.map((item: any) => {
                             return (
-                                <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded '>
+                                <div className='p-2 flex flex-col gap-2 flex-wrap bg-stone-100 shadow scale-down rounded'>
                                     <div className='grid grid-cols-2 gap-2 justify-items-start border-b border-slate-200'>
                                         <p className='px-2 py-1 text-xs text-purple-500'>Ticker</p>
                                         <p className='px-2 py-1 text-lg'>{item.symbol}</p>

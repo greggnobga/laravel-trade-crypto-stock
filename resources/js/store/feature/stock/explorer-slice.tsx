@@ -49,7 +49,7 @@ const initialState = {
 };
 
 /** Explorer request. */
-export const explorerRequest = createAsyncThunk<any, InputExplorer, { rejectValue: Error<any> }>(
+export const stockExplorerRequest = createAsyncThunk<any, InputExplorer, { rejectValue: Error<any> }>(
     'stock/explorer',
     async (inputData, { rejectWithValue }) => {
         try {
@@ -103,11 +103,11 @@ export const stockExplorer = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         /** Explorer request case. */
-        builder.addCase(explorerRequest.pending, (state) => {
+        builder.addCase(stockExplorerRequest.pending, (state) => {
             state.loading = true;
         });
 
-        builder.addCase(explorerRequest.fulfilled, (state, action: any) => {
+        builder.addCase(stockExplorerRequest.fulfilled, (state, action: any) => {
             state.loading = false;
             state.stocks = action.payload.stocks;
             state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
@@ -115,7 +115,7 @@ export const stockExplorer = createSlice({
             state.status = action.payload?.status || null;
         });
 
-        builder.addCase(explorerRequest.rejected, (state, action: any) => {
+        builder.addCase(stockExplorerRequest.rejected, (state, action: any) => {
             state.loading = false;
             state.stocks = [];
             state.show_message = true;

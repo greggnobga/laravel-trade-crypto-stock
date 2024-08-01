@@ -345,7 +345,7 @@ const Dashboard = () => {
         <>
             {loading && <Loader />}
             {show_message && message && <Notification children={message} duration={5000} status={status ? status : 200} />}
-            <section className='m-2 grid auto-rows-min h-fit'>
+            <section className='m-2 grid auto-rows-min h-fit animate-fade animate-once animate-ease-in-out'>
                 <div className='p-2 h-8 sm:10 uppercase'>Fetch External Data</div>
                 <div className='p-2 card-rounded grid auto-rows-min gap-4 sm:grid-cols-2 md:grid-cols-4'>
                     <div className='has-tooltip'>

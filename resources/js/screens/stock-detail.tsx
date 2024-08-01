@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk';
 
 /** Action. */
-import { detailRequest } from '$lib/store/feature/stock/detail-slice';
+import { stockDetailRequest } from '$lib/store/feature/stock/detail-slice';
 
 /** Component. */
 import Loader from '$lib/components/loader';
@@ -18,7 +18,7 @@ const StockDetail = () => {
 
     /** Use selector. */
     const stockDetail = useAppSelector((state) => state.stockDetail);
-    const { loading, show_message, message, status, fundamental, technical } = stockDetail;
+    const { loading, show_message, message, status, fundamental, technical, updated } = stockDetail;
 
     /** Use dispatch. */
     const dispatch = useAppDispatch();
@@ -28,7 +28,7 @@ const StockDetail = () => {
         /** If no page is provided, redirect to page 1 */
         if (ticker) {
             /** Dispatch request on reload. */
-            dispatch(detailRequest({ section: 'details', statement: 'select', symbol: ticker }));
+            dispatch(stockDetailRequest({ section: 'details', statement: 'select', symbol: ticker }));
         }
     }, [ticker]);
 
@@ -48,10 +48,16 @@ const StockDetail = () => {
             {loading ? (
                 <Loader />
             ) : (
-                <section className='m-2 p-2 m-h-screen rounded grid grid-cols-1 gap-2 overflow-hidden bg-slate-100'>
-                    <h1>
-                        Specific details about the business: <span className='text-md font-serif font-bold text-purple-500 uppercase'>{ticker}</span>
-                    </h1>
+                <section className='m-2 p-2 m-h-screen rounded grid grid-cols-1 gap-2 bg-slate-100 animate-fade animate-once animate-ease-in-out'>
+                    <div className='flex flex-wrap justify-between'>
+                        <h1 className='p-2 font-light'>
+                            Technical and fundamental details about the business:
+                            <span className='pl-2 text-md font-serif font-bold text-purple-500 uppercase'>{ticker}</span>
+                        </h1>
+                        <p className='p-2 font-light'>
+                            Last update: <span className='text-purple-500'>{updated}</span>
+                        </p>
+                    </div>
 
                     <div className='flex flex-wrap flex-col gap-4 sm:flex-row '>
                         {technical &&

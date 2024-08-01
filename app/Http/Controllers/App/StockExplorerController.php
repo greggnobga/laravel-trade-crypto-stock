@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use App\Http\Controllers\Dashboard\PSEController;
 
@@ -99,7 +100,7 @@ class StockExplorerController extends Controller
 
         /** Select neccessary fields to be used later. */
         $stock = DB::table('stock_trades')
-            ->select('edge', 'security', 'symbol')
+            ->select('edge', 'security', 'symbol', 'updated_at')
             ->where('symbol', $data['symbol'])
             ->first();
 
@@ -151,8 +152,11 @@ class StockExplorerController extends Controller
             return response(['message' => 'Something went wrong.', 'data' => $stock_chart], 401);
         }
 
+        /** Change update to human readable using carbon. */
+        $updated = Carbon::parse($stock->updated_at)->diffForHumans();
+
         /** Return something. */
-        return response(['message' => 'Please wait while we are processing your request.', 'technical' => $result['technical'], 'fundamental' => $result['fundamental'], 'show_message' => true], 200);
+        return response(['message' => 'Please wait while we are processing your request.', 'technical' => $result['technical'], 'fundamental' => $result['fundamental'], 'show_message' => true, 'updated' => $updated], 200);
     }
 
     /**

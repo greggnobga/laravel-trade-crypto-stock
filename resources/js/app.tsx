@@ -54,7 +54,7 @@ const App = () => {
                         <Route path='/dashboard' element={<Dashboard />} />
                         <Route path='/dashboard/profile' element={<Profile />} />
                         <Route path='/dashboard/extra-note' element={<Note />} />
-                        <Route path='/dashboard/stock-portfolio' element={<PortfolioStock />} />
+                        <Route path='/dashboard/stock-portfolio/:page?' element={<PortfolioStock />} />
                         <Route path='/dashboard/stock-watchlist' element={<WatchlistStock />} />
                         <Route path='/dashboard/stock-chart' element={<PortfolioChart />} />
                         <Route path='/dashboard/stock-trade' element={<TradeStock />} />

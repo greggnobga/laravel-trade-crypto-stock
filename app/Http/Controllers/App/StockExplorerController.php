@@ -56,7 +56,7 @@ class StockExplorerController extends Controller
 
             /** Get total number of records. */
             $totalRecords = DB::table('stock_trades')
-                ->select('symbol', 'price', 'value', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'priceearningratio', 'netprofitmargin', 'returnonequity', 'dividendyield')
+                ->select('symbol')
                 ->where('value', '>', 0)
                 ->where('workingcapital', '>', 0)
                 ->where('netincomeaftertax', '>', 0)
@@ -64,6 +64,11 @@ class StockExplorerController extends Controller
 
             /** Calculate the number of pages */
             $numberOfPages = ceil($totalRecords / $itemPerPage);
+
+            /** Check if given pages is greater than number of pages. If true then set the page to number of pages. */
+            if ($data['page'] > $numberOfPages) {
+                $data['page'] = $numberOfPages;
+            }
 
             /** fetch top stocks base on fundametal data. */
             $stocks = DB::table('stock_trades')
@@ -76,7 +81,7 @@ class StockExplorerController extends Controller
                 ->toArray();
 
             /** check if not empty. */
-            if (count($stocks['data']) > 1) {
+            if (!is_null($stocks['data'])) {
                 /** then call helper to add standard format. */
                 $result['data'] = $this->helpers(['purpose' => 'format', 'source' => $stocks['data']]);
             } else {

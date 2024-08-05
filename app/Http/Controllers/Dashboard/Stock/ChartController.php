@@ -35,69 +35,36 @@ class ChartController extends Controller
     {
         /** match params. */
         if ($data['statement'] === 'select') {
-            /** fetch stock chart entry. */
-            $clean = DB::table('stock_charts')
+            /** Item per page. */
+            $itemPerPage = 15;
+
+            /** Get total number of records. */
+            $totalRecords = DB::table('stock_charts')
                 ->select('symbol')
-                ->where('userid', Auth::id())
-                ->get()
-                ->toArray();
+                ->count();
 
-            /** loop through stock chart entry. */
-            foreach ($clean as $items) {
-                /** check if still exist in the wathclist table. */
-                $exist = DB::table('stock_watchlists')
-                    ->select('symbol')
-                    ->where('symbol', $items->symbol)
-                    ->where('userid', Auth::id())
-                    ->first();
+            /** Calculate the number of pages */
+            $numberOfPages = ceil($totalRecords / $itemPerPage);
 
-                /** delete if it does not exist anymore. */
-                if (is_null($exist)) {
-                    DB::table('stock_charts')
-                        ->where('symbol', $items->symbol)
-                        ->where('userid', Auth::id())
-                        ->delete();
-                }
+            /** Check if given pages is greater than number of pages. If true then set the page to number of pages. */
+            if ($data['page'] > $numberOfPages) {
+                $data['page'] = $numberOfPages;
             }
 
             /** select record. */
             $record = DB::table('stock_charts')
                 ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_charts.symbol')
                 ->select('stock_trades.edge', 'stock_trades.symbol', 'stock_trades.price', 'stock_trades.value', 'stock_trades.pricerange', 'stock_trades.change', 'supportlevel', 'resistancelevel', 'movingaverage', 'movingsignal')
-                ->where('userid', Auth::id())
                 ->orderBy('stock_trades.value', 'desc')
-                ->get()
+                ->paginate($itemPerPage, '*', 'page', $data['page'])
                 ->toArray();
 
             /** Call helper. */
-            $transform = $this->helpers(['operation' => 'format', 'source' => $record]);
+            $transform = $this->helpers(['operation' => 'format', 'source' => $record['data']]);
 
             /** return result if not null. */
             if (!is_null($record)) {
-                return response(['message' => 'Please wait while we process your request.', 'stocks' => $transform], 200);
-            }
-        }
-    }
-
-    /**
-     * Build list function.
-     */
-    public function chartbuild($data)
-    {
-        /** match params. */
-        if ($data['statement'] === 'select') {
-            /** select record. */
-            $watchlist = DB::table('stock_watchlists')
-                ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_watchlists.symbol')
-                ->select('stock_trades.edge', 'stock_trades.security', 'stock_trades.symbol')
-                ->where('userid', Auth::id())
-                ->where('stock_watchlists.updated_at', '<', Carbon::now()->subHour(0))
-                ->get()
-                ->toArray();
-
-            /** return result if not null. */
-            if (!is_null($watchlist)) {
-                return response(['message' => 'Please wait while we process your request.', 'stocks' => $watchlist], 200);
+                return response(['message' => 'Please wait while we process your request.', 'stocks' => $transform, 'pages' => $numberOfPages, 'show_message' => true], 200);
             }
         }
     }

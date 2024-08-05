@@ -65,27 +65,47 @@ class PortfolioController extends Controller
                 ->first();
 
             if (!is_null($check)) {
+                /** Item per page. */
+                $itemPerPage = 15;
+
+                /** Get total number of records. */
+                $totalRecords = DB::table('stock_portfolios')
+                    ->select('symbol')
+                    ->where('userid', '=', Auth::id())
+                    ->count();
+
+                /** Calculate the number of pages */
+                $numberOfPages = ceil($totalRecords / $itemPerPage);
+
+                /** Check if given pages is greater than number of pages. If true then set the page to number of pages. */
+                if ($data['page'] > $numberOfPages) {
+                    $data['page'] = $numberOfPages;
+                }
+
                 /** order data. */
                 $stocks = DB::table('stock_portfolios')
                     ->select('created_at as date', 'order', 'symbol', 'fee', 'share', 'capital')
                     ->where('userid', '=', Auth::id())
-                    ->get();
+                    ->paginate($itemPerPage, '*', 'page', $data['page'])
+                    ->toArray();
 
-                if ($stocks->isNotEmpty()) {
-                    $result['order'] = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stocks]);
+                if (count($stocks['data']) !== 0) {
+                    /** Format order array. */
+                    $result['order'] = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stocks['data']]);
                 }
 
                 /** hold data. */
                 $hold = [];
-                $symbol = DB::table('stock_portfolios')
+                $distinct = DB::table('stock_portfolios')
                     ->select('symbol')
                     ->where('userid', '=', Auth::id())
-                    ->get()
-                    ->unique();
+                    ->distinct(['stock_portfolios.symbol'])
+                    ->paginate($itemPerPage, '*', 'page', $data['page'])
+                    ->toArray();
 
                 /** if not empty. */
-                if ($symbol->isNotEmpty()) {
-                    foreach ($symbol as $key => $value) {
+                if (!is_null($distinct['data'])) {
+                    foreach ($distinct['data'] as $key => $value) {
                         /** build buy data. */
                         $buy = DB::table('stock_portfolios')
                             ->select('symbol', 'fee', 'share', 'capital')
@@ -127,11 +147,11 @@ class PortfolioController extends Controller
                         }
                     }
 
-                    /** resequence array keys*/
+                    /** resequence array keys. */
                     $result['hold'] = array_values($hold['total']);
                 }
                 /** return if record found. */
-                return response(['message' => 'Please wait while we process your request.', 'order' => $result['order'], 'hold' => $result['hold'], 'show_message' => true], 200);
+                return response(['message' => 'Please wait while we process your request.', 'order' => $result['order'], 'hold' => $result['hold'], 'pages' => $numberOfPages, 'show_message' => true], 200);
             } else {
                 /** return if no record. */
                 return response(['message' => 'No record found so far.', 'order' => [], 'hold' => [], 'show_message' => true], 200);
@@ -252,6 +272,8 @@ class PortfolioController extends Controller
                 }
                 $return[$key] = $result;
             }
+
+            /** Return something. */
             return $return;
         }
     }

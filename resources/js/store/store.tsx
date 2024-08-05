@@ -7,6 +7,7 @@ import authReducer from '$lib/store/feature/user/auth-slice';
 import stockExplorerReducer from '$lib/store/feature/stock/explorer-slice';
 import stockDetailReducer from '$lib/store/feature/stock/detail-slice';
 import stockPortfolioReducer from '$lib/store/feature/stock/portfolio-slice';
+import stockChartReducer from '$lib/store/feature/stock/chart-slice';
 
 /** Configure store. */
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
         stockExplorer: stockExplorerReducer,
         stockDetail: stockDetailReducer,
         stockPorfolio: stockPortfolioReducer,
+        stockChart: stockChartReducer,
     },
 });
 

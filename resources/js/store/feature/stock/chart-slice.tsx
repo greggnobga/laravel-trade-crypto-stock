@@ -8,61 +8,50 @@ type Error<T> = {
     status?: number;
 };
 
-/** Order type. */
-type Order = {
+/** Chart type. */
+type Chart = {
     symbol: string;
     date: string;
-    order: string;
-    fee: string;
-    share: string;
-    capital: string;
+    supportlevel: string;
+    resistantlevel: string;
+    movingaverage: string;
+    movingsignal: string;
 };
 
-/** Hold type. */
-type Hold = {
-    symbol: string;
-    share: string;
-    fee: string;
-    capital: string;
-    average: string;
-    price: string;
-    prospect: string;
-};
-
-/** Portfolio type. */
-type Portfolio = {
+/** Chart type. */
+type Stocks = {
     message: string;
-    order: Order[];
-    hold: Hold[];
+    stocks: Chart[];
     pages: number;
     loading: boolean;
     status: number;
     show_message: boolean;
 };
 
-/** Input portfolio type. */
-type InputPortfolio = {
+/** Input chart type. */
+type InputChart = {
     page: number;
     token: string;
     section: string;
+    statement: string;
 };
 
 /** Fetch user data from local storage. */
-const stockPortfolioFromStorage = JSON.parse(localStorage.getItem('stock-portfolio') || '{}');
+const stockChartFromStorage = JSON.parse(localStorage.getItem('stock-chart') || '{}');
 
 /** Set inital state. */
 const initialState = {
     loading: false,
-    ...stockPortfolioFromStorage,
+    ...stockChartFromStorage,
 };
 
-/** Portfolio request. */
-export const stockPortfolioRequest = createAsyncThunk<any, InputPortfolio, { rejectValue: Error<any> }>(
-    'stock/portfolio',
+/** Chart request. */
+export const stockChartRequest = createAsyncThunk<any, InputChart, { rejectValue: Error<any> }>(
+    'stock/chart',
     async (inputData, { rejectWithValue }) => {
         try {
             /** Deconstruct input data. */
-            const { page, token, section } = inputData;
+            const { page, token, section, statement } = inputData;
 
             /** Request data from backend. */
             const { data, status } = await axios({
@@ -71,13 +60,13 @@ export const stockPortfolioRequest = createAsyncThunk<any, InputPortfolio, { rej
                     Authorization: `Bearer ${token}`,
                 },
                 method: 'GET',
-                url: `/api/stock-portfolio-retrieve`,
-                params: { page, section },
+                url: `/api/stock-chart-retrieve`,
+                params: { page, section, statement },
             });
 
             /** Save to local storage. */
             if (data) {
-                localStorage.setItem('stock-portfolio', JSON.stringify(data));
+                localStorage.setItem('stock-chart', JSON.stringify(data));
             }
 
             /** Return something. */
@@ -106,30 +95,28 @@ export const stockPortfolioRequest = createAsyncThunk<any, InputPortfolio, { rej
 );
 
 /** Export slice. */
-export const stockPortfolio = createSlice({
-    name: 'stockPortfolio',
+export const stockChart = createSlice({
+    name: 'stockChart',
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
-        /** Portfolio request case. */
-        builder.addCase(stockPortfolioRequest.pending, (state) => {
+        /** Chart request case. */
+        builder.addCase(stockChartRequest.pending, (state) => {
             state.loading = true;
         });
 
-        builder.addCase(stockPortfolioRequest.fulfilled, (state, action: any) => {
+        builder.addCase(stockChartRequest.fulfilled, (state, action: any) => {
             state.loading = false;
-            state.order = action.payload.order || [];
-            state.hold = action.payload.hold || [];
+            state.stocks = action.payload.stocks || [];
             state.pages = action.payload.pages || null;
             state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
         });
 
-        builder.addCase(stockPortfolioRequest.rejected, (state, action: any) => {
+        builder.addCase(stockChartRequest.rejected, (state, action: any) => {
             state.loading = false;
-            state.order = [];
-            state.hold = [];
+            state.stocks = [];
             state.show_message = true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || null;
@@ -138,4 +125,4 @@ export const stockPortfolio = createSlice({
 });
 
 /** Export something. */
-export default stockPortfolio.reducer;
+export default stockChart.reducer;

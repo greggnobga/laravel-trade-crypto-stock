@@ -1,45 +1,20 @@
-// /** React. */
-// import { useState, useEffect } from 'react';
-
-// /** Vendor. */
-// import { useDispatch, useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
-
-// /** Hook. */
-// import useScreen from '../../../hooks/UseScreen';
-// import useValidate from '../../../hooks/UseValidate';
-
-// /** Component. */
-// import Icon from '../../../components/Icon';
-// import Modal from '../../../components/Modal';
-// import Loader from '../../../components/Loader';
-// import Notice from '../../../components/Notice';
-// import Search from '../../../components/Search';
-// import Container from '../../../components/Container';
-
-// /** Template. */
-// import { desktopContent, mobileContent } from '../../template/stocks/Portfolio';
-
-// /** Action. */
-// import {
-//     fetchStockPortfolio,
-//     storeStockPortfolio,
-//     updateStockPortfolio,
-//     destroyStockPortfolio,
-// } from '../../../actions/PortfolioActions';
-// import { tokenUser } from '../../../actions/UserActions.js';
-
 /** Vendor. */
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 /** Hook. */
-import { useAppSelector } from '$lib/hooks/use-rtk';
+import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk';
 import useScreen from '$lib/hooks/use-screen';
 import useProtect from '$lib/hooks/use-protect';
 
+/** Action. */
+import { stockChartRequest } from '$lib/store/feature/stock/chart-slice';
+
 /** Component. */
 import Icon from '$lib/components/icon';
+import Loader from '$lib/components/loader';
+import Pagination from '$lib/components/pagination';
+import Notification from '$lib//components/notification';
 
 const PortfolioChart = () => {
     // /** Use state. */
@@ -283,60 +258,6 @@ const PortfolioChart = () => {
     //             <Loader />
     //         ) : (
     //             <>
-    //                 {isMobile
-    //                     ? mobileContent({
-    //                           header: 'chart',
-    //                           icon: 'portfolio',
-    //                           items: portfolio ? portfolio['chart'] : [],
-    //                       })
-    //                     : desktopContent({
-    //                           header: 'chart',
-    //                           icon: 'portfolio',
-    //                           items: portfolio ? portfolio['chart'] : [],
-    //                       })}
-    //                 {isMobile
-    //                     ? mobileContent({
-    //                           header: 'hold',
-    //                           icon: 'portfolio',
-    //                           items: portfolio ? portfolio['hold'] : [],
-    //                       })
-    //                     : desktopContent({
-    //                           header: 'hold',
-    //                           icon: 'portfolio',
-    //                           items: portfolio ? portfolio['hold'] : [],
-    //                       })}
-    //                 {isMobile
-    //                     ? mobileContent({
-    //                           header: 'order',
-    //                           icon: 'trade',
-    //                           text: 'add',
-    //                           store: showStoreHandler,
-    //                           update: showUpdateHandler,
-    //                           destroy: showDestroyteHandler,
-    //                           items: portfolio ? portfolio['order'] : [],
-    //                       })
-    //                     : desktopContent({
-    //                           header: 'order',
-    //                           icon: 'trade',
-    //                           text: 'add',
-    //                           store: showStoreHandler,
-    //                           update: showUpdateHandler,
-    //                           destroy: showDestroyteHandler,
-    //                           items: portfolio ? portfolio['order'] : [],
-    //                       })}
-    //             </>
-    //         )}
-    //         <div className='grid auto-rows-min h-fit rounded'>
-    //             {search && (
-    //                 <Modal>
-    //                     <Search
-    //                         close={closeModalHandler}
-    //                         component='portfolio'
-    //                         items={portfolio ? portfolio['hold'] : []}
-    //                     />
-    //                 </Modal>
-    //             )}
-    //         </div>
     //         <div className='grid auto-rows-min h-fit rounded'>
     //             {store && (
     //                 <Modal>
@@ -630,6 +551,10 @@ const PortfolioChart = () => {
     //     </Container>
     // );
 
+    /** Use params. */
+    const { page } = useParams();
+    const currentPage = Number(page) || 1;
+
     /** Use screen hook. */
     const isMobile = useScreen();
 
@@ -641,483 +566,198 @@ const PortfolioChart = () => {
 
     /** Use selector. */
     const auth = useAppSelector((state) => state.auth);
-    const { valid } = auth;
+    const { valid, access_token } = auth;
+
+    /** Use selector. */
+    const stockChart = useAppSelector((state) => state.stockChart);
+    const { loading, show_message, message, status, pages, stocks } = stockChart;
+
+    /** Use dispatch. */
+    const dispatch = useAppDispatch();
 
     /** Use effect. */
     useEffect(() => {
+        /** If no page is provided, redirect to page 1 */
+        if (!page) {
+            navigate('/dashboard/stock-chart', { replace: true });
+        }
+
+        /** Navigate to login if is not valid. */
+        if (!stocks) {
+            dispatch(stockChartRequest({ page: currentPage, token: access_token, section: 'fetch', statement: 'select' }));
+        }
+
+        /** Navigate to login if is not valid. */
         if (!valid) {
             navigate('/auth/login');
         }
-    }, [valid]);
+    }, [valid, page]);
+
+    /** Pagination handler. */
+    const paginationHandler = (pageNumber: number) => {
+        /** Dispatch request on reload. */
+        dispatch(stockChartRequest({ page: currentPage, token: access_token, section: 'fetch', statement: 'select' }));
+    };
 
     /** Return something. */
     return (
-        <section className='m-2 grid auto-rows-min h-fit animate-fade animate-once animate-ease-in-out'>
-            <div className='p-2 h-8 sm:10 uppercase'>Chart</div>
-            <div className='grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase my-2'>
-                <div className='flex flex-wrap flex-col sm:flex-row gap-2 justify-between items-center h-fit border-b border-stone-200'>
-                    <div className='flex flex-row flex-wrap justify-between items-center w-full'>
-                        <div className='p-2'>
-                            <Icon id='trade' width='w-6' height='h-6' /> List
+        <>
+            {show_message && message && <Notification children={message} duration={5000} status={status ? status : 200} />}
+            {loading ? (
+                <Loader />
+            ) : (
+                <>
+                    <section className='m-2 grid auto-rows-min h-fit animate-fade animate-once animate-ease-in-out'>
+                        <div className='p-2 h-8 sm:10 uppercase'>Chart</div>
+                        <div className='grid auto-rows-min h-fit rounded-t-md bg-stone-100 uppercase my-2'>
+                            <div className='flex flex-wrap flex-col sm:flex-row gap-2 justify-between items-center h-fit border-b border-stone-200'>
+                                <div className='flex flex-row flex-wrap justify-between items-center w-full'>
+                                    <div className='p-2'>
+                                        <Icon id='trade' width='w-6' height='h-6' /> Stocks
+                                    </div>
+                                    <div className='p-2'>
+                                        <span className='p-2 cursor-pointer text-xs' onClick={() => console.log('showSearchHandler')}>
+                                            <Icon id='search' width='w-6' height='h-6' /> Search
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            {isMobile ? (
+                                ''
+                            ) : (
+                                <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-[.5rem]'>
+                                    <div className='flex-1'>Symbol</div>
+                                    <div className='flex-1'>Price</div>
+                                    <div className='flex-1'>Value</div>
+                                    <div className='flex-1'>Range</div>
+                                    <div className='flex-1'>Change</div>
+                                    <div className='flex-1'>Support</div>
+                                    <div className='flex-1'>Resistance</div>
+                                    <div className='flex-1'>Average</div>
+                                    <div className='flex-1'>Signal</div>
+                                    <div className='flex-1'>Action</div>
+                                </div>
+                            )}
+
+                            {stocks &&
+                                stocks.map((item: any) => {
+                                    return (
+                                        <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Symbol
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left'>{item.symbol}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Price
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left uppercase'>{item.price}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Value
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left'>{item.value}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Range
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left'>{item.pricerange}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Change
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left'>{item.change}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Support
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left'>{item.supportlevel}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Resistance
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left'>{item.resistancelevel}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Average
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left'>{item.movingaverage}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Signal
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <p className='text-center sm:text-left'>{item.movingsignal}</p>
+                                            </div>
+                                            <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
+                                                {isMobile ? (
+                                                    <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>
+                                                        Action
+                                                    </div>
+                                                ) : (
+                                                    ' '
+                                                )}
+                                                <span className='pr-2 cursor-pointer hover:text-green-500' onClick={() => console.log('Update')}>
+                                                    <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'UPD'}
+                                                </span>
+                                                <span className='pr-0 cursor-pointer hover:text-red-500' onClick={() => console.log('Destroy')}>
+                                                    <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'DEL'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                         </div>
-                        <div className='p-2'>
-                            <span className='p-2 cursor-pointer text-xs' onClick={() => console.log('showSearchHandler')}>
-                                <Icon id='search' width='w-6' height='h-6' /> Search
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                {isMobile ? (
-                    ''
-                ) : (
-                    <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-[.5rem]'>
-                        <div className='flex-1'>Date</div>
-                        <div className='flex-1'>Order</div>
-                        <div className='flex-1'>Symbol</div>
-                        <div className='flex-1'>Share</div>
-                        <div className='flex-1'>Capital</div>
-                        <div className='flex-1'>Fee</div>
-                        <div className='flex-1'>Action</div>
-                    </div>
-                )}
-                <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Date</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>08-28-2024</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Order</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>Buy</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>JFC</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Share</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Fee</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
-                        ) : (
-                            ' '
-                        )}
-                        <span className='pr-2 cursor-pointer' onClick={() => console.log('Update')}>
-                            <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Update'}
-                        </span>
-                        <span className='pr-0 cursor-pointer' onClick={() => console.log('Destroy')}>
-                            <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Delete'}
-                        </span>
-                    </div>
-                </div>
-                <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Date</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>08-28-2024</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Order</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>Buy</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>JFC</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Share</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Fee</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
-                        ) : (
-                            ' '
-                        )}
-                        <span className='pr-2 cursor-pointer' onClick={() => console.log('Update')}>
-                            <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Update'}
-                        </span>
-                        <span className='pr-0 cursor-pointer' onClick={() => console.log('Destroy')}>
-                            <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Delete'}
-                        </span>
-                    </div>
-                </div>
-                <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Date</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>08-28-2024</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Order</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>Buy</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>JFC</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Share</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Fee</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
-                        ) : (
-                            ' '
-                        )}
-                        <span className='pr-2 cursor-pointer' onClick={() => console.log('Update')}>
-                            <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Update'}
-                        </span>
-                        <span className='pr-0 cursor-pointer' onClick={() => console.log('Destroy')}>
-                            <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Delete'}
-                        </span>
-                    </div>
-                </div>
-                <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Date</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>08-28-2024</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Order</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>Buy</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>JFC</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Share</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Fee</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
-                        ) : (
-                            ' '
-                        )}
-                        <span className='pr-2 cursor-pointer' onClick={() => console.log('Update')}>
-                            <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Update'}
-                        </span>
-                        <span className='pr-0 cursor-pointer' onClick={() => console.log('Destroy')}>
-                            <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Delete'}
-                        </span>
-                    </div>
-                </div>
-                <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Date</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>08-28-2024</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Order</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>Buy</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>JFC</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Share</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Fee</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
-                        ) : (
-                            ' '
-                        )}
-                        <span className='pr-2 cursor-pointer' onClick={() => console.log('Update')}>
-                            <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Update'}
-                        </span>
-                        <span className='pr-0 cursor-pointer' onClick={() => console.log('Destroy')}>
-                            <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Delete'}
-                        </span>
-                    </div>
-                </div>
-                <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Date</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>08-28-2024</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Order</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>Buy</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>JFC</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Share</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Fee</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className='flex-1 py-1'>
-                        <span className='pr-2 cursor-pointer' onClick={() => console.log('Update')}>
-                            <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Update'}
-                        </span>
-                        <span className='pr-0 cursor-pointer' onClick={() => console.log('Destroy')}>
-                            <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Delete'}
-                        </span>
-                    </div>
-                </div>
-                <div className='p-2 flex flex-wrap flex-col sm:flex-row gap-2 justify-start items-center w-full h-fit border-b border-stone-200 font-thin text-xs'>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Date</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>08-28-2024</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Order</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>Buy</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Symbol</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>JFC</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Share</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Capital</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Fee</div>
-                        ) : (
-                            ' '
-                        )}
-                        <p className='text-center sm:text-left'>100.00</p>
-                    </div>
-                    <div className={`flex-1 py-1 relative ${isMobile ? 'w-[25%]' : ''}`}>
-                        {isMobile ? (
-                            <div className='text-[.5rem] absolute -top-2 align-top text-purple-500 justify-start uppercase w-9/12'>Action</div>
-                        ) : (
-                            ' '
-                        )}
-                        <span className='pr-2 cursor-pointer' onClick={() => console.log('Update')}>
-                            <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Update'}
-                        </span>
-                        <span className='pr-0 cursor-pointer' onClick={() => console.log('Destroy')}>
-                            <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'Delete'}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </section>
+                    </section>
+                </>
+            )}
+
+            <Pagination pages={pages} target='/dashboard/stock-chart' handler={paginationHandler} current={currentPage} />
+        </>
     );
 };
 

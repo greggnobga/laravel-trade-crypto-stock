@@ -10,8 +10,8 @@ import { stockExplorerRequest } from '$lib/store/feature/stock/explorer-slice';
 
 /** Component. */
 import Loader from '$lib/components/loader';
-import Notification from '$lib//components/notification';
 import Pagination from '$lib/components/pagination';
+import Notification from '$lib//components/notification';
 
 const StockExplorer = () => {
     /** Use params. */
@@ -37,7 +37,7 @@ const StockExplorer = () => {
 
         /** Dispatch request on reload. */
         dispatch(stockExplorerRequest({ section: 'explorer', statement: 'select', page: currentPage }));
-    }, [page, pages]);
+    }, [page]);
 
     /** Pagination handler. */
     const paginationHandler = (pageNumber: number) => {

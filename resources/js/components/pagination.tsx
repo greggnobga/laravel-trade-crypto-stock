@@ -23,7 +23,7 @@ const Pagination: React.FC<PaginationProps> = ({ pages, target, handler, current
         setCurrentPage(pageNumber);
 
         /** Change url parameter. */
-        navigate(`/stock-explorer/${pageNumber}`);
+        navigate(`${target}/${pageNumber}`);
 
         /** Dispatch handler on click. */
         handler(pageNumber);

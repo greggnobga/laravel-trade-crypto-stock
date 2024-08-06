@@ -8,6 +8,8 @@ import stockExplorerReducer from '$lib/store/feature/stock/explorer-slice';
 import stockDetailReducer from '$lib/store/feature/stock/detail-slice';
 import stockPortfolioReducer from '$lib/store/feature/stock/portfolio-slice';
 import stockChartReducer from '$lib/store/feature/stock/chart-slice';
+import stockTradeBluechipReducer from '$lib/store/feature/stock/trade-bluechip-slice';
+import stockTradeCommonReducer from '$lib/store/feature/stock/trade-common-slice';
 
 /** Configure store. */
 export const store = configureStore({
@@ -17,6 +19,8 @@ export const store = configureStore({
         stockDetail: stockDetailReducer,
         stockPorfolio: stockPortfolioReducer,
         stockChart: stockChartReducer,
+        stockTradeBluechip: stockTradeBluechipReducer,
+        stockTradeCommon: stockTradeCommonReducer,
     },
 });
 

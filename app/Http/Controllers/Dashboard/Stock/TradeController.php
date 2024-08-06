@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class TradeController extends Controller {
+class TradeController extends Controller
+{
     /**
      * Display a listing of the resource.
      */
-    public function init(Request $request) {
+    public function init(Request $request)
+    {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward insert command. */
@@ -25,12 +27,12 @@ class TradeController extends Controller {
         if ($request->method() === 'GET') {
             /** forward blue command. */
             if ($request->input('section') === 'bluechip') {
-                return $this->bluechip();
+                return $this->bluechip(['page' => $request->input('page')]);
             }
 
             /** forward blue command. */
             if ($request->input('section') === 'common') {
-                return $this->common();
+                return $this->common(['page' => $request->input('page')]);
             }
         }
     }
@@ -38,7 +40,8 @@ class TradeController extends Controller {
     /**
      * Fetch blue chip stocks.
      */
-    public function bluechip() {
+    public function bluechip($data)
+    {
         /** pointer */
         $stocks = [];
 
@@ -49,6 +52,27 @@ class TradeController extends Controller {
             ->first();
 
         if (!is_null($check)) {
+            /** Item per page. */
+            $itemPerPage = 15;
+
+            /** Get total number of records. */
+            $totalRecords = DB::table('stock_blues')
+                ->join('stock_trades', 'stock_trades.symbol', 'stock_blues.symbol')
+                ->select('stock_blues.symbol')
+                ->where('value', '>', 0)
+                ->where('workingcapital', '>', 0)
+                ->where('netincomeaftertax', '>', 0)
+                ->where('userid', Auth::id())
+                ->count();
+
+            /** Calculate the number of pages */
+            $numberOfPages = ceil($totalRecords / $itemPerPage);
+
+            /** Check if given pages is greater than number of pages. If true then set the page to number of pages. */
+            if ($data['page'] > $numberOfPages) {
+                $data['page'] = $numberOfPages;
+            }
+
             /** Fecth all record in stock blue table. */
             $record = DB::table('stock_blues')
                 ->join('stock_trades', 'stock_trades.symbol', 'stock_blues.symbol')
@@ -57,11 +81,14 @@ class TradeController extends Controller {
                 ->where('workingcapital', '>', 0)
                 ->where('netincomeaftertax', '>', 0)
                 ->where('userid', Auth::id())
-                ->get()
+                ->orderBy('pricerange', 'desc')
+                ->paginate($itemPerPage, '*', 'page', $data['page'])
                 ->toArray();
 
-            if (!is_null($record)) {
-                foreach ($record as $key => $value) {
+            /** Process the stocks. */
+            if (!is_null($record['data'])) {
+                $stocks = [];
+                foreach ($record['data'] as $key => $value) {
                     /** Get additional stock data. */
                     $stock = DB::table('stock_trades')
                         ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
@@ -69,15 +96,15 @@ class TradeController extends Controller {
                         ->first();
 
                     /** Push to record array. */
-                    $record[$key] = $stock;
+                    $stocks[$key] = $stock;
                 }
 
                 /** Filter array to remove null value. */
-                $filter = array_filter($record);
+                $filter = array_filter($stocks);
 
                 /** Sort collection based on desired key. */
                 $sorted = collect($filter)->sortByDesc(function ($item) {
-                    return $item->netincomeaftertax;
+                    return $item->pricerange;
                 });
 
                 /** Resequence array keys. */
@@ -91,17 +118,18 @@ class TradeController extends Controller {
             }
 
             /** Return something. */
-            return response(['message' => 'Processed and displayed are all potential bluechip stocks that could be listed on the PSE.', 'stocks' => $format], 200);
+            return response(['message' => 'Processed and displayed are all potential bluechip stocks.', 'bluechip' => $format, 'pages' => $numberOfPages, 'show_message' => true], 200);
         } else {
             /** return something. */
-            return array('message' => 'There was no entry in the database.');
+            return response(['message' => 'There was no entry in the database.'], 200);
         }
     }
 
     /**
      * Fetch stocks.
      */
-    public function common() {
+    public function common($data)
+    {
         /** repository. */
         $result = [];
         /** check record. */
@@ -111,6 +139,26 @@ class TradeController extends Controller {
             ->first();
 
         if (!is_null($check)) {
+            /** Item per page. */
+            $itemPerPage = 15;
+
+            /** Get total number of records. */
+            $totalRecords = DB::table('stock_trades')
+                ->select('symbol')
+                ->where('value', '>', 0)
+                ->where('workingcapital', '>', 0)
+                ->where('netincomeaftertax', '>', 0)
+                ->where('edge', '>', 0)
+                ->count();
+
+            /** Calculate the number of pages */
+            $numberOfPages = ceil($totalRecords / $itemPerPage);
+
+            /** Check if given pages is greater than number of pages. If true then set the page to number of pages. */
+            if ($data['page'] > $numberOfPages) {
+                $data['page'] = $numberOfPages;
+            }
+
             /** create stock list. */
             $items = DB::table('stock_trades')
                 ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
@@ -118,11 +166,12 @@ class TradeController extends Controller {
                 ->where('workingcapital', '>', 0)
                 ->where('netincomeaftertax', '>', 0)
                 ->where('edge', '>', 0)
-                ->orderBy('netincomeaftertax', 'desc')
-                ->get();
+                ->orderBy('pricerange', 'desc')
+                ->paginate($itemPerPage, '*', 'page', $data['page'])
+                ->toArray();
 
             /** ignore indexes. */
-            foreach ($items as $key => $value) {
+            foreach ($items['data'] as $key => $value) {
                 switch ($value->symbol) {
                     case 'PSEi':
                         break;
@@ -152,17 +201,18 @@ class TradeController extends Controller {
             $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
 
             /** return something. */
-            return array('message' => 'Processed and displayed are all potential stocks that could be listed on the PSE.', 'stocks' => $format);
+            return response(['message' => 'Processed and displayed are all potential stocks.', 'common' => $format, 'pages' => $numberOfPages, 'show_message' => true], 200);
         } else {
             /** return something. */
-            return array('message' => 'There was no entry in the database.');
+            return response(['message' => 'There was no entry in the database.'], 200);
         }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store($data) {
+    public function store($data)
+    {
         /** fetch symbol and name. */
         $symbol = DB::table('stock_trades')
             ->select('symbol', 'name')
@@ -182,7 +232,7 @@ class TradeController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($insert) {
-                return ['message' => $data['input']['name'] . ' has been added to the database.'];
+                return response(['message' => $data['input']['name'] . ' has been added to the database.'], 200);
             }
         } else {
             /** forward to update instead. */
@@ -193,7 +243,8 @@ class TradeController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update($data) {
+    public function update($data)
+    {
         if ($data['table'] === 'trade') {
             /** run update query.*/
             $update = DB::table('stock_trades')
@@ -210,10 +261,10 @@ class TradeController extends Controller {
             /** if update not empty.*/
             if ($update) {
                 /** return something.*/
-                return ['message' => 'The ' . $data['input']['name'] . ' information was successfully updated.'];
+                return response(['message' => 'The ' . $data['input']['name'] . ' information was successfully updated.'], 200);
             } else {
                 /** return something.*/
-                return ['message' => 'No modifications were made to the' . $data['input']['name'] . ' data.'];
+                return response(['message' => 'No modifications were made to the' . $data['input']['name'] . ' data.'], 200);
             }
         }
     }
@@ -221,7 +272,8 @@ class TradeController extends Controller {
     /**
      * Helper function.
      */
-    private function helpers($data) {
+    private function helpers($data)
+    {
         if ($data['purpose'] === 'format') {
             /** return variable. */
             $return = [];

@@ -55,7 +55,7 @@ class ChartController extends Controller
             $record = DB::table('stock_charts')
                 ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_charts.symbol')
                 ->select('stock_trades.edge', 'stock_trades.symbol', 'stock_trades.price', 'stock_trades.value', 'stock_trades.pricerange', 'stock_trades.change', 'supportlevel', 'resistancelevel', 'movingaverage', 'movingsignal')
-                ->orderBy('stock_trades.value', 'desc')
+                ->orderBy('stock_trades.pricerange', 'desc')
                 ->paginate($itemPerPage, '*', 'page', $data['page'])
                 ->toArray();
 

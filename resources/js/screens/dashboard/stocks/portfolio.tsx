@@ -17,101 +17,6 @@ import Pagination from '$lib/components/pagination';
 import Notification from '$lib//components/notification';
 
 const PortfolioStock = () => {
-    // /** Use state. */
-    // const [search, setSearch] = useState(false);
-    // const [destroy, setDestroy] = useState(false);
-    // const [destroyData, setDestroyData] = useState();
-    // /** Destory handler. */
-    // const destroyHandler = () => {
-    //     /** Dispatch action. */
-    //     dispatch(destroyStockPortfolio(access_token, destroyData));
-    //     /** Hide modal. */
-    //     setDestroy(false);
-    //     /** Update state after timeout. */
-    //     const timeout = setTimeout(() => {
-    //         /** Dispatch action. */
-    //         dispatch(fetchStockPortfolio(access_token));
-    //     }, 5000);
-    //     return () => {
-    //         clearTimeout(timeout);
-    //     };
-    // };
-    // /** Show search handler. */
-    // const showSearchHandler = () => {
-    //     setSearch(true);
-    // };
-    // /** Show destroy handler. */
-    // const showDestroyteHandler = (symbol) => {
-    //     /** Show modal. */
-    //     setDestroy(true);
-    //     /** Check if symbol is set. */
-    //     if (symbol) {
-    //         /** Set modal data. */
-    //         setDestroyData(symbol);
-    //     }
-    // };
-    // /** Hide search handler. */
-    // const closeModalHandler = () => {
-    //     /** Set state. */
-    //     setSearch(false);
-    //     setStore(false);
-    //     setUpdate(false);
-    //     setDestroy(false);
-    // };
-    // /** Return something. */
-    // return (
-    //     <Container header={containerHeader}>
-    //         <div className='grid auto-rows-min h-fit rounded'>
-    //             {search && (
-    //                 <Modal>
-    //                     <Search
-    //                         close={closeModalHandler}
-    //                         component='portfolio'
-    //                         items={portfolio ? portfolio['hold'] : []}
-    //                     />
-    //                 </Modal>
-    //             )}
-    //         </div>
-    //         <div className='grid auto-rows-min h-fit rounded'>
-    //             {destroy && (
-    //                 <Modal>
-    //                     <div className='grid auto-rows-min rounded-t-md bg-stone-100'>
-    //                         <div className='flex flex-row flex-wrap justify-between items-center border-b border-stone-200 uppercase'>
-    //                             <p className='p-2'>Delete Record</p>
-    //                             <p className='p-2 cursor-pointer' onClick={closeModalHandler}>
-    //                                 <Icon id='close' /> <span className='pl-2'>Close</span>
-    //                             </p>
-    //                         </div>
-    //                         <div className='form-prompt'>
-    //                             <p className='form-label'>
-    //                                 Do you really want to remove {destroyData} from the order table?
-    //                             </p>
-    //                         </div>
-    //                         <div className='form-button'>
-    //                             <div className='p-2'>
-    //                                 <button
-    //                                     className='btn btn-green cursor-pointer'
-    //                                     type='submit'
-    //                                     onClick={() => destroyHandler()}>
-    //                                     Delete
-    //                                 </button>
-    //                             </div>
-    //                             <div className='p-2'>
-    //                                 <button
-    //                                     className='btn btn-stone cursor-pointer'
-    //                                     type='button'
-    //                                     onClick={closeModalHandler}>
-    //                                     Cancel
-    //                                 </button>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </Modal>
-    //             )}
-    //         </div>
-    //     </Container>
-    // );
-
     /** Use params. */
     const { page } = useParams();
     const currentPage = Number(page) || 1;
@@ -143,7 +48,7 @@ const PortfolioStock = () => {
             navigate('/dashboard/stock-portfolio', { replace: true });
         }
 
-        /** Navigate to login if is not valid. */
+        /** Dispatch if no hold data found. */
         if (!hold) {
             dispatch(stockPortfolioRequest({ page: currentPage, token: access_token, section: 'fetch' }));
         }
@@ -152,12 +57,12 @@ const PortfolioStock = () => {
         if (!valid) {
             navigate('/auth/login');
         }
-    }, [valid, hold, page]);
+    }, [valid, hold]);
 
     /** Pagination handler. */
     const paginationHandler = (pageNumber: number) => {
         /** Dispatch request on reload. */
-        dispatch(stockPortfolioRequest({ page: currentPage, token: access_token, section: 'fetch' }));
+        dispatch(stockPortfolioRequest({ page: pageNumber, token: access_token, section: 'fetch' }));
     };
 
     /** Return something. */
@@ -175,11 +80,6 @@ const PortfolioStock = () => {
                             <div className='flex flex-row flex-wrap justify-between items-center w-full'>
                                 <div className='p-2'>
                                     <Icon id='trade' width='w-6' height='h-6' /> Hold
-                                </div>
-                                <div className='p-2'>
-                                    <span className='p-2 cursor-pointer text-xs' onClick={() => console.log('showSearchHandler')}>
-                                        <Icon id='search' width='w-6' height='h-6' /> Search
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -283,11 +183,6 @@ const PortfolioStock = () => {
                                 <div className='p-2'>
                                     <Icon id='trade' width='w-6' height='h-6' /> Order
                                 </div>
-                                <div className='p-2'>
-                                    <span className='p-2 cursor-pointer text-xs' onClick={() => console.log('showSearchHandler')}>
-                                        <Icon id='search' width='w-6' height='h-6' /> Search
-                                    </span>
-                                </div>
                             </div>
                         </div>
                         {isMobile ? (
@@ -376,6 +271,9 @@ const PortfolioStock = () => {
                                                 ) : (
                                                     ' '
                                                 )}
+                                                <span className='pr-2 cursor-pointer hover:text-green-500' onClick={() => console.log('Update')}>
+                                                    <Icon id='update' width='w-4' height='h-4' /> {isMobile ? ' ' : 'UPD'}
+                                                </span>
                                                 <span className='pr-0 cursor-pointer hover:text-red-500' onClick={() => console.log('Destroy')}>
                                                     <Icon id='destroy' width='w-4' height='h-4' /> {isMobile ? ' ' : 'DEL'}
                                                 </span>

@@ -37,7 +37,7 @@ const StockExplorer = () => {
 
         /** Dispatch request on reload. */
         dispatch(stockExplorerRequest({ section: 'explorer', statement: 'select', page: currentPage }));
-    }, [page]);
+    }, []);
 
     /** Pagination handler. */
     const paginationHandler = (pageNumber: number) => {

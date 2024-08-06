@@ -89,7 +89,7 @@ class PortfolioController extends Controller
                     ->paginate($itemPerPage, '*', 'page', $data['page'])
                     ->toArray();
 
-                if (count($stocks['data']) !== 0) {
+                if (!is_null($stocks['data'])) {
                     /** Format order array. */
                     $result['order'] = $this->helpers(['purpose' => 'format', 'source' => 'order', 'stock' => $stocks['data']]);
                 }

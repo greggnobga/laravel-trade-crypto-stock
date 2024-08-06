@@ -56,9 +56,9 @@ const App = () => {
                         <Route path='/dashboard/extra-note' element={<Note />} />
                         <Route path='/dashboard/stock-portfolio/:page?' element={<PortfolioStock />} />
                         <Route path='/dashboard/stock-watchlist' element={<WatchlistStock />} />
-                        <Route path='/dashboard/stock-chart' element={<PortfolioChart />} />
-                        <Route path='/dashboard/stock-trade' element={<TradeStock />} />
-                        <Route path='/dashboard/crypto-portfolio' element={<PortfolioCrypto />} />
+                        <Route path='/dashboard/stock-chart/:page?' element={<PortfolioChart />} />
+                        <Route path='/dashboard/stock-trade/:page?' element={<TradeStock />} />
+                        <Route path='/dashboard/crypto-portfolio/:page?' element={<PortfolioCrypto />} />
                         <Route path='/dashboard/crypto-trade' element={<TradeCrypto />} />
                         <Route path='/dashboard/crypto-game' element={<GameCrypto />} />
                         <Route path='/dashboard/crypto-nft' element={<NFTCrypto />} />

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Symfony\Component\DomCrawler\Crawler;
@@ -53,13 +52,13 @@ class PSEController extends Controller
         /** check if request contains method equal to post. */
         if ($request->method() === 'GET') {
             /** forward trades function */
-            if ($request->input('section') === 'stocks') {
+            if ($request->input('section') === 'trades') {
                 return $this->stocktrades();
             }
 
             /** forward lists function */
-            if ($request->input('section') === 'lists') {
-                return $this->stocklists();
+            if ($request->input('section') === 'meta') {
+                return $this->stockmeta();
             }
         }
     }
@@ -67,7 +66,7 @@ class PSEController extends Controller
     /**
      * Declare stocklists function.
      */
-    public function stocklists()
+    public function stockmeta()
     {
         /** repository. */
         $result = [];
@@ -146,7 +145,7 @@ class PSEController extends Controller
         }
 
         if (!is_null($result['stocks'])) {
-            /** loop after chunking. */
+            /** @disregard P1006 */
             foreach ($result['stocks'] as $items) {
                 /** loop again. */
                 foreach ($items as $key => $value) {
@@ -182,7 +181,7 @@ class PSEController extends Controller
         }
 
         /** return something. */
-        return response(['message' => 'All possible stocks were successfully added to the database.'], 200);
+        return response(['message' => 'All possible stocks were successfully added to the database.', 'show_message' => true], 200);
     }
 
     /**

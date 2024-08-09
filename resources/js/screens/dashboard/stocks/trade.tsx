@@ -260,7 +260,7 @@ const TradeStock = () => {
                         </div>
                     )}
 
-                    {stockTradeCommon.loadin ? (
+                    {stockTradeCommon.loading ? (
                         <Loader />
                     ) : (
                         <>

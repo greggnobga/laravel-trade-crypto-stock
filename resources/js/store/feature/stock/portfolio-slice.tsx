@@ -51,7 +51,7 @@ type InputPortfolio = {
 const stockPortfolioFromStorage = JSON.parse(localStorage.getItem('stock-portfolio') || '{}');
 
 /** Set inital state. */
-const initialState = {
+const initialState: Portfolio = {
     loading: false,
     ...stockPortfolioFromStorage,
 };

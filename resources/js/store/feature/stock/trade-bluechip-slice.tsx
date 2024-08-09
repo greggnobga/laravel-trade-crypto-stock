@@ -42,7 +42,7 @@ type InputTrade = {
 const stockBluechipFromStorage = JSON.parse(localStorage.getItem('stock-trade-bluechip') || '{}');
 
 /** Set inital state. */
-const initialState = {
+const initialState: Stocks = {
     loading: false,
     ...stockBluechipFromStorage,
 };

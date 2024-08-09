@@ -5,19 +5,19 @@
 
 /** Alerts. */
 .alert-info {
-    @apply w-full z-50 rounded-md p-2 bg-blue-500 text-stone-200 font-thin !important;
+    @apply w-full z-50 rounded-md p-2 bg-blue-500 text-stone-900 font-thin !important;
 }
 
 .alert-danger {
-    @apply w-full z-50 rounded-md p-2  bg-red-500 text-stone-200 font-thin !important;
+    @apply w-full z-50 rounded-md p-2  bg-red-500 text-stone-900 font-thin !important;
 }
 
 .alert-success {
-    @apply w-full z-50 rounded-md p-2  bg-green-500 text-stone-200 font-thin !important;
+    @apply w-full z-50 rounded-md p-2  bg-green-500 text-stone-900 font-thin !important;
 }
 
 .alert-warning {
-    @apply w-full z-50 rounded-md p-2  bg-orange-500 text-stone-200 font-thin !important;
+    @apply w-full z-50 rounded-md p-2  bg-orange-500 text-stone-900 font-thin !important;
 }
 
 .alert-spinner {
@@ -287,7 +287,7 @@
 
 /** Tooltips. */
 .tooltip {
-    @apply invisible absolute shadow rounded p-2 text-[.50rem] font-thin w-fit bg-stone-300 border border-slate-200 text-stone-800 -mt-8 !important;
+    @apply invisible absolute shadow rounded px-2 py-1 text-[.50rem] font-thin w-fit bg-stone-300 border border-slate-200 text-stone-800 -mt-11 -ml-4 !important;
 }
 
 .has-tooltip:hover .tooltip {

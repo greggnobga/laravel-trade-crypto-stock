@@ -183,7 +183,7 @@ const Header = () => {
                         </li>
                         <li className='px-2'>
                             <Link to='/dashboard/stock-watchlist'>
-                                <span className='block border-bottom hover:text-orange-300'>
+                                <span className='block p-2 hover:text-orange-300'>
                                     <Icon id='watchlist' width='w-6' height='h-6' /> {isMobile ? ' ' : 'Watchlist'}
                                 </span>
                             </Link>

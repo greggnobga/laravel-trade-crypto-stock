@@ -1,4 +1,8 @@
 {
+  "hero.jpg": {
+    "file": "images/hero.jpg",
+    "src": "hero.jpg"
+  },
   "resources/css/app.css": {
     "file": "css/app.css",
     "src": "resources/css/app.css",

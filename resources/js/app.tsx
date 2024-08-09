@@ -55,7 +55,7 @@ const App = () => {
                         <Route path='/dashboard/profile' element={<Profile />} />
                         <Route path='/dashboard/extra-note' element={<Note />} />
                         <Route path='/dashboard/stock-portfolio/:page?' element={<PortfolioStock />} />
-                        <Route path='/dashboard/stock-watchlist' element={<WatchlistStock />} />
+                        <Route path='/dashboard/stock-watchlist/:page?' element={<WatchlistStock />} />
                         <Route path='/dashboard/stock-chart/:page?' element={<PortfolioChart />} />
                         <Route path='/dashboard/stock-trade/:page?' element={<TradeStock />} />
                         <Route path='/dashboard/crypto-portfolio/:page?' element={<PortfolioCrypto />} />

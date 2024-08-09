@@ -8,15 +8,6 @@ type Error<T> = {
     status?: number;
 };
 
-/** Fetch user data from local storage. */
-const stockDetailFromStorage = JSON.parse(localStorage.getItem('stock-detail') || '{}');
-
-/** Set inital state. */
-const initialState = {
-    loading: false,
-    ...stockDetailFromStorage,
-};
-
 /** Technical type. */
 type Technical = {
     price: string;
@@ -43,6 +34,8 @@ type Fundamental = {
 
 /** Input detail. */
 type Detail = {
+    loading: boolean;
+    status: number;
     message: string;
     technical: Technical[];
     fundamental: Fundamental[];
@@ -55,6 +48,16 @@ type InputDetail = {
     symbol: string;
     section: string;
     statement: string;
+};
+
+/** Fetch user data from local storage. */
+const stockDetailFromStorage = JSON.parse(localStorage.getItem('stock-detail') || '{}');
+
+/** Set inital state. */
+const initialState: Detail = {
+    loading: false,
+    status: 200,
+    ...stockDetailFromStorage,
 };
 
 /** Login request. */

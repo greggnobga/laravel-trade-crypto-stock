@@ -19,7 +19,7 @@ class TradeController extends Controller
         if ($request->method() === 'POST') {
             /** forward insert command. */
             if ($request->input('table') === 'trade' && $request->input('statement') === 'store') {
-                return $this->store(['table' => $request->input('table'), 'input' => $request->input('input')]);
+                return $this->store(['table' => $request->input('table'), 'input' => json_decode($request->input('input'), true)]);
             }
         }
 
@@ -232,7 +232,7 @@ class TradeController extends Controller
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($insert) {
-                return response(['message' => $data['input']['name'] . ' has been added to the database.'], 200);
+                return response(['message' => $data['input']['name'] . ' has been added to the database.', 'show_message' => true], 200);
             }
         } else {
             /** forward to update instead. */
@@ -261,10 +261,10 @@ class TradeController extends Controller
             /** if update not empty.*/
             if ($update) {
                 /** return something.*/
-                return response(['message' => 'The ' . $data['input']['name'] . ' information was successfully updated.'], 200);
+                return response(['message' => 'The ' . $data['input']['name'] . ' information was successfully updated.', 'show_message' => true], 200);
             } else {
                 /** return something.*/
-                return response(['message' => 'No modifications were made to the' . $data['input']['name'] . ' data.'], 200);
+                return response(['message' => 'No modifications were made to the' . $data['input']['name'] . ' data.', 'show_message' => true], 200);
             }
         }
     }

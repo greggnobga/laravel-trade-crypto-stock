@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class WatchlistController extends Controller {
+class WatchlistController extends Controller
+{
     /**
      * Display a listing of the resource.
      */
-    public function init(Request $request) {
+    public function init(Request $request)
+    {
         /** check if request contains method equal to post. */
         if ($request->method() === 'POST') {
             /** forward store command. */
@@ -26,199 +28,18 @@ class WatchlistController extends Controller {
 
         /** check if request contains method equal to get. */
         if ($request->method() === 'GET') {
-            /** forward buld command. */
-            if ($request->input('section') === 'build') {
-                return $this->build();
-            }
-
             /** forward fetch command. */
             if ($request->input('section') === 'fetch') {
-                return $this->fetch();
+                return $this->fetch(['page' => $request->input('page')]);
             }
-        }
-    }
-
-    /**
-     * Build watchlist.
-     */
-    public function build() {
-        /** repository. */
-        $response = [];
-
-        /** fetch unique sector. */
-        $sectors =  DB::table('stock_trades')
-            ->select('sector')
-            ->get()
-            ->unique();
-
-        if (!is_null($sectors)) {
-            /** search record by sector. */
-            foreach ($sectors as $value) {
-                if ($value->sector == 'miningandoil') {
-                    /** fetch stocks. */
-                    $sector['miningandoils'] = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'sector', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
-                        ->where('sector', '=', $value->sector)
-                        ->where('value', '>', 0)
-                        ->where('workingcapital', '>', 0)
-                        ->where('netincomeaftertax', '>', 0)
-                        ->orderBy('netincomeaftertax', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['miningandoils'] = array_values($sector['miningandoils']);
-
-                    /** Call helper function. */
-                    $response['miningandoils'] = $this->helpers(['purpose' => 'format', 'source' => $sector['miningandoils']]);
-                }
-
-                if ($value->sector == 'holdingfirms') {
-                    /** fetch stocks. */
-                    $sector['holdingfirms'] = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
-                        ->where('sector', '=', $value->sector)
-                        ->where('value', '>', 0)
-                        ->where('workingcapital', '>', 0)
-                        ->where('netincomeaftertax', '>', 0)
-                        ->orderBy('netincomeaftertax', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['holdingfirms'] = array_values($sector['holdingfirms']);
-
-                    /** Call helper function. */
-                    $response['holdingfirms'] = $this->helpers(['purpose' => 'format', 'source' => $sector['holdingfirms']]);
-                }
-
-                if ($value->sector == 'services') {
-                    /** fetch stocks. */
-                    $sector['services'] = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
-                        ->where('sector', '=', $value->sector)
-                        ->where('value', '>', 0)
-                        ->where('workingcapital', '>', 0)
-                        ->where('netincomeaftertax', '>', 0)
-                        ->orderBy('netincomeaftertax', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['services'] = array_values($sector['services']);
-
-                    /** Call helper function. */
-                    $response['services'] = $this->helpers(['purpose' => 'format', 'source' => $sector['services']]);
-                }
-
-                if ($value->sector == 'industrial') {
-                    /** fetch stocks. */
-                    $sector['industrials'] = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
-                        ->where('sector', '=', $value->sector)
-                        ->where('value', '>', 0)
-                        ->where('workingcapital', '>', 0)
-                        ->where('netincomeaftertax', '>', 0)
-                        ->orderBy('netincomeaftertax', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['industrials '] = array_values($sector['industrials']);
-
-                    /** Call helper function. */
-                    $response['industrials'] = $this->helpers(['purpose' => 'format', 'source' => $sector['industrials']]);
-                }
-
-                if ($value->sector == 'property') {
-                    /** fetch stocks. */
-                    $sector['properties'] = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
-                        ->where('sector', '=', $value->sector)
-                        ->where('value', '>', 0)
-                        ->where('workingcapital', '>', 0)
-                        ->where('netincomeaftertax', '>', 0)
-                        ->orderBy('netincomeaftertax', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['properties'] = array_values($sector['properties']);
-
-                    /** Call helper function. */
-                    $response['properties'] = $this->helpers(['purpose' => 'format', 'source' => $sector['properties']]);
-                }
-
-                if ($value->sector == 'financials') {
-                    /** fetch stocks. */
-                    $sector['financials'] = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
-                        ->where('sector', '=', $value->sector)
-                        ->where('value', '>', 0)
-                        ->where('workingcapital', '>', 0)
-                        ->where('netincomeaftertax', '>', 0)
-                        ->orderBy('netincomeaftertax', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['financials'] = array_values($sector['financials']);
-
-                    /** call helper function. */
-                    $response['financials'] = $this->helpers(['purpose' => 'format', 'source' => $sector['financials']]);
-                }
-
-                if ($value->sector == 'smallmediumemergingboard') {
-                    /** fetch stocks. */
-                    $sector['smallmediumemergingboards'] = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
-                        ->where('sector', '=', $value->sector)
-                        ->where('value', '>', 0)
-                        ->where('workingcapital', '>', 0)
-                        ->where('netincomeaftertax', '>', 0)
-                        ->orderBy('netincomeaftertax', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['smallmediumemergingboards'] = array_values($sector['smallmediumemergingboards']);
-
-                    /** call helper function. */
-                    $response['smallmediumemergingboards'] = $this->helpers(['purpose' => 'format', 'source' => $sector['smallmediumemergingboards']]);
-                }
-
-                if ($value->sector == 'etf') {
-                    /** fetch stocks. */
-                    $sector['exchangetradedfunds'] = DB::table('stock_trades')
-                        ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
-                        ->where('sector', '=', $value->sector)
-                        ->where('value', '>', 0)
-                        ->where('workingcapital', '>', 0)
-                        ->where('netincomeaftertax', '>', 0)
-                        ->orderBy('netincomeaftertax', 'desc')
-                        ->get()
-                        ->toArray();
-
-                    /** resequence array keys. */
-                    $sector['exchangetradedfunds'] = array_values($sector['exchangetradedfunds']);
-
-                    /** Call helper function. */
-                    $response['exchangetradedfunds'] = $this->helpers(['purpose' => 'format', 'source' => $sector['exchangetradedfunds']]);
-                }
-            }
-
-            /** return something. */
-            return response(['message' => 'Please wait while we process your request.', 'stocks' => $response], 200);
-        } else {
-            /** return something. */
-            return response(['message' => 'There were no records discovered.'], 200);
         }
     }
 
     /**
      * Store watchlist.
      */
-    public function store($data) {
+    public function store($data)
+    {
         /** check if record exists. */
         $check =  DB::table('stock_watchlists')
             ->select('symbol')
@@ -250,18 +71,39 @@ class WatchlistController extends Controller {
     /**
      * Fetch watchlist.
      */
-    public function fetch() {
+    public function fetch($data)
+    {
+        /** Item per page. */
+        $itemPerPage = 15;
+
+        /** Get total number of records. */
+        $totalRecords = DB::table('stock_watchlists')
+            ->select('symbol')
+            ->count();
+
+        /** Calculate the number of pages */
+        $numberOfPages = ceil($totalRecords / $itemPerPage);
+
+        /** Check if given pages is greater than number of pages. If true then set the page to number of pages. */
+        if ($data['page'] > $numberOfPages) {
+            $data['page'] = $numberOfPages;
+        }
+
         /** repository. */
-        $response = [];
+        $result = [];
+
         /** fetch unique sector. */
         $watchlist =  DB::table('stock_watchlists')
-            ->select('symbol')
-            ->where('userid', Auth::id())
-            ->get();
+            ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_watchlists.symbol')
+            ->select('stock_watchlists.symbol', 'stock_trades.pricerange')
+            ->where('stock_watchlists.userid', Auth::id())
+            ->orderBy('stock_trades.pricerange', 'desc')
+            ->paginate($itemPerPage, '*', 'page', $data['page'])
+            ->toArray();
 
         /** check if sectors is not empty. */
-        if (!is_null($watchlist)) {
-            foreach ($watchlist as $key => $value) {
+        if (!is_null($watchlist['data'])) {
+            foreach ($watchlist['data'] as $key => $value) {
                 /** loop through watchlist. */
                 $items = DB::table('stock_trades')
                     ->select('edge', 'symbol', 'price', 'value', 'pricerange', 'workingcapital', 'netincomeaftertax', 'debtassetratio', 'dividendyield')
@@ -269,17 +111,25 @@ class WatchlistController extends Controller {
                     ->first();
 
                 /** save to reponse pointer. */
-                $response[$key] = $items;
+                $result[$key] = $items;
             }
 
-            /** resequence array keys. */
-            $response = array_values($response);
+            /** Filter array to remove null value. */
+            $filter = array_filter($result);
+
+            /** Sort collection based on desired key. */
+            $sorted = collect($filter)->sortByDesc(function ($item) {
+                return $item->pricerange;
+            });
+
+            /** Resequence array keys. */
+            $stocks = array_values($sorted->toArray());
 
             /** Call helper function. */
-            $response = $this->helpers(['purpose' => 'format', 'source' => $response]);
+            $format = $this->helpers(['purpose' => 'format', 'source' => $stocks]);
 
             /** return something. */
-            return response(['message' => 'Please wait while we process your request.', 'stocks' => $response], 200);
+            return response(['message' => 'Please wait while we process your request.', 'stocks' => $format, 'pages' => $numberOfPages, 'show_message' => true], 200);
         } else {
             /** return something. */
             return response(['message' => 'There were no records discovered.'], 200);
@@ -289,7 +139,8 @@ class WatchlistController extends Controller {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($data) {
+    public function destroy($data)
+    {
         /** query if exists. */
         $check = DB::table('stock_watchlists')
             ->select('userid', 'symbol')
@@ -316,7 +167,8 @@ class WatchlistController extends Controller {
     /**
      * Helper function.
      */
-    private function helpers($data) {
+    private function helpers($data)
+    {
         if ($data['purpose'] === 'format') {
             /** return variable. */
             $return = [];

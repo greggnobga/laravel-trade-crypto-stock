@@ -99,7 +99,7 @@ class PortfolioController extends Controller
                 $distinct = DB::table('stock_portfolios')
                     ->select('symbol')
                     ->where('userid', '=', Auth::id())
-                    ->distinct(['stock_portfolios.symbol'])
+                    ->distinct('symbol')
                     ->paginate($itemPerPage, '*', 'page', $data['page'])
                     ->toArray();
 

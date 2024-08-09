@@ -8,50 +8,51 @@ type Error<T> = {
     status?: number;
 };
 
-/** Chart type. */
-type Chart = {
+/** Watchlist type. */
+type Watchlist = {
+    edge: number;
     symbol: string;
-    date: string;
-    supportlevel: string;
-    resistantlevel: string;
-    movingaverage: string;
-    movingsignal: string;
+    value: string;
+    pricerange: string;
+    workingcapital: string;
+    netincomeaftertax: string;
+    debtassetratio: string;
+    dividendyield: string;
 };
 
-/** Chart type. */
+/** Watchlist type. */
 type Stocks = {
     message: string;
-    stocks: Chart[];
+    stocks: Watchlist[];
     pages: number;
     loading: boolean;
     status: number;
     show_message: boolean;
 };
 
-/** Input chart type. */
-type InputChart = {
+/** Input watchlist type. */
+type InputWatchlist = {
     page: number;
     token: string;
     section: string;
-    statement: string;
 };
 
 /** Fetch user data from local storage. */
-const stockChartFromStorage = JSON.parse(localStorage.getItem('stock-chart') || '{}');
+const stockWatchlistFromStorage = JSON.parse(localStorage.getItem('stock-watchlist') || '{}');
 
 /** Set inital state. */
 const initialState: Stocks = {
     loading: false,
-    ...stockChartFromStorage,
+    ...stockWatchlistFromStorage,
 };
 
-/** Chart request. */
-export const stockChartRequest = createAsyncThunk<any, InputChart, { rejectValue: Error<any> }>(
-    'stock/chart',
+/** Watchlist request. */
+export const stockWatchlistRequest = createAsyncThunk<any, InputWatchlist, { rejectValue: Error<any> }>(
+    'stock/watchlist',
     async (inputData, { rejectWithValue }) => {
         try {
             /** Deconstruct input data. */
-            const { page, token, section, statement } = inputData;
+            const { page, token, section } = inputData;
 
             /** Request data from backend. */
             const { data, status } = await axios({
@@ -60,13 +61,13 @@ export const stockChartRequest = createAsyncThunk<any, InputChart, { rejectValue
                     Authorization: `Bearer ${token}`,
                 },
                 method: 'GET',
-                url: `/api/stock-chart-retrieve`,
-                params: { page, section, statement },
+                url: `/api/stock-watchlist-retrieve`,
+                params: { page, section },
             });
 
             /** Save to local storage. */
             if (data) {
-                localStorage.setItem('stock-chart', JSON.stringify(data));
+                localStorage.setItem('stock-watchlist', JSON.stringify(data));
             }
 
             /** Return something. */
@@ -95,17 +96,17 @@ export const stockChartRequest = createAsyncThunk<any, InputChart, { rejectValue
 );
 
 /** Export slice. */
-export const stockChart = createSlice({
-    name: 'stockChart',
+export const stockWatchlist = createSlice({
+    name: 'stockWatchlist',
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
-        /** Chart request case. */
-        builder.addCase(stockChartRequest.pending, (state) => {
+        /** Watchlist request case. */
+        builder.addCase(stockWatchlistRequest.pending, (state) => {
             state.loading = true;
         });
 
-        builder.addCase(stockChartRequest.fulfilled, (state, action: any) => {
+        builder.addCase(stockWatchlistRequest.fulfilled, (state, action: any) => {
             state.loading = false;
             state.stocks = action.payload.stocks || [];
             state.pages = action.payload.pages || null;
@@ -114,7 +115,7 @@ export const stockChart = createSlice({
             state.status = action.payload?.status || null;
         });
 
-        builder.addCase(stockChartRequest.rejected, (state, action: any) => {
+        builder.addCase(stockWatchlistRequest.rejected, (state, action: any) => {
             state.loading = false;
             state.stocks = [];
             state.show_message = true;
@@ -125,4 +126,4 @@ export const stockChart = createSlice({
 });
 
 /** Export something. */
-export default stockChart.reducer;
+export default stockWatchlist.reducer;

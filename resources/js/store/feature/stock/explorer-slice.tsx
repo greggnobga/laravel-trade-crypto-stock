@@ -43,7 +43,7 @@ type InputExplorer = {
 const stockExplorerFromStorage = JSON.parse(localStorage.getItem('stock-explorer') || '{}');
 
 /** Set inital state. */
-const initialState = {
+const initialState: Explorers = {
     loading: false,
     ...stockExplorerFromStorage,
 };

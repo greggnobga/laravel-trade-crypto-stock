@@ -42,7 +42,7 @@ type InputTrade = {
 const stockCommonFromStorage = JSON.parse(localStorage.getItem('stock-trade-common') || '{}');
 
 /** Set inital state. */
-const initialState = {
+const initialState: Stocks = {
     loading: false,
     ...stockCommonFromStorage,
 };

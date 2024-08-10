@@ -200,6 +200,8 @@ export const dashboardSecurityRequest = createAsyncThunk<any, InputSecurity, { r
 type InputPrice = {
     token: string;
     edge: string;
+    security: string;
+    symbol: string;
 };
 
 /** Dashboard price request. */
@@ -208,12 +210,14 @@ export const dashboardPriceRequest = createAsyncThunk<any, InputPrice, { rejectV
     async (inputData, { rejectWithValue }) => {
         try {
             /** Deconstruct input data. */
-            const { token, edge } = inputData;
+            const { token, edge, security, symbol } = inputData;
 
             /** Prepare form data. */
             let form_data = new FormData();
 
             form_data.append('edge', edge as string);
+            form_data.append('security', security as string);
+            form_data.append('symbol', symbol as string);
             form_data.append('section', 'prices' as string);
 
             /** Prepare request to external api data provider. */
@@ -433,7 +437,7 @@ export const dashboardExternal = createSlice({
         });
 
         builder.addCase(dashboardStartRequest.fulfilled, (state, action: any) => {
-            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
+            state.show_message = action.payload?.show_message || true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || -1;
         });
@@ -451,7 +455,7 @@ export const dashboardExternal = createSlice({
         });
 
         builder.addCase(dashboardMetaRequest.fulfilled, (state, action: any) => {
-            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
+            state.show_message = action.payload?.show_message || true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || -1;
         });
@@ -469,7 +473,7 @@ export const dashboardExternal = createSlice({
         });
 
         builder.addCase(dashboardSecurityRequest.fulfilled, (state, action: any) => {
-            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
+            state.show_message = action.payload?.show_message || true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || -1;
         });
@@ -487,7 +491,7 @@ export const dashboardExternal = createSlice({
         });
 
         builder.addCase(dashboardPriceRequest.fulfilled, (state, action: any) => {
-            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
+            state.show_message = action.payload?.show_message || true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || -1;
         });
@@ -505,7 +509,7 @@ export const dashboardExternal = createSlice({
         });
 
         builder.addCase(dashboardReportRequest.fulfilled, (state, action: any) => {
-            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
+            state.show_message = action.payload?.show_message || true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || -1;
         });
@@ -523,7 +527,7 @@ export const dashboardExternal = createSlice({
         });
 
         builder.addCase(dashboardDividendRequest.fulfilled, (state, action: any) => {
-            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
+            state.show_message = action.payload?.show_message || true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || -1;
         });
@@ -541,7 +545,7 @@ export const dashboardExternal = createSlice({
         });
 
         builder.addCase(dashboardSectorRequest.fulfilled, (state, action: any) => {
-            state.show_message = state.show_message ? action.payload?.show_message : state.show_message;
+            state.show_message = action.payload?.show_message || true;
             state.message = action.payload?.message || 'Something went wrong!';
             state.status = action.payload?.status || -1;
         });

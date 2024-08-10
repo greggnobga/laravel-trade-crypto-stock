@@ -88,8 +88,8 @@ const WatchlistStock = () => {
                                 Debt Asset Ratio - Always aim to invest in a company with a debt-to-equity ratio less than one.
                             </div>
                             <div className='p-2 border-b border-stone-200 hover:text-purple-500 text-xs'>
-                                Price Range - Year low minus year high: When the range approaches zero or even becomes positive, it suggests that the
-                                price is falling and that it is a good time to add to your stack.
+                                Price Range - When the range approaches zero or even becomes positive, it suggests that the price is falling and that
+                                it is a good time to add to your stack.
                             </div>
                             <div className='p-2 border-b border-stone-200 hover:text-purple-500 text-xs'>
                                 Working Capital - Working capital is the amount of capital accessible for a company's day-to-day operations.

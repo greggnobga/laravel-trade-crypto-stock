@@ -19,10 +19,6 @@ class ChartController extends Controller
             if ($request->input('section') === 'fetch') {
                 return $this->chartfetch($request->all());
             }
-            /** forward chart build function */
-            if ($request->input('section') === 'build') {
-                return $this->chartbuild($request->all());
-            }
         }
     }
 

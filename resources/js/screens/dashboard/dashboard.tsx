@@ -150,7 +150,7 @@ const Dashboard = () => {
                     /** Check if data is not empty. */
                     if (item) {
                         /** Dispatch action. */
-                        dispatch(dashboardPriceRequest({ token: access_token, edge: item.edge }));
+                        dispatch(dashboardPriceRequest({ token: access_token, edge: item.edge, security: item.security, symbol: item.symbol }));
                     }
                     /** Talk to the console about that task progress. */
                     if (index === end) {

@@ -21,7 +21,7 @@ class PSEController extends Controller
         if ($request->method() === 'POST') {
             /** forward prices function */
             if ($request->input('section') === 'prices') {
-                return $this->stockprices(['edge' => $request->input('edge')]);
+                return $this->stockprices(['edge' => $request->input('edge'), 'security' => $request->input('security'), 'symbol' => $request->input('symbol')]);
             }
 
             /** forward reports function */
@@ -290,61 +290,6 @@ class PSEController extends Controller
                 $result['volume'] = floatval($var_volume['volume']);
             }
 
-            /** mapping year high price. */
-            $stockdata['52WeekHigh'] = $stockprice['24'];
-
-            /** save to database.. */
-            if (array_key_exists("52WeekHigh", $stockdata)) {
-                /** replace comma with nothing. */
-                $price['high'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['52WeekHigh']]);
-
-                /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $price['high'])) {
-                    /** string replace parentheses. */
-                    $negative = str_replace([')', '(', '-'], '', $price['high']);
-                    /** then turn negative using abs function. */
-                    $price['high'] = -abs($negative);
-                } else {
-                    $amount['high'] = $price['high'];
-                }
-
-                /** match string if has no value. */
-                if ($price['high'] == '') {
-                    $amount['high'] = 0.00;
-                }
-            }
-
-            /** mapping year low price. */
-            $stockdata['52WeekLow'] = $stockprice['25'];
-
-            /** save to database.. */
-            if (array_key_exists("52WeekLow", $stockdata)) {
-                /** replace comma with nothing. */
-                $price['low'] = $this->helpers(['sanitized' => 'decimal', 'string' => $stockdata['52WeekLow']]);
-
-                /** preg match if contains parentheses. */
-                if (preg_match("/([)(])\w+/", $price['low'])) {
-                    /** string replace parentheses. */
-                    $negative = str_replace([')', '(', '-'], '', $price['low']);
-                    /** then turn negative using abs function. */
-                    $amount['low'] = -abs($negative);
-                } else {
-                    $amount['low'] = $price['low'];
-                }
-
-                /** match string if has no value. */
-                if ($price['low'] == '') {
-                    $amount['low'] = 0.00;
-                }
-            }
-
-            /** Compute year pice range. */
-            if ($amount['high'] > 0 && $amount['low'] > 0) {
-                $result['pricerange'] = $this->helpers(['sanitized' => 'subtract', 'two' => $amount['low'], 'one' => $amount['high']]);
-            } else {
-                $result['pricerange'] = floatval('0.00');
-            }
-
             /** save to database.. */
             DB::table('stock_trades')
                 ->where('edge', '=', $data['edge'])
@@ -352,19 +297,12 @@ class PSEController extends Controller
                     'price' => strip_tags($result['price']),
                     'volume' => strip_tags($result['volume']),
                     'value' => strip_tags($result['value']),
-                    'pricerange' => strip_tags($result['pricerange']),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
+
+            /** Call stock average. */
+            return $this->stockaverage(['edge' => $data['edge'], 'security' => $data['security'], 'symbol' => $data['symbol']]);
         }
-
-        /** fetch stock name. */
-        $reports = DB::table('stock_trades')
-            ->select('name')
-            ->where('edge', '=', $data['edge'])
-            ->first();
-
-        /** return something. */
-        return response(['message' => 'The ' . $reports->name . ' information was successfully updated.', 'show_message' => true], 200);
     }
 
     /**
@@ -999,6 +937,21 @@ class PSEController extends Controller
                     ]);
             }
         }
+
+        /** Compute year pice range. */
+        if ($result['resistancelevel'] > 0 && $result['supportlevel'] > 0) {
+            $result['pricerange'] = $this->helpers(['sanitized' => 'subtract', 'two' => $result['resistancelevel'], 'one' => $result['supportlevel']]);
+        } else {
+            $result['pricerange'] = floatval('0.00');
+        }
+
+        /** save to database.. */
+        DB::table('stock_trades')
+            ->where('edge', '=', $data['edge'])
+            ->update([
+                'pricerange' => strip_tags($result['pricerange']),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
 
         /** return something. */
         return response(['message' => 'The ' . $data['symbol'] . ' information was successfully updated.', 'success' => true,  'show_message' => true], 200);

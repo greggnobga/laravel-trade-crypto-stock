@@ -21,32 +21,27 @@ class PSEController extends Controller
         if ($request->method() === 'POST') {
             /** forward prices function */
             if ($request->input('section') === 'prices') {
-                return $this->stockprices($request->input('input'));
+                return $this->stockprices(['edge' => $request->input('edge')]);
             }
 
             /** forward reports function */
             if ($request->input('section') === 'reports') {
-                return $this->stockreports($request->input('input'));
+                return $this->stockreports(['edge' => $request->input('edge')]);
             }
 
             /** forward dividends function */
             if ($request->input('section') === 'dividends') {
-                return $this->stockdividends($request->input('input'));
+                return $this->stockdividends(['edge' => $request->input('edge')]);
             }
 
             /** forward sectors function */
             if ($request->input('section') === 'sectors') {
-                return $this->stocksectors($request->input('input'));
+                return $this->stocksectors(['edge' => $request->input('edge')]);
             }
 
-            /** forward sectors function */
+            /** forward companies function */
             if ($request->input('section') === 'companies') {
-                return $this->stockcompanies($request->all());
-            }
-
-            /** forward sectors function */
-            if ($request->input('section') === 'average') {
-                return $this->stockchart($request->all());
+                return $this->stockcompanies(['edge' => $request->input('edge'), 'symbol' => $request->input('symbol')]);
             }
         }
         /** check if request contains method equal to post. */
@@ -369,7 +364,7 @@ class PSEController extends Controller
             ->first();
 
         /** return something. */
-        return response(['message' => 'The ' . $reports->name . ' information was successfully updated.'], 200);
+        return response(['message' => 'The ' . $reports->name . ' information was successfully updated.', 'show_message' => true], 200);
     }
 
     /**
@@ -666,7 +661,7 @@ class PSEController extends Controller
                 ->first();
 
             /** return something. */
-            return response(['message' => 'The ' . $reports->name . ' information was successfully updated.'], 200);
+            return response(['message' => 'The ' . $reports->name . ' information was successfully updated.', 'show_message' => true], 200);
         }
     }
 
@@ -732,11 +727,11 @@ class PSEController extends Controller
                 ]);
         } else {
             /** return something. */
-            return response(['message' => 'The ' . $stock->name . ' has yet to establish a dividend rate.'], 200);
+            return response(['message' => 'The ' . $stock->name . ' has yet to establish a dividend rate.', 'show_message' => true], 200);
         }
 
         /** return something. */
-        return response(['message' => 'The dividend rate of ' . $stock->name . ' was added.'], 200);
+        return response(['message' => 'The dividend rate of ' . $stock->name . ' was added.', 'show_message' => true], 200);
     }
 
     /**
@@ -794,7 +789,7 @@ class PSEController extends Controller
             ->first();
 
         /** return something. */
-        return response(['message' => 'The ' . $reports->name . ' information was successfully updated.'], 200);
+        return response(['message' => 'The ' . $reports->name . ' information was successfully updated.', 'show_message' => true], 200);
     }
 
     /**
@@ -819,7 +814,7 @@ class PSEController extends Controller
                 $result['symbol'] = $decoded[0]['symbol'];
             } else {
                 /** return something. */
-                return response(['message' => 'The ' . $data['symbol'] . ' does not exist.'], 200);
+                return response(['message' => 'The ' . $data['symbol'] . ' does not exist.', 'show_message' => true], 200);
             }
 
             if (count($result) > 1) {
@@ -890,13 +885,13 @@ class PSEController extends Controller
         }
 
         /** return something. */
-        return response(['message' => 'The ' . $result['symbol'] . ' information was successfully updated.'], 200);
+        return response(['message' => 'The ' . $result['symbol'] . ' information was successfully updated.', 'show_message' => true], 200);
     }
 
     /**
      * Declare stock edges function.
      */
-    public function stockchart($data)
+    public function stockaverage($data)
     {
         /** repository. */
         $result = [];
@@ -1006,7 +1001,7 @@ class PSEController extends Controller
         }
 
         /** return something. */
-        return response(['message' => 'The ' . $data['symbol'] . ' information was successfully updated.', 'success' => true], 200);
+        return response(['message' => 'The ' . $data['symbol'] . ' information was successfully updated.', 'success' => true,  'show_message' => true], 200);
     }
 
     /**
@@ -1027,10 +1022,10 @@ class PSEController extends Controller
             $stocks = array_values($stocks);
 
             /** return something. */
-            return response(['message' => 'Start crawling the PSE website for stock information.', 'stocks' => $stocks], 200);
+            return response(['message' => 'Start crawling the PSE website for stock information.', 'stocks' => $stocks, 'show_message' => true], 200);
         } else {
             /** return something. */
-            return response(['message' => 'All records are up to date.'], 200);
+            return response(['message' => 'All records are up to date.', 'show_message' => true], 200);
         }
     }
 

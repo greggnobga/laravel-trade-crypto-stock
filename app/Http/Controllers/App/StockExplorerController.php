@@ -111,13 +111,13 @@ class StockExplorerController extends Controller
 
         /** Forward to pse controller to build the technical information. */
         $pse_controller = new PSEController();
-        $stock_chart = $pse_controller->stockchart(['edge' => $stock->edge, 'security' => $stock->security, 'symbol' => $stock->symbol]);
+        $stock_average = $pse_controller->stockaverage(['edge' => $stock->edge, 'security' => $stock->security, 'symbol' => $stock->symbol]);
 
         /** declare pointer */
         $result = [];
 
         /** check if fetching chart data is a success.*/
-        if ($stock_chart->original['success']) {
+        if ($stock_average->original['success']) {
             /** check if section match. */
             if ($data['statement'] === 'select') {
                 /** techincal data. */
@@ -154,7 +154,7 @@ class StockExplorerController extends Controller
                 }
             }
         } else {
-            return response(['message' => 'Something went wrong.', 'data' => $stock_chart], 401);
+            return response(['message' => 'Something went wrong.', 'data' => $stock_average, 'show_message' => true], 401);
         }
 
         /** Change update to human readable using carbon. */

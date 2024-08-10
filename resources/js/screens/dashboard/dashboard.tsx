@@ -7,7 +7,15 @@ import { useAppDispatch, useAppSelector } from '$lib/hooks/use-rtk';
 import useProtect from '$lib/hooks/use-protect';
 
 /** Action. */
-import { dashboardStartRequest, dashboardMetaRequest } from '$lib/store/feature/dashboard/external-slice';
+import {
+    dashboardStartRequest,
+    dashboardMetaRequest,
+    dashboardSecurityRequest,
+    dashboardPriceRequest,
+    dashboardReportRequest,
+    dashboardDividendRequest,
+    dashboardSectorRequest,
+} from '$lib/store/feature/dashboard/external-slice';
 
 /** Library. */
 import { mapObject } from '$lib/lib/helper';
@@ -69,7 +77,7 @@ const Dashboard = () => {
                 if (index === end) {
                     console.log('Process Completed.');
                 }
-            }, 3000 * index);
+            }, 5000 * index);
         });
     };
 
@@ -79,9 +87,8 @@ const Dashboard = () => {
         dispatch(dashboardMetaRequest({ token: access_token }));
     };
 
-    /** Meta handler. */
+    /** Security handler. */
     const securityHandler = async () => {
-        console.log('Meta handler cliked.');
         /** Prepare request to external api data provider. */
         const { data } = await axios({
             headers: {
@@ -93,7 +100,176 @@ const Dashboard = () => {
             params: { section: 'trades' },
         });
 
-        console.log(data);
+        /** Separate result. */
+        let { stocks }: any = data;
+
+        /** Save stocks to database. */
+        if (stocks) {
+            stocks.map((item: any, index: number) => {
+                /** Get last index. */
+                let end = stocks.length - 1;
+                /** Call delay item function. */
+                setTimeout(async function () {
+                    /** Check if data is not empty. */
+                    if (item) {
+                        /** Dispatch action. */
+                        dispatch(dashboardSecurityRequest({ token: access_token, symbol: item.symbol, edge: item.edge }));
+                    }
+                    /** Talk to the console about that task progress. */
+                    if (index === end) {
+                        console.log('Process Completed.');
+                    }
+                }, 5000 * index);
+            });
+        }
+    };
+
+    /** Price handler. */
+    const priceHandler = async () => {
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`,
+            },
+            method: 'GET',
+            url: '/stock-reports-retrieve',
+            params: { section: 'trades' },
+        });
+
+        /** Separate result. */
+        let { stocks }: any = data;
+
+        /** Save stocks to database. */
+        if (stocks) {
+            stocks.map((item: any, index: number) => {
+                /** Get last index. */
+                let end = stocks.length - 1;
+                /** Call delay item function. */
+                setTimeout(async function () {
+                    /** Check if data is not empty. */
+                    if (item) {
+                        /** Dispatch action. */
+                        dispatch(dashboardPriceRequest({ token: access_token, edge: item.edge }));
+                    }
+                    /** Talk to the console about that task progress. */
+                    if (index === end) {
+                        console.log('Process Completed.');
+                    }
+                }, 5000 * index);
+            });
+        }
+    };
+
+    /** Report handler. */
+    const reportHandler = async () => {
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`,
+            },
+            method: 'GET',
+            url: '/stock-reports-retrieve',
+            params: { section: 'trades' },
+        });
+
+        /** Separate result. */
+        let { stocks }: any = data;
+
+        /** Save stocks to database. */
+        if (stocks) {
+            stocks.map((item: any, index: number) => {
+                /** Get last index. */
+                let end = stocks.length - 1;
+                /** Call delay item function. */
+                setTimeout(async function () {
+                    /** Check if data is not empty. */
+                    if (item) {
+                        /** Dispatch action. */
+                        dispatch(dashboardReportRequest({ token: access_token, edge: item.edge }));
+                    }
+                    /** Talk to the console about that task progress. */
+                    if (index === end) {
+                        console.log('Process Completed.');
+                    }
+                }, 5000 * index);
+            });
+        }
+    };
+
+    /** Dividend handler. */
+    const dividendHandler = async () => {
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`,
+            },
+            method: 'GET',
+            url: '/stock-reports-retrieve',
+            params: { section: 'trades' },
+        });
+
+        /** Separate result. */
+        let { stocks }: any = data;
+
+        /** Save stocks to database. */
+        if (stocks) {
+            stocks.map((item: any, index: number) => {
+                /** Get last index. */
+                let end = stocks.length - 1;
+                /** Call delay item function. */
+                setTimeout(async function () {
+                    /** Check if data is not empty. */
+                    if (item) {
+                        /** Dispatch action. */
+                        dispatch(dashboardDividendRequest({ token: access_token, edge: item.edge }));
+                    }
+                    /** Talk to the console about that task progress. */
+                    if (index === end) {
+                        console.log('Process Completed.');
+                    }
+                }, 5000 * index);
+            });
+        }
+    };
+
+    /** Dividend handler. */
+    const sectorHandler = async () => {
+        /** Prepare request to external api data provider. */
+        const { data } = await axios({
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`,
+            },
+            method: 'GET',
+            url: '/stock-reports-retrieve',
+            params: { section: 'trades' },
+        });
+
+        /** Separate result. */
+        let { stocks }: any = data;
+
+        /** Save stocks to database. */
+        if (stocks) {
+            stocks.map((item: any, index: number) => {
+                /** Get last index. */
+                let end = stocks.length - 1;
+                /** Call delay item function. */
+                setTimeout(async function () {
+                    /** Check if data is not empty. */
+                    if (item) {
+                        /** Dispatch action. */
+                        dispatch(dashboardSectorRequest({ token: access_token, edge: item.edge }));
+                    }
+                    /** Talk to the console about that task progress. */
+                    if (index === end) {
+                        console.log('Process Completed.');
+                    }
+                }, 5000 * index);
+            });
+        }
     };
 
     /** Return something. */
@@ -131,25 +307,25 @@ const Dashboard = () => {
                     </div>
                     <div className='has-tooltip p-2 rounded hover:bg-slate-200 hover:text-purple-500'>
                         <span className='tooltip uppercase text-center'>Get value, year high and low prices from PSE.</span>
-                        <button onClick={() => console.log('dashboardPriceHandler')} className='' type='button'>
+                        <button onClick={priceHandler} className='' type='button'>
                             <Icon id='price' width='w-6' height='h-6' /> Price Range
                         </button>
                     </div>
                     <div className='has-tooltip p-2 rounded hover:bg-slate-200 hover:text-purple-500'>
                         <span className='tooltip uppercase text-center'>Get income after tax and earnings per share from PSE.</span>
-                        <button onClick={() => console.log('dashboardReportHandler')} type='button'>
+                        <button onClick={reportHandler} type='button'>
                             <Icon id='report' width='w-6' height='h-6' /> Financial Report
                         </button>
                     </div>
                     <div className='has-tooltip p-2 rounded hover:bg-slate-200 hover:text-purple-500'>
                         <span className='tooltip uppercase text-center'>Get the yearly dividend yield from PSE.</span>
-                        <button onClick={() => console.log('dashboardDividendHandler')} type='button'>
+                        <button onClick={dividendHandler} type='button'>
                             <Icon id='dividend' width='w-6' height='h-6' /> Company Dividend
                         </button>
                     </div>
                     <div className='has-tooltip p-2 rounded hover:bg-slate-200 hover:text-purple-500'>
                         <span className='tooltip uppercase text-center'>Get sector FROM PSE.</span>
-                        <button onClick={() => console.log('dashboardSectorHandler')} type='button'>
+                        <button onClick={sectorHandler} type='button'>
                             <Icon id='sector' width='w-6' height='h-6' /> Company Sector
                         </button>
                     </div>

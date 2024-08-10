@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Dashboard\Stock;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class ChartController extends Controller
 {

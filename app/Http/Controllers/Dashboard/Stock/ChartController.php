@@ -34,7 +34,10 @@ class ChartController extends Controller
 
             /** Get total number of records. */
             $totalRecords = DB::table('stock_charts')
+                ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_charts.symbol')
                 ->select('symbol')
+                ->where('stock_trades.workingcapital', '>', 0)
+                ->where('stock_trades.netincomeaftertax', '>', 0)
                 ->count();
 
             /** Calculate the number of pages */
@@ -49,6 +52,8 @@ class ChartController extends Controller
             $record = DB::table('stock_charts')
                 ->join('stock_trades', 'stock_trades.symbol', '=', 'stock_charts.symbol')
                 ->select('stock_trades.edge', 'stock_trades.symbol', 'stock_trades.price', 'stock_trades.value', 'stock_trades.pricerange', 'stock_trades.change', 'supportlevel', 'resistancelevel', 'movingaverage', 'movingsignal')
+                ->where('stock_trades.workingcapital', '>', 0)
+                ->where('stock_trades.netincomeaftertax', '>', 0)
                 ->orderBy('stock_trades.pricerange', 'desc')
                 ->paginate($itemPerPage, '*', 'page', $data['page'])
                 ->toArray();

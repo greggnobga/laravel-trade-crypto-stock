@@ -1,0 +1,15 @@
+services:
+  trade:
+    container_name: trade
+    image: trade:latest
+    volumes:
+      - /data/nginx/trade.hermes.pod:/var/www/html/
+    expose:
+      - "80"
+    networks:
+      - devops
+    restart: always
+
+networks:
+  devops:
+    external: true
